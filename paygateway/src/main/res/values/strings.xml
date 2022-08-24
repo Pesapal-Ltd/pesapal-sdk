@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Pesapal</string>
+    <string name="todo">TODO</string>
+    <string name="order_number">Order Number</string>
+    <string name="choose_payment_mode">Choose Payment Mode</string>
+
+</resources>

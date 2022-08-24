@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_pesapal"
+    app:startDestination="@+id/pesapalMainFragment">
+
+    <fragment
+        android:id="@+id/pesapalMainFragment"
+        android:name="com.pesapal.paymentgateway.payment.fragment.MainPesapalFragment"
+        android:label="Payment Methods"
+        tools:layout="@layout/fragment_pesapal_main">
+        <action
+            android:id="@+id/action_pesapalMainFragment_to_pesapalMpesaFragment"
+            app:destination="@id/pesapalMpesaFragment" />
+        <action
+            android:id="@+id/action_pesapalMainFragment_to_pesapalCardFragment"
+            app:destination="@id/pesapalCardFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pesapalMpesaFragment"
+        android:name="com.pesapal.paymentgateway.payment.fragment.MpesaPesapalFragment"
+        android:label="Mpesa Payment"
+        tools:layout="@layout/fragment_pesapal_mpesa"/>
+
+    <fragment
+        android:id="@+id/pesapalCardFragment"
+        android:name="com.pesapal.paymentgateway.payment.fragment.CardPesapalFragment"
+        android:label="Card Payment"
+        tools:layout="@layout/fragment_pesapal_card"/>
+
+</navigation>
