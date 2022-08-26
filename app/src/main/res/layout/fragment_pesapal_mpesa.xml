@@ -85,7 +85,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="15dp"
                     app:layout_constraintTop_toBottomOf="@+id/tvInst2"
-                    android:text="3. Once payment is confirmed, \n     you will receive a confirmation \n    SMS for your order"
+                    android:text="3. Once payment is confirmed, \n     you will receive a confirmation \n     SMS for your order"
                     android:layout_marginStart="20dp"
                     android:layout_height="wrap_content"/>
 
@@ -108,7 +108,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvInst4"
                     style="@style/AppTheme.App.TextInputLayout"
                     android:id="@+id/phone_layout"
-                    android:hint="Phone number"
+                    android:hint="+254700XXXXXX"
                     app:boxBackgroundColor="@android:color/transparent"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
@@ -124,6 +124,20 @@
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSend"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Send"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:background="@drawable/bg_round"
+                    app:layout_constraintTop_toBottomOf="@+id/phone_layout"
+                    android:layout_height="wrap_content"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

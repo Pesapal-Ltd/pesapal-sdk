@@ -48,4 +48,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation project(':paygateway')
 
+    // Mask
+    implementation 'com.github.santalu:mask-edittext:1.1.1'
+
 }

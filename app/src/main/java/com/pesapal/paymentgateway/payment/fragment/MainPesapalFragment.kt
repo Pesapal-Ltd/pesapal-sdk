@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.pesapal.paygateway.R
 import com.pesapal.paygateway.databinding.FragmentPesapalMainBinding
+import com.pesapal.paymentgateway.R
 
 class MainPesapalFragment: Fragment() {
 
@@ -34,7 +33,7 @@ class MainPesapalFragment: Fragment() {
         }
 
         binding.clCreditPayment.setOnClickListener {
-
+            findNavController().navigate(R.id.action_pesapalMainFragment_to_pesapalCardFragmentAddress)
         }
 
     }

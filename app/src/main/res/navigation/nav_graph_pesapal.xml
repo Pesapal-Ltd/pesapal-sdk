@@ -14,8 +14,8 @@
             android:id="@+id/action_pesapalMainFragment_to_pesapalMpesaFragment"
             app:destination="@id/pesapalMpesaFragment" />
         <action
-            android:id="@+id/action_pesapalMainFragment_to_pesapalCardFragment"
-            app:destination="@id/pesapalCardFragment" />
+            android:id="@+id/action_pesapalMainFragment_to_pesapalCardFragmentAddress"
+            app:destination="@id/pesapalCardFragmentAddress" />
     </fragment>
 
     <fragment
@@ -25,9 +25,23 @@
         tools:layout="@layout/fragment_pesapal_mpesa"/>
 
     <fragment
-        android:id="@+id/pesapalCardFragment"
-        android:name="com.pesapal.paymentgateway.payment.fragment.CardPesapalFragment"
-        android:label="Card Payment"
-        tools:layout="@layout/fragment_pesapal_card"/>
+        android:id="@+id/pesapalCardFragmentAddress"
+        android:name="com.pesapal.paymentgateway.payment.fragment.CardFragmentNewAddress"
+        android:label="Card Address"
+        tools:layout="@layout/fragment_new_card_address">
+        <action
+            android:id="@+id/action_pesapalCardFragmentAddress_to_pesapalCardFragmentBilling"
+            app:destination="@id/pesapalCardFragmentBilling" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pesapalCardFragmentBilling"
+        android:name="com.pesapal.paymentgateway.payment.fragment.CardFragmentNewBilling"
+        android:label="Card Billing"
+        tools:layout="@layout/fragment_new_card_details"/>
+
+
+
+
 
 </navigation>
