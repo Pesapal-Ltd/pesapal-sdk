@@ -29,4 +29,8 @@
     <string name="hint_mm">MM</string>
     <string name="mm">MM</string>
     <string name="hint_yy">YY</string>
+
+    <string name="country_currency_dialog_title">Set your currency</string>
+    <string name="new_card_invalidEmail">Invalid Email</string>
+
 </resources>

@@ -1,20 +1,21 @@
 package com.pesapal.paymentgateway.payment.fragment
 
-import android.app.Dialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
+import android.widget.EditText
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import com.hbb20.CountryCodePicker.OnCountryChangeListener
 import com.pesapal.paymentgateway.R
 import com.pesapal.paymentgateway.databinding.FragmentNewCardAddressBinding
+import com.pesapal.paymentgateway.payment.model.BillingDetails
 import com.pesapal.paymentgateway.payment.setButtonEnabled
+
 
 class CardFragmentNewAddress : Fragment() {
 
@@ -23,15 +24,20 @@ class CardFragmentNewAddress : Fragment() {
     private var country = "Kenya"//TODO:  remove hard coded country
     private var countryCode = "KE"//TODO: remove hard coded country code
 
+    companion object {
+        private const val cardNumberLength = 19
+        const val CARD_DATA = "data"
+    }
+
     private var isFirstNameFilled = false
     private var isSurnameFilled = false
     private var isEmailFilled = false
-    private var isCountryFilled = false
     private var isPhonelFilled = false
     private var isAddressFilled = false
     private var isPostalCodeFilled = false
     private var isCityFilled = false
     private var enable = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,19 +68,27 @@ class CardFragmentNewAddress : Fragment() {
         }
 
         binding.etEmail.addTextChangedListener {
-            isEmailFilled = it.toString().isNotEmpty()
-            checkFilled()
+            if(it != null && it.isNotEmpty()) {
+                isEmailFilled = checkValidEmail(it.toString())
+                checkFilled()
+            }else{
+                isEmailFilled = false
+            }
 
         }
 
-        binding.etCountry.addTextChangedListener {
-            isCountryFilled = it.toString().isNotEmpty()
-            checkFilled()
 
-        }
         binding.etPhoneNumber.addTextChangedListener {
-            isPhonelFilled = it.toString().isNotEmpty()
-            checkFilled()
+
+            if(it != null && it.isNotEmpty()){
+                val minLength = 3
+                val phoneText = it.toString()
+                isPhonelFilled = phoneText.length > minLength
+                checkFilled()
+            }else{
+                isPhonelFilled = false
+            }
+
 
         }
         binding.etAddress.addTextChangedListener {
@@ -83,8 +97,22 @@ class CardFragmentNewAddress : Fragment() {
 
         }
         binding.etPostal.addTextChangedListener {
-            isPostalCodeFilled = it.toString().isNotEmpty()
-            checkFilled()
+            if(it != null && it.isNotEmpty()){
+                val minPostalCodeLength = 2
+                val postalCodeText = it.toString()
+                isPostalCodeFilled = postalCodeText.length > minPostalCodeLength
+
+                var postalCodeError = ""
+                if (!isPostalCodeFilled) {
+                    postalCodeError = "Postal Code Too Short"
+                }
+                binding.etPostal.error = postalCodeError.ifEmpty { null }
+                isPostalCodeFilled = it.toString().isNotEmpty()
+                checkFilled()
+            }else{
+                isPostalCodeFilled = false
+            }
+
 
         }
         binding.etCity.addTextChangedListener {
@@ -93,25 +121,68 @@ class CardFragmentNewAddress : Fragment() {
 
         }
 
+//        binding.countryCodePicker.selectedCountryName
+
     }
 
     private fun handleClickListener(){
         binding.acbNextStep.setOnClickListener {
             if(enable){
+                val bundle = Bundle()
+                val billingDetails = createBillingDetails()
+                bundle.putParcelable(CARD_DATA, billingDetails)
+                view?.let {
+                    Navigation.findNavController(it).navigate(R.id.action_pesapalCardFragmentAddress_to_pesapalCardFragmentBilling, bundle)
+                }
 
             }else{
-
+                showMessage("All inputs required ...")
             }
         }
     }
 
+
+    private fun createBillingDetails(): BillingDetails {
+        val details = BillingDetails()
+        details.postalCode = binding.etPostal.text.toString()
+        details.city = binding.etCity.text.toString()
+        details.email = binding.etEmail.text.toString()
+        details.street = binding.etAddress.text.toString()
+        details.msisdn = binding.etPhoneNumber.rawText.toString()
+        details.firstName = binding.etFirstName.text.toString()
+        details.lastName = binding.etSurname.text.toString()
+        details.country = binding.countryCodePicker.selectedCountryName
+        details.countryCode = binding.countryCodePicker.selectedCountryCode
+        return details
+    }
+
+
     private fun checkFilled(){
-        enable = isFirstNameFilled && isSurnameFilled && isEmailFilled && isCountryFilled && isPhonelFilled && isAddressFilled && isPostalCodeFilled && isCityFilled
+        enable = isFirstNameFilled && isSurnameFilled && isEmailFilled  && isPhonelFilled && isAddressFilled && isPostalCodeFilled && isCityFilled
         binding.acbNextStep.setButtonEnabled(enable)
+    }
+
+    private fun showMessage(message: String){
+        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
+    }
+
+    private fun isValidEmail(email: CharSequence): Boolean {
+        val isEmpty = TextUtils.isEmpty(email)
+        val isCorrectly = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        return !isEmpty && isCorrectly
+    }
+
+    private fun checkValidEmail(email: String):Boolean {
+        val isValidEmail = isValidEmail(email)
+        if (!isValidEmail) {
+            binding.etEmail.error = resources.getString(R.string.new_card_invalidEmail)
+        }
+        return isValidEmail
     }
 
     override fun onResume() {
         super.onResume()
+        checkFilled()
     }
 
 }
