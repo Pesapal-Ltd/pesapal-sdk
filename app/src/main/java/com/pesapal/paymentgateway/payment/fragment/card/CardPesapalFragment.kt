@@ -1,22 +1,22 @@
-package com.pesapal.paymentgateway.payment.fragment
+package com.pesapal.paymentgateway.payment.fragment.card
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.pesapal.paymentgateway.databinding.FragmentPesapalMpesaBinding
+import com.pesapal.paygateway.databinding.FragmentPesapalCardBinding
 
-class MpesaPesapalFragment : Fragment() {
+class CardPesapalFragment : Fragment() {
 
-    private lateinit var binding: FragmentPesapalMpesaBinding
+    private lateinit var binding: FragmentPesapalCardBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPesapalMpesaBinding.inflate(layoutInflater)
+        binding = FragmentPesapalCardBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -26,15 +26,6 @@ class MpesaPesapalFragment : Fragment() {
     }
 
     private fun initData(){
-        handleClicks()
+
     }
-
-    private fun handleClicks(){
-        binding.btnSend.setOnClickListener {
-
-        }
-    }
-
-
-
 }

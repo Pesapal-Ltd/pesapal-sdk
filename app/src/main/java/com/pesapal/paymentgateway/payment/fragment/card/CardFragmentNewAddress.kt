@@ -1,16 +1,14 @@
-package com.pesapal.paymentgateway.payment.fragment
+package com.pesapal.paymentgateway.payment.fragment.card
 
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import com.hbb20.CountryCodePicker.OnCountryChangeListener
 import com.pesapal.paymentgateway.R
 import com.pesapal.paymentgateway.databinding.FragmentNewCardAddressBinding
 import com.pesapal.paymentgateway.payment.model.BillingDetails
@@ -20,9 +18,6 @@ import com.pesapal.paymentgateway.payment.setButtonEnabled
 class CardFragmentNewAddress : Fragment() {
 
     private lateinit var binding: FragmentNewCardAddressBinding
-
-    private var country = "Kenya"//TODO:  remove hard coded country
-    private var countryCode = "KE"//TODO: remove hard coded country code
 
     companion object {
         private const val cardNumberLength = 19
