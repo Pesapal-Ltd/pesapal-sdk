@@ -50,7 +50,7 @@
 
     <style name="TextAppearance.App.TextInputLayout.V3" parent="Widget.Design.TextInputLayout">
         <item name="android:textColor">@color/purple_500</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColorHint">@color/purple_500</item>
     </style>
 
