@@ -10,7 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.pesapal.paymentgateway.databinding.FragmentNewCardDetailsBinding
 import com.pesapal.paymentgateway.payment.setButtonEnabled
-import com.pesapal.paymentgateway.utils.FragmentExtension.hideKeyboard
+import com.pesapal.paymentgateway.payment.utils.FragmentExtension.hideKeyboard
 
 class CardFragmentNewBilling : Fragment() {
 

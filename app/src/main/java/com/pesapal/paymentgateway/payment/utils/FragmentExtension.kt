@@ -1,4 +1,4 @@
-package com.pesapal.paymentgateway.utils
+package com.pesapal.paymentgateway.payment.utils
 
 import android.content.Context
 import android.view.inputmethod.InputMethodManager

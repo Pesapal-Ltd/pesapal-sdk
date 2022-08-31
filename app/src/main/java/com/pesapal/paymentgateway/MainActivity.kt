@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initPayment(){
        val myIntent = Intent(this, PesapalPayActivity::class.java)
+        myIntent.putExtra("consumer_key","qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW")
+        myIntent.putExtra("consumer_secret","osGQ364R49cXKeOYSpaOnT++rHs=")
+        myIntent.putExtra("amount","100.00")
        startActivity(myIntent)
     }
 }
