@@ -19,6 +19,10 @@ class AppViewModel : ViewModel() {
     val authPaymentResponse: LiveData<Resource<AuthResponseModel>>
         get() = _authPaymentResponse
 
+    private var _loadFragment = MutableLiveData<Resource<String>>()
+    val loadFragment: LiveData<Resource<String>>
+    get() = _loadFragment
+
     fun authPayment(authRequestModel: AuthRequestModel) {
         _authPaymentResponse.postValue(Resource.loading("Initiating payment process ... "))
         viewModelScope.launch {
@@ -33,8 +37,17 @@ class AppViewModel : ViewModel() {
                 else -> {}
             }
         }
-
     }
+
+
+
+    fun loadFragment(frag: String){
+        _loadFragment.postValue(Resource.loadFragment(frag))
+    }
+
+
+
+
 
 
 }

@@ -2,12 +2,16 @@ package com.pesapal.paymentgateway.payment.activity
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.pesapal.paymentgateway.R
 import com.pesapal.paymentgateway.databinding.ActivityPesapalPayBinding
+import com.pesapal.paymentgateway.payment.fragment.auth.AuthFragment
+import com.pesapal.paymentgateway.payment.fragment.card.CardFragmentNewAddress
+import com.pesapal.paymentgateway.payment.fragment.card.CardFragmentNewBilling
 import com.pesapal.paymentgateway.payment.fragment.mpesa.MainPesapalFragment
+import com.pesapal.paymentgateway.payment.fragment.mpesa.MpesaPesapalFragment
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.utils.Status
 import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
@@ -17,8 +21,7 @@ class PesapalPayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPesapalPayBinding
     private var consumer_key: String = ""
     private var consumer_secret: String = ""
-    private lateinit var viewModel: AppViewModel;
-
+    private val viewModel: AppViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPesapalPayBinding.inflate(layoutInflater)
@@ -28,9 +31,7 @@ class PesapalPayActivity : AppCompatActivity() {
     }
 
     private fun initData(){
-        viewModel = ViewModelProvider(this)[AppViewModel::class.java]
         fetchSharedData()
-        loadFragment(MainPesapalFragment())
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -61,7 +62,8 @@ class PesapalPayActivity : AppCompatActivity() {
     }
 
     private fun authPayment(authRequestModel: AuthRequestModel){
-        viewModel.authPayment(authRequestModel)
+//        viewModel.authPayment(authRequestModel)
+        viewModel.loadFragment("auth")
     }
 
     private fun unableToAuth(){
@@ -72,6 +74,7 @@ class PesapalPayActivity : AppCompatActivity() {
         viewModel.authPaymentResponse.observe(this){
             when (it.status) {
                 Status.SUCCESS -> {
+                    loadFragment(MainPesapalFragment())
                     Log.e(" SUCCESS ", " ====> SUCCESS")
                 }
                 Status.ERROR -> {
@@ -82,6 +85,29 @@ class PesapalPayActivity : AppCompatActivity() {
                 }
             }
         }
+
+
+        viewModel.loadFragment.observe(this){
+            when(it.message){
+                "auth" -> {
+                    loadFragment(AuthFragment())
+                }
+                "choose" -> {
+                    loadFragment(MainPesapalFragment())
+                }
+                "mpesa" -> {
+                    loadFragment(MpesaPesapalFragment())
+                }
+                "card" -> {
+                    loadFragment(CardFragmentNewAddress())
+                }
+                "card2" -> {
+                    loadFragment(CardFragmentNewBilling())
+                }
+            }
+        }
+
+
     }
 
 }

@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.pesapal.paygateway.databinding.FragmentPesapalMainBinding
-import com.pesapal.paymentgateway.R
+import androidx.fragment.app.activityViewModels
+import com.pesapal.paymentgateway.databinding.FragmentPesapalMainBinding
+import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
 
 class MainPesapalFragment: Fragment() {
 
     private lateinit var binding: FragmentPesapalMainBinding
+    private val viewModel: AppViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,11 +30,14 @@ class MainPesapalFragment: Fragment() {
 
     private fun initData(){
         binding.clMpesaPayment.setOnClickListener {
-            findNavController().navigate(R.id.action_pesapalMainFragment_to_pesapalMpesaFragment)
+            viewModel.loadFragment("mpesa")
+//            findNavController().navigate(R.id.action_pesapalMainFragment_to_pesapalMpesaFragment)
         }
 
         binding.clCreditPayment.setOnClickListener {
-            findNavController().navigate(R.id.action_pesapalMainFragment_to_pesapalCardFragmentAddress)
+            viewModel.loadFragment("card")
+
+//            findNavController().navigate(R.id.action_pesapalMainFragment_to_pesapalCardFragmentAddress)
         }
 
     }

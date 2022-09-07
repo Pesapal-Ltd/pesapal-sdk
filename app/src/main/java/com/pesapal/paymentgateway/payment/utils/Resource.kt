@@ -16,8 +16,12 @@ data class Resource<out T>(val status: Status, val data: T?, val message: String
             return Resource(Status.UNAUTHORIZED, null, null)
         }
 
+        fun <T> loadFragment(frag: String):Resource<T>{
+            return Resource(Status.LOADING, null, frag)
+        }
+
         fun <T> error(msg: String): Resource<T> {
-            return Resource(Status.ERROR, null, msg)
+            return Resource(Status.SUCCESS, null, msg)
         }
 
         fun <T> loading(msg: String): Resource<T> {

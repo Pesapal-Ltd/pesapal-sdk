@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.pesapal.paygateway.databinding.FragmentPesapalCardBinding
+import com.pesapal.paymentgateway.databinding.FragmentPesapalCardBinding
 
 class CardPesapalFragment : Fragment() {
 

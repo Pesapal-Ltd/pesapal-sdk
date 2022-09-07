@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.pesapal.paymentgateway.R
 import com.pesapal.paymentgateway.databinding.FragmentNewCardAddressBinding
 import com.pesapal.paymentgateway.payment.model.BillingDetails
 import com.pesapal.paymentgateway.payment.setButtonEnabled
+import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
 
 
 class CardFragmentNewAddress : Fragment() {
@@ -33,6 +35,7 @@ class CardFragmentNewAddress : Fragment() {
     private var isCityFilled = false
     private var enable = false
 
+    private val viewModel: AppViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -126,9 +129,11 @@ class CardFragmentNewAddress : Fragment() {
                 val bundle = Bundle()
                 val billingDetails = createBillingDetails()
                 bundle.putParcelable(CARD_DATA, billingDetails)
-                view?.let {
-                    Navigation.findNavController(it).navigate(R.id.action_pesapalCardFragmentAddress_to_pesapalCardFragmentBilling, bundle)
-                }
+                viewModel.loadFragment("card2")
+//                view?.let {
+//                    Navigation.findNavController(it).navigate(R.id.action_pesapalCardFragmentAddress_to_pesapalCardFragmentBilling, bundle)
+//                }
+
 
             }else{
                 showMessage("All inputs required ...")
