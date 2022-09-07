@@ -4,14 +4,21 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:text="Initializing payment ..."
+
+    <com.agrawalsuneet.dotsloader.loaders.CircularDotsLoader
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_height="wrap_content"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:loader_animDur="100"
+        app:loader_bigCircleRadius="42dp"
+        app:loader_circleRadius="14dp"
+        app:loader_defaultColor="@color/purple_700"
+        app:loader_firstShadowColor="@color/purple_100"
+        app:loader_secondShadowColor="@color/purple_100"
+        app:loader_selectedColor="@color/purple_700"
+        app:loader_showRunningShadow="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

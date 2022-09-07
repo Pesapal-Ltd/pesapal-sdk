@@ -69,5 +69,6 @@ dependencies {
     /* view model */
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
 
+    implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
 
 }

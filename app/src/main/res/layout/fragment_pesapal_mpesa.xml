@@ -67,6 +67,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:text="1. Provide your MPESA mobile number"
                     android:layout_marginStart="20dp"
+                    android:textColor="@color/black"
                     android:layout_height="wrap_content"/>
 
                 <TextView
@@ -74,6 +75,7 @@
                     android:layout_width="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="15dp"
+                    android:textColor="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/tvInst1"
                     android:text="2. Click Send to receive a request \n     on your phone to confirm the transaction \n     by providing your MPESA PIN"
                     android:layout_marginStart="20dp"
@@ -84,6 +86,7 @@
                     android:layout_width="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="15dp"
+                    android:textColor="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/tvInst2"
                     android:text="3. Once payment is confirmed, \n     you will receive a confirmation \n     SMS for your order"
                     android:layout_marginStart="20dp"
