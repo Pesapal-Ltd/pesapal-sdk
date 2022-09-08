@@ -1,6 +1,8 @@
 package com.pesapal.paymentgateway.payment.repo
 
 import com.pesapal.paymentgateway.payment.data.api.ApiClient
+import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnRequest
+import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnResponse
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.auth.AuthResponseModel
 import com.pesapal.paymentgateway.payment.utils.Resource
@@ -25,6 +27,17 @@ class PaymentRepository {
         }
     }
 
+
+    suspend fun registerApi(registerIpnRequest: RegisterIpnRequest):Resource<RegisterIpnResponse>{
+        return withContext(Dispatchers.IO){
+            try{
+                val registerIpn = apiService.registerIpn(registerIpnRequest)
+                Resource.success(registerIpn)
+            }catch (e: Exception){
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+    }
 
 
 

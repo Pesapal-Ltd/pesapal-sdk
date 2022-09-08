@@ -8,6 +8,7 @@ import com.pesapal.paymentgateway.payment.App;
 public class PrefManager {
 
     private static final String TOKEN= "token";
+    private static final String IPN_ID= "ipn_id";
 
     public static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.getInstance()
@@ -47,6 +48,15 @@ public class PrefManager {
 
     public static String getToken(){
         return getString(TOKEN,null);
+    }
+
+
+    public static void setIpnId(String ipnId){
+        putString(IPN_ID,ipnId);
+    }
+
+    public static String getIpnId(){
+        return getString(IPN_ID,null);
     }
 
 

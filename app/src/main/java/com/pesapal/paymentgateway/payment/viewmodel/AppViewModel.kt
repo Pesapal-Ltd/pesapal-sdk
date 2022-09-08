@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnRequest
+import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnResponse
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.auth.AuthResponseModel
 import com.pesapal.paymentgateway.payment.repo.PaymentRepository
@@ -18,6 +20,11 @@ class AppViewModel : ViewModel() {
     private var _authPaymentResponse = MutableLiveData<Resource<AuthResponseModel>>()
     val authPaymentResponse: LiveData<Resource<AuthResponseModel>>
         get() = _authPaymentResponse
+
+    private var _registerIpnResponse = MutableLiveData<Resource<RegisterIpnResponse>>()
+    val registerIpnResponse: LiveData<Resource<RegisterIpnResponse>>
+        get() = _registerIpnResponse
+
 
     private var _loadFragment = MutableLiveData<Resource<String>>()
     val loadFragment: LiveData<Resource<String>>
@@ -39,6 +46,22 @@ class AppViewModel : ViewModel() {
         }
     }
 
+    fun registerIpn(registerIpnRequest: RegisterIpnRequest){
+        _registerIpnResponse.postValue(Resource.loading("Registering Ipn ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.registerApi(registerIpnRequest)
+            when(result.status){
+                Status.ERROR -> {
+                    _registerIpnResponse.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _registerIpnResponse.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+
+        }
+    }
 
 
     fun loadFragment(frag: String){

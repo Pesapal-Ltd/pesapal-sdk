@@ -12,7 +12,9 @@ import com.pesapal.paymentgateway.payment.fragment.card.CardFragmentNewAddress
 import com.pesapal.paymentgateway.payment.fragment.card.CardFragmentNewBilling
 import com.pesapal.paymentgateway.payment.fragment.mpesa.MainPesapalFragment
 import com.pesapal.paymentgateway.payment.fragment.mpesa.MpesaPesapalFragment
+import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnRequest
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
+import com.pesapal.paymentgateway.payment.utils.PrefManager
 import com.pesapal.paymentgateway.payment.utils.Status
 import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
 
@@ -21,6 +23,8 @@ class PesapalPayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPesapalPayBinding
     private var consumer_key: String = ""
     private var consumer_secret: String = ""
+    private var ipn_url: String = "https://supertapdev.pesapalhosting.com/"
+    private var ipn_notification_type: String = "GET"
     private val viewModel: AppViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +70,11 @@ class PesapalPayActivity : AppCompatActivity() {
         viewModel.loadFragment("auth")
     }
 
+    private fun registerIpn(){
+        val registerIpnRequest = RegisterIpnRequest(ipn_url,ipn_notification_type)
+        viewModel.registerIpn(registerIpnRequest)
+    }
+
     private fun unableToAuth(){
 
     }
@@ -74,6 +83,25 @@ class PesapalPayActivity : AppCompatActivity() {
         viewModel.authPaymentResponse.observe(this){
             when (it.status) {
                 Status.SUCCESS -> {
+                    val token = it.data?.token
+                    PrefManager.setToken(token)
+                    registerIpn()
+                    Log.e(" SUCCESS ", " ====> SUCCESS")
+                }
+                Status.ERROR -> {
+                    Log.e(" ERROR ", " ====> ERROR")
+                }
+                else -> {
+                    Log.e(" else ", " ====> auth")
+                }
+            }
+        }
+
+        viewModel.registerIpnResponse.observe(this){
+            when(it.status){
+                Status.SUCCESS -> {
+                    val ipnId = it.data?.ipn_id
+                    PrefManager.setIpnId(ipnId)
                     loadFragment(MainPesapalFragment())
                     Log.e(" SUCCESS ", " ====> SUCCESS")
                 }
@@ -81,11 +109,10 @@ class PesapalPayActivity : AppCompatActivity() {
                     Log.e(" ERROR ", " ====> ERROR")
                 }
                 else -> {
-                    Log.e(" else ", " ====> else")
+                    Log.e(" else "," ====> register")
                 }
             }
         }
-
 
         viewModel.loadFragment.observe(this){
             when(it.message){

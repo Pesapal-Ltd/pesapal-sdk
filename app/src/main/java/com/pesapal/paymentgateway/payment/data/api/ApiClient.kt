@@ -2,6 +2,7 @@ package com.pesapal.paymentgateway.payment.data.api
 
 import com.pesapal.paymentgateway.payment.Configs
 import com.pesapal.paymentgateway.payment.data.services.ApiServices
+import com.pesapal.paymentgateway.payment.utils.PrefManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,8 +18,7 @@ object ApiClient {
                     .client(getOkHttpClient())
                     .build() }
 
-        val apiServices: ApiServices
-            get() = retrofit.create(ApiServices::class.java)
+        val apiServices: ApiServices get() = retrofit.create(ApiServices::class.java)
 
         private fun getOkHttpClient(): OkHttpClient {
             val interceptor = HttpLoggingInterceptor()
@@ -26,9 +26,21 @@ object ApiClient {
             val builder = OkHttpClient.Builder()
             builder.addInterceptor(interceptor)
                 .addInterceptor { chain ->
+                    if(PrefManager.getToken() != null) {
+                        val token =  "Bearer "+PrefManager.getToken()
+                        val newRequest = chain.request().newBuilder()
+                            .addHeader(
+                                "Authorization",
+                                token
+                            )
+                            .build()
+                        chain.proceed(newRequest)
+                    }else{
                         val newRequest = chain.request().newBuilder()
                             .build()
                         chain.proceed(newRequest)
+                    }
+
                 }
             return builder.build()
         }
