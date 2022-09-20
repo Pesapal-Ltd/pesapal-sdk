@@ -24,7 +24,6 @@ public class PrefManager {
         getPreferences().edit().putInt(preferenceKey, preferenceValue).apply();
     }
 
-
     public static boolean getBoolean(String preferenceKey, boolean preferenceDefaultValue) {
         return getPreferences().getBoolean(preferenceKey, preferenceDefaultValue);
     }

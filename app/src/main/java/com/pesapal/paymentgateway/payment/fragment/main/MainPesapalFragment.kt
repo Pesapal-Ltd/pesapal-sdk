@@ -1,4 +1,4 @@
-package com.pesapal.paymentgateway.payment.fragment.mpesa
+package com.pesapal.paymentgateway.payment.fragment.main
 
 import android.os.Bundle
 import android.view.LayoutInflater

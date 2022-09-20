@@ -8,6 +8,8 @@ import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnReques
 import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnResponse
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.auth.AuthResponseModel
+import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
+import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyResponse
 import com.pesapal.paymentgateway.payment.repo.PaymentRepository
 import com.pesapal.paymentgateway.payment.utils.Resource
 import com.pesapal.paymentgateway.payment.utils.Status
@@ -24,6 +26,10 @@ class AppViewModel : ViewModel() {
     private var _registerIpnResponse = MutableLiveData<Resource<RegisterIpnResponse>>()
     val registerIpnResponse: LiveData<Resource<RegisterIpnResponse>>
         get() = _registerIpnResponse
+
+    private var _mobileMoneyResponse = MutableLiveData<Resource<MobileMoneyResponse>>()
+    val mobileMoneyResponse: LiveData<Resource<MobileMoneyResponse>>
+        get() = _mobileMoneyResponse
 
 
     private var _loadFragment = MutableLiveData<Resource<String>>()
@@ -62,6 +68,26 @@ class AppViewModel : ViewModel() {
 
         }
     }
+
+    fun sendMobileMoneyCheckOut(mobileMoneyRequest: MobileMoneyRequest){
+        _mobileMoneyResponse.postValue(Resource.loading("Processing request ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.mobileMoneyApi(mobileMoneyRequest)
+            when(result.status){
+                Status.ERROR -> {
+                    _mobileMoneyResponse.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _mobileMoneyResponse.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+
+        }
+    }
+
+
+
 
 
     fun loadFragment(frag: String){

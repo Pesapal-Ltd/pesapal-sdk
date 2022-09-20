@@ -32,5 +32,7 @@
 
     <string name="country_currency_dialog_title">Set your currency</string>
     <string name="new_card_invalidEmail">Invalid Email</string>
+    <string name="connecting">Connecting...</string>
+    <string name="waiting">Waiting for customer to complete transaction</string>
 
 </resources>

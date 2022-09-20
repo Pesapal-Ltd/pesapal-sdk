@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/pesapalMainFragment"
-        android:name="com.pesapal.paymentgateway.payment.fragment.mpesa.MainPesapalFragment"
+        android:name="com.pesapal.paymentgateway.payment.fragment.main.MainPesapalFragment"
         android:label="Payment Methods"
         tools:layout="@layout/fragment_pesapal_main">
         <action

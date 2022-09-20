@@ -13,7 +13,6 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -65,10 +64,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
-
     /* view model */
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
-
     implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
+
 
 }

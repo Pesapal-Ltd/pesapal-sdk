@@ -5,6 +5,8 @@ import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnReques
 import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnResponse
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.auth.AuthResponseModel
+import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
+import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyResponse
 import com.pesapal.paymentgateway.payment.utils.Resource
 import com.pesapal.paymentgateway.payment.utils.RetrofitErrorUtil
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +39,31 @@ class PaymentRepository {
                 Resource.error(RetrofitErrorUtil.serverException(e))
             }
         }
+    }
+
+    suspend fun mobileMoneyApi(mobileMoneyRequest: MobileMoneyRequest):Resource<MobileMoneyResponse>{
+        return withContext(Dispatchers.IO){
+            try{
+                val registerIpn = apiService.mobileMoneyCheckout(mobileMoneyRequest)
+                Resource.success(registerIpn)
+            }catch (e: Exception){
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+
+    }
+
+
+    suspend fun getTransactionStatus(orderTrackingId: String):Resource<MobileMoneyResponse>{
+        return withContext(Dispatchers.IO){
+            try{
+                val registerIpn = apiService.getTransactionStatus(orderTrackingId)
+                Resource.success(registerIpn)
+            }catch (e: Exception){
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+
     }
 
 

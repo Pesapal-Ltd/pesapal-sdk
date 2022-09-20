@@ -13,4 +13,13 @@
     <color name="darker_faded_bg">#FAFBFB</color>
     <color name="colorGreyText">#666666</color>
 
+
+    <color name="txnStatusColor">#f6fafe</color>
+    <color name="colorPrimary">#1c67a1</color>
+    <color name="textDefault">#2a2a2a</color>
+    <color name="black_thirty_eight">#61000000</color>
+    <color name="black_fifty_four">#8A000000</color>
+    <color name="black_eighty_seven">#DE000000</color>
+    <color name="background">#dddddd</color>
+
 </resources>
