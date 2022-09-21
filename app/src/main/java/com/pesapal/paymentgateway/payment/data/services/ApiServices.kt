@@ -6,6 +6,7 @@ import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.auth.AuthResponseModel
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyResponse
+import com.pesapal.paymentgateway.payment.model.mobile_money.TransactionStatusResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -24,7 +25,7 @@ interface ApiServices {
     suspend fun mobileMoneyCheckout(@Body mobileMoneyRequest: MobileMoneyRequest) : MobileMoneyResponse
 
     @GET("api/Transactions/GetTransactionStatus")
-    suspend fun getTransactionStatus(@Query("orderTrackingId") orderTrackingId: String) : MobileMoneyResponse
+    suspend fun getTransactionStatus(@Query("orderTrackingId") orderTrackingId: String) : TransactionStatusResponse
 
 
 }

@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import com.pesapal.paymentgateway.databinding.FragmentPesapalMpesaBinding
 import com.pesapal.paymentgateway.payment.model.mobile_money.BillingAddress
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
+import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyResponse
 import com.pesapal.paymentgateway.payment.utils.PrefManager
 import com.pesapal.paymentgateway.payment.utils.Status
 import com.pesapal.paymentgateway.payment.utils.hideKeyboard
@@ -23,10 +24,7 @@ class MpesaPesapalFragment : Fragment() {
     private lateinit var binding: FragmentPesapalMpesaBinding
     private val viewModel: AppViewModel by activityViewModels()
     private lateinit var pDialog: ProgressDialog
-
-    companion object{
-
-    }
+    private var mobileMoneyResponse: MobileMoneyResponse? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +49,7 @@ class MpesaPesapalFragment : Fragment() {
     private fun handleClicks(){
         binding.btnSend.setOnClickListener {
             val request = prepareMobileMoney()
-            viewModel.sendMobileMoneyCheckOut(request )
+            viewModel.sendMobileMoneyCheckOut(request, "Sending stk push ...")
         }
     }
 
@@ -69,23 +67,24 @@ class MpesaPesapalFragment : Fragment() {
 //            postalCode = "",
 //            zipCode = "")
 
-//        val random = Random().nextInt(61) + 20
+        val random = Random().nextInt(61) + 20
         return MobileMoneyRequest(
-            id = "121",
+            id = "1212233233332",
             sourceChannel = 2,
             msisdn = "0112826460",
             paymentMethodId = 1,
             accountNumber = "1000101",
             currency = "KES",
             allowedCurrencies = "",
-            amount = 2,
+            amount = 1,
             description = "Express Order",
             callbackUrl = "http://localhost:56522",
             cancellationUrl = "",
             notificationId = PrefManager.getIpnId(),
             language = "",
             termsAndConditionsId = "",
-            billingAddress = billingAddress
+            billingAddress = billingAddress,
+            trackingId = ""
         );
     }
 
@@ -100,6 +99,7 @@ class MpesaPesapalFragment : Fragment() {
                 Status.SUCCESS -> {
                     showMessage("Stk sent successfully")
                     pDialog.dismiss()
+                    mobileMoneyResponse = it.data
                     showPendingMpesaPayment()
                 }
                 Status.ERROR -> {
@@ -113,7 +113,13 @@ class MpesaPesapalFragment : Fragment() {
     }
 
     private fun showPendingMpesaPayment(){
-        viewModel.showPendingMpesaPayment(prepareMobileMoney())
+        val mobileMoneyRequest = prepareMobileMoney()
+        mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
+
+        if(mobileMoneyResponse != null) {
+            mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
+        }
+        viewModel.showPendingMpesaPayment(mobileMoneyRequest )
     }
 
     private fun showMessage(message: String){

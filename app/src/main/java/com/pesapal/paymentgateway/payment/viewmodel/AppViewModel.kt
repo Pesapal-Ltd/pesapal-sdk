@@ -10,6 +10,7 @@ import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.auth.AuthResponseModel
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyResponse
+import com.pesapal.paymentgateway.payment.model.mobile_money.TransactionStatusResponse
 import com.pesapal.paymentgateway.payment.repo.PaymentRepository
 import com.pesapal.paymentgateway.payment.utils.Resource
 import com.pesapal.paymentgateway.payment.utils.Status
@@ -30,6 +31,10 @@ class AppViewModel : ViewModel() {
     private var _mobileMoneyResponse = MutableLiveData<Resource<MobileMoneyResponse>>()
     val mobileMoneyResponse: LiveData<Resource<MobileMoneyResponse>>
         get() = _mobileMoneyResponse
+
+    private var _transactionStatus = MutableLiveData<Resource<TransactionStatusResponse>>()
+    val transactionStatus: LiveData<Resource<TransactionStatusResponse>>
+        get() = _transactionStatus
 
 
     private var _loadFragment = MutableLiveData<Resource<String>>()
@@ -73,8 +78,8 @@ class AppViewModel : ViewModel() {
         }
     }
 
-    fun sendMobileMoneyCheckOut(mobileMoneyRequest: MobileMoneyRequest){
-        _mobileMoneyResponse.postValue(Resource.loading("Sending Stk push ... "))
+    fun sendMobileMoneyCheckOut(mobileMoneyRequest: MobileMoneyRequest, action: String){
+        _mobileMoneyResponse.postValue(Resource.loading(action))
         viewModelScope.launch {
             val result = paymentRepository.mobileMoneyApi(mobileMoneyRequest)
             when(result.status){
@@ -83,6 +88,23 @@ class AppViewModel : ViewModel() {
                 }
                 Status.SUCCESS -> {
                     _mobileMoneyResponse.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+
+        }
+    }
+
+    fun mobileMoneyTransactionStatus(trackingId: String){
+        _transactionStatus.postValue(Resource.loading("Confirming payment ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.getTransactionStatus(trackingId)
+            when(result.status){
+                Status.ERROR -> {
+                    _transactionStatus.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _transactionStatus.postValue(Resource.success(result.data))
                 }
                 else -> {}
             }

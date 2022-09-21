@@ -32,4 +32,8 @@ data class MobileMoneyRequest(@SerializedName("account_number")
                               @SerializedName("msisdn")
                               val msisdn: String = "",
                               @SerializedName("allowed_currencies")
-                              val allowedCurrencies: String = ""): Serializable
+                              val allowedCurrencies: String = "",
+                              @SerializedName("tracking_id")
+                              var trackingId: String = ""
+
+): Serializable

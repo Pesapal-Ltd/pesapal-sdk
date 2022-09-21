@@ -62,11 +62,11 @@ class MpesaPendingFragment : Fragment() {
     }
 
     private fun handleConfirmation(){
-
+        viewModel.mobileMoneyTransactionStatus(mobileMoneyRequest.trackingId)
     }
 
     private fun handleResend(){
-        viewModel.sendMobileMoneyCheckOut(mobileMoneyRequest)
+        viewModel.sendMobileMoneyCheckOut(mobileMoneyRequest, "Resending payment prompt ....")
     }
 
     private fun handleViewModel(){
@@ -93,6 +93,28 @@ class MpesaPendingFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.transactionStatus.observe(requireActivity()){
+                when (it.status) {
+                    Status.LOADING -> {
+                        pDialog = ProgressDialog(requireContext())
+                        pDialog.setMessage(it.message)
+                        pDialog.show()
+                    }
+                    Status.SUCCESS -> {
+                        showMessage("Payment confirmed successfully ")
+                        pDialog.dismiss()
+                        proceedToSuccessScreen()
+                    }
+                    Status.ERROR -> {
+                        pDialog.dismiss()
+                    }
+                    else -> {
+                        Log.e(" else ", " ====> auth")
+                    }
+                }
+        }
+
     }
 
     companion object{
@@ -107,6 +129,9 @@ class MpesaPendingFragment : Fragment() {
         }
     }
 
+    private fun proceedToSuccessScreen(){
+
+    }
 
     private fun showMessage(message: String){
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
