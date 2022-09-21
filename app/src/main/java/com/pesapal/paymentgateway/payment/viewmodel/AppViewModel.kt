@@ -70,7 +70,7 @@ class AppViewModel : ViewModel() {
     }
 
     fun sendMobileMoneyCheckOut(mobileMoneyRequest: MobileMoneyRequest){
-        _mobileMoneyResponse.postValue(Resource.loading("Processing request ... "))
+        _mobileMoneyResponse.postValue(Resource.loading("Sending Stk push ... "))
         viewModelScope.launch {
             val result = paymentRepository.mobileMoneyApi(mobileMoneyRequest)
             when(result.status){

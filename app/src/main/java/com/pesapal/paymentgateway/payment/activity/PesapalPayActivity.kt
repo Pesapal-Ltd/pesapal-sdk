@@ -11,7 +11,8 @@ import com.pesapal.paymentgateway.payment.fragment.auth.AuthFragment
 import com.pesapal.paymentgateway.payment.fragment.card.CardFragmentNewAddress
 import com.pesapal.paymentgateway.payment.fragment.card.CardFragmentNewBilling
 import com.pesapal.paymentgateway.payment.fragment.main.MainPesapalFragment
-import com.pesapal.paymentgateway.payment.fragment.mpesa.MpesaPesapalFragment
+import com.pesapal.paymentgateway.payment.fragment.mpesa.pending.MpesaPendingFragment
+import com.pesapal.paymentgateway.payment.fragment.mpesa.stk.MpesaPesapalFragment
 import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnRequest
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.utils.PrefManager
@@ -24,8 +25,8 @@ class PesapalPayActivity : AppCompatActivity() {
     private var consumer_key: String = ""
     private var consumer_secret: String = ""
     private var ipn_url: String = "https://supertapdev.pesapalhosting.com/"
-
     private var ipn_notification_type: String = "GET"
+
     private val viewModel: AppViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,6 +126,9 @@ class PesapalPayActivity : AppCompatActivity() {
                 }
                 "mpesa" -> {
                     loadFragment(MpesaPesapalFragment())
+                }
+                "pending_mpesa" -> {
+                    loadFragment(MpesaPendingFragment())
                 }
                 "card" -> {
                     loadFragment(CardFragmentNewAddress())

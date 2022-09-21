@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/pesapalMpesaFragment"
-        android:name="com.pesapal.paymentgateway.payment.fragment.mpesa.MpesaPesapalFragment"
+        android:name="com.pesapal.paymentgateway.payment.fragment.mpesa.stk.MpesaPesapalFragment"
         android:label="Mpesa Payment"
         tools:layout="@layout/fragment_pesapal_mpesa"/>
 
