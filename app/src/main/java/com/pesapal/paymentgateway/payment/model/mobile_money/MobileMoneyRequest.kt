@@ -1,6 +1,7 @@
 package com.pesapal.paymentgateway.payment.model.mobile_money
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class MobileMoneyRequest(@SerializedName("account_number")
                               val accountNumber: String = "",
@@ -31,4 +32,4 @@ data class MobileMoneyRequest(@SerializedName("account_number")
                               @SerializedName("msisdn")
                               val msisdn: String = "",
                               @SerializedName("allowed_currencies")
-                              val allowedCurrencies: String = "")
+                              val allowedCurrencies: String = ""): Serializable

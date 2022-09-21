@@ -15,6 +15,7 @@ import com.pesapal.paymentgateway.payment.fragment.mpesa.pending.MpesaPendingFra
 import com.pesapal.paymentgateway.payment.fragment.mpesa.stk.MpesaPesapalFragment
 import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnRequest
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
+import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paymentgateway.payment.utils.PrefManager
 import com.pesapal.paymentgateway.payment.utils.Status
 import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
@@ -24,6 +25,7 @@ class PesapalPayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPesapalPayBinding
     private var consumer_key: String = ""
     private var consumer_secret: String = ""
+    private var mobileMoneyRequest: MobileMoneyRequest? = null
     private var ipn_url: String = "https://supertapdev.pesapalhosting.com/"
     private var ipn_notification_type: String = "GET"
 
@@ -116,6 +118,16 @@ class PesapalPayActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.loadPendingMpesa.observe(this){
+            when(it.status){
+                Status.SUCCESS -> {
+                    mobileMoneyRequest  = it.data
+                    viewModel.loadFragment("pending_mpesa")
+                }
+                else ->{}
+            }
+        }
+
         viewModel.loadFragment.observe(this){
             when(it.message){
                 "auth" -> {
@@ -128,7 +140,11 @@ class PesapalPayActivity : AppCompatActivity() {
                     loadFragment(MpesaPesapalFragment())
                 }
                 "pending_mpesa" -> {
-                    loadFragment(MpesaPendingFragment())
+                    if(mobileMoneyRequest != null) {
+                        loadFragment(MpesaPendingFragment.newInstance(mobileMoneyRequest!!))
+                    }else{
+                        loadFragment(MpesaPendingFragment())
+                    }
                 }
                 "card" -> {
                     loadFragment(CardFragmentNewAddress())

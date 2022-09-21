@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.pesapal.paymentgateway.databinding.FragmentPesapalMpesaBinding
@@ -22,6 +23,10 @@ class MpesaPesapalFragment : Fragment() {
     private lateinit var binding: FragmentPesapalMpesaBinding
     private val viewModel: AppViewModel by activityViewModels()
     private lateinit var pDialog: ProgressDialog
+
+    companion object{
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,9 +69,9 @@ class MpesaPesapalFragment : Fragment() {
 //            postalCode = "",
 //            zipCode = "")
 
-        val random = Random().nextInt(61) + 20
+//        val random = Random().nextInt(61) + 20
         return MobileMoneyRequest(
-            id = random.toString(),
+            id = "121",
             sourceChannel = 2,
             msisdn = "0112826460",
             paymentMethodId = 1,
@@ -108,11 +113,11 @@ class MpesaPesapalFragment : Fragment() {
     }
 
     private fun showPendingMpesaPayment(){
-        viewModel.loadFragment("pending_mpesa")
+        viewModel.showPendingMpesaPayment(prepareMobileMoney())
     }
 
     private fun showMessage(message: String){
-
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
 

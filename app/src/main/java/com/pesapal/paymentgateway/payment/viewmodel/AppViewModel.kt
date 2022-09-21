@@ -36,6 +36,10 @@ class AppViewModel : ViewModel() {
     val loadFragment: LiveData<Resource<String>>
     get() = _loadFragment
 
+    private var _loadPendingMpesa = MutableLiveData<Resource<MobileMoneyRequest>>()
+    val loadPendingMpesa: LiveData<Resource<MobileMoneyRequest>>
+    get() = _loadPendingMpesa
+
     fun authPayment(authRequestModel: AuthRequestModel) {
         _authPaymentResponse.postValue(Resource.loading("Initiating payment process ... "))
         viewModelScope.launch {
@@ -84,6 +88,11 @@ class AppViewModel : ViewModel() {
             }
 
         }
+    }
+
+
+    fun showPendingMpesaPayment(mobileMoneyRequest: MobileMoneyRequest){
+        _loadPendingMpesa.postValue(Resource.success(mobileMoneyRequest))
     }
 
 
