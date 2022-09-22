@@ -26,7 +26,12 @@ class MpesaPesapalFragment : Fragment() {
     private lateinit var binding: FragmentPesapalMpesaBinding
     private val viewModel: AppViewModel by activityViewModels()
     private lateinit var pDialog: ProgressDialog
+    private lateinit var order_id: String
+    private lateinit var currency: String
+    private lateinit var accountNumber: String
+    private lateinit var callbackUrl: String
     private var mobileMoneyResponse: MobileMoneyResponse? = null
+    private var amount: Int = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,16 +89,16 @@ class MpesaPesapalFragment : Fragment() {
 //            zipCode = "")
 
         return MobileMoneyRequest(
-            id = "12qwe2",
+            id = order_id,
             sourceChannel = 2,
             msisdn = phoneNumber,
             paymentMethodId = 1,
-            accountNumber = "1000101",
-            currency = "KES",
+            accountNumber = accountNumber,
+            currency = currency,
             allowedCurrencies = "",
-            amount = 1,
+            amount = amount,
             description = "Express Order",
-            callbackUrl = "http://localhost:56522",
+            callbackUrl = callbackUrl,
             cancellationUrl = "",
             notificationId = PrefManager.getIpnId(),
             language = "",
@@ -112,10 +117,10 @@ class MpesaPesapalFragment : Fragment() {
                     pDialog.show()
                 }
                 Status.SUCCESS -> {
-                        showMessage("Payment prompt sent successfully")
-                        pDialog.dismiss()
-                        mobileMoneyResponse = it.data
-                        showPendingMpesaPayment()
+                    showMessage("Payment prompt sent successfully")
+                    pDialog.dismiss()
+                    mobileMoneyResponse = it.data
+                    showPendingMpesaPayment()
                 }
                 Status.ERROR -> {
                     showMessage(it.message!!)
@@ -140,6 +145,19 @@ class MpesaPesapalFragment : Fragment() {
 
     private fun showMessage(message: String){
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object{
+
+        fun newInstance(amount: Int, order_id: String, currency: String, accountNumber: String, callbackUrl: String): MpesaPesapalFragment{
+            val fragment = MpesaPesapalFragment()
+            fragment.amount = amount
+            fragment.order_id = order_id
+            fragment.currency = currency
+            fragment.accountNumber = accountNumber
+            fragment.callbackUrl = callbackUrl
+            return fragment
+        }
     }
 
 

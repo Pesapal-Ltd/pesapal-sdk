@@ -27,6 +27,11 @@ class PesapalPayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPesapalPayBinding
     private var consumer_key: String = ""
     private var consumer_secret: String = ""
+    private var amount: Int = 0
+    private var order_id: String? = null
+    private var currency: String? = null
+    private var accountNumber: String? = null
+    private var callbackUrl: String? = null
     private var mobileMoneyRequest: MobileMoneyRequest? = null
     private var transactionStatusResponse: TransactionStatusResponse? = null
     private var ipn_url: String = "https://supertapdev.pesapalhosting.com/"
@@ -62,6 +67,12 @@ class PesapalPayActivity : AppCompatActivity() {
             if(intent.getStringExtra("consumer_secret") != null) {
                 consumer_secret = intent.getStringExtra("consumer_secret")!!
             }
+
+            amount = intent.getIntExtra("amount",1)
+            order_id = intent.getStringExtra("order_id")
+            currency = intent.getStringExtra("currency")
+            accountNumber = intent.getStringExtra("accountNumber")
+            callbackUrl = intent.getStringExtra("callbackUrl")
         }
 
         if(consumer_key != "" && consumer_secret != ""){
@@ -150,7 +161,7 @@ class PesapalPayActivity : AppCompatActivity() {
                     loadFragment(MainPesapalFragment())
                 }
                 "mpesa" -> {
-                    loadFragment(MpesaPesapalFragment())
+                    loadFragment(MpesaPesapalFragment.newInstance(amount,order_id!!,currency!!,accountNumber!!,callbackUrl!!))
                 }
                 "success_mpesa" -> {
                     if(transactionStatusResponse != null) {
