@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnRequest
-import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnResponse
+import com.pesapal.paymentgateway.payment.model.registerIpn_url.RegisterIpnRequest
+import com.pesapal.paymentgateway.payment.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.auth.AuthResponseModel
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest

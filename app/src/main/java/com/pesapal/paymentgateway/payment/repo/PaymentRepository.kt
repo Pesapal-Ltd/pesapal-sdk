@@ -1,8 +1,8 @@
 package com.pesapal.paymentgateway.payment.repo
 
 import com.pesapal.paymentgateway.payment.data.api.ApiClient
-import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnRequest
-import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnResponse
+import com.pesapal.paymentgateway.payment.model.registerIpn_url.RegisterIpnRequest
+import com.pesapal.paymentgateway.payment.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.auth.AuthResponseModel
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
@@ -23,7 +23,12 @@ class PaymentRepository {
         return  withContext(Dispatchers.IO) {
             try {
                 val sendLogs = apiService.authPayment(authRequestModel)
-                Resource.success(sendLogs)
+                if(sendLogs.status != null && sendLogs.status == "200") {
+                    Resource.success(sendLogs)
+                }else{
+                    val error = sendLogs.error.message
+                    Resource.error(error!!)
+                }
             } catch (e: Exception) {
                 Resource.error(RetrofitErrorUtil.serverException(e))
             }
@@ -35,7 +40,12 @@ class PaymentRepository {
         return withContext(Dispatchers.IO){
             try{
                 val registerIpn = apiService.registerIpn(registerIpnRequest)
-                Resource.success(registerIpn)
+                if(registerIpn.status != null && registerIpn.status == "200") {
+                    Resource.success(registerIpn)
+                }else{
+                    val error = registerIpn.error.message
+                    Resource.error(error!!)
+                }
             }catch (e: Exception){
                 Resource.error(RetrofitErrorUtil.serverException(e))
             }
@@ -45,8 +55,13 @@ class PaymentRepository {
     suspend fun mobileMoneyApi(mobileMoneyRequest: MobileMoneyRequest):Resource<MobileMoneyResponse>{
         return withContext(Dispatchers.IO){
             try{
-                val registerIpn = apiService.mobileMoneyCheckout(mobileMoneyRequest)
-                Resource.success(registerIpn)
+                val mobileMoneyCheckout = apiService.mobileMoneyCheckout(mobileMoneyRequest)
+                if(mobileMoneyCheckout.status != null && mobileMoneyCheckout.status == "200") {
+                    Resource.success(mobileMoneyCheckout)
+                }else{
+                    val error = mobileMoneyCheckout.error?.message
+                    Resource.error(error!!)
+                }
             }catch (e: Exception){
                 Resource.error(RetrofitErrorUtil.serverException(e))
             }
@@ -58,8 +73,13 @@ class PaymentRepository {
     suspend fun getTransactionStatus(orderTrackingId: String):Resource<TransactionStatusResponse>{
         return withContext(Dispatchers.IO){
             try{
-                val registerIpn = apiService.getTransactionStatus(orderTrackingId)
-                Resource.success(registerIpn)
+                val transactionStatus = apiService.getTransactionStatus(orderTrackingId)
+                if(transactionStatus.status != null && transactionStatus.status == "200") {
+                    Resource.success(transactionStatus)
+                }else{
+                    val error = transactionStatus.error.message
+                    Resource.error(error)
+                }
             }catch (e: Exception){
                 Resource.error(RetrofitErrorUtil.serverException(e))
             }

@@ -13,8 +13,8 @@ data class MobileMoneyResponse(@SerializedName("payment_message")
                                @SerializedName("business_number")
                                val businessNumber: String = "",
                                @SerializedName("error")
-                               val error: String = "",
+                               val error: Error?,
                                @SerializedName("redirect_url")
                                val redirectUrl: String = "",
                                @SerializedName("status")
-                               val status: String = "")
+                               val status: String?)

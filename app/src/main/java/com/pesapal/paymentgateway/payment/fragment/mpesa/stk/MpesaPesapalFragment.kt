@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,6 +16,7 @@ import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyResponse
 import com.pesapal.paymentgateway.payment.utils.PrefManager
 import com.pesapal.paymentgateway.payment.utils.Status
+import com.pesapal.paymentgateway.payment.utils.TextDrawable
 import com.pesapal.paymentgateway.payment.utils.hideKeyboard
 import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
 import java.util.*
@@ -37,26 +39,40 @@ class MpesaPesapalFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initData()
         handleViewModel()
     }
 
     private fun initData(){
+        prefillCountryCode()
         handleClicks()
+    }
+
+    private fun prefillCountryCode(){
+        binding.phone.tag = "+254"
+        binding.phone.setCompoundDrawables(
+            TextDrawable(
+                binding.phone,
+                "\u2706  " + 254
+            ), null, null, null
+        )
     }
 
     private fun handleClicks(){
         binding.btnSend.setOnClickListener {
-            val request = prepareMobileMoney()
-            viewModel.sendMobileMoneyCheckOut(request, "Sending stk push ...")
+            if(binding.phone.text.toString().isNotEmpty()) {
+                val request = prepareMobileMoney()
+                viewModel.sendMobileMoneyCheckOut(request, "Sending stk push ...")
+            }else{
+                showMessage("All inputs required ...")
+            }
         }
     }
 
     private fun prepareMobileMoney(): MobileMoneyRequest {
         hideKeyboard()
         val billingAddress = BillingAddress()
-
+        val phoneNumber = "254"+binding.phone.text.toString()
 //       val billingAddress = BillingAddress(phoneNumber = "0716210311", emailAddress = "richiekaby@gmail.com", countryCode = "KE", firstName = "Richard",
 //            middleName = "Kamere",
 //            lastName = "K",
@@ -67,11 +83,10 @@ class MpesaPesapalFragment : Fragment() {
 //            postalCode = "",
 //            zipCode = "")
 
-        val random = Random().nextInt(61) + 20
         return MobileMoneyRequest(
             id = "1212233233332",
             sourceChannel = 2,
-            msisdn = "0112826460",
+            msisdn = phoneNumber,
             paymentMethodId = 1,
             accountNumber = "1000101",
             currency = "KES",
@@ -97,12 +112,13 @@ class MpesaPesapalFragment : Fragment() {
                     pDialog.show()
                 }
                 Status.SUCCESS -> {
-                    showMessage("Stk sent successfully")
-                    pDialog.dismiss()
-                    mobileMoneyResponse = it.data
-                    showPendingMpesaPayment()
+                        showMessage("Stk sent successfully")
+                        pDialog.dismiss()
+                        mobileMoneyResponse = it.data
+                        showPendingMpesaPayment()
                 }
                 Status.ERROR -> {
+                    showMessage(it.message!!)
                     pDialog.dismiss()
                 }
                 else -> {
@@ -125,8 +141,6 @@ class MpesaPesapalFragment : Fragment() {
     private fun showMessage(message: String){
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
-
-
 
 
 }

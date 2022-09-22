@@ -1,4 +1,4 @@
-package com.pesapal.paymentgateway.payment.model.RegisterIpnUrl
+package com.pesapal.paymentgateway.payment.model.registerIpn_url
 
 data class RegisterIpnRequest (
     var url: String,

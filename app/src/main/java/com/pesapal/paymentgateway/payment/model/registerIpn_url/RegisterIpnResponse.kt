@@ -1,4 +1,4 @@
-package com.pesapal.paymentgateway.payment.model.RegisterIpnUrl
+package com.pesapal.paymentgateway.payment.model.registerIpn_url
 
 data class RegisterIpnResponse(
     val id: String,
@@ -9,6 +9,6 @@ data class RegisterIpnResponse(
     val ipn_notification_type_description: String,
     val ipn_status: String,
     val ipn_status_decription: String,
-    val error: String?,
+    val error: Error,
     val status: String?,
 )

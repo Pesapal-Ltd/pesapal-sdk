@@ -1,7 +1,7 @@
 package com.pesapal.paymentgateway.payment.data.services
 
-import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnRequest
-import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnResponse
+import com.pesapal.paymentgateway.payment.model.registerIpn_url.RegisterIpnRequest
+import com.pesapal.paymentgateway.payment.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.auth.AuthResponseModel
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest

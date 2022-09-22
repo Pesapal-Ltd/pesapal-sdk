@@ -13,7 +13,7 @@ import com.pesapal.paymentgateway.payment.fragment.card.CardFragmentNewBilling
 import com.pesapal.paymentgateway.payment.fragment.main.MainPesapalFragment
 import com.pesapal.paymentgateway.payment.fragment.mpesa.pending.MpesaPendingFragment
 import com.pesapal.paymentgateway.payment.fragment.mpesa.stk.MpesaPesapalFragment
-import com.pesapal.paymentgateway.payment.model.RegisterIpnUrl.RegisterIpnRequest
+import com.pesapal.paymentgateway.payment.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paymentgateway.payment.utils.PrefManager
