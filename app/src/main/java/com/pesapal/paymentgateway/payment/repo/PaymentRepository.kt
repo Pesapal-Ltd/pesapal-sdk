@@ -56,7 +56,7 @@ class PaymentRepository {
         return withContext(Dispatchers.IO){
             try{
                 val mobileMoneyCheckout = apiService.mobileMoneyCheckout(mobileMoneyRequest)
-                if(mobileMoneyCheckout.status != null && mobileMoneyCheckout.status == "200") {
+                if(mobileMoneyCheckout.status != null && (mobileMoneyCheckout.status == "200" || mobileMoneyCheckout.status =="500")) {
                     Resource.success(mobileMoneyCheckout)
                 }else{
                     val error = mobileMoneyCheckout.error?.message
@@ -74,8 +74,13 @@ class PaymentRepository {
         return withContext(Dispatchers.IO){
             try{
                 val transactionStatus = apiService.getTransactionStatus(orderTrackingId)
+                val completed = transactionStatus.paymentStatusDescription
                 if(transactionStatus.status != null && transactionStatus.status == "200") {
-                    Resource.success(transactionStatus)
+                    if(completed == "Completed") {
+                        Resource.success(transactionStatus)
+                    }else{
+                        Resource.error("Awaiting Payment")
+                    }
                 }else{
                     val error = transactionStatus.error.message
                     Resource.error(error)

@@ -6,9 +6,11 @@
         <entry key="app/src/main/res/drawable-v24/bg_bounder_round.xml" value="0.3165" />
         <entry key="app/src/main/res/drawable/bg_bounder_round.xml" value="0.3165" />
         <entry key="app/src/main/res/drawable/bg_round.xml" value="0.3105" />
+        <entry key="app/src/main/res/drawable/bg_roundV1.xml" value="0.3165" />
         <entry key="app/src/main/res/drawable/circular_spinner.xml" value="0.3165" />
         <entry key="app/src/main/res/drawable/circular_spinner_dark.xml" value="0.3165" />
         <entry key="app/src/main/res/drawable/ic_arrow_drop_down.xml" value="0.3105" />
+        <entry key="app/src/main/res/drawable/ic_baseline_check_circle_outline_24.xml" value="0.3165" />
         <entry key="app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.3165" />
         <entry key="app/src/main/res/drawable/ic_card_cvv_info.xml" value="0.3105" />
         <entry key="app/src/main/res/drawable/ic_card_type_unknown.xml" value="0.3105" />
@@ -18,6 +20,7 @@
         <entry key="app/src/main/res/layout/activity_pesapal_pay.xml" value="0.36302083333333335" />
         <entry key="app/src/main/res/layout/fragment_authorizing.xml" value="0.3619791666666667" />
         <entry key="app/src/main/res/layout/fragment_card_checkout.xml" value="0.3619791666666667" />
+        <entry key="app/src/main/res/layout/fragment_mpesa_payment_success.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/layout/fragment_mpesa_pending.xml" value="0.36302083333333335" />
         <entry key="app/src/main/res/layout/fragment_new_card.xml" value="0.36302083333333335" />
         <entry key="app/src/main/res/layout/fragment_new_card_address.xml" value="0.18697916666666667" />

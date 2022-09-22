@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.pesapal.paymentgateway.databinding.FragmentMpesaPendingBinding
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
+import com.pesapal.paymentgateway.payment.model.mobile_money.TransactionStatusResponse
 import com.pesapal.paymentgateway.payment.utils.Status
 import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
 
@@ -86,6 +87,8 @@ class MpesaPendingFragment : Fragment() {
                     }
                     Status.ERROR -> {
                         pDialog.dismiss()
+                        showMessage(it.message!!)
+
                     }
                     else -> {
                         Log.e(" else ", " ====> auth")
@@ -102,12 +105,17 @@ class MpesaPendingFragment : Fragment() {
                         pDialog.show()
                     }
                     Status.SUCCESS -> {
-                        showMessage("Payment confirmed successfully ")
-                        pDialog.dismiss()
-                        proceedToSuccessScreen()
+                        if(::pDialog.isInitialized) {
+                            showMessage("Payment confirmed successfully ")
+                            pDialog.dismiss()
+                            proceedToSuccessScreen(it.data!!)
+                        }
                     }
                     Status.ERROR -> {
-                        pDialog.dismiss()
+                        if(::pDialog.isInitialized) {
+                            pDialog.dismiss()
+                            showMessage(it.message!!)
+                        }
                     }
                     else -> {
                         Log.e(" else ", " ====> auth")
@@ -129,8 +137,8 @@ class MpesaPendingFragment : Fragment() {
         }
     }
 
-    private fun proceedToSuccessScreen(){
-
+    private fun proceedToSuccessScreen(transactionStatusResponse: TransactionStatusResponse){
+        viewModel.showSuccessMpesaPayment(transactionStatusResponse)
     }
 
     private fun showMessage(message: String){

@@ -84,7 +84,7 @@ class MpesaPesapalFragment : Fragment() {
 //            zipCode = "")
 
         return MobileMoneyRequest(
-            id = "1212233233332",
+            id = "12qwe2",
             sourceChannel = 2,
             msisdn = phoneNumber,
             paymentMethodId = 1,
@@ -112,7 +112,7 @@ class MpesaPesapalFragment : Fragment() {
                     pDialog.show()
                 }
                 Status.SUCCESS -> {
-                        showMessage("Stk sent successfully")
+                        showMessage("Payment prompt sent successfully")
                         pDialog.dismiss()
                         mobileMoneyResponse = it.data
                         showPendingMpesaPayment()

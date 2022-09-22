@@ -13,9 +13,11 @@ import com.pesapal.paymentgateway.payment.fragment.card.CardFragmentNewBilling
 import com.pesapal.paymentgateway.payment.fragment.main.MainPesapalFragment
 import com.pesapal.paymentgateway.payment.fragment.mpesa.pending.MpesaPendingFragment
 import com.pesapal.paymentgateway.payment.fragment.mpesa.stk.MpesaPesapalFragment
+import com.pesapal.paymentgateway.payment.fragment.success.MpesaSuccessFragment
 import com.pesapal.paymentgateway.payment.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
+import com.pesapal.paymentgateway.payment.model.mobile_money.TransactionStatusResponse
 import com.pesapal.paymentgateway.payment.utils.PrefManager
 import com.pesapal.paymentgateway.payment.utils.Status
 import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
@@ -26,6 +28,7 @@ class PesapalPayActivity : AppCompatActivity() {
     private var consumer_key: String = ""
     private var consumer_secret: String = ""
     private var mobileMoneyRequest: MobileMoneyRequest? = null
+    private var transactionStatusResponse: TransactionStatusResponse? = null
     private var ipn_url: String = "https://supertapdev.pesapalhosting.com/"
     private var ipn_notification_type: String = "GET"
 
@@ -128,6 +131,16 @@ class PesapalPayActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.loadSuccessMpesa.observe(this){
+            when(it.status){
+                Status.SUCCESS -> {
+                    transactionStatusResponse = it.data
+                    viewModel.loadFragment("success_mpesa")
+                }
+                else ->{}
+            }
+        }
+
         viewModel.loadFragment.observe(this){
             when(it.message){
                 "auth" -> {
@@ -138,6 +151,11 @@ class PesapalPayActivity : AppCompatActivity() {
                 }
                 "mpesa" -> {
                     loadFragment(MpesaPesapalFragment())
+                }
+                "success_mpesa" -> {
+                    if(transactionStatusResponse != null) {
+                        loadFragment(MpesaSuccessFragment.newInstance(transactionStatusResponse!!))
+                    }
                 }
                 "pending_mpesa" -> {
                     if(mobileMoneyRequest != null) {
