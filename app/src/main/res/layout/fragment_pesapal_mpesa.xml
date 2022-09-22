@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_faded_bg"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
@@ -12,14 +12,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:cardBackgroundColor="@color/dark_faded_bg"
         android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="@color/white"
         android:elevation="0dp"
         android:layout_height="wrap_content">
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clMpesaPayment"
             android:layout_width="match_parent"
@@ -28,18 +30,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clTotal"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:text="Mpesa Payment"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="parent"
+
+            <LinearLayout
+                android:id="@+id/llOne"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:background="@color/faded_blue"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="10dp"
+                    android:padding="7dp"
+                    android:text=" Mpesa Payment  "
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
             <View
                 android:id="@+id/viewSeperator"
                 android:layout_width="0dp"
@@ -49,7 +61,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
                 android:background="@color/dark_faded_bg"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@+id/llOne"
                 android:layout_height="1dp"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout

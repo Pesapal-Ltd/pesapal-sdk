@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         myIntent.putExtra("consumer_key","qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW")
         myIntent.putExtra("consumer_secret","osGQ364R49cXKeOYSpaOnT++rHs=")
         myIntent.putExtra("amount",1)
-        myIntent.putExtra("order_id","134212")
+        myIntent.putExtra("order_id","193453")
         myIntent.putExtra("currency","KES")
         myIntent.putExtra("accountNumber","1000101")
         myIntent.putExtra("callbackUrl","http://localhost:56522")

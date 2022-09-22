@@ -14,6 +14,13 @@
     <color name="darker_faded_bg">#FAFBFB</color>
     <color name="colorGreyText">#666666</color>
 
+    <color name="faded_blue">#E1EAFA</color>
+    <color name="light_gray_color">#efefef</color>
+    <color name="light_gray">#404040</color>
+    <color name="colorPrimaryAltLight">#1E61A7</color>
+    <color name="colorPrimaryAltDark">#014B8E</color>
+    <color name="colorBackgroundInactive">#E0E0E0</color>
+    <color name="colorGreyOutline">#949494</color>
 
     <color name="txnStatusColor">#f6fafe</color>
     <color name="colorPrimary">#1c67a1</color>
@@ -22,5 +29,6 @@
     <color name="black_fifty_four">#8A000000</color>
     <color name="black_eighty_seven">#DE000000</color>
     <color name="background">#dddddd</color>
+    <color name="un_selected_color_primary">#76A0E2</color>
 
 </resources>

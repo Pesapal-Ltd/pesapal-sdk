@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/dark_faded_bg"
+    android:background="@color/white"
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
@@ -17,7 +17,7 @@
         android:layout_marginEnd="20dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/dark_faded_bg"
         android:elevation="0dp"
         android:layout_height="wrap_content">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,37 +35,35 @@
             android:layout_width="match_parent"
             android:visibility="visible"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:text="Payment Successful"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_height="wrap_content"/>
-            <View
-                android:id="@+id/viewSeperator"
-                android:layout_width="0dp"
+
+            <LinearLayout
+                android:id="@+id/llOne"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:background="@color/faded_blue"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:background="@color/dark_faded_bg"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-                android:layout_height="1dp"/>
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="50dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="10dp"
+                    android:padding="7dp"
+                    android:text="PAYMENT SUCCESSFUL"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/viewSeperator"
+                app:layout_constraintTop_toBottomOf="@+id/llOne"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,16 +79,16 @@
                         android:text="Phone Number"
                         android:textStyle="normal"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"/>
 
                     <TextView
                         android:id="@+id/tvUserPhoneNumber"
                         android:layout_width="0dp"
-                        android:text="KSH 100.00"
+                        android:text="+254112826460"
                         android:textStyle="normal"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"/>
@@ -107,7 +105,7 @@
                         android:layout_width="0dp"
                         android:text="Amount"
                         android:textStyle="normal"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"/>
@@ -117,7 +115,7 @@
                         android:layout_width="0dp"
                         android:text="KSH 100.00"
                         android:textStyle="normal"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"/>
@@ -135,7 +133,7 @@
                         android:layout_width="0dp"
                         android:text="TxnId"
                         android:textStyle="normal"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"/>
@@ -145,7 +143,7 @@
                         android:layout_width="0dp"
                         android:text="QWERTY"
                         android:textStyle="normal"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"/>
