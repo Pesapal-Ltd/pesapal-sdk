@@ -36,6 +36,14 @@ class AppViewModel : ViewModel() {
     val transactionStatus: LiveData<Resource<TransactionStatusResponse>>
         get() = _transactionStatus
 
+    private var _transactionStatusBg = MutableLiveData<Resource<TransactionStatusResponse>>()
+    val transactionStatusBg: LiveData<Resource<TransactionStatusResponse>>
+        get() = _transactionStatusBg
+
+    private var _paymentDone = MutableLiveData<Resource<String>>()
+    val paymentDone: LiveData<Resource<String>>
+        get() = _paymentDone
+
 
     private var _loadFragment = MutableLiveData<Resource<String>>()
     val loadFragment: LiveData<Resource<String>>
@@ -114,6 +122,28 @@ class AppViewModel : ViewModel() {
             }
 
         }
+    }
+
+    fun mobileMoneyTransactionStatusBackground(trackingId: String){
+        _transactionStatusBg.postValue(Resource.loading("Confirming payment ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.getTransactionStatus(trackingId)
+            when(result.status){
+                Status.ERROR -> {
+                    _transactionStatusBg.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _transactionStatusBg.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+
+        }
+    }
+
+
+    fun handlePaymentStatus(status: String){
+        _paymentDone.postValue(Resource.success(status))
     }
 
 

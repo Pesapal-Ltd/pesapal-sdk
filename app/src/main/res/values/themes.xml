@@ -69,4 +69,9 @@
         <item name="boxStrokeWidth">1dp</item>
     </style>
 
+
+    <style name="NoBackgroundDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@null</item>
+    </style>
+
 </resources>

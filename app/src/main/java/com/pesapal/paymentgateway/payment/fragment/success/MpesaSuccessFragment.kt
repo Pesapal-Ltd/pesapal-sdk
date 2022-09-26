@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.pesapal.paymentgateway.databinding.FragmentMpesaPaymentSuccessBinding
 import com.pesapal.paymentgateway.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
 import java.math.BigDecimal
 
 class MpesaSuccessFragment : Fragment() {
 
     private lateinit var binding: FragmentMpesaPaymentSuccessBinding
     private lateinit var transactionStatusResponse: TransactionStatusResponse
+    private val viewModel: AppViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,15 +38,13 @@ class MpesaSuccessFragment : Fragment() {
 
     private fun handleClicks(){
         binding.btnDone.setOnClickListener {
-
+            viewModel.handlePaymentStatus("COMPLETED")
         }
 
     }
 
     private fun handleDisplay(){
-        binding.tvUserPhoneNumber.text = transactionStatusResponse.paymentAccount
-        binding.tvUserAmount.text = transactionStatusResponse.currency +" "+BigDecimal(transactionStatusResponse.amount).setScale(2)
-        binding.tvId.text = transactionStatusResponse.confirmationCode
+        binding.tvId.text = "ID ; "+transactionStatusResponse.confirmationCode
     }
 
 

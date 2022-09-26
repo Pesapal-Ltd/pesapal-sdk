@@ -120,6 +120,7 @@ class MpesaPesapalFragment : Fragment() {
                     showMessage("Payment prompt sent successfully")
                     pDialog.dismiss()
                     mobileMoneyResponse = it.data
+//                    checkTransactionStatus()
                     showPendingMpesaPayment()
                 }
                 Status.ERROR -> {
@@ -131,6 +132,11 @@ class MpesaPesapalFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun checkTransactionStatus(){
+        val bf = CheckPaymentBsf()
+        bf.show(requireActivity().supportFragmentManager, "mpesa_pending")
     }
 
     private fun showPendingMpesaPayment(){

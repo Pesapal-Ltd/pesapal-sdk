@@ -2,6 +2,8 @@ package com.pesapal.paymentgateway.payment.fragment.mpesa.pending
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +23,7 @@ class MpesaPendingFragment : Fragment() {
     private val viewModel: AppViewModel by activityViewModels()
     private lateinit var mobileMoneyRequest: MobileMoneyRequest
     private lateinit var pDialog: ProgressDialog
+    private var delayTime = 12000L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +38,7 @@ class MpesaPendingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initData()
+        handleBackgroundConfirmation(delayTime)
     }
 
     private fun initData(){
@@ -60,6 +64,14 @@ class MpesaPendingFragment : Fragment() {
         }
 
 
+    }
+
+    private fun handleBackgroundConfirmation(delayTime: Long){
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+               viewModel.mobileMoneyTransactionStatusBackground(mobileMoneyRequest.trackingId)
+            }, delayTime
+        )
     }
 
     private fun handleConfirmation(){
@@ -122,6 +134,31 @@ class MpesaPendingFragment : Fragment() {
                     }
                 }
         }
+
+
+        viewModel.transactionStatusBg.observe(requireActivity()){
+            when (it.status) {
+                Status.LOADING -> {
+
+                }
+                Status.SUCCESS -> {
+                    showMessage("Payment confirmed successfully ")
+                    proceedToSuccessScreen(it.data!!)
+                }
+                Status.ERROR -> {
+                    if(delayTime != 2000L){
+                        delayTime -= 2000
+                        handleBackgroundConfirmation(delayTime)
+                    }
+
+                }
+                else -> {
+                    Log.e(" else ", " ====> auth")
+                }
+            }
+        }
+
+
 
     }
 

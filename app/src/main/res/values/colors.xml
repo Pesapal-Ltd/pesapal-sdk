@@ -31,4 +31,7 @@
     <color name="background">#dddddd</color>
     <color name="un_selected_color_primary">#76A0E2</color>
 
+    <color name="txn_success">#355e45</color>
+    <color name="txn_success_bg">#d7e9dd</color>
+
 </resources>

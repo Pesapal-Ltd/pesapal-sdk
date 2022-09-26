@@ -1,5 +1,6 @@
 package com.pesapal.paymentgateway.payment.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -14,13 +15,14 @@ import com.pesapal.paymentgateway.payment.fragment.main.MainPesapalFragment
 import com.pesapal.paymentgateway.payment.fragment.mpesa.pending.MpesaPendingFragment
 import com.pesapal.paymentgateway.payment.fragment.mpesa.stk.MpesaPesapalFragment
 import com.pesapal.paymentgateway.payment.fragment.success.MpesaSuccessFragment
-import com.pesapal.paymentgateway.payment.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.paymentgateway.payment.model.auth.AuthRequestModel
 import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paymentgateway.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paymentgateway.payment.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.paymentgateway.payment.utils.PrefManager
 import com.pesapal.paymentgateway.payment.utils.Status
 import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
+
 
 class PesapalPayActivity : AppCompatActivity() {
 
@@ -48,6 +50,13 @@ class PesapalPayActivity : AppCompatActivity() {
 
     private fun initData(){
         fetchSharedData()
+        handleClick()
+    }
+
+    private fun handleClick(){
+        binding.cancelPayment.setOnClickListener {
+            returnPaymentStatus("failed")
+        }
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -184,7 +193,23 @@ class PesapalPayActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.paymentDone.observe(this){
+            when(it.status){
+                Status.SUCCESS -> {
+                    returnPaymentStatus(it.data!!)
+                }
+                else ->{}
+            }
+        }
 
+    }
+
+
+    private fun returnPaymentStatus(status: String){
+        val returnIntent = Intent()
+        returnIntent.putExtra("result", status)
+        setResult(RESULT_OK, returnIntent)
+        finish()
     }
 
 }
