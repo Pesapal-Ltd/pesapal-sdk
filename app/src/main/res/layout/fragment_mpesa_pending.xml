@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="1. Check your phone ( 0112826460 ) \n     to complete this payment"
+                android:text=""
                 android:layout_marginStart="20dp"
                 android:textColor="@color/black"
                 android:textSize="12sp"
@@ -214,7 +214,7 @@
                     android:layout_marginTop="5dp"
                     android:textColor="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/tvInstLipa3"
-                    android:text="4. Enter Account No as 91926293"
+                    android:text=""
                     android:layout_marginStart="20dp"
                     android:textSize="12sp"
                     android:layout_height="wrap_content"/>
@@ -225,7 +225,7 @@
                     android:layout_marginTop="5dp"
                     android:textColor="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/tvInstLipa4"
-                    android:text="5. Enter the Amount KES 1.00"
+                    android:text=""
                     android:layout_marginStart="20dp"
                     android:textSize="12sp"
                     android:layout_height="wrap_content"/>
@@ -259,7 +259,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/tvInstLipa7"
-                    android:text="7. Click resend prompt to receive \n     prompt again"
+                    android:text="8. Click resend prompt to receive \n     payment prompt again"
                     android:layout_marginStart="20dp"
                     android:layout_height="wrap_content"/>
 

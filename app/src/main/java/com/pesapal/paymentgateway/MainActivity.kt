@@ -3,6 +3,7 @@ package com.pesapal.paymentgateway
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.pesapal.paymentgateway.databinding.ActivityMainBinding
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         myIntent.putExtra("consumer_key","qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW")
         myIntent.putExtra("consumer_secret","osGQ364R49cXKeOYSpaOnT++rHs=")
         myIntent.putExtra("amount",1)
-        myIntent.putExtra("order_id","122323253")
+        myIntent.putExtra("order_id","442")
         myIntent.putExtra("currency","KES")
         myIntent.putExtra("accountNumber","1000101")
         myIntent.putExtra("PAYMENT_REQUEST","PAYMENT_REQUEST")
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == PAYMENT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 val result = data?.getStringExtra("result")
+                showMessage(result!!)
                 Log.e(" result ", " ==> result"+result)
             }
             if (resultCode == RESULT_CANCELED) {
@@ -54,5 +56,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showMessage(message: String){
+           Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
 
 }

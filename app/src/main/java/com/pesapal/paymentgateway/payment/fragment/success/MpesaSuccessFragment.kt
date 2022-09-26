@@ -44,7 +44,7 @@ class MpesaSuccessFragment : Fragment() {
     }
 
     private fun handleDisplay(){
-        binding.tvId.text = "ID ; "+transactionStatusResponse.confirmationCode
+        binding.tvId.text = "ID :"+transactionStatusResponse.confirmationCode
     }
 
 

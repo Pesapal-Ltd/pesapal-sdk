@@ -16,6 +16,7 @@ import com.pesapal.paymentgateway.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paymentgateway.payment.model.mobile_money.TransactionStatusResponse
 import com.pesapal.paymentgateway.payment.utils.Status
 import com.pesapal.paymentgateway.payment.viewmodel.AppViewModel
+import java.math.BigDecimal
 
 class MpesaPendingFragment : Fragment() {
 
@@ -44,6 +45,13 @@ class MpesaPendingFragment : Fragment() {
     private fun initData(){
         handleClick()
         handleViewModel()
+        handlePrefill()
+    }
+
+    private fun handlePrefill(){
+        binding.tvInst1.text = "1. Check your phone ("+mobileMoneyRequest.msisdn+") \n     to complete this payment"
+        binding.tvInstLipa4.text = "4. Enter Account No as "+mobileMoneyRequest.accountNumber
+        binding.tvInstLipa5.text = "5. Enter the Amount "+mobileMoneyRequest.currency+" "+BigDecimal(mobileMoneyRequest.amount).setScale(2)
     }
 
     private fun handleClick(){

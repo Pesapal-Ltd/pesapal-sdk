@@ -40,7 +40,7 @@
                     android:padding="7dp"
                     android:text="PAYMENT DETAILS CONFIRMATION "
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -197,6 +197,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Card"
+                    android:textSize="12sp"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     app:checkedIconEnabled="false"
@@ -220,6 +221,7 @@
                     app:chipBackgroundColor="@color/colorBackgroundInactive"
                     app:chipCornerRadius="5dp"
                     app:chipStrokeWidth="0dp"
+                    android:textSize="12sp"
                     app:rippleColor="@color/colorGreyOutline"
                     app:textEndPadding="16dp"
                     app:textStartPadding="16dp"
