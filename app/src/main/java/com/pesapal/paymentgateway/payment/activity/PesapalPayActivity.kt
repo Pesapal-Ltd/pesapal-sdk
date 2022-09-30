@@ -38,6 +38,10 @@ class PesapalPayActivity : AppCompatActivity() {
     private var transactionStatusResponse: TransactionStatusResponse? = null
     private var ipn_url: String = "https://supertapdev.pesapalhosting.com/"
     private var ipn_notification_type: String = "GET"
+    private var first_name: String? = ""
+    private var last_name: String? = ""
+    private var email: String? = ""
+    private var phone: String? = ""
 
     private val viewModel: AppViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +86,10 @@ class PesapalPayActivity : AppCompatActivity() {
             currency = intent.getStringExtra("currency")
             accountNumber = intent.getStringExtra("accountNumber")
             callbackUrl = intent.getStringExtra("callbackUrl")
+            first_name = intent.getStringExtra("first_name")
+            last_name = intent.getStringExtra("last_name")
+            email = intent.getStringExtra("email")
+            phone = intent.getStringExtra("phone")
         }
 
         if(consumer_key != "" && consumer_secret != ""){
@@ -185,7 +193,7 @@ class PesapalPayActivity : AppCompatActivity() {
                     }
                 }
                 "card" -> {
-                    loadFragment(CardFragmentNewAddress())
+                    loadFragment(CardFragmentNewAddress.newInstance(first_name,last_name,email,phone))
                 }
                 "card2" -> {
                     loadFragment(CardFragmentNewBilling())

@@ -24,6 +24,14 @@ class CardFragmentNewAddress : Fragment() {
     companion object {
         private const val cardNumberLength = 19
         const val CARD_DATA = "data"
+        fun newInstance(first_name: String?, last_name: String?,email: String?, phone: String? ): CardFragmentNewAddress{
+            val fragment = CardFragmentNewAddress()
+            fragment.first_name = first_name
+            fragment.last_name = last_name
+            fragment.email = email
+            fragment.phone = phone
+            return fragment
+        }
     }
 
     private var isFirstNameFilled = false
@@ -34,6 +42,11 @@ class CardFragmentNewAddress : Fragment() {
     private var isPostalCodeFilled = false
     private var isCityFilled = false
     private var enable = false
+
+    private var first_name: String? = ""
+    private var last_name: String? = ""
+    private var email: String? = ""
+    private var phone: String? = ""
 
     private val viewModel: AppViewModel by activityViewModels()
 
@@ -50,8 +63,15 @@ class CardFragmentNewAddress : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         handleClickListener()
         handleChangeListener()
+        initData()
     }
 
+    private fun initData(){
+        binding.etFirstName.setText(first_name)
+        binding.etSurname.setText(last_name)
+        binding.etEmail.setText(email)
+        binding.etPhoneNumber.setText(phone)
+    }
     private fun handleChangeListener(){
         binding.etFirstName.addTextChangedListener {
                 isFirstNameFilled = it.toString().isNotEmpty()
@@ -184,5 +204,6 @@ class CardFragmentNewAddress : Fragment() {
         super.onResume()
         checkFilled()
     }
+
 
 }

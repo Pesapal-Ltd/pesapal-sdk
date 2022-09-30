@@ -34,11 +34,14 @@ class MainActivity : AppCompatActivity() {
         myIntent.putExtra("consumer_key","qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW")
         myIntent.putExtra("consumer_secret","osGQ364R49cXKeOYSpaOnT++rHs=")
         myIntent.putExtra("amount",1)
-        myIntent.putExtra("order_id","442")
+        myIntent.putExtra("order_id","427")
         myIntent.putExtra("currency","KES")
         myIntent.putExtra("accountNumber","1000101")
-        myIntent.putExtra("PAYMENT_REQUEST","PAYMENT_REQUEST")
         myIntent.putExtra("callbackUrl","http://localhost:56522")
+        myIntent.putExtra("first_name","Richard")
+        myIntent.putExtra("last_name","Kirungu")
+        myIntent.putExtra("email","riche@gmail.com")
+        myIntent.putExtra("phone","+254112826460")
         startActivityForResult(myIntent,PAYMENT_REQUEST)
     }
 
