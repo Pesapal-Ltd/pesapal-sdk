@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:background="@color/dark_faded_bg"
     android:layout_height="match_parent"
-    tools:context=".payment.activity.PesapalPayActivity">
+    tools:context="com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clToolbar"
@@ -27,7 +27,7 @@
             android:src="@drawable/ic_baseline_arrow_back_ios_new_24"
             android:layout_margin="10dp"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/todo" />
+            />
 
         <TextView
             android:id="@+id/tvPesapal"

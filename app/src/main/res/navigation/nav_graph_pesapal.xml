@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/pesapalMainFragment"
-        android:name="com.pesapal.paymentgateway.payment.fragment.main.MainPesapalFragment"
+        android:name="com.pesapal.paygateway.activities.payment.fragment.main.MainPesapalFragment"
         android:label="Payment Methods"
         tools:layout="@layout/fragment_pesapal_main">
         <action
@@ -20,13 +20,13 @@
 
     <fragment
         android:id="@+id/pesapalMpesaFragment"
-        android:name="com.pesapal.paymentgateway.payment.fragment.mpesa.stk.MpesaPesapalFragment"
+        android:name="com.pesapal.paygateway.activities.payment.fragment.mpesa.stk.MpesaPesapalFragment"
         android:label="Mpesa Payment"
         tools:layout="@layout/fragment_pesapal_mpesa"/>
 
     <fragment
         android:id="@+id/pesapalCardFragmentAddress"
-        android:name="com.pesapal.paymentgateway.payment.fragment.card.CardFragmentNewAddress"
+        android:name="com.pesapal.paygateway.activities.payment.fragment.card.CardFragmentNewAddress"
         android:label="Card Address"
         tools:layout="@layout/fragment_new_card_address">
         <action
@@ -36,7 +36,7 @@
 
     <fragment
         android:id="@+id/pesapalCardFragmentBilling"
-        android:name="com.pesapal.paymentgateway.payment.fragment.card.CardFragmentNewBilling"
+        android:name="com.pesapal.paygateway.activities.payment.fragment.card.CardFragmentNewBilling"
         android:label="Card Billing"
         tools:layout="@layout/fragment_new_card_details"/>
 

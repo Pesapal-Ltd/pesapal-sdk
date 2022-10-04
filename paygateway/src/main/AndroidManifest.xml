@@ -3,12 +3,15 @@
     package="com.pesapal.paygateway">
 
     <application
+        android:name=".activities.payment.App"
         android:label="@string/app_name"
         >
+
         <activity
-            android:name=".activities.MainActivity"
-            android:theme="@style/Theme.paygateway"
+            android:name="com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity"
+            android:theme="@style/Theme.PayGateway"
             android:exported="false" />
+
     </application>
 
 </manifest>

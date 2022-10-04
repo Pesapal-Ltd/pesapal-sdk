@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.pesapal.paymentgateway.databinding.ActivityMainBinding
-import com.pesapal.paymentgateway.payment.activity.PesapalPayActivity
+import com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initPayment(){
-       val myIntent = Intent(this, PesapalPayActivity::class.java)
+       val myIntent = Intent(this, com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity::class.java)
         myIntent.putExtra("consumer_key","qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW")
         myIntent.putExtra("consumer_secret","osGQ364R49cXKeOYSpaOnT++rHs=")
         myIntent.putExtra("amount",1)
