@@ -4,45 +4,179 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import com.pesapal.paymentgateway.databinding.ActivityMainBinding
-import com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.pesapal.paymentgateway.basket.BasketFragment
+import com.pesapal.paymentgateway.catalogue.CatelogueFragment
+import com.pesapal.paymentgateway.model.CatalogueModel
+import com.pesapal.paymentgateway.viewmodel.AppViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var navigationView: BottomNavigationView
+    private lateinit var toolbar: Toolbar
+    private lateinit var catalogueList: MutableList<CatalogueModel.ProductsBean>
+    private lateinit var wishList: MutableList<CatalogueModel.ProductsBean>
+    private lateinit var basketListModel: MutableList<CatalogueModel.ProductsBean>
+    private val viewModel: AppViewModel by viewModels()
+    private lateinit var catalogueModel: CatalogueModel;
     private var PAYMENT_REQUEST = 100001
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        initClicks()
+        setContentView(R.layout.activity_main)
+        initData()
     }
 
-    private fun initClicks(){
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        binding.btnPurchase.setOnClickListener {
-            initPayment()
+    private fun initData(){
+        catalogueList = arrayListOf()
+        wishList = arrayListOf()
+        basketListModel = arrayListOf()
+        navigationView = findViewById(R.id.activity_main_bottom_navigation_view)
+        toolbar = findViewById(R.id.toolbar)
+        navigationView.setOnItemSelectedListener(selectedListener)
+
+        handleViewModel()
+        seearchCatalogue();
+        setToolBar()
+    }
+
+    private fun setToolBar(){
+        this.setSupportActionBar(toolbar);
+        this.supportActionBar!!.title = "Catalogue"
+    }
+
+    private fun seearchCatalogue(){
+        navigationView.selectedItemId = R.id.miCatalogue
+    }
+
+
+
+    private fun handleViewModel(){
+        viewModel.selectedCategory.observe(this) {
+            this.catalogueModel = catalogueModel
+        }
+
+        viewModel.searchCatalogueMessage.observe(this){
+            if(it != null){
+//                handleProgressBar(false)
+                showMessage(it)
+            }
+        }
+
+        viewModel.catalogueResponse.observe(this){
+            //handleProgressBar(false)
+            setCatalogueResponse(it)
+        }
+
+        viewModel.addCatalogueAddWishList.observe(this){
+            if(it != null) {
+                wishList.add(it)
+                updateBasketList()
+            }
+        }
+        viewModel.addCatalogueBucketList.observe(this){
+            if(it != null) {
+                basketListModel.add(it)
+                updateBasketList()
+            }
+        }
+
+        viewModel.removeCatalogueAddWishList.observe(this){
+            if(it != null){
+                wishList.remove(it)
+                updateBasketList()
+            }
+        }
+
+        viewModel.removeCatalogueBucketList.observe(this){
+            if(it != null){
+                removeFromBucket(it)
+                updateBasketList()
+            }
+        }
+
+        viewModel.checkOutCatalogue.observe(this){
+            if(it){
+                basketListModel.clear()
+                updateBasketList()
+            }
+        }
+
+    }
+
+    private fun updateBasketList(){
+        if(basketListModel.size > 0) {
+            navigationView.getOrCreateBadge(R.id.miBasket).isVisible = true
+            navigationView.getOrCreateBadge(R.id.miBasket).number = basketListModel.size;
+        }else{
+            navigationView.getOrCreateBadge(R.id.miBasket).isVisible = false
         }
     }
 
-    private fun initPayment(){
-       val myIntent = Intent(this, com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity::class.java)
-        myIntent.putExtra("consumer_key","qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW")
-        myIntent.putExtra("consumer_secret","osGQ364R49cXKeOYSpaOnT++rHs=")
-        myIntent.putExtra("amount",1)
-        myIntent.putExtra("order_id","427")
-        myIntent.putExtra("currency","KES")
-        myIntent.putExtra("accountNumber","1000101")
-        myIntent.putExtra("callbackUrl","http://localhost:56522")
-        myIntent.putExtra("first_name","Richard")
-        myIntent.putExtra("last_name","Kirungu")
-        myIntent.putExtra("email","riche@gmail.com")
-        myIntent.putExtra("phone","+254112826460")
-        startActivityForResult(myIntent,PAYMENT_REQUEST)
+
+
+    private fun removeFromBucket(catalogueModel: CatalogueModel.ProductsBean){
+        basketListModel.remove(catalogueModel)
+    }
+
+    private fun setCatalogueResponse(catalogueModel: CatalogueModel){
+        catalogueList.addAll(catalogueModel.products!!)
+    }
+
+    private val selectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.miCatalogue -> {
+                    val categoryFragment = CatelogueFragment.newInstance(catalogueList)
+                    loadFragment(categoryFragment)
+                    if(this.supportActionBar != null) {
+                        this.supportActionBar!!.title = "Catalogue"
+                    }
+                    return@OnNavigationItemSelectedListener true
+                }
+
+                R.id.miBasket -> {
+                    val basketFragment = BasketFragment.newInstance(basketListModel)
+                    loadFragment(basketFragment)
+
+                    if(this.supportActionBar != null) {
+                        this.supportActionBar!!.title = "Bucket"
+                    }
+
+                    return@OnNavigationItemSelectedListener true
+                }
+            }
+            false
+        }
+
+
+    private fun loadFragment(fragment: Fragment) {
+
+        val fragmnt: FragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmnt.beginTransaction()
+        fragmentTransaction.replace(R.id.mainFrag,fragment)
+        fragmentTransaction.commitAllowingStateLoss()
+
+    }
+
+
+    private fun showMessage(message: String){
+        Toast.makeText(this@MainActivity,message, Toast.LENGTH_LONG).show()
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -59,8 +193,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showMessage(message: String){
-           Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
 
 }

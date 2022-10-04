@@ -1,38 +1,8 @@
 <resources>
-    <string name="app_name">Pesapal Payment Gateway</string>
-    <string name="add_card_invalidEmail">Invalid Email</string>
-    <string name="add_card_headerStepText">Step 1 of 2: Billing Address</string>
-    <string name="add_card_firstName">First Name</string>
-    <string name="add_card_surname">Surname</string>
-    <string name="add_card_email">Email</string>
-    <string name="add_card_country">Country/Region</string>
-    <string name="add_card_phone">Phone number</string>
-    <string name="add_card_address">Address</string>
-    <string name="add_card_postalCode">Postal Code</string>
-    <string name="add_card_city">City</string>
-    <string name="uri_is_null">Uri is NULL</string>
-    <string name="user_not_registered">User Not Registered</string>
-    <string name="add_a_friend">Add a Friend</string>
-    <string name="change_card">Change Card</string>
-    <string name="card_is_changed">Card changed</string>
-    <string name="enable_card">Enable card</string>
-    <string name="add_card">Add Card</string>
-    <string name="allow_phone_symbols">0123456789+</string>
+    <string name="app_name">Catalogue</string>
 
-    <string name="current_card_nameOnCard">Name on Card</string>
-    <string name="current_card_stepTwoHeader">Step 2 of 2: Card Details</string>
-    <string name="current_card_cardNumber">Card Number</string>
-    <string name="current_card_expiry">Expiry (MM/YY)</string>
-    <string name="current_card_cvv">CVV</string>
-    <string name="current_card_title">Add Card</string>
-
-    <string name="hint_mm">MM</string>
-    <string name="mm">MM</string>
-    <string name="hint_yy">YY</string>
-
-    <string name="country_currency_dialog_title">Set your currency</string>
-    <string name="new_card_invalidEmail">Invalid Email</string>
-    <string name="connecting">Connecting...</string>
-    <string name="waiting">Waiting for customer to complete transaction</string>
-
+    <string name="catalogue">CATALOGUE</string>
+    <string name="wishlist">WISHLIST</string>
+    <string name="basket">BASKET</string>
+    <string name="your_web_client_id">382395723298-sbtkc7na9qp8c15jrivis2v5cbdu6ta8.apps.googleusercontent.com</string>
 </resources>

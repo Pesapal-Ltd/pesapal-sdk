@@ -86,10 +86,9 @@ class PesapalPayActivity : AppCompatActivity() {
             currency = intent.getStringExtra("currency")
             accountNumber = intent.getStringExtra("accountNumber")
             callbackUrl = intent.getStringExtra("callbackUrl")
-            first_name = intent.getStringExtra("first_name")
-            last_name = intent.getStringExtra("last_name")
+            first_name = intent.getStringExtra("firstName")
+            last_name = intent.getStringExtra("lastName")
             email = intent.getStringExtra("email")
-            phone = intent.getStringExtra("phone")
         }
 
         if(consumer_key != "" && consumer_secret != ""){

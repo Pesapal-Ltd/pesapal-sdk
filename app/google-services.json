@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "340873706356",
+    "project_id": "com-pesapal-paymentgateway",
+    "storage_bucket": "com-pesapal-paymentgateway.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340873706356:android:75336d3f4632a024938a21",
+        "android_client_info": {
+          "package_name": "com.pesapal.paymentgateway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340873706356-60cb7r4hl2j6242d90vrf6nbh4ee9nbp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pesapal.paymentgateway",
+            "certificate_hash": "25709ac5aff6ef87dae0a4706c5fe15d6b4860c9"
+          }
+        },
+        {
+          "client_id": "340873706356-5om8u2klijar3ra784lik4cphr3fssfp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPMLIPS-4CuP9IgpatGrrZ6pQpA3wZa78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340873706356-5om8u2klijar3ra784lik4cphr3fssfp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
