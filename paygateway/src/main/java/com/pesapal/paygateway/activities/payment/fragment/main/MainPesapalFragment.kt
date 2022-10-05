@@ -19,6 +19,9 @@ class MainPesapalFragment: Fragment() {
 
     private lateinit var binding: FragmentPesapalMainBinding
     private val viewModel: AppViewModel by activityViewModels()
+    private lateinit var orderNumber: String
+    private lateinit var dateTime: String
+    private lateinit var amount: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +39,9 @@ class MainPesapalFragment: Fragment() {
     }
 
     private fun initData(){
-
-
+        binding.tvAmount.text = amount
+        binding.tvOrderNumber.text = orderNumber
+        binding.tvDateTime.text = dateTime
     }
 
     private fun handlePaymentOptions(){
@@ -84,5 +88,14 @@ class MainPesapalFragment: Fragment() {
         chip.chipStrokeWidth = 0.0f
     }
 
+    companion object{
+        fun newInstance(amount: String, orderNumber: String, dateTime: String):MainPesapalFragment{
+            val fragment = MainPesapalFragment()
+            fragment.amount = amount
+            fragment.orderNumber = orderNumber
+            fragment.dateTime = dateTime
+            return fragment
+        }
+    }
 
 }

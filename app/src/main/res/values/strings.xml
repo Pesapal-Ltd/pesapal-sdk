@@ -1,8 +1,6 @@
 <resources>
-    <string name="app_name">Catalogue</string>
+    <string name="app_name">API3 demo</string>
 
     <string name="catalogue">CATALOGUE</string>
-    <string name="wishlist">WISHLIST</string>
     <string name="basket">BASKET</string>
-    <string name="your_web_client_id">382395723298-sbtkc7na9qp8c15jrivis2v5cbdu6ta8.apps.googleusercontent.com</string>
 </resources>

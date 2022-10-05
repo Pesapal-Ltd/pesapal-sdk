@@ -10,10 +10,15 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.pesapal.paymentgateway.basket.BasketFragment
 import com.pesapal.paymentgateway.catalogue.CatelogueFragment
 import com.pesapal.paymentgateway.model.CatalogueModel
+import com.pesapal.paymentgateway.model.UserModel
 import com.pesapal.paymentgateway.viewmodel.AppViewModel
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,12 +26,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navigationView: BottomNavigationView
     private lateinit var toolbar: Toolbar
+    private lateinit var circularImageView: CircleImageView
     private lateinit var catalogueList: MutableList<CatalogueModel.ProductsBean>
     private lateinit var wishList: MutableList<CatalogueModel.ProductsBean>
     private lateinit var basketListModel: MutableList<CatalogueModel.ProductsBean>
     private val viewModel: AppViewModel by viewModels()
     private lateinit var catalogueModel: CatalogueModel;
-    private var PAYMENT_REQUEST = 100001
+    private lateinit var auth: FirebaseAuth
 
 
 
@@ -42,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         basketListModel = arrayListOf()
         navigationView = findViewById(R.id.activity_main_bottom_navigation_view)
         toolbar = findViewById(R.id.toolbar)
+        circularImageView = findViewById(R.id.civProfile)
         navigationView.setOnItemSelectedListener(selectedListener)
 
         handleViewModel()
@@ -51,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setToolBar(){
         this.setSupportActionBar(toolbar);
-        this.supportActionBar!!.title = "Catalogue"
+        this.supportActionBar!!.title = "Catalogue ( API3 demo )"
     }
 
     private fun seearchCatalogue(){
@@ -139,7 +146,7 @@ class MainActivity : AppCompatActivity() {
                     val categoryFragment = CatelogueFragment.newInstance(catalogueList)
                     loadFragment(categoryFragment)
                     if(this.supportActionBar != null) {
-                        this.supportActionBar!!.title = "Catalogue"
+                        this.supportActionBar!!.title = "Catalogue ( API3 demo )"
                     }
                     return@OnNavigationItemSelectedListener true
                 }
@@ -149,7 +156,7 @@ class MainActivity : AppCompatActivity() {
                     loadFragment(basketFragment)
 
                     if(this.supportActionBar != null) {
-                        this.supportActionBar!!.title = "Bucket"
+                        this.supportActionBar!!.title = "Bucket ( API3 demo )"
                     }
 
                     return@OnNavigationItemSelectedListener true
@@ -177,20 +184,34 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        auth = FirebaseAuth.getInstance()
+        if(auth.currentUser != null){
+            getProfile()
+        }
+    }
+
+    private fun getProfile(){
+        val db = FirebaseFirestore.getInstance()
+        val documentBalance = db.collection("users").document(auth.currentUser?.email!!).get()
+        documentBalance.addOnCompleteListener {
+            if(it.isSuccessful){
+                val photoUrl: String? = it.result.get("photoUrl").toString()
+                if(photoUrl != null) {
+                    setImage(photoUrl)
+                }
+            }else{
+                showMessage("Unable to get your account ")
+            }
+        }
+
+    }
+
+    private fun setImage(photoUrl: String){
+        Picasso.get().load(photoUrl).into(circularImageView);
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PAYMENT_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                val result = data?.getStringExtra("result")
-                showMessage(result!!)
-                Log.e(" result ", " ==> result"+result)
-            }
-            if (resultCode == RESULT_CANCELED) {
-                // Write your code if there's no result
-            }
-        }
     }
 
 

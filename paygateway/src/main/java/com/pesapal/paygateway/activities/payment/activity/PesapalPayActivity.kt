@@ -21,7 +21,9 @@ import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnRequest
+import com.pesapal.paygateway.activities.payment.utils.TimeUtils
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
+import java.math.BigDecimal
 
 
 class PesapalPayActivity : AppCompatActivity() {
@@ -29,7 +31,7 @@ class PesapalPayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPesapalPayBinding
     private var consumer_key: String = ""
     private var consumer_secret: String = ""
-    private var amount: Int = 0
+    private var amount: String? = "0"
     private var order_id: String? = null
     private var currency: String? = null
     private var accountNumber: String? = null
@@ -81,7 +83,7 @@ class PesapalPayActivity : AppCompatActivity() {
                 consumer_secret = intent.getStringExtra("consumer_secret")!!
             }
 
-            amount = intent.getIntExtra("amount",1)
+            amount = intent.getStringExtra("amount")
             order_id = intent.getStringExtra("order_id")
             currency = intent.getStringExtra("currency")
             accountNumber = intent.getStringExtra("accountNumber")
@@ -136,8 +138,7 @@ class PesapalPayActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
                     val ipnId = it.data?.ipn_id
                     PrefManager.setIpnId(ipnId)
-                    loadFragment(MainPesapalFragment())
-                    Log.e(" SUCCESS ", " ====> SUCCESS")
+                    viewModel.loadFragment("choose")
                 }
                 Status.ERROR -> {
                     Log.e(" ERROR ", " ====> ERROR")
@@ -174,10 +175,11 @@ class PesapalPayActivity : AppCompatActivity() {
                     loadFragment(AuthFragment())
                 }
                 "choose" -> {
-                    loadFragment(MainPesapalFragment())
+                    val dateTime = TimeUtils.getCurrentDateTime()
+                    loadFragment(MainPesapalFragment.newInstance(BigDecimal(1).setScale(2).toString(),order_id!!,dateTime!!))
                 }
                 "mpesa" -> {
-                    loadFragment(MpesaPesapalFragment.newInstance(amount,order_id!!,currency!!,accountNumber!!,callbackUrl!!))
+                    loadFragment(MpesaPesapalFragment.newInstance(BigDecimal(1),order_id!!,currency!!,accountNumber!!,callbackUrl!!))
                 }
                 "success_mpesa" -> {
                     if(transactionStatusResponse != null) {

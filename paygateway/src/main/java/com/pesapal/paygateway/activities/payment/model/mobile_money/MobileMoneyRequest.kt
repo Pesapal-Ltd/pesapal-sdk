@@ -3,11 +3,12 @@ package com.pesapal.paygateway.activities.payment.model.mobile_money
 import com.google.gson.annotations.SerializedName
 import com.pesapal.paygateway.activities.payment.model.mobile_money.BillingAddress
 import java.io.Serializable
+import java.math.BigDecimal
 
 data class MobileMoneyRequest(@SerializedName("account_number")
                               val accountNumber: String = "",
                               @SerializedName("amount")
-                              val amount: Int = 0,
+                              val amount: BigDecimal = BigDecimal.ZERO,
                               @SerializedName("source_channel")
                               val sourceChannel: Int = 0,
                               @SerializedName("cancellation_url")

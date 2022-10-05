@@ -51,7 +51,7 @@ class MpesaPendingFragment : Fragment() {
     private fun handlePrefill(){
         binding.tvInst1.text = "1. Check your phone ("+mobileMoneyRequest.msisdn+") \n     to complete this payment"
         binding.tvInstLipa4.text = "4. Enter Account No as "+mobileMoneyRequest.accountNumber
-        binding.tvInstLipa5.text = "5. Enter the Amount "+mobileMoneyRequest.currency+" "+BigDecimal(mobileMoneyRequest.amount).setScale(2)
+        binding.tvInstLipa5.text = "5. Enter the Amount "+mobileMoneyRequest.currency+" "+mobileMoneyRequest.amount.setScale(2)
     }
 
     private fun handleClick(){

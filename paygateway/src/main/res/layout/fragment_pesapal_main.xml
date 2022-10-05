@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/tvBusinessName"
+                    android:id="@+id/tvOrderNumber"
                     android:layout_width="wrap_content"
                     android:text="123456"
                     android:textSize="12sp"
@@ -80,23 +80,23 @@
 
 
                 <TextView
-                    android:id="@+id/tvIPayingPhone"
+                    android:id="@+id/tvDateTimeM"
                     android:layout_width="wrap_content"
                     android:text="DATE"
                     android:textSize="12sp"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvBusinessName"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOrderNumber"
                     android:layout_marginTop="15dp"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:id="@+id/tvPhoneNumber"
+                    android:id="@+id/tvDateTime"
                     android:layout_width="wrap_content"
                     android:text="September 22, 2022"
                     android:textSize="12sp"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvIPayingPhone"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDateTimeM"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content"/>
 
@@ -107,7 +107,7 @@
                     android:textSize="12sp"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDateTime"
                     android:textStyle="normal"
                     android:layout_height="wrap_content"/>
                 <TextView
@@ -201,10 +201,10 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     app:checkedIconEnabled="false"
-                    app:chipBackgroundColor="@color/colorPrimaryAltLight"
+                    app:chipBackgroundColor="@color/purple_200"
                     app:chipCornerRadius="5dp"
                     app:chipStrokeWidth="0dp"
-                    app:rippleColor="@color/colorPrimaryAltLight"
+                    app:rippleColor="@color/purple_200"
                     app:textEndPadding="16dp"
                     app:textStartPadding="16dp" />
 

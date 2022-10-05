@@ -18,6 +18,7 @@ import com.pesapal.paygateway.activities.payment.utils.PrefManager
 import com.pesapal.paygateway.activities.payment.utils.TextDrawable
 import com.pesapal.paygateway.activities.payment.utils.hideKeyboard
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
+import java.math.BigDecimal
 import java.util.*
 
 class MpesaPesapalFragment : Fragment() {
@@ -30,7 +31,7 @@ class MpesaPesapalFragment : Fragment() {
     private lateinit var accountNumber: String
     private lateinit var callbackUrl: String
     private var mobileMoneyResponse: MobileMoneyResponse? = null
-    private var amount: Int = 1
+    private var amount: BigDecimal = BigDecimal.ONE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -154,7 +155,7 @@ class MpesaPesapalFragment : Fragment() {
 
     companion object{
 
-        fun newInstance(amount: Int, order_id: String, currency: String, accountNumber: String, callbackUrl: String): MpesaPesapalFragment {
+        fun newInstance(amount: BigDecimal, order_id: String, currency: String, accountNumber: String, callbackUrl: String): MpesaPesapalFragment {
             val fragment = MpesaPesapalFragment()
             fragment.amount = amount
             fragment.order_id = order_id
