@@ -23,7 +23,6 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class MainActivity : AppCompatActivity() {
 
-
     private lateinit var navigationView: BottomNavigationView
     private lateinit var toolbar: Toolbar
     private lateinit var circularImageView: CircleImageView
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: AppViewModel by viewModels()
     private lateinit var catalogueModel: CatalogueModel;
     private lateinit var auth: FirebaseAuth
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

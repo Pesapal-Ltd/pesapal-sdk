@@ -67,7 +67,7 @@ class MpesaPesapalFragment : Fragment() {
         binding.btnSend.setOnClickListener {
             if(binding.phone.text.toString().isNotEmpty()) {
                 val request = prepareMobileMoney()
-                viewModel.sendMobileMoneyCheckOut(request, "Sending stk push ...")
+                viewModel.sendMobileMoneyCheckOut(request, "Sending payment prompt ...")
             }else{
                 showMessage("All inputs required ...")
             }
