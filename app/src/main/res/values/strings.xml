@@ -2,4 +2,5 @@
     <string name="app_name">API3 demo</string>
     <string name="catalogue">CATALOGUE</string>
     <string name="basket">BASKET</string>
+    <string name="profile">PROFILE</string>
 </resources>

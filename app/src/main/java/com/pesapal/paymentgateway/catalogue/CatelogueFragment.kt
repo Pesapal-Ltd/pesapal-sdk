@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import com.pesapal.paymentgateway.R
 import com.pesapal.paymentgateway.model.CatalogueModel
 import com.pesapal.paymentgateway.product_details.ProductDetailsSheet
+import com.pesapal.paymentgateway.utils.PrefManager
 import com.pesapal.paymentgateway.viewmodel.AppViewModel
 import java.math.BigDecimal
 import java.util.*
@@ -110,7 +111,7 @@ class CatelogueFragment: Fragment() {
             val image = convertView.findViewById<ImageView>(R.id.ivCatalogue)
 
             names.text = catalogueModel.name
-            price.text = "Kes "+catalogueModel.price
+            price.text =  PrefManager.getCurrency()+" "+catalogueModel.price
             image.setImageResource(catalogueModel.image);
 
             return convertView

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pesapal.paymentgateway.R
 import com.squareup.picasso.Picasso
 import com.pesapal.paymentgateway.model.CatalogueModel
+import com.pesapal.paymentgateway.utils.PrefManager
 
 class BucketListAdapter(val clickListener: clickedListener) : RecyclerView.Adapter<BucketListAdapter.BucketListAdapterVh>() {
 
@@ -31,7 +32,7 @@ class BucketListAdapter(val clickListener: clickedListener) : RecyclerView.Adapt
         var bucketResponse = bucketList[position]
 
         holder.tvName.text = bucketResponse.name
-        holder.tvPrice.text = "Kes "+bucketResponse.price
+        holder.tvPrice.text =  PrefManager.getCurrency()+" "+bucketResponse.price
         Picasso.get().load(bucketResponse.image).into(holder.ivCatalogue);
 
         holder.imageViewDelete.setOnClickListener {

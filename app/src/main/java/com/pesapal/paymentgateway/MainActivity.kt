@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.pesapal.paymentgateway.basket.BasketFragment
 import com.pesapal.paymentgateway.catalogue.CatelogueFragment
 import com.pesapal.paymentgateway.model.CatalogueModel
+import com.pesapal.paymentgateway.profile.ProfileFragment
 import com.pesapal.paymentgateway.viewmodel.AppViewModel
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -124,14 +125,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun restartActivity(activity: Activity) {
-        if (Build.VERSION.SDK_INT >= 11) {
-            activity.recreate()
-        } else {
-            activity.finish()
-            activity.startActivity(activity.intent)
-        }
-    }
 
     private fun updateBasketList(){
         if(basketListModel.size > 0) {
@@ -164,6 +157,11 @@ class MainActivity : AppCompatActivity() {
                     loadBucket()
                     return@OnNavigationItemSelectedListener true
                 }
+
+                R.id.miProfile -> {
+                    loadProfile()
+                    return@OnNavigationItemSelectedListener true
+                }
             }
             false
         }
@@ -183,6 +181,14 @@ class MainActivity : AppCompatActivity() {
 
         if(this.supportActionBar != null) {
             this.supportActionBar!!.title = "Bucket ( Dev Version )"
+        }
+    }
+    private fun loadProfile(){
+        val profileFragment = ProfileFragment()
+        loadFragment(profileFragment)
+
+        if(this.supportActionBar != null) {
+            this.supportActionBar!!.title = "Profile ( Dev Version )"
         }
     }
 

@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_baseline_emoji_events_24"
         android:id="@+id/miBasket"/>
 
+    <item
+        android:title="@string/profile"
+        android:icon="@drawable/ic_outline_account_box_24"
+        android:id="@+id/miProfile"/>
+
 </menu>

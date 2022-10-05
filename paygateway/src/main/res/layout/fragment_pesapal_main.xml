@@ -113,7 +113,6 @@
                 <TextView
                     android:id="@+id/tvAmount"
                     android:layout_width="wrap_content"
-                    android:text="KES. 2650.00"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvIAmount"

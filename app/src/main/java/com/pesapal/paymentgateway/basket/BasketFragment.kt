@@ -32,6 +32,7 @@ import com.pesapal.paymentgateway.R
 import com.pesapal.paymentgateway.model.BasketRecyclerItemTouchHelper
 import com.pesapal.paymentgateway.model.CatalogueModel
 import com.pesapal.paymentgateway.model.UserModel
+import com.pesapal.paymentgateway.utils.PrefManager
 import com.pesapal.paymentgateway.utils.TimeUtils
 import com.pesapal.paymentgateway.viewmodel.AppViewModel
 import java.math.BigDecimal
@@ -53,7 +54,7 @@ class BasketFragment: Fragment(), BucketListAdapter.clickedListener, BasketRecyc
     private var PAYMENT_REQUEST = 100001
     private var RC_SIGN_IN = 100002
     private var orderId = ""
-    private var currency = "KES :"
+    private var currency = PrefManager.getCurrency()
     private lateinit var mAuth: FirebaseAuth;
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var userModel: UserModel
@@ -275,13 +276,13 @@ class BasketFragment: Fragment(), BucketListAdapter.clickedListener, BasketRecyc
 
     private fun initPayment(){
         val myIntent = Intent(requireContext(), PesapalPayActivity::class.java)
-        myIntent.putExtra("consumer_key","qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW")
-        myIntent.putExtra("consumer_secret","osGQ364R49cXKeOYSpaOnT++rHs=")
+        myIntent.putExtra("consumer_key",PrefManager.getConsumerKey())
+        myIntent.putExtra("consumer_secret",PrefManager.getConsumerSecret())
         myIntent.putExtra("amount",total.toString())
         myIntent.putExtra("order_id",orderId)
-        myIntent.putExtra("currency","KES")
-        myIntent.putExtra("accountNumber","1000101")
-        myIntent.putExtra("callbackUrl","http://localhost:56522")
+        myIntent.putExtra("currency",PrefManager.getCurrency())
+        myIntent.putExtra("accountNumber",PrefManager.getAccount())
+        myIntent.putExtra("callbackUrl",PrefManager.getCallBackUrl())
         myIntent.putExtra("firstName",userModel.firstName)
         myIntent.putExtra("lastName",userModel.lastName)
         myIntent.putExtra("email",userModel.email)
