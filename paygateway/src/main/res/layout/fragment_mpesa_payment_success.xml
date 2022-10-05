@@ -63,24 +63,24 @@
 
             <ImageView
                 android:id="@+id/imSuccess"
-                android:layout_width="70dp"
+                android:layout_width="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/txn_success"
-                android:src="@drawable/check_mark"
-                app:layout_constraintBottom_toTopOf="@+id/btnDone"
-                android:layout_height="70dp"/>
+                app:tint="@color/colorSuccess"
+                android:src="@drawable/success"
+                app:layout_constraintBottom_toTopOf="@+id/tvSuccess"
+                android:layout_height="50dp"/>
             <TextView
                 android:id="@+id/tvSuccess"
                 android:layout_width="wrap_content"
-                android:text="Payment Approved"
+                android:text="Your payment is approved"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imSuccess"
                 android:layout_marginTop="20dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textStyle="normal"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"/>
 
@@ -93,32 +93,33 @@
                 android:textColor="@color/black"
                 android:paddingEnd="20dp"
                 android:textStyle="normal"
-                android:textSize="14sp"
-                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:layout_marginTop="10dp"
                 android:paddingStart="20dp"
                 android:layout_marginStart="10dp"
                 app:layout_constraintTop_toBottomOf="@+id/tvSuccess"
                 android:layout_height="wrap_content"/>
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnDone"
         android:layout_width="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:text="Done"
         android:textColor="@color/white"
-        android:background="@drawable/bg_round_success"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:textSize="12sp"
+        android:textAllCaps="false"
         android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_round"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_height="50dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

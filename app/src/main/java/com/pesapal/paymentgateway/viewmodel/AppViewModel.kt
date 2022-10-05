@@ -25,6 +25,9 @@ class AppViewModel: ViewModel() {
     private val mutableRemoveCatalogueAddBucketList = MutableLiveData<CatalogueModel.ProductsBean>()
     val removeCatalogueBucketList: LiveData<CatalogueModel.ProductsBean> get() =mutableRemoveCatalogueAddBucketList;
 
+    private val mutableAllRemoveCatalogueAddBucketList = MutableLiveData<String>()
+    val removeAllCatalogueBucketList: LiveData<String> get() =mutableAllRemoveCatalogueAddBucketList;
+
     private val catalogueResponseMessage = MutableLiveData<String>()
     val searchCatalogueMessage: LiveData<String> get() = catalogueResponseMessage;
 
@@ -44,6 +47,10 @@ class AppViewModel: ViewModel() {
 
     fun removeToBucket(catalogueModel: CatalogueModel.ProductsBean){
         mutableRemoveCatalogueAddBucketList.postValue(catalogueModel)
+    }
+
+    fun removeAll(all: String){
+        mutableAllRemoveCatalogueAddBucketList.postValue(all)
     }
 
 

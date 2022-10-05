@@ -30,7 +30,7 @@ class MpesaPendingFragment : Fragment() {
     private val viewModel: AppViewModel by activityViewModels()
     private lateinit var mobileMoneyRequest: MobileMoneyRequest
     private lateinit var pDialog: ProgressDialog
-    private var delayTime = 2000L
+    private var delayTime = 1000L
     private val timeCountInMilliSeconds = 30000L
     private var countDownTimer: CountDownTimer? = null
     private var timerStatus = TimerStatus.STOPPED
@@ -167,7 +167,7 @@ class MpesaPendingFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     if(delayTime != 30000L){
-                        delayTime += 1000
+                        delayTime += 100
                         handleBackgroundConfirmation(delayTime)
                     }
 

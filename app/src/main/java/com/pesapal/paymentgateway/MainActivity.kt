@@ -1,8 +1,9 @@
 package com.pesapal.paymentgateway
 
+import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.pesapal.paymentgateway.basket.BasketFragment
 import com.pesapal.paymentgateway.catalogue.CatelogueFragment
 import com.pesapal.paymentgateway.model.CatalogueModel
-import com.pesapal.paymentgateway.model.UserModel
 import com.pesapal.paymentgateway.viewmodel.AppViewModel
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setToolBar(){
         this.setSupportActionBar(toolbar);
-        this.supportActionBar!!.title = "Catalogue ( API3 demo )"
+        this.supportActionBar!!.title = "Catalogue ( Dev Version )"
     }
 
     private fun seearchCatalogue(){
@@ -109,6 +109,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.removeAllCatalogueBucketList.observe(this){
+            if(it != null){
+                updateBasketList()
+            }
+        }
+
         viewModel.checkOutCatalogue.observe(this){
             if(it){
                 basketListModel.clear()
@@ -116,6 +122,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    fun restartActivity(activity: Activity) {
+        if (Build.VERSION.SDK_INT >= 11) {
+            activity.recreate()
+        } else {
+            activity.finish()
+            activity.startActivity(activity.intent)
+        }
     }
 
     private fun updateBasketList(){
@@ -141,27 +156,35 @@ class MainActivity : AppCompatActivity() {
         BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.miCatalogue -> {
-                    val categoryFragment = CatelogueFragment.newInstance(catalogueList)
-                    loadFragment(categoryFragment)
-                    if(this.supportActionBar != null) {
-                        this.supportActionBar!!.title = "Catalogue ( API3 demo )"
-                    }
+                    loadCategory()
                     return@OnNavigationItemSelectedListener true
                 }
 
                 R.id.miBasket -> {
-                    val basketFragment = BasketFragment.newInstance(basketListModel)
-                    loadFragment(basketFragment)
-
-                    if(this.supportActionBar != null) {
-                        this.supportActionBar!!.title = "Bucket ( API3 demo )"
-                    }
-
+                    loadBucket()
                     return@OnNavigationItemSelectedListener true
                 }
             }
             false
         }
+
+
+    private fun loadCategory(){
+        val categoryFragment = CatelogueFragment.newInstance(catalogueList)
+        loadFragment(categoryFragment)
+        if(this.supportActionBar != null) {
+            this.supportActionBar!!.title = "Catalogue ( Dev Version )"
+        }
+    }
+
+    private fun loadBucket(){
+        val basketFragment = BasketFragment.newInstance(basketListModel)
+        loadFragment(basketFragment)
+
+        if(this.supportActionBar != null) {
+            this.supportActionBar!!.title = "Bucket ( Dev Version )"
+        }
+    }
 
 
     private fun loadFragment(fragment: Fragment) {

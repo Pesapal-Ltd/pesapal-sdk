@@ -13,6 +13,7 @@
     <color name="dark_faded_bg">#F6F8FB</color>
     <color name="darker_faded_bg">#FAFBFB</color>
     <color name="colorGreyText">#666666</color>
+    <color name="colorSuccess">#159F4A</color>
 
     <color name="faded_blue">#E1EAFA</color>
     <color name="light_gray_color">#efefef</color>

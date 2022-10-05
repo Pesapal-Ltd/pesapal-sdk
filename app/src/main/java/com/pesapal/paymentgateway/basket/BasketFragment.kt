@@ -108,11 +108,6 @@ class BasketFragment: Fragment(), BucketListAdapter.clickedListener, BasketRecyc
             }else {
                 handleGoogleSignIn()
             }
-//               startPayment()
-//            basketList.clear()
-//            viewModel.checkOut()
-//            bucketListAdapter.notifyDataSetChanged()
-//            checkViews()
         }
     }
 
@@ -241,11 +236,12 @@ class BasketFragment: Fragment(), BucketListAdapter.clickedListener, BasketRecyc
         }else if (requestCode == PAYMENT_REQUEST) {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 val result = data?.getStringExtra("result")
-                if (result.equals("CONFIRMED")){
+                if (result.equals("COMPLETED")){
                     basketList.clear()
                     bucketListAdapter.notifyDataSetChanged()
                     checkViews()
-                    showMessage("Payment confirmed successfully ...")
+                    viewModel.removeAll("all")
+                    showMessage("Payment confirmed successfully, Continue shopping ...")
                 }else{
                     showMessage("An error occurred processing payment ...")
                 }
