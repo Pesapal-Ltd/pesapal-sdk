@@ -22,6 +22,7 @@ class MainPesapalFragment: Fragment() {
     private lateinit var orderNumber: String
     private lateinit var dateTime: String
     private lateinit var amount: String
+    private lateinit var currency: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +40,7 @@ class MainPesapalFragment: Fragment() {
     }
 
     private fun initData(){
-        binding.tvAmount.text = amount
+        binding.tvAmount.text = "$currency $amount"
         binding.tvOrderNumber.text = orderNumber
         binding.tvDateTime.text = dateTime
     }
@@ -89,11 +90,12 @@ class MainPesapalFragment: Fragment() {
     }
 
     companion object{
-        fun newInstance(amount: String, orderNumber: String, dateTime: String):MainPesapalFragment{
+        fun newInstance(amount: String, orderNumber: String, dateTime: String, currency: String):MainPesapalFragment{
             val fragment = MainPesapalFragment()
             fragment.amount = amount
             fragment.orderNumber = orderNumber
             fragment.dateTime = dateTime
+            fragment.currency = currency
             return fragment
         }
     }

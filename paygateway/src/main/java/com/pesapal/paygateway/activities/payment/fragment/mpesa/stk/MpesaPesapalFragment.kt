@@ -29,6 +29,10 @@ class MpesaPesapalFragment : Fragment() {
     private lateinit var order_id: String
     private lateinit var currency: String
     private lateinit var accountNumber: String
+    private  var firstname: String? = ""
+    private  var lastname: String? = ""
+    private  var email: String? = ""
+    private  var phone: String? = ""
     private lateinit var callbackUrl: String
     private var mobileMoneyResponse: MobileMoneyResponse? = null
     private var amount: BigDecimal = BigDecimal.ONE
@@ -76,17 +80,16 @@ class MpesaPesapalFragment : Fragment() {
 
     private fun prepareMobileMoney(): MobileMoneyRequest {
         hideKeyboard()
-        val billingAddress = BillingAddress()
         val phoneNumber = "254"+binding.phone.text.toString()
-//       val billingAddress = BillingAddress(phoneNumber = "0716210311", emailAddress = "richiekaby@gmail.com", countryCode = "KE", firstName = "Richard",
-//            middleName = "Kamere",
-//            lastName = "K",
-//            line = "",
-//            line2 = "",
-//            city = "Nairobi",
-//            state = "",
-//            postalCode = "",
-//            zipCode = "")
+       val billingAddress = BillingAddress(phoneNumber = phone, emailAddress = email, countryCode = "KE", firstName = firstname,
+            middleName = lastname,
+            lastName = lastname,
+            line = "",
+            line2 = "",
+            city = "Nairobi",
+            state = "",
+            postalCode = "",
+            zipCode = "")
 
         return MobileMoneyRequest(
             id = order_id,
@@ -134,11 +137,6 @@ class MpesaPesapalFragment : Fragment() {
         }
     }
 
-    private fun checkTransactionStatus(){
-        val bf = CheckPaymentBsf()
-        bf.show(requireActivity().supportFragmentManager, "mpesa_pending")
-    }
-
     private fun showPendingMpesaPayment(){
         val mobileMoneyRequest = prepareMobileMoney()
         mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
@@ -155,13 +153,17 @@ class MpesaPesapalFragment : Fragment() {
 
     companion object{
 
-        fun newInstance(amount: BigDecimal, order_id: String, currency: String, accountNumber: String, callbackUrl: String): MpesaPesapalFragment {
+        fun newInstance(amount: BigDecimal, order_id: String, currency: String, accountNumber: String, callbackUrl: String, firstname: String?, lastname: String?, email: String?, phone: String?): MpesaPesapalFragment {
             val fragment = MpesaPesapalFragment()
             fragment.amount = amount
             fragment.order_id = order_id
             fragment.currency = currency
             fragment.accountNumber = accountNumber
             fragment.callbackUrl = callbackUrl
+            fragment.lastname = lastname
+            fragment.firstname = firstname
+            fragment.email = email
+            fragment.phone = phone
             return fragment
         }
     }

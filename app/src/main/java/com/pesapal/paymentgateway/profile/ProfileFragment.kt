@@ -27,9 +27,8 @@ class ProfileFragment: Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    var testCurrency = arrayOf(
-        "KES", "UGX", "USD"
-    )
+    var testCurrency = mutableListOf<String>()
+    var otherCurrency = mutableListOf<String>("KES", "UGX", "USD")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,6 +59,13 @@ class ProfileFragment: Fragment(), AdapterView.OnItemSelectedListener {
 
     private fun initData(){
         binding.layoutProfile.spinnerCurrency.onItemSelectedListener = this;
+        val default = PrefManager.getCurrency()
+        testCurrency.add(default)
+        otherCurrency.remove(default)
+        testCurrency.addAll(otherCurrency)
+
+
+
         val ad = ArrayAdapter(
             requireContext(),
             R.layout.simple_spinner_item,
@@ -132,7 +138,6 @@ class ProfileFragment: Fragment(), AdapterView.OnItemSelectedListener {
     }
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         val currency = testCurrency[p2]
-        Log.e("currency ", " ==> $currency")
         PrefManager.setCurrency(currency)
     }
 

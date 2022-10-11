@@ -176,10 +176,10 @@ class PesapalPayActivity : AppCompatActivity() {
                 }
                 "choose" -> {
                     val dateTime = TimeUtils.getCurrentDateTime()
-                    loadFragment(MainPesapalFragment.newInstance(BigDecimal(1).setScale(2).toString(),order_id!!,dateTime!!))
+                    loadFragment(MainPesapalFragment.newInstance(BigDecimal(amount).setScale(2).toString(),order_id!!,dateTime!!, currency!!))
                 }
                 "mpesa" -> {
-                    loadFragment(MpesaPesapalFragment.newInstance(BigDecimal(1),order_id!!,currency!!,accountNumber!!,callbackUrl!!))
+                    loadFragment(MpesaPesapalFragment.newInstance(BigDecimal(amount),order_id!!,currency!!,accountNumber!!,callbackUrl!!, first_name, last_name, email, phone))
                 }
                 "success_mpesa" -> {
                     if(transactionStatusResponse != null) {
