@@ -38,7 +38,6 @@ import com.pesapal.paymentgateway.viewmodel.AppViewModel
 import java.math.BigDecimal
 import java.util.*
 
-
 class BasketFragment: Fragment(), BucketListAdapter.clickedListener, BasketRecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     private val viewModel: AppViewModel by activityViewModels()
