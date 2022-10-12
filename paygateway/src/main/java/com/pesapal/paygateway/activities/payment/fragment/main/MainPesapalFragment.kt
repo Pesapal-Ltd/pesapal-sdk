@@ -16,7 +16,6 @@ import kotlin.Int
 import kotlin.getValue
 
 class MainPesapalFragment: Fragment() {
-
     private lateinit var binding: FragmentPesapalMainBinding
     private val viewModel: AppViewModel by activityViewModels()
     private lateinit var orderNumber: String

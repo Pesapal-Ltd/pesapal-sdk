@@ -14,7 +14,6 @@
     <color name="darker_faded_bg">#FAFBFB</color>
     <color name="colorGreyText">#666666</color>
     <color name="colorSuccess">#159F4A</color>
-
     <color name="faded_blue">#E1EAFA</color>
     <color name="light_gray_color">#efefef</color>
     <color name="light_gray">#404040</color>
@@ -23,7 +22,6 @@
     <color name="colorBackgroundInactive">#E0E0E0</color>
     <color name="colorGreyOutline">#949494</color>
 
-    <color name="txnStatusColor">#f6fafe</color>
     <color name="colorPrimary">#1c67a1</color>
     <color name="textDefault">#2a2a2a</color>
     <color name="black_thirty_eight">#61000000</color>

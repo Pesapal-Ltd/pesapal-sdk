@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.pesapal.paygateway.R
 import com.pesapal.paygateway.activities.payment.utils.PrefManager
 import com.pesapal.paygateway.activities.payment.utils.Status
@@ -63,13 +64,19 @@ class PesapalPayActivity : AppCompatActivity() {
         binding.cancelPayment.setOnClickListener {
             returnPaymentStatus("failed")
         }
+
+        binding.tvClose.setOnClickListener {
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+
     }
 
     private fun loadFragment(fragment: Fragment) {
         // load fragment
         val transaction = supportFragmentManager.beginTransaction()
+        val frag = fragment.toString()
         transaction.replace(R.id.frag_control, fragment,"list")
-        transaction.addToBackStack(null)
+        transaction.addToBackStack(frag)
         transaction.commit()
     }
 
@@ -172,7 +179,7 @@ class PesapalPayActivity : AppCompatActivity() {
         viewModel.loadFragment.observe(this){
             when(it.message){
                 "auth" -> {
-                    loadFragment(AuthFragment())
+                    loadFragment(AuthFragment.newInstance(consumer_key,consumer_secret))
                 }
                 "choose" -> {
                     val dateTime = TimeUtils.getCurrentDateTime()
