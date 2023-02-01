@@ -1,16 +1,22 @@
 package com.pesapal.paygateway.activities.payment.activity
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.cardinalcommerce.cardinalmobilesdk.Cardinal
+import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalEnvironment
+import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalRenderType
+import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
+import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
+import com.cardinalcommerce.shared.models.Warning
+import com.cardinalcommerce.shared.userinterfaces.UiCustomization
+import com.pesapal.paygateway.BuildConfig
 import com.pesapal.paygateway.R
-import com.pesapal.paygateway.activities.payment.utils.PrefManager
-import com.pesapal.paygateway.activities.payment.utils.Status
-import com.pesapal.paygateway.databinding.ActivityPesapalPayBinding
 import com.pesapal.paygateway.activities.payment.fragment.auth.AuthFragment
 import com.pesapal.paygateway.activities.payment.fragment.card.CardFragmentNewAddress
 import com.pesapal.paygateway.activities.payment.fragment.card.CardFragmentNewBilling
@@ -22,9 +28,14 @@ import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnRequest
+import com.pesapal.paygateway.activities.payment.utils.PrefManager
+import com.pesapal.paygateway.activities.payment.utils.Status
 import com.pesapal.paygateway.activities.payment.utils.TimeUtils
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
+import com.pesapal.paygateway.databinding.ActivityPesapalPayBinding
+import org.json.JSONArray
 import java.math.BigDecimal
+import java.util.logging.Logger
 
 
 class PesapalPayActivity : AppCompatActivity() {
@@ -45,6 +56,7 @@ class PesapalPayActivity : AppCompatActivity() {
     private var last_name: String? = ""
     private var email: String? = ""
     private var phone: String? = ""
+    private val cardinal: Cardinal = Cardinal.getInstance()
 
     private val viewModel: AppViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +70,47 @@ class PesapalPayActivity : AppCompatActivity() {
     private fun initData(){
         fetchSharedData()
         handleClick()
+        initCardinal()
+    }
+
+    private fun initCardinal(){
+        val cardinalConfigurationParameters = CardinalConfigurationParameters()
+        cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
+        cardinalConfigurationParameters.requestTimeout = 8000
+        cardinalConfigurationParameters.challengeTimeout = 5
+
+        val rTYPE = JSONArray()
+        rTYPE.put(CardinalRenderType.OTP)
+        rTYPE.put(CardinalRenderType.SINGLE_SELECT)
+        rTYPE.put(CardinalRenderType.MULTI_SELECT)
+        rTYPE.put(CardinalRenderType.OOB)
+        rTYPE.put(CardinalRenderType.HTML)
+        cardinalConfigurationParameters.renderType = rTYPE
+
+        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+        if(BuildConfig.DEBUG){
+            cardinalConfigurationParameters.environment =  CardinalEnvironment.STAGING
+            cardinalConfigurationParameters.isEnableLogging =  true
+        }else{
+            cardinalConfigurationParameters.environment =  CardinalEnvironment.PRODUCTION
+            cardinalConfigurationParameters.isEnableLogging =  false
+
+        }
+        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+//        cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
+//        cardinalConfigurationParameters.isLocationDataConsentGiven = true
+        val yourUICustomizationObject = UiCustomization()
+        cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
+        cardinal.configure(this, cardinalConfigurationParameters)
+        getAllWarnings()
+    }
+
+    private fun getAllWarnings(){
+        val warnings: List<Warning> = cardinal.warnings
+
+        Log.e(" warnings ",warnings.toString());
+
+
     }
 
     private fun handleClick(){
@@ -129,7 +182,6 @@ class PesapalPayActivity : AppCompatActivity() {
                     val token = it.data?.token
                     PrefManager.setToken(token)
                     registerIpn()
-                    Log.e(" SUCCESS ", " ====> SUCCESS")
                 }
                 Status.ERROR -> {
                     Log.e(" ERROR ", " ====> ERROR")
@@ -148,10 +200,8 @@ class PesapalPayActivity : AppCompatActivity() {
                     viewModel.loadFragment("choose")
                 }
                 Status.ERROR -> {
-                    Log.e(" ERROR ", " ====> ERROR")
                 }
                 else -> {
-                    Log.e(" else "," ====> register")
                 }
             }
         }

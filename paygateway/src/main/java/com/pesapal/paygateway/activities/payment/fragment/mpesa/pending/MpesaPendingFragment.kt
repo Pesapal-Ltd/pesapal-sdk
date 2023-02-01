@@ -119,7 +119,6 @@ class MpesaPendingFragment : Fragment() {
 
                     }
                     else -> {
-                        Log.e(" else ", " ====> auth")
                     }
                 }
             }
@@ -146,7 +145,6 @@ class MpesaPendingFragment : Fragment() {
                         }
                     }
                     else -> {
-                        Log.e(" else ", " ====> auth")
                     }
                 }
         }
@@ -173,12 +171,9 @@ class MpesaPendingFragment : Fragment() {
 
                 }
                 else -> {
-                    Log.e(" else ", " ====> auth")
                 }
             }
         }
-
-
 
     }
 

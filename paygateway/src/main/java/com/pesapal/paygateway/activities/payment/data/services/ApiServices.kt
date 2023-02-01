@@ -4,6 +4,8 @@ import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterI
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.auth.AuthResponseModel
+import com.pesapal.paygateway.activities.payment.model.fx.ForexChange
+import com.pesapal.paygateway.activities.payment.model.fx.ForexExchangeResponse
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyResponse
 import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
@@ -26,6 +28,9 @@ interface ApiServices {
 
     @GET("api/Transactions/GetTransactionStatus")
     suspend fun getTransactionStatus(@Query("orderTrackingId") orderTrackingId: String) : TransactionStatusResponse
+
+    @POST("api/fx/quote")
+    suspend fun getFxRate(@Body forexChange: ForexChange) : ForexExchangeResponse
 
 
 }

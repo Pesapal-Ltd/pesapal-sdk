@@ -64,4 +64,6 @@ dependencies {
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
     implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
 
+    implementation 'org.jfrog.cardinalcommerce.gradle:cardinalmobilesdk:2.2.6-1'
+
 }
