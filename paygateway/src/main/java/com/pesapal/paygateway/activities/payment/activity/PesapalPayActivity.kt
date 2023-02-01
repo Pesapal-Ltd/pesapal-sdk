@@ -96,7 +96,7 @@ class PesapalPayActivity : AppCompatActivity() {
             cardinalConfigurationParameters.isEnableLogging =  false
 
         }
-        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+//        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
 //        cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
 //        cardinalConfigurationParameters.isLocationDataConsentGiven = true
         val yourUICustomizationObject = UiCustomization()
@@ -108,8 +108,11 @@ class PesapalPayActivity : AppCompatActivity() {
     private fun getAllWarnings(){
         val warnings: List<Warning> = cardinal.warnings
 
-        Log.e(" warnings ",warnings.toString());
-
+        for(warning in warnings){
+            Log.e(" id ",warning.id);
+            Log.e(" severity ",warning.severity.toString());
+            Log.e(" message ",warning.message.toString());
+        }
 
     }
 
