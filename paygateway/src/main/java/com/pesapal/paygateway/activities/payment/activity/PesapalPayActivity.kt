@@ -1,7 +1,6 @@
 package com.pesapal.paygateway.activities.payment.activity
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -13,6 +12,8 @@ import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalEnvironment
 import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalRenderType
 import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
 import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
+import com.cardinalcommerce.cardinalmobilesdk.models.ValidateResponse
+import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
 import com.cardinalcommerce.shared.models.Warning
 import com.cardinalcommerce.shared.userinterfaces.UiCustomization
 import com.pesapal.paygateway.BuildConfig
@@ -35,7 +36,6 @@ import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 import com.pesapal.paygateway.databinding.ActivityPesapalPayBinding
 import org.json.JSONArray
 import java.math.BigDecimal
-import java.util.logging.Logger
 
 
 class PesapalPayActivity : AppCompatActivity() {
@@ -56,7 +56,7 @@ class PesapalPayActivity : AppCompatActivity() {
     private var last_name: String? = ""
     private var email: String? = ""
     private var phone: String? = ""
-    private val cardinal: Cardinal = Cardinal.getInstance()
+    private var cardinal: Cardinal = Cardinal.getInstance()
 
     private val viewModel: AppViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,7 +113,34 @@ class PesapalPayActivity : AppCompatActivity() {
             Log.e(" severity ",warning.severity.toString());
             Log.e(" message ",warning.message.toString());
         }
+        initSdk();
+    }
 
+    private fun initSdk(){
+        cardinal = Cardinal.getInstance()
+        val serverJwt = "INSERT_YOUR_JWT_HERE"
+        cardinal.init(serverJwt, object: CardinalInitService {
+            /**
+             * You may have your Submit button disabled on page load. Once you are set up
+             * for CCA, you may then enable it. This will prevent users from submitting
+             * their order before CCA is ready.
+             */
+
+            override fun onSetupCompleted(consumerSessionId: String) {
+                Log.e(" onSetupCompleted ", " ===> $consumerSessionId")
+            }
+
+            /**
+             * If there was an error with setup, cardinal will call this function with
+             * validate response and empty serverJWT
+             * @param validateResponse
+             * @param serverJwt will be an empty
+             */
+            override fun onValidated(validateResponse: ValidateResponse, serverJwt: String?) {
+                Log.e(" onSetupCompleted ", " ===> ${validateResponse.toString()}")
+
+            }
+        })
     }
 
     private fun handleClick(){
