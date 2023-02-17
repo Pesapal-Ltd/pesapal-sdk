@@ -26,9 +26,7 @@ class MpesaPesapalFragment : Fragment() {
     private lateinit var binding: FragmentPesapalMpesaBinding
     private val viewModel: AppViewModel by activityViewModels()
     private lateinit var pDialog: ProgressDialog
-    private lateinit var order_id: String
-    private lateinit var currency: String
-    private lateinit var accountNumber: String
+
     private  var firstname: String? = ""
     private  var lastname: String? = ""
     private  var email: String? = ""
@@ -36,6 +34,9 @@ class MpesaPesapalFragment : Fragment() {
     private lateinit var callbackUrl: String
     private var mobileMoneyResponse: MobileMoneyResponse? = null
     private var amount: BigDecimal = BigDecimal.ONE
+    private lateinit var order_id: String
+    private lateinit var currency: String
+    private lateinit var accountNumber: String
 
     override fun onCreateView(
         inflater: LayoutInflater,

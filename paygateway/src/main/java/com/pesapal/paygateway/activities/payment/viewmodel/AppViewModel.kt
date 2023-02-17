@@ -8,9 +8,14 @@ import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterI
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.auth.AuthResponseModel
+import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
+import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
+import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyResponse
 import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paygateway.activities.payment.model.server_jwt.RequestServerJwt
+import com.pesapal.paygateway.activities.payment.model.server_jwt.response.ResponseServerJwt
 import com.pesapal.paygateway.activities.payment.repo.PaymentRepository
 import com.pesapal.paygateway.activities.payment.utils.Resource
 import com.pesapal.paygateway.activities.payment.utils.Status
@@ -23,6 +28,15 @@ class AppViewModel : ViewModel() {
     private var _authPaymentResponse = MutableLiveData<Resource<AuthResponseModel>>()
     val authPaymentResponse: LiveData<Resource<AuthResponseModel>>
         get() = _authPaymentResponse
+
+    private var _dsToken = MutableLiveData<Resource<AuthResponseModel>>()
+    val dsToken: LiveData<Resource<AuthResponseModel>>
+        get() = _dsToken
+
+    private var _dsResponse = MutableLiveData<Resource<CheckDsResponse>>()
+    val dsResponse: LiveData<Resource<CheckDsResponse>>
+        get() = _dsResponse
+
 
     private var _registerIpnResponse = MutableLiveData<Resource<RegisterIpnResponse>>()
     val registerIpnResponse: LiveData<Resource<RegisterIpnResponse>>
@@ -57,6 +71,14 @@ class AppViewModel : ViewModel() {
     val loadSuccessMpesa: LiveData<Resource<TransactionStatusResponse>>
     get() = _loadSuccessMpesa
 
+    private var _serverJwt = MutableLiveData<Resource<ResponseServerJwt>>()
+    val serverJwt: LiveData<Resource<ResponseServerJwt>>
+    get() = _serverJwt
+
+
+
+
+
     fun authPayment(authRequestModel: AuthRequestModel) {
         _authPaymentResponse.postValue(Resource.loading("Initiating payment process ... "))
         viewModelScope.launch {
@@ -72,6 +94,42 @@ class AppViewModel : ViewModel() {
             }
         }
     }
+
+
+    fun getDsToken(dsTokenRequest: DsTokenRequest) {
+        _dsToken.postValue(Resource.loading("Initiating payment process ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.dsToken(dsTokenRequest)
+            when (result.status) {
+                Status.ERROR -> {
+                    _dsToken.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _dsToken.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+        }
+    }
+
+    fun check3ds(checkDSecureRequest: CheckDSecureRequest, token: String) {
+        _dsResponse.postValue(Resource.loading("Initiating payment process ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.check3ds(checkDSecureRequest,token)
+            when (result.status) {
+                Status.ERROR -> {
+                    _dsResponse.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _dsResponse.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+        }
+    }
+
+
+
 
     fun registerIpn(registerIpnRequest: RegisterIpnRequest){
         _registerIpnResponse.postValue(Resource.loading("Registering Ipn ... "))
@@ -134,6 +192,24 @@ class AppViewModel : ViewModel() {
                 }
                 Status.SUCCESS -> {
                     _transactionStatusBg.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+
+        }
+    }
+
+
+    fun serverJwt(requestServerJwt: RequestServerJwt){
+        _serverJwt.postValue(Resource.loading("Initializing txn ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.serverJwt(requestServerJwt)
+            when(result.status){
+                Status.ERROR -> {
+                    _serverJwt.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _serverJwt.postValue(Resource.success(result.data))
                 }
                 else -> {}
             }

@@ -11,6 +11,7 @@ import com.cardinalcommerce.cardinalmobilesdk.Cardinal
 import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalEnvironment
 import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalRenderType
 import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
+import com.cardinalcommerce.cardinalmobilesdk.models.CardinalActionCode
 import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
 import com.cardinalcommerce.cardinalmobilesdk.models.ValidateResponse
 import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
@@ -78,7 +79,6 @@ class PesapalPayActivity : AppCompatActivity() {
         cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
         cardinalConfigurationParameters.requestTimeout = 8000
         cardinalConfigurationParameters.challengeTimeout = 5
-
         val rTYPE = JSONArray()
         rTYPE.put(CardinalRenderType.OTP)
         rTYPE.put(CardinalRenderType.SINGLE_SELECT)
@@ -86,7 +86,6 @@ class PesapalPayActivity : AppCompatActivity() {
         rTYPE.put(CardinalRenderType.OOB)
         rTYPE.put(CardinalRenderType.HTML)
         cardinalConfigurationParameters.renderType = rTYPE
-
         cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
         if(BuildConfig.DEBUG){
             cardinalConfigurationParameters.environment =  CardinalEnvironment.STAGING
@@ -94,11 +93,12 @@ class PesapalPayActivity : AppCompatActivity() {
         }else{
             cardinalConfigurationParameters.environment =  CardinalEnvironment.PRODUCTION
             cardinalConfigurationParameters.isEnableLogging =  false
-
         }
-//        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
-//        cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
-//        cardinalConfigurationParameters.isLocationDataConsentGiven = true
+
+//     cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+//     cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
+//     cardinalConfigurationParameters.isLocationDataConsentGiven = true
+
         val yourUICustomizationObject = UiCustomization()
         cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
         cardinal.configure(this, cardinalConfigurationParameters)
@@ -113,35 +113,11 @@ class PesapalPayActivity : AppCompatActivity() {
             Log.e(" severity ",warning.severity.toString());
             Log.e(" message ",warning.message.toString());
         }
-        initSdk();
+
     }
 
-    private fun initSdk(){
-        cardinal = Cardinal.getInstance()
-        val serverJwt = "INSERT_YOUR_JWT_HERE"
-        cardinal.init(serverJwt, object: CardinalInitService {
-            /**
-             * You may have your Submit button disabled on page load. Once you are set up
-             * for CCA, you may then enable it. This will prevent users from submitting
-             * their order before CCA is ready.
-             */
 
-            override fun onSetupCompleted(consumerSessionId: String) {
-                Log.e(" onSetupCompleted ", " ===> $consumerSessionId")
-            }
 
-            /**
-             * If there was an error with setup, cardinal will call this function with
-             * validate response and empty serverJWT
-             * @param validateResponse
-             * @param serverJwt will be an empty
-             */
-            override fun onValidated(validateResponse: ValidateResponse, serverJwt: String?) {
-                Log.e(" onSetupCompleted ", " ===> ${validateResponse.toString()}")
-
-            }
-        })
-    }
 
     private fun handleClick(){
         binding.cancelPayment.setOnClickListener {
@@ -281,10 +257,10 @@ class PesapalPayActivity : AppCompatActivity() {
                     }
                 }
                 "card" -> {
-                    loadFragment(CardFragmentNewAddress.newInstance(first_name,last_name,email,phone))
+                    loadFragment(CardFragmentNewAddress.newInstance(BigDecimal(amount),order_id!!,currency!!,accountNumber!!,callbackUrl!!,first_name,last_name,email,phone))
                 }
                 "card2" -> {
-                    loadFragment(CardFragmentNewBilling())
+                    loadFragment(CardFragmentNewBilling.newInstance(BigDecimal(amount),order_id!!,currency!!,accountNumber!!,callbackUrl!!,first_name,last_name,email,phone))
                 }
             }
         }

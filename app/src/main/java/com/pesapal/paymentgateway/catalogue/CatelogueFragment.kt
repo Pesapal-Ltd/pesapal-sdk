@@ -54,10 +54,10 @@ class CatelogueFragment: Fragment() {
             listOf(
             CatalogueModel.ProductsBean("Blue Shirt",R.drawable.blue_shirt, BigDecimal(1).setScale(2), BigDecimal(3),"Tops",BigDecimal(5).setScale(2),"1"),
             CatalogueModel.ProductsBean("Red Shirt",R.drawable.red_shirt,BigDecimal(10).setScale(2),BigDecimal(5),"Tops",BigDecimal(15).setScale(2),"2"),
-            CatalogueModel.ProductsBean("Blue Pants",R.drawable.bluepant,BigDecimal(100).setScale(2),BigDecimal(8),"Pants",BigDecimal(110).setScale(2),"5"),
-            CatalogueModel.ProductsBean("Red Pants",R.drawable.redpant,BigDecimal(500).setScale(2),BigDecimal(2),"Pants",BigDecimal(510).setScale(2),"6"),
-            CatalogueModel.ProductsBean("Blue Shoes",R.drawable.shoesblue,BigDecimal(1000).setScale(2),BigDecimal(2),"Shoes",BigDecimal(1050).setScale(2),"9"),
-            CatalogueModel.ProductsBean("Red Shoes",R.drawable.shoesred,BigDecimal(5000).setScale(2),BigDecimal(12),"Shoes",BigDecimal(5550).setScale(2),"10"),
+//            CatalogueModel.ProductsBean("Blue Pants",R.drawable.bluepant,BigDecimal(100).setScale(2),BigDecimal(8),"Pants",BigDecimal(110).setScale(2),"5"),
+//            CatalogueModel.ProductsBean("Red Pants",R.drawable.redpant,BigDecimal(500).setScale(2),BigDecimal(2),"Pants",BigDecimal(510).setScale(2),"6"),
+//            CatalogueModel.ProductsBean("Blue Shoes",R.drawable.shoesblue,BigDecimal(1000).setScale(2),BigDecimal(2),"Shoes",BigDecimal(1050).setScale(2),"9"),
+//            CatalogueModel.ProductsBean("Red Shoes",R.drawable.shoesred,BigDecimal(5000).setScale(2),BigDecimal(12),"Shoes",BigDecimal(5550).setScale(2),"10"),
             )
         )
 

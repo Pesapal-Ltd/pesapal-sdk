@@ -154,6 +154,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="phone"
                         android:maxLength="15"
+                        android:text="+254112826460"
                         android:maxLines="1"
                         android:paddingStart="15dp"
                         android:textSize="12sp" />
@@ -174,6 +175,7 @@
                         android:inputType="text"
                         android:maxLength="50"
                         android:maxLines="1"
+                        android:text="Kiambu"
                         android:paddingStart="15dp"
                         android:textSize="12sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -200,6 +202,7 @@
                             android:inputType="number"
                             android:maxLength="6"
                             android:maxLines="1"
+                            android:text="00900"
                             android:nextFocusDown="@id/et_city"
                             android:paddingStart="15dp"
                             android:textSize="12sp" />
@@ -218,6 +221,7 @@
                             android:hint="@string/add_card_city"
                             android:inputType="text"
                             android:maxLength="50"
+                            android:text="Ikinu"
                             android:maxLines="1"
                             android:paddingStart="15dp"
                             android:textSize="12sp" />

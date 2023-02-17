@@ -29,7 +29,7 @@ class ProductDetailsSheet(): BottomSheetDialogFragment() {
     private lateinit var btnWishList: Button
     private lateinit var btnAddToCart: Button
     private lateinit var catalogueModel: CatalogueModel.ProductsBean
-
+ 
 
     //2
     companion object {

@@ -26,20 +26,20 @@ object ApiClient {
             val builder = OkHttpClient.Builder()
             builder.addInterceptor(interceptor)
                 .addInterceptor { chain ->
-                    if(PrefManager.getToken() != null) {
-                        val token =  "Bearer "+PrefManager.getToken()
+//                    if(PrefManager.getToken() != null) {
+//                        val token =  "Bearer "+PrefManager.getToken()
+//                        val newRequest = chain.request().newBuilder()
+//                            .addHeader(
+//                                "Authorization",
+//                                token
+//                            )
+//                            .build()
+//                        chain.proceed(newRequest)
+//                    }else{
                         val newRequest = chain.request().newBuilder()
-                            .addHeader(
-                                "Authorization",
-                                token
-                            )
                             .build()
                         chain.proceed(newRequest)
-                    }else{
-                        val newRequest = chain.request().newBuilder()
-                            .build()
-                        chain.proceed(newRequest)
-                    }
+//                    }
 
                 }
             return builder.build()

@@ -14,17 +14,33 @@ import com.pesapal.paygateway.databinding.FragmentNewCardAddressBinding
 import com.pesapal.paygateway.activities.payment.model.BillingDetails
 import com.pesapal.paygateway.activities.payment.setButtonEnabled
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
+import java.math.BigDecimal
 
 
 class CardFragmentNewAddress : Fragment() {
 
     private lateinit var binding: FragmentNewCardAddressBinding
 
+    private var first_name: String? = ""
+    private var last_name: String? = ""
+    private var email: String? = ""
+    private var phone: String? = ""
+    private var amount: BigDecimal = BigDecimal.ONE
+    private lateinit var order_id: String
+    private lateinit var currency: String
+    private lateinit var accountNumber: String
+    private lateinit var callbackUrl: String
+
     companion object {
         private const val cardNumberLength = 19
         const val CARD_DATA = "data"
-        fun newInstance(first_name: String?, last_name: String?,email: String?, phone: String? ): CardFragmentNewAddress {
+        fun newInstance(amount: BigDecimal, order_id: String, currency: String, accountNumber: String, callbackUrl: String, first_name: String?, last_name: String?, email: String?, phone: String? ): CardFragmentNewAddress {
             val fragment = CardFragmentNewAddress()
+            fragment.amount = amount
+            fragment.order_id = order_id
+            fragment.currency = currency
+            fragment.accountNumber = accountNumber
+            fragment.callbackUrl = callbackUrl
             fragment.first_name = first_name
             fragment.last_name = last_name
             fragment.email = email
@@ -42,10 +58,8 @@ class CardFragmentNewAddress : Fragment() {
     private var isCityFilled = false
     private var enable = false
 
-    private var first_name: String? = ""
-    private var last_name: String? = ""
-    private var email: String? = ""
-    private var phone: String? = ""
+
+
 
     private val viewModel: AppViewModel by activityViewModels()
 
@@ -63,6 +77,7 @@ class CardFragmentNewAddress : Fragment() {
         handleClickListener()
         handleChangeListener()
         initData()
+        binding.acbNextStep.setButtonEnabled(true)
     }
 
     private fun initData(){
@@ -144,7 +159,7 @@ class CardFragmentNewAddress : Fragment() {
 
     private fun handleClickListener(){
         binding.acbNextStep.setOnClickListener {
-            if(enable){
+//            if(enable){
                 val bundle = Bundle()
                 val billingDetails = createBillingDetails()
                 bundle.putParcelable(CARD_DATA, billingDetails)
@@ -154,9 +169,9 @@ class CardFragmentNewAddress : Fragment() {
 //                }
 
 
-            }else{
-                showMessage("All inputs required ...")
-            }
+//            }else{
+//                showMessage("All inputs required ...")
+//            }
         }
     }
 
@@ -167,7 +182,7 @@ class CardFragmentNewAddress : Fragment() {
         details.city = binding.etCity.text.toString()
         details.email = binding.etEmail.text.toString()
         details.street = binding.etAddress.text.toString()
-        details.msisdn = binding.etPhoneNumber.rawText.toString()
+        details.msisdn = "0112826460"
         details.firstName = binding.etFirstName.text.toString()
         details.lastName = binding.etSurname.text.toString()
         details.country = binding.countryCodePicker.selectedCountryName
@@ -178,7 +193,7 @@ class CardFragmentNewAddress : Fragment() {
 
     private fun checkFilled(){
         enable = isFirstNameFilled && isSurnameFilled && isEmailFilled  && isPhonelFilled && isAddressFilled && isPostalCodeFilled && isCityFilled
-        binding.acbNextStep.setButtonEnabled(enable)
+//        binding.acbNextStep.setButtonEnabled(enable)
     }
 
     private fun showMessage(message: String){
