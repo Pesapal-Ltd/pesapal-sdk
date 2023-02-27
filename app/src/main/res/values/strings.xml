@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">API3 demo</string>
+    <string name="app_name">PESAPAL API3 DEMO</string>
+    <string name="handle_profile">PROFILE</string>
 </resources>

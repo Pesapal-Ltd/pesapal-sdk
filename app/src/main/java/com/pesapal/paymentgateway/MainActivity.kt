@@ -18,6 +18,7 @@ import com.pesapal.paymentgateway.adapter.DemoCartAdapter
 import com.pesapal.paymentgateway.databinding.ActivityMainBinding
 import com.pesapal.paymentgateway.model.CatalogueModel
 import com.pesapal.paymentgateway.model.UserModel
+import com.pesapal.paymentgateway.profile.ProfileActivity
 import com.pesapal.paymentgateway.utils.PrefManager
 import com.pesapal.paymentgateway.utils.TimeUtils
 import com.squareup.picasso.Picasso
@@ -30,11 +31,11 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     private lateinit var binding:ActivityMainBinding
     private var currency = PrefManager.getCurrency()
-     lateinit var basketListModel: MutableList<CatalogueModel.ProductsBean>
     private lateinit var auth: FirebaseAuth
     private var total = BigDecimal.ZERO
     private lateinit var demoCartAdapter: DemoCartAdapter
     private lateinit var catalogueModelList: MutableList<CatalogueModel.ProductsBean>
+    private lateinit var itemModelList: MutableList<CatalogueModel.ProductsBean>
     private var orderId = ""
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var userModel: UserModel
@@ -49,18 +50,15 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun initData(){
-        basketListModel = arrayListOf()
-        handleViewModel()
         setToolBar()
-        iniRecyclerData()
-        orderId = createTransactionID()
+        initRecyclerData()
         handleClicks()
     }
 
-    private fun createTransactionID(): String {
-        return UUID.randomUUID().toString().uppercase().substring(0,8)
+    private fun setToolBar(){
+        this.setSupportActionBar(binding.toolbar);
+        this.supportActionBar!!.title = getString(R.string.app_name)
     }
-
 
     private fun handleClicks(){
         binding.btnCheckOut.setOnClickListener {
@@ -70,8 +68,15 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
                 handleGoogleSignIn()
             }
         }
+
+        binding.civProfile.setOnClickListener {
+            startProfile()
+        }
     }
 
+    private fun startProfile(){
+        startActivity(Intent(this,ProfileActivity::class.java))
+    }
 
     private fun configureGoogleSign() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -87,8 +92,11 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    private fun iniRecyclerData(){
+    private fun initRecyclerData(){
         catalogueModelList = arrayListOf()
+        itemModelList = arrayListOf()
+        orderId = createTransactionID()
+
         catalogueModelList.addAll(
             listOf(
                 CatalogueModel.ProductsBean("Blue Shirt",R.drawable.blue_shirt, BigDecimal(5).setScale(2)),
@@ -104,24 +112,13 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     }
 
-
-
-
-    private fun setToolBar(){
-        this.setSupportActionBar(binding.toolbar);
-        this.supportActionBar!!.title = "API3 DEMO"
+    private fun createTransactionID(): String {
+        return UUID.randomUUID().toString().uppercase().substring(0,8)
     }
-
-
-    private fun handleViewModel(){
-
-
-    }
-
 
     private fun updateBasketList(){
         total = BigDecimal.ZERO
-        for(catelog in basketListModel){
+        for(catelog in itemModelList){
             total += catelog.price
         }
         binding.totalPrice.text = currency+" ${total.setScale(2)}"
@@ -201,10 +198,10 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     override fun Clicked(isAdd: Boolean, story: CatalogueModel.ProductsBean) {
         if(isAdd){
-            basketListModel.add(story)
+            itemModelList.add(story)
             updateBasketList()
         }else{
-            basketListModel.remove(story)
+            itemModelList.remove(story)
             updateBasketList()
         }
     }
@@ -227,7 +224,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 val result = data?.getStringExtra("result")
                 if (result.equals("COMPLETED")){
-                    catalogueModelList.clear()
+                    itemModelList.clear()
                     demoCartAdapter.notifyDataSetChanged()
                     orderId = createTransactionID()
                     showMessage("Payment confirmed successfully, Continue shopping ...")

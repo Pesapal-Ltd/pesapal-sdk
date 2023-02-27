@@ -1,63 +1,57 @@
 package com.pesapal.paymentgateway.profile
-
-import android.R
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.pesapal.paymentgateway.MainActivity
-import com.pesapal.paymentgateway.databinding.FragmentProfileBinding
+import com.pesapal.paymentgateway.R
+import com.pesapal.paymentgateway.databinding.ActivityProfileBinding
 import com.pesapal.paymentgateway.model.UserModel
 import com.pesapal.paymentgateway.utils.PrefManager
 import com.squareup.picasso.Picasso
 
-class ProfileFragment: Fragment(), AdapterView.OnItemSelectedListener {
-    private lateinit var binding: FragmentProfileBinding
+class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
+    private lateinit var binding: ActivityProfileBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
     var testCurrency = mutableListOf<String>()
-    var otherCurrency = mutableListOf<String>("KES", "UGX", "USD")
+    var otherCurrency = mutableListOf("KES", "UGX", "USD")
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentProfileBinding.inflate(layoutInflater)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        auth = FirebaseAuth.getInstance()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityProfileBinding.inflate(layoutInflater);
+        setContentView(binding.root)
+        setToolBar()
         initData()
         configureGoogleSign()
     }
 
+    private fun setToolBar(){
+        this.setSupportActionBar(binding.toolbar);
+        this.supportActionBar!!.title = getString(R.string.handle_profile)
+    }
 
     private fun configureGoogleSign() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(com.pesapal.paymentgateway.R.string.default_web_client_id))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
 
     private fun initData(){
+        auth = FirebaseAuth.getInstance()
+
         binding.layoutProfile.spinnerCurrency.onItemSelectedListener = this;
         val default = PrefManager.getCurrency()
         testCurrency.add(default)
@@ -66,9 +60,8 @@ class ProfileFragment: Fragment(), AdapterView.OnItemSelectedListener {
 
 
 
-        val ad = ArrayAdapter(
-            requireContext(),
-            R.layout.simple_spinner_item,
+        val ad = ArrayAdapter(this,
+            android.R.layout.simple_spinner_item,
             testCurrency
         )
 
@@ -99,9 +92,9 @@ class ProfileFragment: Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     fun restart() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        requireActivity().startActivity(intent)
-        requireActivity().finishAffinity()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finishAffinity()
     }
 
     private fun fetchUserDetails(){
@@ -134,7 +127,7 @@ class ProfileFragment: Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun showMessage(message: String){
-        Toast.makeText(requireContext(),message, Toast.LENGTH_LONG).show()
+        Toast.makeText(this,message, Toast.LENGTH_LONG).show()
     }
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         val currency = testCurrency[p2]
