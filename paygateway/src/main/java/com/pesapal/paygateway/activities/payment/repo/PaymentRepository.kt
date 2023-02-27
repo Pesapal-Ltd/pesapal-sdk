@@ -117,7 +117,7 @@ class PaymentRepository {
         return withContext(Dispatchers.IO){
             try{
                 val serverJwt = apiService.getServerJwt("Bearer "+ PrefManager.getToken(),requestServerJwt)
-                if(serverJwt.status != null && (serverJwt.status == "200")){
+                if(serverJwt.status == "200"){
                     Resource.success(serverJwt)
                 }else{
                     val error = serverJwt.message;

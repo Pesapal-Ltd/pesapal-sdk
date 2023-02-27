@@ -16,6 +16,8 @@ import com.cardinalcommerce.cardinalmobilesdk.Cardinal
 import com.cardinalcommerce.cardinalmobilesdk.models.ValidateResponse
 import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
 import com.cardinalcommerce.cardinalmobilesdk.services.CardinalValidateReceiver
+import com.google.gson.Gson
+import com.pesapal.paygateway.activities.payment.model.cacontinie.*
 import com.pesapal.paygateway.activities.payment.model.check3ds.BillingDetails
 import com.pesapal.paygateway.activities.payment.model.check3ds.CardDetails3Ds
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
@@ -23,12 +25,14 @@ import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenReq
 import com.pesapal.paygateway.activities.payment.model.mobile_money.BillingAddress
 import com.pesapal.paygateway.activities.payment.model.server_jwt.CardDetails
 import com.pesapal.paygateway.activities.payment.model.server_jwt.RequestServerJwt
+import com.pesapal.paygateway.activities.payment.model.server_jwt.response.OriginalPayloadModel
 import com.pesapal.paygateway.activities.payment.model.server_jwt.response.ResponseServerJwt
 import com.pesapal.paygateway.activities.payment.setButtonEnabled
 import com.pesapal.paygateway.activities.payment.utils.FragmentExtension.hideKeyboard
 import com.pesapal.paygateway.activities.payment.utils.Status
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 import com.pesapal.paygateway.databinding.FragmentNewCardDetailsBinding
+import org.json.JSONObject
 import java.math.BigDecimal
 
 
@@ -278,7 +282,7 @@ class CardFragmentNewBilling : Fragment() {
             zipCode = "")
 
         var requestServerJwt = RequestServerJwt(
-            BigDecimal("1500"),currency, billingAddress = billingAddress
+            BigDecimal("1500"),currency, billingAddress = billingAddress, cardDetails = cardDetails
         )
 
 //        initSdk();
@@ -343,7 +347,15 @@ class CardFragmentNewBilling : Fragment() {
                 }
                 Status.SUCCESS -> {
                     var response = it.data
-                    handle3dSecure(response!!.authenticationTransactionId, response.payload);
+                    val gson = Gson()
+
+                    var responseString = gson.toJson(response)
+                    Log.e(" responseString ", responseString)
+
+                    var payAcsUrlload = response?.acsUrl
+                    var payload = response?.payload
+
+                    handle3dSecure(response!!.authenticationTransactionId,payload!!,payAcsUrlload!!);
                 }
                 Status.ERROR -> {
 //                    showMessage(it.message!!)
@@ -436,13 +448,56 @@ class CardFragmentNewBilling : Fragment() {
     }
 
 
-    private fun handle3dSecure(transactionId: String, payload: String){
+    private fun handle3dSecure(transactionId: String, payload: String,acsUrl: String ){
 
         try {
 
-            val payloadData = responseServerJwt!!.originalPayload.replace("\\\"", "")
-            Log.e(" payloadData ", " ===> $payloadData")
-            cardinal?.cca_continue(transactionId, payload,requireActivity(),object: CardinalValidateReceiver{
+            var orderDetails = OrderDetails(
+                "404",
+                "P",
+                amount = amount.toString(),
+                orderNumber = "test_order",
+                transactionId = consumerSessionId!!
+            )
+
+            var account = Account(
+                nameOnAccount = first_name+""+last_name,
+                cardCode = cvv,
+                expirationMonth = expiryMonthData,
+                expirationYear = "20"+expiryYearData,
+                accountNumber =  numberCard
+            )
+
+            var consumer = Consumer(
+                account = account
+            )
+
+            var ccaExtension = CCAExtension(
+                merchantName = "PESAPAL LTD"
+            )
+
+            var payloadCanContinueModel = PayloadCanContinueModel(
+                cCAExtension = ccaExtension,
+                consumer = consumer,
+                orderDetails = orderDetails,
+                payload = payload,
+                acsUrl = acsUrl,
+            )
+
+            val gson = Gson()
+            var stringPayload = gson.toJson(payloadCanContinueModel)
+            var stringPayloadv1 = stringPayload.replace("\\u0026", "&");
+            var stringPayloadv2 = stringPayloadv1.replace("\\u003d", "=");
+
+            Log.e(" stringPayloadv2 ",stringPayloadv2)
+
+//            var jsonObject = JSONObject(stringPayloadv2)
+//
+//            Log.e(" jsonObject s",jsonObject.toString())
+
+
+
+            cardinal?.cca_continue(transactionId,stringPayloadv2,requireActivity(),object: CardinalValidateReceiver{
                 override fun onValidated(p0: Context?, validateResponse: ValidateResponse?, serverJWT: String?) {
                     /**
                      * This method is triggered when the transaction has been terminated. This is how SDK hands back
@@ -456,7 +511,7 @@ class CardFragmentNewBilling : Fragment() {
                      * @param serverJWT
                      */
 //                    handleValidation(validateResponse!!)
-                    Log.e(" cca_continue ", " ===> "+validateResponse.toString())
+                    Log.e(" cca_continue ", " ===> "+validateResponse!!.errorDescription)
 
 
 
@@ -467,6 +522,8 @@ class CardFragmentNewBilling : Fragment() {
 
         } catch (e: Exception) {
             // Handle exception
+            Log.e(" Exception ", " ===> "+e.localizedMessage)
+
         }
     }
 

@@ -7,18 +7,18 @@ data class BillingDetails(@SerializedName("country")
                           @SerializedName("city")
                           val city: String = "",
                           @SerializedName("street")
-                          val street: String = "",
+                          val street: String? = "",
                           @SerializedName("last_name")
                           val lastName: String = "",
                           @SerializedName("phone_number")
                           val phoneNumber: String = "",
                           @SerializedName("currency")
-                          val currency: String = "",
+                          val currency: String? = "",
                           @SerializedName("state")
                           val state: String? = null,
                           @SerializedName("postal_code")
-                          val postalCode: String = "",
+                          val postalCode: String? = "",
                           @SerializedName("first_name")
-                          val firstName: String = "",
+                          val firstName: String? = "",
                           @SerializedName("email")
-                          val email: String = "")
+                          val email: String? = "")

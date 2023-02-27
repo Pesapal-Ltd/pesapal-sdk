@@ -9,5 +9,7 @@ data class RequestServerJwt(@SerializedName("amount")
                             @SerializedName("currency")
                             val currency: String = "",
                             @SerializedName("billing_address")
-                            val billingAddress: BillingAddress
+                            val billingAddress: BillingAddress,
+                            @SerializedName("card_details")
+                            val cardDetails: CardDetails,
                             )

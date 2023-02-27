@@ -1,205 +1,131 @@
 package com.pesapal.paymentgateway
-
-import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.viewModels
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import com.pesapal.paymentgateway.basket.BasketFragment
-import com.pesapal.paymentgateway.catalogue.CatelogueFragment
+import com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity
+import com.pesapal.paymentgateway.adapter.DemoCartAdapter
+import com.pesapal.paymentgateway.databinding.ActivityMainBinding
 import com.pesapal.paymentgateway.model.CatalogueModel
-import com.pesapal.paymentgateway.profile.ProfileFragment
-import com.pesapal.paymentgateway.viewmodel.AppViewModel
+import com.pesapal.paymentgateway.model.UserModel
+import com.pesapal.paymentgateway.utils.PrefManager
+import com.pesapal.paymentgateway.utils.TimeUtils
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import java.math.BigDecimal
+import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
-    private lateinit var navigationView: BottomNavigationView
-    private lateinit var toolbar: Toolbar
-    private lateinit var circularImageView: CircleImageView
-    private lateinit var catalogueList: MutableList<CatalogueModel.ProductsBean>
-    private lateinit var wishList: MutableList<CatalogueModel.ProductsBean>
-    private lateinit var basketListModel: MutableList<CatalogueModel.ProductsBean>
-    private val viewModel: AppViewModel by viewModels()
-    private lateinit var catalogueModel: CatalogueModel;
+    private lateinit var binding:ActivityMainBinding
+    private var currency = PrefManager.getCurrency()
+     lateinit var basketListModel: MutableList<CatalogueModel.ProductsBean>
     private lateinit var auth: FirebaseAuth
-
+    private var total = BigDecimal.ZERO
+    private lateinit var demoCartAdapter: DemoCartAdapter
+    private lateinit var catalogueModelList: MutableList<CatalogueModel.ProductsBean>
+    private var orderId = ""
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var userModel: UserModel
+    private var PAYMENT_REQUEST = 100001
+    private var RC_SIGN_IN = 100002
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater);
+        setContentView(binding.root)
         initData()
     }
 
     private fun initData(){
-        catalogueList = arrayListOf()
-        wishList = arrayListOf()
         basketListModel = arrayListOf()
-        navigationView = findViewById(R.id.activity_main_bottom_navigation_view)
-        toolbar = findViewById(R.id.toolbar)
-        circularImageView = findViewById(R.id.civProfile)
-        navigationView.setOnItemSelectedListener(selectedListener)
-
         handleViewModel()
-        seearchCatalogue();
         setToolBar()
+        iniRecyclerData()
+        orderId = createTransactionID()
+        handleClicks()
     }
+
+    private fun createTransactionID(): String {
+        return UUID.randomUUID().toString().uppercase().substring(0,8)
+    }
+
+
+    private fun handleClicks(){
+        binding.btnCheckOut.setOnClickListener {
+            if(auth.currentUser != null){
+                startPayment()
+            }else {
+                handleGoogleSignIn()
+            }
+        }
+    }
+
+
+    private fun configureGoogleSign() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+    }
+
+    private fun handleGoogleSignIn() {
+        val signInIntent: Intent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    private fun iniRecyclerData(){
+        catalogueModelList = arrayListOf()
+        catalogueModelList.addAll(
+            listOf(
+                CatalogueModel.ProductsBean("Blue Shirt",R.drawable.blue_shirt, BigDecimal(5).setScale(2)),
+                CatalogueModel.ProductsBean("Red Shirt",R.drawable.red_shirt, BigDecimal(10).setScale(2)),
+            )
+        )
+
+        demoCartAdapter = DemoCartAdapter(this)
+        binding.rv.layoutManager = LinearLayoutManager(this)
+        binding.rv.adapter = demoCartAdapter
+        demoCartAdapter.setData(catalogueModelList)
+
+
+    }
+
+
+
 
     private fun setToolBar(){
-        this.setSupportActionBar(toolbar);
-        this.supportActionBar!!.title = "Catalogue ( Dev Version )"
+        this.setSupportActionBar(binding.toolbar);
+        this.supportActionBar!!.title = "API3 DEMO"
     }
-
-    private fun seearchCatalogue(){
-        navigationView.selectedItemId = R.id.miCatalogue
-    }
-
 
 
     private fun handleViewModel(){
-        viewModel.selectedCategory.observe(this) {
-            this.catalogueModel = catalogueModel
-        }
 
-        viewModel.searchCatalogueMessage.observe(this){
-            if(it != null){
-//                handleProgressBar(false)
-                showMessage(it)
-            }
-        }
-
-        viewModel.catalogueResponse.observe(this){
-            //handleProgressBar(false)
-            setCatalogueResponse(it)
-        }
-
-        viewModel.addCatalogueAddWishList.observe(this){
-            if(it != null) {
-                wishList.add(it)
-                updateBasketList()
-            }
-        }
-        viewModel.addCatalogueBucketList.observe(this){
-            if(it != null) {
-                basketListModel.add(it)
-                updateBasketList()
-            }
-        }
-
-        viewModel.removeCatalogueAddWishList.observe(this){
-            if(it != null){
-                wishList.remove(it)
-                updateBasketList()
-            }
-        }
-
-        viewModel.removeCatalogueBucketList.observe(this){
-            if(it != null){
-                removeFromBucket(it)
-                updateBasketList()
-            }
-        }
-
-        viewModel.removeAllCatalogueBucketList.observe(this){
-            if(it != null){
-                updateBasketList()
-            }
-        }
-
-        viewModel.checkOutCatalogue.observe(this){
-            if(it){
-                basketListModel.clear()
-                updateBasketList()
-            }
-        }
 
     }
 
 
     private fun updateBasketList(){
-        if(basketListModel.size > 0) {
-            navigationView.getOrCreateBadge(R.id.miBasket).isVisible = true
-            navigationView.getOrCreateBadge(R.id.miBasket).number = basketListModel.size;
-        }else{
-            navigationView.getOrCreateBadge(R.id.miBasket).isVisible = false
+        total = BigDecimal.ZERO
+        for(catelog in basketListModel){
+            total += catelog.price
         }
-    }
-
-
-
-    private fun removeFromBucket(catalogueModel: CatalogueModel.ProductsBean){
-        basketListModel.remove(catalogueModel)
-    }
-
-    private fun setCatalogueResponse(catalogueModel: CatalogueModel){
-        catalogueList.addAll(catalogueModel.products!!)
-    }
-
-    private val selectedListener =
-        BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.miCatalogue -> {
-                    loadCategory()
-                    return@OnNavigationItemSelectedListener true
-                }
-
-                R.id.miBasket -> {
-                    loadBucket()
-                    return@OnNavigationItemSelectedListener true
-                }
-
-                R.id.miProfile -> {
-                    loadProfile()
-                    return@OnNavigationItemSelectedListener true
-                }
-            }
-            false
-        }
-
-
-    private fun loadCategory(){
-        val categoryFragment = CatelogueFragment.newInstance(catalogueList)
-        loadFragment(categoryFragment)
-        if(this.supportActionBar != null) {
-            this.supportActionBar!!.title = "Catalogue ( Dev Version )"
-        }
-    }
-
-    private fun loadBucket(){
-        val basketFragment = BasketFragment.newInstance(basketListModel)
-        loadFragment(basketFragment)
-
-        if(this.supportActionBar != null) {
-            this.supportActionBar!!.title = "Bucket ( Dev Version )"
-        }
-    }
-    private fun loadProfile(){
-        val profileFragment = ProfileFragment()
-        loadFragment(profileFragment)
-
-        if(this.supportActionBar != null) {
-            this.supportActionBar!!.title = "Profile ( Dev Version )"
-        }
-    }
-
-
-    private fun loadFragment(fragment: Fragment) {
-
-        val fragmnt: FragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmnt.beginTransaction()
-        fragmentTransaction.replace(R.id.mainFrag,fragment)
-        fragmentTransaction.commitAllowingStateLoss()
-
+        binding.totalPrice.text = currency+" ${total.setScale(2)}"
+        binding.tvOrderId.text = "Order ID $orderId"
     }
 
 
@@ -208,13 +134,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     override fun onResume() {
         super.onResume()
         auth = FirebaseAuth.getInstance()
         if(auth.currentUser != null){
             getProfile()
         }
+        configureGoogleSign()
     }
 
     private fun getProfile(){
@@ -234,11 +160,132 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setImage(photoUrl: String){
-        Picasso.get().load(photoUrl).into(circularImageView);
+        Picasso.get().load(photoUrl).into(binding.civProfile);
     }
+
+    private fun startPayment(){
+        val db = FirebaseFirestore.getInstance()
+        val documentBalance = db.collection("users").document(auth.currentUser?.email!!).get()
+        documentBalance.addOnCompleteListener {
+            if(it.isSuccessful){
+                val displayName: String = it.result.get("displayName").toString()
+                val firstName: String = it.result.get("firstName").toString()
+                val lastName: String = it.result.get("lastName").toString()
+                val email: String? = it.result.get("email").toString()
+                val photoUrl: String? = it.result.get("photoUrl").toString()
+                val time: String? = it.result.get("time").toString()
+                userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
+                initPayment()
+            }else{
+                showMessage("Unable to get your account ")
+            }
+        }
+
+    }
+
+    private fun initPayment(){
+        val myIntent = Intent(this, PesapalPayActivity::class.java)
+        myIntent.putExtra("consumer_key",PrefManager.getConsumerKey())
+        myIntent.putExtra("consumer_secret",PrefManager.getConsumerSecret())
+        myIntent.putExtra("amount",total.toString())
+        myIntent.putExtra("order_id",orderId)
+        myIntent.putExtra("currency",PrefManager.getCurrency())
+        myIntent.putExtra("accountNumber",PrefManager.getAccount())
+        myIntent.putExtra("callbackUrl",PrefManager.getCallBackUrl())
+        myIntent.putExtra("firstName",userModel.firstName)
+        myIntent.putExtra("lastName",userModel.lastName)
+        myIntent.putExtra("email",userModel.email)
+        startActivityForResult(myIntent,PAYMENT_REQUEST)
+    }
+
+
+    override fun Clicked(isAdd: Boolean, story: CatalogueModel.ProductsBean) {
+        if(isAdd){
+            basketListModel.add(story)
+            updateBasketList()
+        }else{
+            basketListModel.remove(story)
+            updateBasketList()
+        }
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                firebaseAuthWithGoogle(account)
+            } catch (e: Exception) {
+                showMessage("An error occurred " + e.localizedMessage)
+            }
+        }else if (requestCode == PAYMENT_REQUEST) {
+            if (resultCode == AppCompatActivity.RESULT_OK) {
+                val result = data?.getStringExtra("result")
+                if (result.equals("COMPLETED")){
+                    catalogueModelList.clear()
+                    demoCartAdapter.notifyDataSetChanged()
+                    orderId = createTransactionID()
+                    showMessage("Payment confirmed successfully, Continue shopping ...")
+                }else{
+                    orderId = createTransactionID()
+                    showMessage("An error occurred processing payment ...")
+                }
+            }
+        }
+    }
+
+
+
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    showMessage("Login Success ...")
+                    val isNew: Boolean = it.result?.additionalUserInfo!!.isNewUser
+                    if(isNew) {
+                        loginSuccess(account)
+                    }else{
+                        startPayment()
+                    }
+                } else {
+                    showMessage("Unable to login ..")
+                }
+            }
+    }
+
+    private fun loginSuccess(credential: GoogleSignInAccount){
+        val dateTime = TimeUtils.getCurrentDateTime()
+        val db = FirebaseFirestore.getInstance()
+        val email = credential.email
+        val displayName = credential.displayName
+        val fname = credential.givenName
+        val lname = credential.familyName
+        val profileUrl = credential.photoUrl.toString()
+
+        userModel = UserModel(
+            displayName,
+            fname,
+            lname,
+            email,
+            profileUrl,
+            dateTime
+        )
+
+        db.collection("users")
+            .document(email!!)
+            .set(userModel)
+            .addOnSuccessListener {
+                startPayment()
+            }
+            .addOnFailureListener {
+                showMessage(" Unable to login "+it.localizedMessage)
+            }
     }
 
 

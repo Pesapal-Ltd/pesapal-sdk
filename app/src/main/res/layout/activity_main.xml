@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/rvBg"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -23,7 +24,6 @@
             android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/civProfile"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -38,30 +38,69 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <FrameLayout
-        android:id="@+id/mainFrag"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintBottom_toTopOf="@+id/activity_main_bottom_navigation_view"
-        />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/activity_main_bottom_navigation_view"
+        app:layout_constraintBottom_toTopOf="@+id/llCheckOut"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        tools:listitem="@layout/row_catalogue"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:itemIconTint="@drawable/active_tab_color"
-        app:itemTextColor="@drawable/active_tab_color"
-        android:background="@color/white"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_items"
-        />
+        android:layout_height="0dp"/>
 
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/llCheckOut"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        app:cardBackgroundColor="@color/white"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCheckOut"
+                android:layout_width="130dp"
+                android:background="@drawable/background_curved"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="CheckOut"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/accentColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="40dp"/>
+
+            <TextView
+                android:id="@+id/totalPrice"
+                android:layout_gravity="end"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:id="@+id/tvOrderId"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/totalPrice"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

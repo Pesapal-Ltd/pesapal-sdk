@@ -10,7 +10,6 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
                  <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
@@ -126,7 +125,7 @@
                                 android:nextFocusDown="@+id/month_field"
                                 android:paddingStart="20dp"
                                 android:textSize="12sp"
-                                android:text="4444333322221111"
+                                android:text="4000000000001091"
                                 app:met_mask="#### #### #### ####" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>

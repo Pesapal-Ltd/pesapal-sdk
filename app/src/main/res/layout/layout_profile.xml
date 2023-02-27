@@ -38,7 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/tvUserNameB"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:textColor="@color/black"
@@ -63,7 +62,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/tvLastNameB"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:textColor="@color/black"
@@ -88,7 +86,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/tvEmailB"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:textColor="@color/black"
@@ -113,7 +110,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/tvCurrencyB"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:textColor="@color/black"
