@@ -489,11 +489,9 @@ class CardFragmentNewBilling : Fragment() {
             var stringPayloadv1 = stringPayload.replace("\\u0026", "&");
             var stringPayloadv2 = stringPayloadv1.replace("\\u003d", "=");
 
-            Log.e(" stringPayloadv2 ",stringPayloadv2)
+            Log.e(" payload ",stringPayloadv2)
+            Log.e(" transactionId ",transactionId)
 
-//            var jsonObject = JSONObject(stringPayloadv2)
-//
-//            Log.e(" jsonObject s",jsonObject.toString())
 
 
 

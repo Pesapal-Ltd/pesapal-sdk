@@ -87,6 +87,7 @@ class PesapalPayActivity : AppCompatActivity() {
         rTYPE.put(CardinalRenderType.HTML)
         cardinalConfigurationParameters.renderType = rTYPE
         cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+
         if(BuildConfig.DEBUG){
             cardinalConfigurationParameters.environment =  CardinalEnvironment.STAGING
             cardinalConfigurationParameters.isEnableLogging =  true
@@ -125,7 +126,8 @@ class PesapalPayActivity : AppCompatActivity() {
         }
 
         binding.tvClose.setOnClickListener {
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            returnPaymentStatus("failed")
+//            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
 
     }

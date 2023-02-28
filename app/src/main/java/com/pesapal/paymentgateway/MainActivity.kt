@@ -1,18 +1,20 @@
 package com.pesapal.paymentgateway
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity
 import com.pesapal.paymentgateway.adapter.DemoCartAdapter
 import com.pesapal.paymentgateway.databinding.ActivityMainBinding
@@ -22,7 +24,6 @@ import com.pesapal.paymentgateway.profile.ProfileActivity
 import com.pesapal.paymentgateway.utils.PrefManager
 import com.pesapal.paymentgateway.utils.TimeUtils
 import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
 import java.math.BigDecimal
 import java.util.*
 
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     private fun initData(){
         setToolBar()
+        getToken()
         initRecyclerData()
         handleClicks()
     }
@@ -58,6 +60,20 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     private fun setToolBar(){
         this.setSupportActionBar(binding.toolbar);
         this.supportActionBar!!.title = getString(R.string.app_name)
+    }
+
+    private fun getToken(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            // Log and toast
+            Log.d("token", token)
+        })
     }
 
     private fun initRecyclerData(){

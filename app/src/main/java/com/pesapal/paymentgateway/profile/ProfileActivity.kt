@@ -78,6 +78,8 @@ class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         if(auth.currentUser != null){
             fetchUserDetails()
+        }else{
+            binding.layoutProfile.btnSignout.visibility = View.GONE
         }
         handleClick()
 
@@ -85,9 +87,13 @@ class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private fun handleClick(){
         binding.layoutProfile.btnSignout.setOnClickListener {
-            googleSignInClient.signOut()
-           auth.signOut()
-            restart()
+            if(auth.currentUser != null) {
+                googleSignInClient.signOut()
+                auth.signOut()
+                restart()
+            }else{
+
+            }
         }
     }
 

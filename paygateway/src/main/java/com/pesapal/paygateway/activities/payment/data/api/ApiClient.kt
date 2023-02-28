@@ -1,6 +1,5 @@
 package com.pesapal.paygateway.activities.payment.data.api
 
-import com.pesapal.paygateway.activities.payment.utils.PrefManager
 import com.pesapal.paygateway.activities.payment.Configs
 import com.pesapal.paygateway.activities.payment.data.services.ApiServices
 import okhttp3.OkHttpClient
