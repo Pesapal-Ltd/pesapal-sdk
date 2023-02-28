@@ -60,6 +60,26 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         this.supportActionBar!!.title = getString(R.string.app_name)
     }
 
+    private fun initRecyclerData(){
+        catalogueModelList = arrayListOf()
+        itemModelList = arrayListOf()
+        orderId = createTransactionID()
+
+        catalogueModelList.addAll(
+            listOf(
+                CatalogueModel.ProductsBean("Blue Shirt",R.drawable.blue_shirt, BigDecimal(5).setScale(2)),
+                CatalogueModel.ProductsBean("Red Shirt",R.drawable.red_shirt, BigDecimal(10).setScale(2)),
+            )
+        )
+
+        demoCartAdapter = DemoCartAdapter(this)
+        binding.rv.layoutManager = LinearLayoutManager(this)
+        binding.rv.adapter = demoCartAdapter
+        demoCartAdapter.setData(catalogueModelList)
+
+
+    }
+
     private fun handleClicks(){
         binding.btnCheckOut.setOnClickListener {
             if(auth.currentUser != null){
@@ -68,7 +88,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
                 handleGoogleSignIn()
             }
         }
-
         binding.civProfile.setOnClickListener {
             startProfile()
         }
@@ -92,26 +111,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    private fun initRecyclerData(){
-        catalogueModelList = arrayListOf()
-        itemModelList = arrayListOf()
-        orderId = createTransactionID()
-
-        catalogueModelList.addAll(
-            listOf(
-                CatalogueModel.ProductsBean("Blue Shirt",R.drawable.blue_shirt, BigDecimal(5).setScale(2)),
-                CatalogueModel.ProductsBean("Red Shirt",R.drawable.red_shirt, BigDecimal(10).setScale(2)),
-            )
-        )
-
-        demoCartAdapter = DemoCartAdapter(this)
-        binding.rv.layoutManager = LinearLayoutManager(this)
-        binding.rv.adapter = demoCartAdapter
-        demoCartAdapter.setData(catalogueModelList)
-
-
-    }
-
     private fun createTransactionID(): String {
         return UUID.randomUUID().toString().uppercase().substring(0,8)
     }
@@ -124,7 +123,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         binding.totalPrice.text = currency+" ${total.setScale(2)}"
         binding.tvOrderId.text = "Order ID $orderId"
     }
-
 
     private fun showMessage(message: String){
         Toast.makeText(this@MainActivity,message, Toast.LENGTH_LONG).show()
@@ -195,7 +193,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         startActivityForResult(myIntent,PAYMENT_REQUEST)
     }
 
-
     override fun Clicked(isAdd: Boolean, story: CatalogueModel.ProductsBean) {
         if(isAdd){
             itemModelList.add(story)
@@ -205,7 +202,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             updateBasketList()
         }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -221,7 +217,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
                 showMessage("An error occurred " + e.localizedMessage)
             }
         }else if (requestCode == PAYMENT_REQUEST) {
-            if (resultCode == AppCompatActivity.RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 val result = data?.getStringExtra("result")
                 if (result.equals("COMPLETED")){
                     itemModelList.clear()
@@ -230,13 +226,12 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
                     showMessage("Payment confirmed successfully, Continue shopping ...")
                 }else{
                     orderId = createTransactionID()
+                    binding.tvOrderId.text = "Order ID $orderId"
                     showMessage("An error occurred processing payment ...")
                 }
             }
         }
     }
-
-
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
