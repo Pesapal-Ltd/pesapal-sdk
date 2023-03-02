@@ -43,7 +43,6 @@ public class PrefManager {
         getPreferences().edit().putString(preferenceKey, preferenceValue).apply();
     }
 
-
     public static void setCurrency(String currency){
         putString(CURRENCY,currency);
     }
