@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 data class BillingDetails(@SerializedName("country")
                           val country: String = "",
                           @SerializedName("city")
-                          val city: String = "",
+                          var city: String = "",
                           @SerializedName("street")
-                          val street: String? = "",
+                          var street: String? = "",
                           @SerializedName("last_name")
                           val lastName: String = "",
                           @SerializedName("phone_number")
@@ -17,8 +17,8 @@ data class BillingDetails(@SerializedName("country")
                           @SerializedName("state")
                           val state: String? = null,
                           @SerializedName("postal_code")
-                          val postalCode: String? = "",
+                          var postalCode: String? = "",
                           @SerializedName("first_name")
                           val firstName: String? = "",
                           @SerializedName("email")
-                          val email: String? = "")
+                          var email: String? = "")

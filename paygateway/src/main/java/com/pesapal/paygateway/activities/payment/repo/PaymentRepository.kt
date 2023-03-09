@@ -5,6 +5,7 @@ import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterI
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.auth.AuthResponseModel
+import com.pesapal.paygateway.activities.payment.model.card_request.complete.ProcessCardRequestV
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
@@ -98,6 +99,23 @@ class PaymentRepository {
         return withContext(Dispatchers.IO){
             try{
                 val mobileMoneyCheckout = apiService.mobileMoneyCheckout("Bearer "+ PrefManager.getToken(),mobileMoneyRequest)
+                if(mobileMoneyCheckout.status != null && (mobileMoneyCheckout.status == "200" || mobileMoneyCheckout.status =="500")) {
+                    Resource.success(mobileMoneyCheckout)
+                }else{
+                    val error = mobileMoneyCheckout.error?.message
+                    Resource.error(error!!)
+                }
+            }catch (e: Exception){
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+
+    }
+
+    suspend fun submitCardRequest(processCardRequestV: ProcessCardRequestV): Resource<MobileMoneyResponse> {
+        return withContext(Dispatchers.IO){
+            try{
+                val mobileMoneyCheckout = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(),processCardRequestV)
                 if(mobileMoneyCheckout.status != null && (mobileMoneyCheckout.status == "200" || mobileMoneyCheckout.status =="500")) {
                     Resource.success(mobileMoneyCheckout)
                 }else{

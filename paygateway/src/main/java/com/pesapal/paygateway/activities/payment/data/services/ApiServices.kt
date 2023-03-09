@@ -4,6 +4,7 @@ import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterI
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.auth.AuthResponseModel
+import com.pesapal.paygateway.activities.payment.model.card_request.complete.ProcessCardRequestV
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
@@ -34,6 +35,10 @@ interface ApiServices {
 
     @POST("api/transactions/expresscheckout")
     suspend fun mobileMoneyCheckout(@Header("Authorization") token: String, @Body mobileMoneyRequest: MobileMoneyRequest) : MobileMoneyResponse
+
+
+    @POST("api/Transactions/ProcessCardRequestV4")
+    suspend fun submitCardRequest(@Header("Authorization") token: String, @Body processCardRequestV: ProcessCardRequestV) : MobileMoneyResponse
 
 
     @GET("api/Transactions/GetTransactionStatus")

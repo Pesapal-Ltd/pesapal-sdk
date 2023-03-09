@@ -10,8 +10,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.pesapal.paygateway.R
+import com.pesapal.paygateway.activities.payment.model.check3ds.BillingDetails
 import com.pesapal.paygateway.databinding.FragmentNewCardAddressBinding
-import com.pesapal.paygateway.activities.payment.model.BillingDetails
 import com.pesapal.paygateway.activities.payment.setButtonEnabled
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 import java.math.BigDecimal
@@ -159,35 +159,8 @@ class CardFragmentNewAddress : Fragment() {
 
     private fun handleClickListener(){
         binding.acbNextStep.setOnClickListener {
-//            if(enable){
-                val bundle = Bundle()
-                val billingDetails = createBillingDetails()
-                bundle.putParcelable(CARD_DATA, billingDetails)
                 viewModel.loadFragment("card2")
-//                view?.let {
-//                    Navigation.findNavController(it).navigate(R.id.action_pesapalCardFragmentAddress_to_pesapalCardFragmentBilling, bundle)
-//                }
-
-
-//            }else{
-//                showMessage("All inputs required ...")
-//            }
         }
-    }
-
-
-    private fun createBillingDetails(): BillingDetails {
-        val details = BillingDetails()
-        details.postalCode = binding.etPostal.text.toString()
-        details.city = binding.etCity.text.toString()
-        details.email = binding.etEmail.text.toString()
-        details.street = binding.etAddress.text.toString()
-        details.msisdn = "0112826460"
-        details.firstName = binding.etFirstName.text.toString()
-        details.lastName = binding.etSurname.text.toString()
-        details.country = binding.countryCodePicker.selectedCountryName
-        details.countryCode = binding.countryCodePicker.selectedCountryCode
-        return details
     }
 
 

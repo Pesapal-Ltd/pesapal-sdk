@@ -8,6 +8,7 @@ import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterI
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.auth.AuthResponseModel
+import com.pesapal.paygateway.activities.payment.model.card_request.complete.ProcessCardRequestV
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
@@ -37,10 +38,19 @@ class AppViewModel : ViewModel() {
     val dsResponse: LiveData<Resource<CheckDsResponse>>
         get() = _dsResponse
 
-
     private var _registerIpnResponse = MutableLiveData<Resource<RegisterIpnResponse>>()
     val registerIpnResponse: LiveData<Resource<RegisterIpnResponse>>
         get() = _registerIpnResponse
+
+    private var _orderIDResponse = MutableLiveData<Resource<MobileMoneyResponse>>()
+    val orderIDResponse: LiveData<Resource<MobileMoneyResponse>>
+        get() = _orderIDResponse
+
+    private var _submitCardRequest = MutableLiveData<Resource<MobileMoneyResponse>>()
+    val submitCardRequest: LiveData<Resource<MobileMoneyResponse>>
+        get() = _submitCardRequest
+
+
 
     private var _mobileMoneyResponse = MutableLiveData<Resource<MobileMoneyResponse>>()
     val mobileMoneyResponse: LiveData<Resource<MobileMoneyResponse>>
@@ -58,7 +68,6 @@ class AppViewModel : ViewModel() {
     val paymentDone: LiveData<Resource<String>>
         get() = _paymentDone
 
-
     private var _loadFragment = MutableLiveData<Resource<String>>()
     val loadFragment: LiveData<Resource<String>>
     get() = _loadFragment
@@ -67,6 +76,7 @@ class AppViewModel : ViewModel() {
     val loadPendingMpesa: LiveData<Resource<MobileMoneyRequest>>
     get() = _loadPendingMpesa
 
+
     private var _loadSuccessMpesa = MutableLiveData<Resource<TransactionStatusResponse>>()
     val loadSuccessMpesa: LiveData<Resource<TransactionStatusResponse>>
     get() = _loadSuccessMpesa
@@ -74,10 +84,6 @@ class AppViewModel : ViewModel() {
     private var _serverJwt = MutableLiveData<Resource<ResponseServerJwt>>()
     val serverJwt: LiveData<Resource<ResponseServerJwt>>
     get() = _serverJwt
-
-
-
-
 
     fun authPayment(authRequestModel: AuthRequestModel) {
         _authPaymentResponse.postValue(Resource.loading("Initiating payment process ... "))
@@ -148,6 +154,41 @@ class AppViewModel : ViewModel() {
         }
     }
 
+
+    fun generateOrderId(mobileMoneyRequest: MobileMoneyRequest, action: String){
+        _orderIDResponse.postValue(Resource.loading(action))
+        viewModelScope.launch {
+            val result = paymentRepository.mobileMoneyApi(mobileMoneyRequest)
+            when(result.status){
+                Status.ERROR -> {
+                    _orderIDResponse.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _orderIDResponse.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+
+        }
+    }
+
+    fun submitCardRequest(processCardRequestV: ProcessCardRequestV){
+        _submitCardRequest.postValue(Resource.loading("Processing request"))
+        viewModelScope.launch {
+            val result = paymentRepository.submitCardRequest(processCardRequestV)
+            when(result.status){
+                Status.ERROR -> {
+                    _submitCardRequest.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _submitCardRequest.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+
+        }
+    }
+
     fun sendMobileMoneyCheckOut(mobileMoneyRequest: MobileMoneyRequest, action: String){
         _mobileMoneyResponse.postValue(Resource.loading(action))
         viewModelScope.launch {
@@ -164,6 +205,9 @@ class AppViewModel : ViewModel() {
 
         }
     }
+
+
+
 
     fun mobileMoneyTransactionStatus(trackingId: String){
         _transactionStatus.postValue(Resource.loading("Confirming payment ... "))
@@ -226,6 +270,7 @@ class AppViewModel : ViewModel() {
     fun showPendingMpesaPayment(mobileMoneyRequest: MobileMoneyRequest){
         _loadPendingMpesa.postValue(Resource.success(mobileMoneyRequest))
     }
+
 
 
     fun showSuccessMpesaPayment(transactionStatusResponse: TransactionStatusResponse){

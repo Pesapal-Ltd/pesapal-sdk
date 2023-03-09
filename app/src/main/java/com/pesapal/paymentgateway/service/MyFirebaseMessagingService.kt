@@ -18,7 +18,6 @@ import com.pesapal.paymentgateway.R
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-
     // [START receive_message]
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
@@ -30,15 +29,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 it.body?.let {
                         data->
                     {
-                    Log.e(" data ", " ===> data started ")
-
                     sendNotification(data)
                 }
 
                 }
             }
         }else{
-            Log.e(" data ", " ===> data found ")
             val title = remoteMessage.notification!!.title
             val body = remoteMessage.notification!!.body
             sendNotification(body!!)

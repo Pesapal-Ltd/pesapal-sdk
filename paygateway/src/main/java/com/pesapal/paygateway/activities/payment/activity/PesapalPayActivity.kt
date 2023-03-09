@@ -6,15 +6,11 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.cardinalcommerce.cardinalmobilesdk.Cardinal
 import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalEnvironment
 import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalRenderType
 import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
-import com.cardinalcommerce.cardinalmobilesdk.models.CardinalActionCode
 import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
-import com.cardinalcommerce.cardinalmobilesdk.models.ValidateResponse
-import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
 import com.cardinalcommerce.shared.models.Warning
 import com.cardinalcommerce.shared.userinterfaces.UiCustomization
 import com.pesapal.paygateway.BuildConfig

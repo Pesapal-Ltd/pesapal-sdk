@@ -18,23 +18,25 @@ import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
 import com.cardinalcommerce.cardinalmobilesdk.services.CardinalValidateReceiver
 import com.google.gson.Gson
 import com.pesapal.paygateway.activities.payment.model.cacontinie.*
+import com.pesapal.paygateway.activities.payment.model.card_request.CardDetails
+import com.pesapal.paygateway.activities.payment.model.card_request.complete.EnrollmentCheckResult
+import com.pesapal.paygateway.activities.payment.model.card_request.complete.ProcessCardRequestV
+import com.pesapal.paygateway.activities.payment.model.card_request.complete.SubscriptionDetails
 import com.pesapal.paygateway.activities.payment.model.check3ds.BillingDetails
 import com.pesapal.paygateway.activities.payment.model.check3ds.CardDetails3Ds
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.BillingAddress
-import com.pesapal.paygateway.activities.payment.model.server_jwt.CardDetails
-import com.pesapal.paygateway.activities.payment.model.server_jwt.RequestServerJwt
-import com.pesapal.paygateway.activities.payment.model.server_jwt.response.OriginalPayloadModel
+import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.server_jwt.response.ResponseServerJwt
 import com.pesapal.paygateway.activities.payment.setButtonEnabled
 import com.pesapal.paygateway.activities.payment.utils.FragmentExtension.hideKeyboard
+import com.pesapal.paygateway.activities.payment.utils.PrefManager
 import com.pesapal.paygateway.activities.payment.utils.Status
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 import com.pesapal.paygateway.databinding.FragmentNewCardDetailsBinding
 import org.json.JSONObject
 import java.math.BigDecimal
-
 
 class CardFragmentNewBilling : Fragment() {
 
@@ -50,6 +52,11 @@ class CardFragmentNewBilling : Fragment() {
     private lateinit var callbackUrl: String
     var cardinal : Cardinal? = null
     var consumerSessionId : String? = null
+    private lateinit var cardDetails: CardDetails
+    private lateinit var billingAddress: BillingAddress
+    private lateinit var mobileMoneyRequest: MobileMoneyRequest
+    private var orderTrackingId = ""
+
     companion object {
         private const val MAX_LENGTH_CVV_CODE = 3
         private const val cardNumberLength = 19
@@ -259,19 +266,14 @@ class CardFragmentNewBilling : Fragment() {
         expiryMonthData = binding.monthField.text.toString()
         expiryYearData = binding.yearField.text.toString()
 
-        var cardDetails = CardDetails(
+         cardDetails = CardDetails(
+            numberCard,
+            Integer.parseInt(expiryYearData),
             Integer.parseInt(expiryMonthData),
             cvv,
-            numberCard,
-            Integer.parseInt(expiryYearData)
         )
 
-        var orderTrackingId = ""
-        var authenticationTransactionId = ""
-        var veresEnrolled = ""
-        var specificationVersion = "1.108"
-
-        val billingAddress = BillingAddress(phoneNumber = phone, emailAddress = email, countryCode = "KE", firstName = first_name,
+         billingAddress = BillingAddress(phoneNumber = phone, emailAddress = email, countryCode = "KE", firstName = first_name,
             middleName = last_name,
             lastName = last_name,
             line = "",
@@ -281,20 +283,121 @@ class CardFragmentNewBilling : Fragment() {
             postalCode = "",
             zipCode = "")
 
-        var requestServerJwt = RequestServerJwt(
-            BigDecimal("1500"),currency, billingAddress = billingAddress, cardDetails = cardDetails
-        )
 
-//        initSdk();
+         mobileMoneyRequest =  MobileMoneyRequest(
+            id = order_id,
+            sourceChannel = 2,
+            msisdn = phone,
+            paymentMethodId = 1,
+            accountNumber = accountNumber,
+            currency = currency,
+            allowedCurrencies = "",
+            amount = amount,
+            description = "Express Order",
+            callbackUrl = callbackUrl,
+            cancellationUrl = "",
+            notificationId = PrefManager.getIpnId(),
+            language = "",
+            termsAndConditionsId = "",
+            billingAddress = billingAddress,
+            trackingId = "",
+            chargeRequest = false
+        );
 
 
-        viewModel.serverJwt(requestServerJwt)
+        viewModel.generateOrderId(mobileMoneyRequest," Generating Order Id ..." )
+
+
+//        var orderTrackingId = ""
+//        var authenticationTransactionId = ""
+//        var veresEnrolled = ""
+//        var specificationVersion = "1.108"
+//
+//
+//
+//        var requestServerJwt = RequestServerJwt(
+//            BigDecimal("1500"),currency, billingAddress = billingAddress, cardDetails = cardDetails
+//        )
+//
+////        initSdk();
+
+
+//        viewModel.serverJwt(requestServerJwt)
 
 
     }
 
+    private fun submitCardRequest(){
+        var enrollmentCheckResult = EnrollmentCheckResult(
+            authenticationResult = "",
+            authenticationAttempted = false,
+            directoryServerTransactionId = "",
+            cavvAlgorithm = "",
+            eci = "",
+            eciRaw = "",
+            cavv = "",
+            reasonCode = "",
+            processorTransactionId = "",
+            xid = "",
+            ucafCollectionIndicator = "",
+            threeDSServerTransactionId = "",
+            pareq = "",
+            ucafAuthenticationData = "",
+            veresEnrolled = "",
+            aav = "",
+            specificationVersion = "",
+            commerceIndicator = "",
+            paresStatus = "",
+            checkoutSessionId = "",
+        )
+
+        var subscriptionDetails = SubscriptionDetails(
+            endDate = "0001-01-01T00:00:00",
+            startDate = "0001-01-01T00:00:00",
+            amount = 0,
+            accountReference = null,
+            frequency = 0
+        )
+
+        var processCardRequestV = ProcessCardRequestV(
+            cvv = cardDetails.cvv,
+            enrollmentCheckResult = enrollmentCheckResult,
+            subscriptionDetails = subscriptionDetails,
+            orderTrackingId = orderTrackingId,
+            expiryMonth = cardDetails.month.toString(),
+            billingAddress = billingAddress,
+            expiryYear = cardDetails.year.toString(),
+            ipAddress = "1",
+            cardNumber = cardDetails.cardNumber
+        )
+
+        viewModel.submitCardRequest(processCardRequestV)
+    }
+
 
     private fun handleViewModel(){
+        viewModel.orderIDResponse.observe(requireActivity()){
+            when (it.status) {
+                Status.LOADING -> {
+                    pDialog = ProgressDialog(requireContext())
+                    pDialog.setMessage(it.message)
+                    pDialog.show()
+                }
+                Status.SUCCESS -> {
+                    var result = it.data
+                    orderTrackingId = result!!.orderTrackingId
+                    submitCardRequest()
+                }
+                Status.ERROR -> {
+                    showMessage(it.message!!)
+                    pDialog.dismiss()
+                }
+                else -> {
+                    Log.e(" else ", " ====> auth")
+                }
+            }
+        }
+
         viewModel.serverJwt.observe(requireActivity()){
             when (it.status) {
                 Status.LOADING -> {
@@ -319,20 +422,17 @@ class CardFragmentNewBilling : Fragment() {
         viewModel.dsToken.observe(requireActivity()){
             when (it.status) {
                 Status.LOADING -> {
-//                    pDialog = ProgressDialog(requireContext())
-//                    pDialog.setMessage(it.message)
-//                    pDialog.show()
+
                 }
                 Status.SUCCESS -> {
                     val token = it.data!!.token
                     get3dsPayload(token);
                 }
                 Status.ERROR -> {
-//                    showMessage(it.message!!)
-//                    pDialog.dismiss()
+
                 }
                 else -> {
-                    Log.e(" else ", " ====> auth")
+
                 }
             }
         }
@@ -341,9 +441,6 @@ class CardFragmentNewBilling : Fragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-//                    pDialog = ProgressDialog(requireContext())
-//                    pDialog.setMessage(it.message)
-//                    pDialog.show()
                 }
                 Status.SUCCESS -> {
                     var response = it.data
@@ -358,8 +455,6 @@ class CardFragmentNewBilling : Fragment() {
                     handle3dSecure(response!!.authenticationTransactionId,payload!!,payAcsUrlload!!);
                 }
                 Status.ERROR -> {
-//                    showMessage(it.message!!)
-//                    pDialog.dismiss()
                 }
                 else -> {
                     Log.e(" else ", " ====> auth")

@@ -108,7 +108,8 @@ class MpesaPesapalFragment : Fragment() {
             language = "",
             termsAndConditionsId = "",
             billingAddress = billingAddress,
-            trackingId = ""
+            trackingId = "",
+            chargeRequest = true
         );
     }
 
