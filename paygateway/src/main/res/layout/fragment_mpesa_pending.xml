@@ -92,8 +92,8 @@
                                 <ProgressBar
                                     android:id="@+id/progressBarCircle"
                                     style="?android:attr/progressBarStyleHorizontal"
-                                    android:layout_width="100dp"
-                                    android:layout_height="100dp"
+                                    android:layout_width="120dp"
+                                    android:layout_height="120dp"
                                     android:layout_centerInParent="true"
                                     android:background="@drawable/circular_spinner_dark"
                                     android:indeterminate="false"
@@ -132,7 +132,7 @@
                                     android:layout_marginTop="10dp"
                                     android:text="CHECKING PAYMENT STATUS"
                                     android:textColor="@color/black"
-                                    android:textSize="12sp"
+                                    android:textSize="14sp"
                                     android:layout_marginEnd="10dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/tvTime"
@@ -158,6 +158,9 @@
     android:id="@+id/viewSeperator"
     android:layout_width="match_parent"
     android:layout_height="1dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     android:background="@color/faded_blue"
     />
                     </LinearLayout>
@@ -172,7 +175,7 @@
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         app:layout_constraintTop_toBottomOf="@+id/llView"
-                        android:text="Incase you have not received Payment Prompt \nUse Resend Prompt or Lipa na Mpesa"
+                        android:text="In case you have not received Payment Prompt \n\n Use Resend Prompt or Lipa na Mpesa"
                         android:layout_height="wrap_content"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

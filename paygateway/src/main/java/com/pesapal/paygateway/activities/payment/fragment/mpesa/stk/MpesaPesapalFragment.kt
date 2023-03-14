@@ -14,6 +14,7 @@ import com.pesapal.paygateway.databinding.FragmentPesapalMpesaBinding
 import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyResponse
+import com.pesapal.paygateway.activities.payment.model.payment.PaymentDetails
 import com.pesapal.paygateway.activities.payment.utils.PrefManager
 import com.pesapal.paygateway.activities.payment.utils.TextDrawable
 import com.pesapal.paygateway.activities.payment.utils.hideKeyboard
@@ -25,17 +26,9 @@ class MpesaPesapalFragment : Fragment() {
     private lateinit var binding: FragmentPesapalMpesaBinding
     private val viewModel: AppViewModel by activityViewModels()
     private lateinit var pDialog: ProgressDialog
-
-    private  var firstname: String? = ""
-    private  var lastname: String? = ""
-    private  var email: String? = ""
-    private  var phone: String? = ""
-    private lateinit var callbackUrl: String
+    private lateinit var billingAddress: BillingAddress
+    private lateinit var paymentDetails: PaymentDetails
     private var mobileMoneyResponse: MobileMoneyResponse? = null
-    private var amount: BigDecimal = BigDecimal.ONE
-    private lateinit var order_id: String
-    private lateinit var currency: String
-    private lateinit var accountNumber: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,27 +74,17 @@ class MpesaPesapalFragment : Fragment() {
     private fun prepareMobileMoney(): MobileMoneyRequest {
         hideKeyboard()
         val phoneNumber = "254"+binding.phone.text.toString()
-       val billingAddress = BillingAddress(phoneNumber = phone, emailAddress = email, countryCode = "KE", firstName = firstname,
-            middleName = lastname,
-            lastName = lastname,
-            line = "",
-            line2 = "",
-            city = "Nairobi",
-            state = "",
-            postalCode = "",
-            zipCode = "")
-
         return MobileMoneyRequest(
-            id = order_id,
+            id = paymentDetails.order_id!!,
             sourceChannel = 2,
             msisdn = phoneNumber,
             paymentMethodId = 1,
-            accountNumber = accountNumber,
-            currency = currency,
+            accountNumber = paymentDetails.accountNumber!!,
+            currency = paymentDetails.currency!!,
             allowedCurrencies = "",
-            amount = amount,
+            amount = paymentDetails.amount,
             description = "Express Order",
-            callbackUrl = callbackUrl,
+            callbackUrl = paymentDetails.callbackUrl!!,
             cancellationUrl = "",
             notificationId = PrefManager.getIpnId(),
             language = "",
@@ -121,10 +104,8 @@ class MpesaPesapalFragment : Fragment() {
                     pDialog.show()
                 }
                 Status.SUCCESS -> {
-                    showMessage("Payment prompt sent successfully")
                     pDialog.dismiss()
                     mobileMoneyResponse = it.data
-//                    checkTransactionStatus()
                     showPendingMpesaPayment()
                 }
                 Status.ERROR -> {
@@ -132,7 +113,7 @@ class MpesaPesapalFragment : Fragment() {
                     pDialog.dismiss()
                 }
                 else -> {
-                    Log.e(" else ", " ====> auth")
+
                 }
             }
         }
@@ -141,6 +122,7 @@ class MpesaPesapalFragment : Fragment() {
     private fun showPendingMpesaPayment(){
         val mobileMoneyRequest = prepareMobileMoney()
         mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
+        paymentDetails.order_tracking_id = mobileMoneyResponse!!.orderTrackingId
 
         if(mobileMoneyResponse != null) {
             mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
@@ -153,18 +135,10 @@ class MpesaPesapalFragment : Fragment() {
     }
 
     companion object{
-
-        fun newInstance(amount: BigDecimal, order_id: String, currency: String, accountNumber: String, callbackUrl: String, firstname: String?, lastname: String?, email: String?, phone: String?): MpesaPesapalFragment {
+        fun newInstance(billingAddress: BillingAddress,paymentDetails: PaymentDetails): MpesaPesapalFragment {
             val fragment = MpesaPesapalFragment()
-            fragment.amount = amount
-            fragment.order_id = order_id
-            fragment.currency = currency
-            fragment.accountNumber = accountNumber
-            fragment.callbackUrl = callbackUrl
-            fragment.lastname = lastname
-            fragment.firstname = firstname
-            fragment.email = email
-            fragment.phone = phone
+            fragment.billingAddress = billingAddress
+            fragment.paymentDetails = paymentDetails
             return fragment
         }
     }

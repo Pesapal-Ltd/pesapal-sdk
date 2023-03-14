@@ -1,11 +1,10 @@
-package com.pesapal.paygateway.activities.payment.fragment.card
+package com.pesapal.paygateway.activities.payment.fragment.card.address
 
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,7 +13,6 @@ import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
 import com.pesapal.paygateway.databinding.FragmentNewCardAddressBinding
 import com.pesapal.paygateway.activities.payment.setButtonEnabled
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
-import java.math.BigDecimal
 
 
 class CardFragmentAddressData : Fragment() {

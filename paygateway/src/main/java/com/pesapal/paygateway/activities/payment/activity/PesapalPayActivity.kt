@@ -3,6 +3,7 @@ package com.pesapal.paygateway.activities.payment.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,11 +18,13 @@ import com.cardinalcommerce.shared.userinterfaces.UiCustomization
 import com.pesapal.paygateway.BuildConfig
 import com.pesapal.paygateway.R
 import com.pesapal.paygateway.activities.payment.fragment.auth.AuthFragment
-import com.pesapal.paygateway.activities.payment.fragment.card.CardFragmentAddressData
-import com.pesapal.paygateway.activities.payment.fragment.card.CardFragmentCardData
+import com.pesapal.paygateway.activities.payment.fragment.card.address.CardFragmentAddressData
+import com.pesapal.paygateway.activities.payment.fragment.card.data.CardFragmentCardData
+import com.pesapal.paygateway.activities.payment.fragment.card.success.CardPaymentSuccessFragment
 import com.pesapal.paygateway.activities.payment.fragment.main.MainPesapalFragment
 import com.pesapal.paygateway.activities.payment.fragment.mpesa.pending.MpesaPendingFragment
-import com.pesapal.paygateway.activities.payment.fragment.success.MpesaSuccessFragment
+import com.pesapal.paygateway.activities.payment.fragment.mpesa.stk.MpesaPesapalFragment
+import com.pesapal.paygateway.activities.payment.fragment.mpesa.success.MpesaSuccessFragment
 import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
 import com.pesapal.paygateway.activities.payment.model.payment.PaymentDetails
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
@@ -29,7 +32,6 @@ import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionS
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.paygateway.activities.payment.utils.PrefManager
 import com.pesapal.paygateway.activities.payment.utils.Status
-import com.pesapal.paygateway.activities.payment.utils.TimeUtils
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 import com.pesapal.paygateway.databinding.ActivityPesapalPayBinding
 import org.json.JSONArray
@@ -194,10 +196,11 @@ class PesapalPayActivity : AppCompatActivity() {
                     loadFragment(MainPesapalFragment.newInstance(paymentDetails!!))
                 }
                 "mpesa" -> {
-//                    loadFragment(MpesaPesapalFragment.newInstance(BigDecimal(amount),order_id!!,currency!!,accountNumber!!,callbackUrl!!, first_name, last_name, email, phone))
+                    loadFragment(MpesaPesapalFragment.newInstance(billingAddress!!,paymentDetails!!))
                 }
                 "success_mpesa" -> {
                     if (transactionStatusResponse != null) {
+                        binding.clToolbar.visibility = View.GONE
                         loadFragment(MpesaSuccessFragment.newInstance(transactionStatusResponse!!))
                     }
                 }
@@ -211,10 +214,7 @@ class PesapalPayActivity : AppCompatActivity() {
                 "card" -> {
                     loadFragment(CardFragmentAddressData.newInstance(billingAddress!!))
                 }
-                "card2" -> {
 
-//                    loadFragment(CardFragmentNewBilling.newInstance(BigDecimal(amount),order_id!!,currency!!,accountNumber!!,callbackUrl!!,first_name,last_name,email,phone,address!!,postalCode!!,city!! ))
-                }
             }
 
 
@@ -230,6 +230,20 @@ class PesapalPayActivity : AppCompatActivity() {
                 }
             }
         }
+
+        viewModel.completeCardPayment.observe(this){
+            when(it.status){
+                Status.SUCCESS -> {
+                    binding.clToolbar.visibility = View.GONE
+                    transactionStatusResponse = it.data
+                    loadFragment(CardPaymentSuccessFragment.newInstance(transactionStatusResponse!!))
+                }
+                else -> {
+
+                }
+            }
+        }
+
 
         viewModel.loadCardDetails.observe(this) {
             when (it.status) {
@@ -256,14 +270,12 @@ class PesapalPayActivity : AppCompatActivity() {
     }
 
 
-    private fun checkPaymentStatus(transactionId: String) {
-        viewModel.checkTransactionStatus(transactionId)
-    }
-
-
     private fun returnPaymentStatus(status: String) {
         val returnIntent = Intent()
-        returnIntent.putExtra("result", status)
+        returnIntent.putExtra("status", status)
+        if(transactionStatusResponse != null) {
+            returnIntent.putExtra("result", transactionStatusResponse)
+        }
         setResult(RESULT_OK, returnIntent)
         finish()
     }

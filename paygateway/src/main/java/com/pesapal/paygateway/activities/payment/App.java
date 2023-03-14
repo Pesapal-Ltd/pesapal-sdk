@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 public class App extends Application {
     private static App mInstance;
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -28,8 +27,5 @@ public class App extends Application {
         }
         return mInstance;
     }
-
-
-
 
 }

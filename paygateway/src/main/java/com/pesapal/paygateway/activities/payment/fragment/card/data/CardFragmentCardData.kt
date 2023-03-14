@@ -1,10 +1,9 @@
-package com.pesapal.paygateway.activities.payment.fragment.card
+package com.pesapal.paygateway.activities.payment.fragment.card.data
 
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,20 +12,14 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.cardinalcommerce.cardinalmobilesdk.Cardinal
-import com.cardinalcommerce.cardinalmobilesdk.models.ValidateResponse
-import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
-import com.google.gson.Gson
 import com.pesapal.paygateway.activities.payment.model.card.CardDetails
 import com.pesapal.paygateway.activities.payment.model.card.submit.request.EnrollmentCheckResult
 import com.pesapal.paygateway.activities.payment.model.card.submit.request.SubmitCardRequest
 import com.pesapal.paygateway.activities.payment.model.card.submit.request.SubscriptionDetails
-import com.pesapal.paygateway.activities.payment.model.check3ds.CardDetails3Ds
-import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
 import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
 import com.pesapal.paygateway.activities.payment.model.card.order_id.request.CardOrderTrackingIdRequest
+import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.model.payment.PaymentDetails
-import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
-import com.pesapal.paygateway.activities.payment.model.server_jwt.response.ResponseServerJwt
 import com.pesapal.paygateway.activities.payment.setButtonEnabled
 import com.pesapal.paygateway.activities.payment.utils.FragmentExtension.hideKeyboard
 import com.pesapal.paygateway.activities.payment.utils.PrefManager
@@ -171,10 +164,8 @@ class CardFragmentCardData : Fragment() {
         viewModel.checkCardPaymentStatus(paymentDetails.order_tracking_id!!)
     }
 
-    private fun handleCompletePayment(status: String){
-        Handler().postDelayed({
-            viewModel.handlePaymentStatus(status)
-        },1000)
+    private fun handleCompletePayment(transactionStatusResponse: TransactionStatusResponse){
+            viewModel.completeCardPayment(transactionStatusResponse)
     }
 
     private fun handleViewModel() {
@@ -229,7 +220,7 @@ class CardFragmentCardData : Fragment() {
                     pDialog.dismiss()
                     var result = it.data!!
                     showMessage(result.description!!)
-                    handleCompletePayment("COMPLETED")
+                    handleCompletePayment(result)
                 }
                 Status.ERROR -> {
                     showMessage(it.message!!)

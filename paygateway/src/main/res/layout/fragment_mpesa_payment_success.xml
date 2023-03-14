@@ -2,24 +2,76 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/white"
     android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/closeBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="10dp"
+        android:src="@drawable/baseline_close_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/grey" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/txnDetails"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/closeBtn"
+        app:cardElevation="0dp"
+        android:elevation="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/clMpesaMethod"
+        android:layout_height="0dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvPaymentMethod"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="MPESA"
+                android:textSize="16sp"
+                android:textColor="@color/purple_700"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvAmount"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod"
+                android:text="KES : 200"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/clMpesaMethod"
         android:layout_width="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txnDetails"
+        app:layout_constraintBottom_toTopOf="@+id/btnDone"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="50dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
         android:elevation="0dp"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clMpesaPayment"
             android:layout_width="match_parent"
@@ -58,7 +110,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:visibility="visible"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp">
 
 
             <ImageView
@@ -78,8 +130,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imSuccess"
-                android:layout_marginTop="20dp"
-                android:textSize="14sp"
+                android:layout_marginTop="40dp"
+                android:textSize="16sp"
                 android:textStyle="normal"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"/>
@@ -93,7 +145,7 @@
                 android:textColor="@color/black"
                 android:paddingEnd="20dp"
                 android:textStyle="normal"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:layout_marginTop="10dp"
                 android:paddingStart="20dp"
                 android:layout_marginStart="10dp"
@@ -108,7 +160,7 @@
 
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/btnDone"
         android:layout_width="0dp"
         android:layout_marginTop="30dp"

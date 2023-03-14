@@ -35,13 +35,6 @@ class AppViewModel : ViewModel() {
     val authPaymentResponse: LiveData<Resource<AuthResponseModel>>
         get() = _authPaymentResponse
 
-    private var _dsToken = MutableLiveData<Resource<AuthResponseModel>>()
-    val dsToken: LiveData<Resource<AuthResponseModel>>
-        get() = _dsToken
-
-    private var _dsResponse = MutableLiveData<Resource<CheckDsResponse>>()
-    val dsResponse: LiveData<Resource<CheckDsResponse>>
-        get() = _dsResponse
 
     private var _registerIpnResponse = MutableLiveData<Resource<RegisterIpnResponse>>()
     val registerIpnResponse: LiveData<Resource<RegisterIpnResponse>>
@@ -60,6 +53,10 @@ class AppViewModel : ViewModel() {
     private var _cardPaymentStatus = MutableLiveData<Resource<TransactionStatusResponse>>()
     val cardPaymentStatus: LiveData<Resource<TransactionStatusResponse>>
         get() = _cardPaymentStatus
+
+    private var _completeCardPayment = MutableLiveData<Resource<TransactionStatusResponse>>()
+    val completeCardPayment: LiveData<Resource<TransactionStatusResponse>>
+        get() = _completeCardPayment
 
 
 
@@ -117,12 +114,6 @@ class AppViewModel : ViewModel() {
             }
         }
     }
-
-
-
-
-
-
 
     fun registerIpn(registerIpnRequest: RegisterIpnRequest){
         _registerIpnResponse.postValue(Resource.loading("Registering Ipn ... "))
@@ -194,6 +185,9 @@ class AppViewModel : ViewModel() {
         }
     }
 
+    fun completeCardPayment(transactionStatusResponse: TransactionStatusResponse){
+        _completeCardPayment.postValue(Resource.success(transactionStatusResponse))
+    }
 
     fun sendMobileMoneyCheckOut(mobileMoneyRequest: MobileMoneyRequest, action: String){
         _mobileMoneyResponse.postValue(Resource.loading(action))
@@ -205,24 +199,6 @@ class AppViewModel : ViewModel() {
                 }
                 Status.SUCCESS -> {
                     _mobileMoneyResponse.postValue(Resource.success(result.data))
-                }
-                else -> {}
-            }
-
-        }
-    }
-
-
-    fun checkTransactionStatus(trackingId: String){
-        _transactionStatus.postValue(Resource.loading("Confirming payment ... "))
-        viewModelScope.launch {
-            val result = paymentRepository.getTransactionStatus(trackingId)
-            when(result.status){
-                Status.ERROR -> {
-                    _transactionStatus.postValue(Resource.error(result.message!!))
-                }
-                Status.SUCCESS -> {
-                    _transactionStatus.postValue(Resource.success(result.data))
                 }
                 else -> {}
             }
@@ -266,24 +242,6 @@ class AppViewModel : ViewModel() {
     }
 
 
-    fun serverJwt(requestServerJwt: RequestServerJwt){
-        _serverJwt.postValue(Resource.loading("Initializing txn ... "))
-        viewModelScope.launch {
-            val result = paymentRepository.serverJwt(requestServerJwt)
-            when(result.status){
-                Status.ERROR -> {
-                    _serverJwt.postValue(Resource.error(result.message!!))
-                }
-                Status.SUCCESS -> {
-                    _serverJwt.postValue(Resource.success(result.data))
-                }
-                else -> {}
-            }
-
-        }
-    }
-
-
     fun handlePaymentStatus(status: String){
         _paymentDone.postValue(Resource.success(status))
     }
@@ -306,43 +264,6 @@ class AppViewModel : ViewModel() {
 
     fun loadFragmentV1(billingAddress: BillingAddress){
             _loadCardDetails.postValue(Resource.loadFragment(billingAddress) )
-    }
-
-
-
-
-    fun check3ds(checkDSecureRequest: CheckDSecureRequest, token: String) {
-        _dsResponse.postValue(Resource.loading("Initiating payment process ... "))
-        viewModelScope.launch {
-            val result = paymentRepository.check3ds(checkDSecureRequest,token)
-            when (result.status) {
-                Status.ERROR -> {
-                    _dsResponse.postValue(Resource.error(result.message!!))
-                }
-                Status.SUCCESS -> {
-                    _dsResponse.postValue(Resource.success(result.data))
-                }
-                else -> {}
-            }
-        }
-    }
-
-
-
-    fun getDsToken(dsTokenRequest: DsTokenRequest) {
-        _dsToken.postValue(Resource.loading("Initiating payment process ... "))
-        viewModelScope.launch {
-            val result = paymentRepository.dsToken(dsTokenRequest)
-            when (result.status) {
-                Status.ERROR -> {
-                    _dsToken.postValue(Resource.error(result.message!!))
-                }
-                Status.SUCCESS -> {
-                    _dsToken.postValue(Resource.success(result.data))
-                }
-                else -> {}
-            }
-        }
     }
 
 

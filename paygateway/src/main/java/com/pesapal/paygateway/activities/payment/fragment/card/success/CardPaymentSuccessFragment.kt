@@ -1,4 +1,4 @@
-package com.pesapal.paygateway.activities.payment.fragment.success
+package com.pesapal.paygateway.activities.payment.fragment.card.success
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import com.pesapal.paygateway.databinding.FragmentMpesaPaymentSuccessBinding
 import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 
-class MpesaSuccessFragment : Fragment() {
+class CardPaymentSuccessFragment : Fragment() {
 
     private lateinit var binding: FragmentMpesaPaymentSuccessBinding
     private lateinit var transactionStatusResponse: TransactionStatusResponse
@@ -39,17 +39,22 @@ class MpesaSuccessFragment : Fragment() {
         binding.btnDone.setOnClickListener {
             viewModel.handlePaymentStatus("COMPLETED")
         }
+        binding.closeBtn.setOnClickListener {
+            viewModel.handlePaymentStatus("COMPLETED")
+        }
 
     }
 
     private fun handleDisplay(){
-        binding.tvId.text = "ID :"+transactionStatusResponse.confirmationCode
+        binding.tvId.text = "TXN ID: "+transactionStatusResponse.confirmationCode
+        binding.tvPaymentMethod.text = "PAYMENT METHOD: "+transactionStatusResponse.paymentMethod!!.uppercase()
+        binding.tvAmount.text = "AMOUNT: "+transactionStatusResponse.currency +". "+transactionStatusResponse.amount
     }
 
 
     companion object{
-        fun newInstance(transactionStatusResponse: TransactionStatusResponse): MpesaSuccessFragment {
-            val fragment = MpesaSuccessFragment()
+        fun newInstance(transactionStatusResponse: TransactionStatusResponse): CardPaymentSuccessFragment {
+            val fragment = CardPaymentSuccessFragment()
             fragment.transactionStatusResponse = transactionStatusResponse
             return fragment
         }

@@ -7,4 +7,4 @@ data class Error(@SerializedName("code")
                  @SerializedName("error_type")
                  val errorType: String = "",
                  @SerializedName("message")
-                 val message: String = "")
+                 val message: String = ""): java.io.Serializable

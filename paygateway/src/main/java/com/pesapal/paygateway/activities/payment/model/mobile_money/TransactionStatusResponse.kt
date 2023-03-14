@@ -32,4 +32,4 @@ data class TransactionStatusResponse(@SerializedName("amount")
                                      @SerializedName("call_back_url")
                                      val callBackUrl: String? = null,
                                      @SerializedName("status")
-                                     val status: String ?)
+                                     val status: String ?): java.io.Serializable

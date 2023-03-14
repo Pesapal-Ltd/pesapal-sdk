@@ -235,7 +235,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             }
         }else if (requestCode == PAYMENT_REQUEST) {
             if (resultCode == RESULT_OK) {
-                val result = data?.getStringExtra("result")
+                val result = data?.getStringExtra("status")
                 if (result.equals("COMPLETED")){
                     itemModelList.clear()
                     demoCartAdapter.notifyDataSetChanged()
