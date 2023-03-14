@@ -206,6 +206,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         myIntent.putExtra("firstName",userModel.firstName)
         myIntent.putExtra("lastName",userModel.lastName)
         myIntent.putExtra("email",userModel.email)
+        myIntent.putExtra("ipn_url","https://test.dev")
         startActivityForResult(myIntent,PAYMENT_REQUEST)
     }
 

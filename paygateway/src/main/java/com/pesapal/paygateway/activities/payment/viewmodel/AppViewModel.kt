@@ -8,10 +8,15 @@ import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterI
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.auth.AuthResponseModel
-import com.pesapal.paygateway.activities.payment.model.card_request.complete.ProcessCardRequestV
+import com.pesapal.paygateway.activities.payment.model.card.submit.request.SubmitCardRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
+import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
+import com.pesapal.paygateway.activities.payment.model.card.order_id.request.CardOrderTrackingIdRequest
+import com.pesapal.paygateway.activities.payment.model.card.order_id.response.CardOrderTrackingIdResponse
+import com.pesapal.paygateway.activities.payment.model.card.status.response.CheckCardPaymentStatusResponse
+import com.pesapal.paygateway.activities.payment.model.card.submit.response.SubmitCardResponse
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyResponse
 import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
@@ -42,13 +47,19 @@ class AppViewModel : ViewModel() {
     val registerIpnResponse: LiveData<Resource<RegisterIpnResponse>>
         get() = _registerIpnResponse
 
-    private var _orderIDResponse = MutableLiveData<Resource<MobileMoneyResponse>>()
-    val orderIDResponse: LiveData<Resource<MobileMoneyResponse>>
-        get() = _orderIDResponse
 
-    private var _submitCardRequest = MutableLiveData<Resource<MobileMoneyResponse>>()
-    val submitCardRequest: LiveData<Resource<MobileMoneyResponse>>
-        get() = _submitCardRequest
+    private var _cardOrderTrackingIdResponse = MutableLiveData<Resource<CardOrderTrackingIdResponse>>()
+    val cardOrderTrackingIdResponse: LiveData<Resource<CardOrderTrackingIdResponse>>
+        get() = _cardOrderTrackingIdResponse
+
+    private var _submitCardResponse = MutableLiveData<Resource<SubmitCardResponse>>()
+    val submitCardResponse: LiveData<Resource<SubmitCardResponse>>
+        get() = _submitCardResponse
+
+
+    private var _cardPaymentStatus = MutableLiveData<Resource<TransactionStatusResponse>>()
+    val cardPaymentStatus: LiveData<Resource<TransactionStatusResponse>>
+        get() = _cardPaymentStatus
 
 
 
@@ -71,6 +82,10 @@ class AppViewModel : ViewModel() {
     private var _loadFragment = MutableLiveData<Resource<String>>()
     val loadFragment: LiveData<Resource<String>>
     get() = _loadFragment
+
+    private var _loadCardDetails = MutableLiveData<Resource<BillingAddress>>()
+    val loadCardDetails: LiveData<Resource<BillingAddress>>
+    get() = _loadCardDetails
 
     private var _loadPendingMpesa = MutableLiveData<Resource<MobileMoneyRequest>>()
     val loadPendingMpesa: LiveData<Resource<MobileMoneyRequest>>
@@ -96,43 +111,15 @@ class AppViewModel : ViewModel() {
                 Status.SUCCESS -> {
                     _authPaymentResponse.postValue(Resource.success(result.data))
                 }
-                else -> {}
+                else -> {
+                    _authPaymentResponse.postValue(Resource.error(result.message!!))
+                }
             }
         }
     }
 
 
-    fun getDsToken(dsTokenRequest: DsTokenRequest) {
-        _dsToken.postValue(Resource.loading("Initiating payment process ... "))
-        viewModelScope.launch {
-            val result = paymentRepository.dsToken(dsTokenRequest)
-            when (result.status) {
-                Status.ERROR -> {
-                    _dsToken.postValue(Resource.error(result.message!!))
-                }
-                Status.SUCCESS -> {
-                    _dsToken.postValue(Resource.success(result.data))
-                }
-                else -> {}
-            }
-        }
-    }
 
-    fun check3ds(checkDSecureRequest: CheckDSecureRequest, token: String) {
-        _dsResponse.postValue(Resource.loading("Initiating payment process ... "))
-        viewModelScope.launch {
-            val result = paymentRepository.check3ds(checkDSecureRequest,token)
-            when (result.status) {
-                Status.ERROR -> {
-                    _dsResponse.postValue(Resource.error(result.message!!))
-                }
-                Status.SUCCESS -> {
-                    _dsResponse.postValue(Resource.success(result.data))
-                }
-                else -> {}
-            }
-        }
-    }
 
 
 
@@ -155,16 +142,16 @@ class AppViewModel : ViewModel() {
     }
 
 
-    fun generateOrderId(mobileMoneyRequest: MobileMoneyRequest, action: String){
-        _orderIDResponse.postValue(Resource.loading(action))
+    fun generateCardOrderTrackingId(cardOrderTrackingIdRequest: CardOrderTrackingIdRequest, action: String){
+        _cardOrderTrackingIdResponse.postValue(Resource.loading(action))
         viewModelScope.launch {
-            val result = paymentRepository.mobileMoneyApi(mobileMoneyRequest)
+            val result = paymentRepository.generateCardOrderTrackingId(cardOrderTrackingIdRequest)
             when(result.status){
                 Status.ERROR -> {
-                    _orderIDResponse.postValue(Resource.error(result.message!!))
+                    _cardOrderTrackingIdResponse.postValue(Resource.error(result.message!!))
                 }
                 Status.SUCCESS -> {
-                    _orderIDResponse.postValue(Resource.success(result.data))
+                    _cardOrderTrackingIdResponse.postValue(Resource.success(result.data))
                 }
                 else -> {}
             }
@@ -172,22 +159,41 @@ class AppViewModel : ViewModel() {
         }
     }
 
-    fun submitCardRequest(processCardRequestV: ProcessCardRequestV){
-        _submitCardRequest.postValue(Resource.loading("Processing request"))
+    fun submitCardRequest(submitCardRequest: SubmitCardRequest){
+        _submitCardResponse.postValue(Resource.loading("Processing request"))
         viewModelScope.launch {
-            val result = paymentRepository.submitCardRequest(processCardRequestV)
+            val result = paymentRepository.submitCardRequest(submitCardRequest)
             when(result.status){
                 Status.ERROR -> {
-                    _submitCardRequest.postValue(Resource.error(result.message!!))
+                    _submitCardResponse.postValue(Resource.error(result.message!!))
                 }
                 Status.SUCCESS -> {
-                    _submitCardRequest.postValue(Resource.success(result.data))
+                    _submitCardResponse.postValue(Resource.success(result.data))
                 }
                 else -> {}
             }
 
         }
     }
+
+
+    fun checkCardPaymentStatus(trackingId: String){
+        _cardPaymentStatus.postValue(Resource.loading("Confirming payment ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.getTransactionStatus(trackingId)
+            when(result.status){
+                Status.ERROR -> {
+                    _cardPaymentStatus.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _cardPaymentStatus.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+
+        }
+    }
+
 
     fun sendMobileMoneyCheckOut(mobileMoneyRequest: MobileMoneyRequest, action: String){
         _mobileMoneyResponse.postValue(Resource.loading(action))
@@ -207,6 +213,22 @@ class AppViewModel : ViewModel() {
     }
 
 
+    fun checkTransactionStatus(trackingId: String){
+        _transactionStatus.postValue(Resource.loading("Confirming payment ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.getTransactionStatus(trackingId)
+            when(result.status){
+                Status.ERROR -> {
+                    _transactionStatus.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _transactionStatus.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+
+        }
+    }
 
 
     fun mobileMoneyTransactionStatus(trackingId: String){
@@ -279,12 +301,49 @@ class AppViewModel : ViewModel() {
 
 
     fun loadFragment(frag: String){
-        _loadFragment.postValue(Resource.loadFragment(frag))
+        _loadFragment.postValue(Resource.loadFragment(frag) )
+    }
+
+    fun loadFragmentV1(billingAddress: BillingAddress){
+            _loadCardDetails.postValue(Resource.loadFragment(billingAddress) )
     }
 
 
 
 
+    fun check3ds(checkDSecureRequest: CheckDSecureRequest, token: String) {
+        _dsResponse.postValue(Resource.loading("Initiating payment process ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.check3ds(checkDSecureRequest,token)
+            when (result.status) {
+                Status.ERROR -> {
+                    _dsResponse.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _dsResponse.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+        }
+    }
+
+
+
+    fun getDsToken(dsTokenRequest: DsTokenRequest) {
+        _dsToken.postValue(Resource.loading("Initiating payment process ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.dsToken(dsTokenRequest)
+            when (result.status) {
+                Status.ERROR -> {
+                    _dsToken.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _dsToken.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+        }
+    }
 
 
 }

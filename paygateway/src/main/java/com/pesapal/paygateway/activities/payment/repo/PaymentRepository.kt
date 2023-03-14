@@ -5,7 +5,11 @@ import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterI
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.auth.AuthResponseModel
-import com.pesapal.paygateway.activities.payment.model.card_request.complete.ProcessCardRequestV
+import com.pesapal.paygateway.activities.payment.model.card.order_id.request.CardOrderTrackingIdRequest
+import com.pesapal.paygateway.activities.payment.model.card.order_id.response.CardOrderTrackingIdResponse
+import com.pesapal.paygateway.activities.payment.model.card.submit.request.SubmitCardRequest
+import com.pesapal.paygateway.activities.payment.model.card.status.response.CheckCardPaymentStatusResponse
+import com.pesapal.paygateway.activities.payment.model.card.submit.response.SubmitCardResponse
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
@@ -42,43 +46,6 @@ class PaymentRepository {
         }
     }
 
-    suspend fun dsToken(
-        dsTokenRequest: DsTokenRequest
-    ): Resource<AuthResponseModel> {
-        return  withContext(Dispatchers.IO) {
-            try {
-                val sendLogs = apiService.dsToken(dsTokenRequest)
-                if(sendLogs.status != null && sendLogs.status == "200") {
-                    Resource.success(sendLogs)
-                }else{
-                    val error = sendLogs.error.message
-                    Resource.error(error!!)
-                }
-            } catch (e: Exception) {
-                Resource.error(RetrofitErrorUtil.serverException(e))
-            }
-        }
-    }
-
-    suspend fun check3ds(
-        checkDSecureRequest: CheckDSecureRequest, token: String
-    ): Resource<CheckDsResponse> {
-        return  withContext(Dispatchers.IO) {
-            try {
-                val sendLogs = apiService.check3ds(token,checkDSecureRequest)
-//                if(sendLogs != null) {
-                    Resource.success(sendLogs)
-//                }else{
-//                    val error = sendLogs.message
-//                    Resource.error(error!!)
-//                }
-            } catch (e: Exception) {
-                Resource.error(RetrofitErrorUtil.serverException(e))
-            }
-        }
-    }
-
-
     suspend fun registerApi(registerIpnRequest: RegisterIpnRequest): Resource<RegisterIpnResponse> {
         return withContext(Dispatchers.IO){
             try{
@@ -98,7 +65,7 @@ class PaymentRepository {
     suspend fun mobileMoneyApi(mobileMoneyRequest: MobileMoneyRequest): Resource<MobileMoneyResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val mobileMoneyCheckout = apiService.mobileMoneyCheckout("Bearer "+ PrefManager.getToken(),mobileMoneyRequest)
+                val mobileMoneyCheckout = apiService.submitMobileMoneyCheckout("Bearer "+ PrefManager.getToken(),mobileMoneyRequest)
                 if(mobileMoneyCheckout.status != null && (mobileMoneyCheckout.status == "200" || mobileMoneyCheckout.status =="500")) {
                     Resource.success(mobileMoneyCheckout)
                 }else{
@@ -112,15 +79,83 @@ class PaymentRepository {
 
     }
 
-    suspend fun submitCardRequest(processCardRequestV: ProcessCardRequestV): Resource<MobileMoneyResponse> {
+
+    suspend fun generateCardOrderTrackingId(cardOrderTrackingIdRequest: CardOrderTrackingIdRequest): Resource<CardOrderTrackingIdResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val mobileMoneyCheckout = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(),processCardRequestV)
-                if(mobileMoneyCheckout.status != null && (mobileMoneyCheckout.status == "200" || mobileMoneyCheckout.status =="500")) {
-                    Resource.success(mobileMoneyCheckout)
+                val cardExpressCheckoutResponse = apiService.generateCardOrderTrackingId("Bearer "+ PrefManager.getToken(),cardOrderTrackingIdRequest)
+                if(cardExpressCheckoutResponse.status != null && (cardExpressCheckoutResponse.status == "200" || cardExpressCheckoutResponse.status =="500")) {
+                    Resource.success(cardExpressCheckoutResponse)
                 }else{
-                    val error = mobileMoneyCheckout.error?.message
+                    val error = cardExpressCheckoutResponse.error?.message
                     Resource.error(error!!)
+                }
+            }catch (e: Exception){
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+
+    }
+
+
+
+    suspend fun submitCardRequest(processCardRequestV: SubmitCardRequest): Resource<SubmitCardResponse> {
+        return withContext(Dispatchers.IO){
+            try{
+                val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(),processCardRequestV)
+                if(cardExpressCheckoutResponse.status == "200" && cardExpressCheckoutResponse.error == null) {
+                    Resource.success(cardExpressCheckoutResponse)
+                }else{
+                    val error = cardExpressCheckoutResponse.error?.message
+                    Resource.error(error!!)
+                }
+            }catch (e: Exception){
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+
+    }
+
+
+
+//    suspend fun getTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
+//        return withContext(Dispatchers.IO){
+//            try{
+//                val transactionStatus = apiService.getTransactionStatus("Bearer "+ PrefManager.getToken(),orderTrackingId)
+//                val completed = transactionStatus.paymentStatusDescription
+//                if(transactionStatus.status != null && transactionStatus.status == "200") {
+//                    if(completed == "Completed") {
+//                        Resource.success(transactionStatus)
+//                    }else{
+//                        Resource.error("Awaiting Payment")
+//                    }
+//                }else{
+//                    val error = transactionStatus.error.message
+//                    Resource.error(error)
+//                }
+//            }catch (e: Exception){
+//                Resource.error(RetrofitErrorUtil.serverException(e))
+//            }
+//        }
+//
+//    }
+
+
+
+    suspend fun getTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
+        return withContext(Dispatchers.IO){
+            try{
+                val transactionStatus = apiService.getTransactionStatus("Bearer "+ PrefManager.getToken(),orderTrackingId)
+                val completed = transactionStatus.paymentStatusDescription
+                if(transactionStatus.status != null && transactionStatus.status == "200") {
+                    if(completed == "Completed") {
+                        Resource.success(transactionStatus)
+                    }else{
+                        Resource.error("Awaiting Payment")
+                    }
+                }else{
+                    val error = transactionStatus.error?.message!!
+                    Resource.error(error)
                 }
             }catch (e: Exception){
                 Resource.error(RetrofitErrorUtil.serverException(e))
@@ -149,27 +184,45 @@ class PaymentRepository {
 
     }
 
-    suspend fun getTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
-        return withContext(Dispatchers.IO){
-            try{
-                val transactionStatus = apiService.getTransactionStatus("Bearer "+ PrefManager.getToken(),orderTrackingId)
-                val completed = transactionStatus.paymentStatusDescription
-                if(transactionStatus.status != null && transactionStatus.status == "200") {
-                    if(completed == "Completed") {
-                        Resource.success(transactionStatus)
-                    }else{
-                        Resource.error("Awaiting Payment")
-                    }
+
+
+
+    suspend fun dsToken(
+        dsTokenRequest: DsTokenRequest
+    ): Resource<AuthResponseModel> {
+        return  withContext(Dispatchers.IO) {
+            try {
+                val sendLogs = apiService.dsToken(dsTokenRequest)
+                if(sendLogs.status != null && sendLogs.status == "200") {
+                    Resource.success(sendLogs)
                 }else{
-                    val error = transactionStatus.error.message
-                    Resource.error(error)
+                    val error = sendLogs.error.message
+                    Resource.error(error!!)
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 Resource.error(RetrofitErrorUtil.serverException(e))
             }
         }
-
     }
+
+    suspend fun check3ds(
+        checkDSecureRequest: CheckDSecureRequest, token: String
+    ): Resource<CheckDsResponse> {
+        return  withContext(Dispatchers.IO) {
+            try {
+                val sendLogs = apiService.check3ds(token,checkDSecureRequest)
+//                if(sendLogs != null) {
+                Resource.success(sendLogs)
+//                }else{
+//                    val error = sendLogs.message
+//                    Resource.error(error!!)
+//                }
+            } catch (e: Exception) {
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+    }
+
 
 
 

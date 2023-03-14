@@ -135,6 +135,7 @@
                         app:ccp_showFullName="true"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_height="wrap_content"
+                        app:ccp_countryPreference="KE,UG,TZ"
                         />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -172,10 +173,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/add_card_address"
-                        android:inputType="text"
+                        android:inputType="textPostalAddress"
                         android:maxLength="50"
                         android:maxLines="1"
-                        android:text="Kiambu"
                         android:paddingStart="15dp"
                         android:textSize="12sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -199,10 +199,9 @@
                             android:layout_width="145dp"
                             android:layout_height="wrap_content"
                             android:hint="@string/add_card_postalCode"
-                            android:inputType="number"
+                            android:inputType="textPostalAddress"
                             android:maxLength="6"
                             android:maxLines="1"
-                            android:text="00900"
                             android:nextFocusDown="@id/et_city"
                             android:paddingStart="15dp"
                             android:textSize="12sp" />
@@ -221,7 +220,6 @@
                             android:hint="@string/add_card_city"
                             android:inputType="text"
                             android:maxLength="50"
-                            android:text="Ikinu"
                             android:maxLines="1"
                             android:paddingStart="15dp"
                             android:textSize="12sp" />

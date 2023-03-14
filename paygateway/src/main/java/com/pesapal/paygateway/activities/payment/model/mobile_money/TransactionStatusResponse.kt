@@ -14,7 +14,7 @@ data class TransactionStatusResponse(@SerializedName("amount")
                                      @SerializedName("message")
                                      val message: String? = null,
                                      @SerializedName("error")
-                                     val error: Error,
+                                     val error: Error? = null,
                                      @SerializedName("payment_account")
                                      val paymentAccount: String? = null,
                                      @SerializedName("merchant_reference")

@@ -227,26 +227,6 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/AppTheme.App.TextInputLayout.V3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="26dp"
-                        app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout.V3"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.santalu.maskedittext.MaskEditText
-                            android:id="@+id/et_card_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/current_card_nameOnCard"
-                            android:inputType="textCapWords"
-                            android:maxEms="16"
-                            android:text="Test Card"
-                            android:paddingStart="20dp"
-                            android:textSize="12sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/acbCreateCard"

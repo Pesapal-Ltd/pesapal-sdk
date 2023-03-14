@@ -1,4 +1,4 @@
-package com.pesapal.paygateway.activities.payment.model.mobile_money
+package com.pesapal.paygateway.activities.payment.model.card
 
 import com.google.gson.annotations.SerializedName
 
@@ -25,4 +25,6 @@ data class BillingAddress(@SerializedName("line_1")
                           @SerializedName("first_name")
                           val firstName: String? = "",
                           @SerializedName("zip_code")
-                          val zipCode: String? = "")
+                          val zipCode: String? = ""
+
+)

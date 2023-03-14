@@ -1,4 +1,4 @@
-package com.pesapal.paygateway.activities.payment.model.card_request
+package com.pesapal.paygateway.activities.payment.model.card
 
 data class CardDetails(
     var cardNumber: String = "",

@@ -10,58 +10,34 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.pesapal.paygateway.R
-import com.pesapal.paygateway.activities.payment.model.check3ds.BillingDetails
+import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
 import com.pesapal.paygateway.databinding.FragmentNewCardAddressBinding
 import com.pesapal.paygateway.activities.payment.setButtonEnabled
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 import java.math.BigDecimal
 
 
-class CardFragmentNewAddress : Fragment() {
+class CardFragmentAddressData : Fragment() {
 
     private lateinit var binding: FragmentNewCardAddressBinding
-
-    private var first_name: String? = ""
-    private var last_name: String? = ""
-    private var email: String? = ""
-    private var phone: String? = ""
-    private var amount: BigDecimal = BigDecimal.ONE
-    private lateinit var order_id: String
-    private lateinit var currency: String
-    private lateinit var accountNumber: String
-    private lateinit var callbackUrl: String
-
-    companion object {
-        private const val cardNumberLength = 19
-        const val CARD_DATA = "data"
-        fun newInstance(amount: BigDecimal, order_id: String, currency: String, accountNumber: String, callbackUrl: String, first_name: String?, last_name: String?, email: String?, phone: String? ): CardFragmentNewAddress {
-            val fragment = CardFragmentNewAddress()
-            fragment.amount = amount
-            fragment.order_id = order_id
-            fragment.currency = currency
-            fragment.accountNumber = accountNumber
-            fragment.callbackUrl = callbackUrl
-            fragment.first_name = first_name
-            fragment.last_name = last_name
-            fragment.email = email
-            fragment.phone = phone
-            return fragment
-        }
-    }
-
+    private val viewModel: AppViewModel by activityViewModels()
+    private lateinit var billingAddress: BillingAddress
     private var isFirstNameFilled = false
     private var isSurnameFilled = false
     private var isEmailFilled = false
-    private var isPhonelFilled = false
+    private var isPhoneFilled = false
     private var isAddressFilled = false
     private var isPostalCodeFilled = false
     private var isCityFilled = false
     private var enable = false
 
-
-
-
-    private val viewModel: AppViewModel by activityViewModels()
+    companion object {
+        fun newInstance(billingAddress: BillingAddress): CardFragmentAddressData {
+            val fragment = CardFragmentAddressData()
+            fragment.billingAddress = billingAddress
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,15 +53,18 @@ class CardFragmentNewAddress : Fragment() {
         handleClickListener()
         handleChangeListener()
         initData()
-        binding.acbNextStep.setButtonEnabled(true)
     }
 
     private fun initData(){
-        binding.etFirstName.setText(first_name)
-        binding.etSurname.setText(last_name)
-        binding.etEmail.setText(email)
-        binding.etPhoneNumber.setText(phone)
+        binding.etFirstName.setText(billingAddress.firstName)
+        binding.etSurname.setText(billingAddress.lastName)
+        binding.etEmail.setText(billingAddress.emailAddress)
+        binding.etPhoneNumber.setText(billingAddress.phoneNumber)
+        binding.etAddress.setText(billingAddress.zipCode)
+        binding.etPostal.setText(billingAddress.postalCode)
+        binding.etCity.setText(billingAddress.city)
     }
+
     private fun handleChangeListener(){
         binding.etFirstName.addTextChangedListener {
                 isFirstNameFilled = it.toString().isNotEmpty()
@@ -115,10 +94,10 @@ class CardFragmentNewAddress : Fragment() {
             if(it != null && it.isNotEmpty()){
                 val minLength = 3
                 val phoneText = it.toString()
-                isPhonelFilled = phoneText.length > minLength
+                isPhoneFilled = phoneText.length > minLength
                 checkFilled()
             }else{
-                isPhonelFilled = false
+                isPhoneFilled = false
             }
 
 
@@ -152,25 +131,31 @@ class CardFragmentNewAddress : Fragment() {
             checkFilled()
 
         }
-
-//        binding.countryCodePicker.selectedCountryName
-
     }
 
     private fun handleClickListener(){
         binding.acbNextStep.setOnClickListener {
-                viewModel.loadFragment("card2")
+            val billingAddress = BillingAddress(
+                phoneNumber = binding.etPhoneNumber.text.toString(),
+                emailAddress = binding.etEmail.text.toString(),
+                countryCode = binding.countryCodePicker.selectedCountryNameCode,
+                firstName = binding.etFirstName.text.toString(),
+                middleName = binding.etSurname.text.toString(),
+                lastName = binding.etSurname.text.toString(),
+                line = binding.etAddress.text.toString(),
+                line2 = binding.etAddress.text.toString(),
+                city = binding.etCity.text.toString(),
+                state = " ",
+                postalCode = binding.etPostal.text.toString(),
+                zipCode = binding.etAddress.text.toString(),
+                )
+                viewModel.loadFragmentV1(billingAddress)
         }
     }
 
-
     private fun checkFilled(){
-        enable = isFirstNameFilled && isSurnameFilled && isEmailFilled  && isPhonelFilled && isAddressFilled && isPostalCodeFilled && isCityFilled
-//        binding.acbNextStep.setButtonEnabled(enable)
-    }
-
-    private fun showMessage(message: String){
-        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
+        enable = isFirstNameFilled && isSurnameFilled && isEmailFilled  && isPhoneFilled && isAddressFilled && isPostalCodeFilled && isCityFilled
+        binding.acbNextStep.setButtonEnabled(enable)
     }
 
     private fun isValidEmail(email: CharSequence): Boolean {

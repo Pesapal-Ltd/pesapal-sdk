@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.pesapal.paygateway.activities.payment.utils.Status
 import com.pesapal.paygateway.databinding.FragmentPesapalMpesaBinding
-import com.pesapal.paygateway.activities.payment.model.mobile_money.BillingAddress
+import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyResponse
 import com.pesapal.paygateway.activities.payment.utils.PrefManager
@@ -19,7 +19,6 @@ import com.pesapal.paygateway.activities.payment.utils.TextDrawable
 import com.pesapal.paygateway.activities.payment.utils.hideKeyboard
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 import java.math.BigDecimal
-import java.util.*
 
 class MpesaPesapalFragment : Fragment() {
 

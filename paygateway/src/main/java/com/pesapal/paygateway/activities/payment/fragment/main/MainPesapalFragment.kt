@@ -10,6 +10,8 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.pesapal.paygateway.R
+import com.pesapal.paygateway.activities.payment.model.payment.PaymentDetails
+import com.pesapal.paygateway.activities.payment.utils.TimeUtils
 import com.pesapal.paygateway.databinding.FragmentPesapalMainBinding
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 import kotlin.Int
@@ -18,10 +20,10 @@ import kotlin.getValue
 class MainPesapalFragment: Fragment() {
     private lateinit var binding: FragmentPesapalMainBinding
     private val viewModel: AppViewModel by activityViewModels()
-    private lateinit var orderNumber: String
-    private lateinit var dateTime: String
-    private lateinit var amount: String
-    private lateinit var currency: String
+    private lateinit var paymentDetails: PaymentDetails
+    val dateTime = TimeUtils.getCurrentDateTime()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +41,8 @@ class MainPesapalFragment: Fragment() {
     }
 
     private fun initData(){
-        binding.tvAmount.text = "$currency $amount"
-        binding.tvOrderNumber.text = orderNumber
+        binding.tvAmount.text = "${paymentDetails.currency} ${paymentDetails.amount}"
+        binding.tvOrderNumber.text = paymentDetails.order_id
         binding.tvDateTime.text = dateTime
     }
 
@@ -89,12 +91,9 @@ class MainPesapalFragment: Fragment() {
     }
 
     companion object{
-        fun newInstance(amount: String, orderNumber: String, dateTime: String, currency: String):MainPesapalFragment{
+        fun newInstance(paymentDetails: PaymentDetails):MainPesapalFragment{
             val fragment = MainPesapalFragment()
-            fragment.amount = amount
-            fragment.orderNumber = orderNumber
-            fragment.dateTime = dateTime
-            fragment.currency = currency
+            fragment.paymentDetails = paymentDetails
             return fragment
         }
     }

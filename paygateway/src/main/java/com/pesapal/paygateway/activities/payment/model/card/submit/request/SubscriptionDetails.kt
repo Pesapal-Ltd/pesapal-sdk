@@ -1,4 +1,4 @@
-package com.pesapal.paygateway.activities.payment.model.card_request.complete
+package com.pesapal.paygateway.activities.payment.model.card.submit.request
 
 import com.google.gson.annotations.SerializedName
 
