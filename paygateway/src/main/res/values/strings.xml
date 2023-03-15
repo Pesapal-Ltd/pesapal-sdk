@@ -36,5 +36,10 @@
     <string name="country_currency_dialog_title">Set your currency</string>
     <string name="new_card_invalidEmail">Invalid Email</string>
 
+    <string name="current_mpesa_stepOneHeader">Step 1 of 3: Payment Details</string>
+    <string name="current_mpesa_stepTwoHeader">Step 2 of 3: Payment Confirmation</string>
+    <string name="current_mpesa_stepThreeHeader">Step 3 of 3: Transaction Status</string>
+
+
 
 </resources>
