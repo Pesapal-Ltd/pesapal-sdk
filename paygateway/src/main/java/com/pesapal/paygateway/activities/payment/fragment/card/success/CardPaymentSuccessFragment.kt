@@ -1,18 +1,22 @@
 package com.pesapal.paygateway.activities.payment.fragment.card.success
 
+import android.content.ClipData
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.text.ClipboardManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.pesapal.paygateway.databinding.FragmentMpesaPaymentSuccessBinding
 import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
+import com.pesapal.paygateway.databinding.FragmentCardTxnStatusBinding
 
 class CardPaymentSuccessFragment : Fragment() {
 
-    private lateinit var binding: FragmentMpesaPaymentSuccessBinding
+    private lateinit var binding: FragmentCardTxnStatusBinding
     private lateinit var transactionStatusResponse: TransactionStatusResponse
     private val viewModel: AppViewModel by activityViewModels()
 
@@ -21,7 +25,7 @@ class CardPaymentSuccessFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMpesaPaymentSuccessBinding.inflate(layoutInflater)
+        binding = FragmentCardTxnStatusBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -39,16 +43,20 @@ class CardPaymentSuccessFragment : Fragment() {
         binding.btnDone.setOnClickListener {
             viewModel.handlePaymentStatus("COMPLETED")
         }
-        binding.closeBtn.setOnClickListener {
-            viewModel.handlePaymentStatus("COMPLETED")
+        binding.imageViewCopy.setOnClickListener {
+            setClipboard(requireContext(),transactionStatusResponse.confirmationCode!!)
         }
-
     }
 
+    private fun setClipboard(context: Context, text: String) {
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip = ClipData.newPlainText("Copied Text", text)
+            clipboard.setPrimaryClip(clip)
+    }
     private fun handleDisplay(){
-        binding.tvId.text = "TXN ID: "+transactionStatusResponse.confirmationCode
-        binding.tvPaymentMethod.text = "PAYMENT METHOD: "+transactionStatusResponse.paymentMethod!!.uppercase()
-        binding.tvAmount.text = "AMOUNT: "+transactionStatusResponse.currency +". "+transactionStatusResponse.amount
+        binding.tvTxnId.text = "TXN ID: "+transactionStatusResponse.confirmationCode
+//        binding.tvPaymentMethod.text = "PAYMENT METHOD: "+transactionStatusResponse.paymentMethod!!.uppercase()
+//        binding.tvAmount.text = "AMOUNT: "+transactionStatusResponse.currency +". "+transactionStatusResponse.amount
     }
 
 

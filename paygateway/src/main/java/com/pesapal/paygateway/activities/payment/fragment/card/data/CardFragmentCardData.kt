@@ -219,7 +219,6 @@ class CardFragmentCardData : Fragment() {
                 Status.SUCCESS -> {
                     pDialog.dismiss()
                     var result = it.data!!
-                    showMessage(result.description!!)
                     handleCompletePayment(result)
                 }
                 Status.ERROR -> {

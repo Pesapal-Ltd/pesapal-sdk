@@ -200,7 +200,6 @@ class PesapalPayActivity : AppCompatActivity() {
                 }
                 "success_mpesa" -> {
                     if (transactionStatusResponse != null) {
-                        binding.clToolbar.visibility = View.GONE
                         loadFragment(MpesaSuccessFragment.newInstance(transactionStatusResponse!!))
                     }
                 }
@@ -234,7 +233,6 @@ class PesapalPayActivity : AppCompatActivity() {
         viewModel.completeCardPayment.observe(this){
             when(it.status){
                 Status.SUCCESS -> {
-                    binding.clToolbar.visibility = View.GONE
                     transactionStatusResponse = it.data
                     loadFragment(CardPaymentSuccessFragment.newInstance(transactionStatusResponse!!))
                 }
