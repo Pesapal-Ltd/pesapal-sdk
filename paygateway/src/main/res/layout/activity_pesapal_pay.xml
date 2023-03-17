@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clToolbar"
         android:layout_width="match_parent"
-        android:background="@color/purple_200"
+        android:background="@color/purple_500"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

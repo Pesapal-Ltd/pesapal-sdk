@@ -111,7 +111,6 @@ class MpesaPendingFragment : Fragment() {
                         pDialog.show()
                     }
                     Status.SUCCESS -> {
-                        showMessage("Payment prompt resent successfully")
                         pDialog.dismiss()
                         binding.clLipaNaMpesa.visibility = View.GONE
                     }
@@ -135,7 +134,6 @@ class MpesaPendingFragment : Fragment() {
                     }
                     Status.SUCCESS -> {
                         if(::pDialog.isInitialized) {
-                            showMessage("Payment confirmed successfully ")
                             pDialog.dismiss()
                             proceedToSuccessScreen(it.data!!)
                         }

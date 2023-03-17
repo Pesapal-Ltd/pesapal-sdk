@@ -116,32 +116,6 @@ class PaymentRepository {
 
     }
 
-
-
-//    suspend fun getTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
-//        return withContext(Dispatchers.IO){
-//            try{
-//                val transactionStatus = apiService.getTransactionStatus("Bearer "+ PrefManager.getToken(),orderTrackingId)
-//                val completed = transactionStatus.paymentStatusDescription
-//                if(transactionStatus.status != null && transactionStatus.status == "200") {
-//                    if(completed == "Completed") {
-//                        Resource.success(transactionStatus)
-//                    }else{
-//                        Resource.error("Awaiting Payment")
-//                    }
-//                }else{
-//                    val error = transactionStatus.error.message
-//                    Resource.error(error)
-//                }
-//            }catch (e: Exception){
-//                Resource.error(RetrofitErrorUtil.serverException(e))
-//            }
-//        }
-//
-//    }
-
-
-
     suspend fun getTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
         return withContext(Dispatchers.IO){
             try{
@@ -163,67 +137,6 @@ class PaymentRepository {
         }
 
     }
-
-
-    suspend fun serverJwt(requestServerJwt: RequestServerJwt): Resource<ResponseServerJwt>{
-
-        return withContext(Dispatchers.IO){
-            try{
-                val serverJwt = apiService.getServerJwt("Bearer "+ PrefManager.getToken(),requestServerJwt)
-                if(serverJwt.status == "200"){
-                    Resource.success(serverJwt)
-                }else{
-                    val error = serverJwt.message;
-                    Resource.error(error)
-                }
-
-            }catch (e: Exception){
-                Resource.error(RetrofitErrorUtil.serverException(e))
-            }
-        }
-
-    }
-
-
-
-
-    suspend fun dsToken(
-        dsTokenRequest: DsTokenRequest
-    ): Resource<AuthResponseModel> {
-        return  withContext(Dispatchers.IO) {
-            try {
-                val sendLogs = apiService.dsToken(dsTokenRequest)
-                if(sendLogs.status != null && sendLogs.status == "200") {
-                    Resource.success(sendLogs)
-                }else{
-                    val error = sendLogs.error.message
-                    Resource.error(error!!)
-                }
-            } catch (e: Exception) {
-                Resource.error(RetrofitErrorUtil.serverException(e))
-            }
-        }
-    }
-
-    suspend fun check3ds(
-        checkDSecureRequest: CheckDSecureRequest, token: String
-    ): Resource<CheckDsResponse> {
-        return  withContext(Dispatchers.IO) {
-            try {
-                val sendLogs = apiService.check3ds(token,checkDSecureRequest)
-//                if(sendLogs != null) {
-                Resource.success(sendLogs)
-//                }else{
-//                    val error = sendLogs.message
-//                    Resource.error(error!!)
-//                }
-            } catch (e: Exception) {
-                Resource.error(RetrofitErrorUtil.serverException(e))
-            }
-        }
-    }
-
-
 
 
 }

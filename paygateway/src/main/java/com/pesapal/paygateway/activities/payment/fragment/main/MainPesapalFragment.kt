@@ -78,15 +78,14 @@ class MainPesapalFragment: Fragment() {
     private fun configureUnselectedChip(chip: Chip) {
         chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.un_selected_color_primary))
         chip.setChipBackgroundColorResource(R.color.colorBackgroundInactive)
-        chip.setTextColor(resources.getColor(R.color.colorGreyText))
-        chip.setRippleColorResource(R.color.colorGreyOutline)
+        chip.setTextColor(resources.getColor(R.color.black))
         chip.chipStrokeWidth = 0.0f
     }
 
     private fun configureSelectedChip(chip: Chip) {
         chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        chip.setChipBackgroundColorResource(R.color.colorPrimaryAltLight)
-        chip.setRippleColorResource(R.color.colorPrimaryAltLight)
+        chip.setChipBackgroundColorResource(R.color.purple_200)
+        chip.setRippleColorResource(R.color.purple_200)
         chip.chipStrokeWidth = 0.0f
     }
 

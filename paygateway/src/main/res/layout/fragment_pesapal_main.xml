@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/dark_faded_bg"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:cardCornerRadius="10dp"
-        app:cardBackgroundColor="@color/dark_faded_bg"
+        app:cardBackgroundColor="@color/white"
         app:cardElevation="0dp"
         android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
@@ -214,14 +214,13 @@
                     android:layout_height="wrap_content"
                     android:text="Mpesa"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorGreyText"
+                    android:textColor="@color/black"
                     android:visibility="visible"
                     app:checkedIconEnabled="false"
                     app:chipBackgroundColor="@color/colorBackgroundInactive"
                     app:chipCornerRadius="5dp"
                     app:chipStrokeWidth="0dp"
                     android:textSize="12sp"
-                    app:rippleColor="@color/colorGreyOutline"
                     app:textEndPadding="16dp"
                     app:textStartPadding="16dp"
                     tools:visibility="visible" />

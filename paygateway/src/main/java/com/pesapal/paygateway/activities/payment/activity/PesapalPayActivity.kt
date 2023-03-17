@@ -3,7 +3,6 @@ package com.pesapal.paygateway.activities.payment.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -69,24 +68,33 @@ class PesapalPayActivity : AppCompatActivity() {
             var consumerKey: String? = null
             var consumerSecret: String? = null
             var ipnUrl: String? = null
-            if (intent.getStringExtra("consumer_key") != null) {
-                consumerKey = intent.getStringExtra("consumer_key")!!
+            var accountNumber: String? = null
+            var callbackUrl: String? = null
+            if (PrefManager.getString("consumer_key",null) != null) {
+                consumerKey = PrefManager.getString("consumer_key",null)!!
             }
 
-            if (intent.getStringExtra("consumer_secret") != null) {
-                consumerSecret = intent.getStringExtra("consumer_secret")!!
+            if (PrefManager.getString("consumer_secret",null) != null) {
+                consumerSecret = PrefManager.getString("consumer_secret",null)!!
             }
 
-            if (intent.getStringExtra("ipn_url") != null) {
-                ipnUrl = intent.getStringExtra("ipn_url")!!
+            if (PrefManager.getString("account_number",null) != null) {
+                accountNumber = PrefManager.getString("account_number",null)!!
+            }
+
+            if (PrefManager.getString("callback_url",null) != null) {
+                callbackUrl = PrefManager.getString("callback_url",null)!!
+            }
+
+            if (PrefManager.getString("ipn_url",null) != null) {
+                ipnUrl = PrefManager.getString("ipn_url",null)!!
             }
 
 
             val amount = intent.getStringExtra("amount")
             val orderId = intent.getStringExtra("order_id")
             val currency = intent.getStringExtra("currency")
-            val accountNumber = intent.getStringExtra("accountNumber")
-            val callbackUrl = intent.getStringExtra("callbackUrl")
+
             paymentDetails = PaymentDetails(
                 amount = BigDecimal(amount),
                 order_id = orderId,
@@ -94,7 +102,7 @@ class PesapalPayActivity : AppCompatActivity() {
                 accountNumber = accountNumber,
                 callbackUrl = callbackUrl,
                 consumer_key = consumerKey,
-                consumer_secret = consumerSecret,
+                consumer_secret =  consumerSecret,
                 ipn_url = ipnUrl,
             )
 

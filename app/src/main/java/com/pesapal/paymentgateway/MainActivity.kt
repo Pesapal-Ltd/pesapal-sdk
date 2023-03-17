@@ -16,6 +16,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity
+import com.pesapal.paygateway.activities.payment.model.payment.PaymentDetails
+import com.pesapal.paygateway.activities.payment.utils.PESAPALAPI3SDK
 import com.pesapal.paymentgateway.adapter.DemoCartAdapter
 import com.pesapal.paymentgateway.databinding.ActivityMainBinding
 import com.pesapal.paymentgateway.model.CatalogueModel
@@ -48,6 +50,11 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         binding = ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
         initData()
+        initSdk()
+    }
+
+    private fun initSdk(){
+        PESAPALAPI3SDK().init(PrefManager.getConsumerKey(),PrefManager.getConsumerSecret(),PrefManager.getAccount(), PrefManager.getCallBackUrl(), "https://test.dev")
     }
 
     private fun initData(){
@@ -191,17 +198,12 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     private fun initPayment(){
         val myIntent = Intent(this, PesapalPayActivity::class.java)
-        myIntent.putExtra("consumer_key",PrefManager.getConsumerKey())
-        myIntent.putExtra("consumer_secret",PrefManager.getConsumerSecret())
         myIntent.putExtra("amount",total.toString())
         myIntent.putExtra("order_id",orderId)
         myIntent.putExtra("currency",PrefManager.getCurrency())
-        myIntent.putExtra("accountNumber",PrefManager.getAccount())
-        myIntent.putExtra("callbackUrl",PrefManager.getCallBackUrl())
         myIntent.putExtra("firstName",userModel.firstName)
         myIntent.putExtra("lastName",userModel.lastName)
         myIntent.putExtra("email",userModel.email)
-        myIntent.putExtra("ipn_url","https://test.dev")
         startActivityForResult(myIntent,PAYMENT_REQUEST)
     }
 
