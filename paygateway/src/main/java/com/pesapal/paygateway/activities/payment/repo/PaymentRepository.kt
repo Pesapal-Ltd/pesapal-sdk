@@ -37,8 +37,11 @@ class PaymentRepository {
                 if(sendLogs.status != null && sendLogs.status == "200") {
                     Resource.success(sendLogs)
                 }else{
-                    val error = sendLogs.error.message
-                    Resource.error(error!!)
+                    var error = sendLogs.error.message
+                    if(error == ""){
+                        error =  sendLogs.error.code
+                    }
+                    Resource.error(error)
                 }
             } catch (e: Exception) {
                 Resource.error(RetrofitErrorUtil.serverException(e))
@@ -53,7 +56,10 @@ class PaymentRepository {
                 if(registerIpn.status != null && registerIpn.status == "200") {
                     Resource.success(registerIpn)
                 }else{
-                    val error = registerIpn.error.message
+                    var error = registerIpn.error.message
+                    if(error == ""){
+                        error =  registerIpn.error.code
+                    }
                     Resource.error(error!!)
                 }
             }catch (e: Exception){
@@ -69,7 +75,10 @@ class PaymentRepository {
                 if(mobileMoneyCheckout.status != null && (mobileMoneyCheckout.status == "200" || mobileMoneyCheckout.status =="500")) {
                     Resource.success(mobileMoneyCheckout)
                 }else{
-                    val error = mobileMoneyCheckout.error?.message
+                    var error = mobileMoneyCheckout.error?.message
+                    if(error == ""){
+                        error =  mobileMoneyCheckout.error?.code
+                    }
                     Resource.error(error!!)
                 }
             }catch (e: Exception){
@@ -87,7 +96,10 @@ class PaymentRepository {
                 if(cardExpressCheckoutResponse.status != null && (cardExpressCheckoutResponse.status == "200" || cardExpressCheckoutResponse.status =="500")) {
                     Resource.success(cardExpressCheckoutResponse)
                 }else{
-                    val error = cardExpressCheckoutResponse.error?.message
+                    var error = cardExpressCheckoutResponse.error?.message
+                    if(error == ""){
+                        error =  cardExpressCheckoutResponse.error?.code
+                    }
                     Resource.error(error!!)
                 }
             }catch (e: Exception){
@@ -106,7 +118,10 @@ class PaymentRepository {
                 if(cardExpressCheckoutResponse.status == "200" && cardExpressCheckoutResponse.error == null) {
                     Resource.success(cardExpressCheckoutResponse)
                 }else{
-                    val error = cardExpressCheckoutResponse.error?.message
+                    var error = cardExpressCheckoutResponse.error?.message
+                    if(error == ""){
+                        error =  cardExpressCheckoutResponse.error?.code
+                    }
                     Resource.error(error!!)
                 }
             }catch (e: Exception){

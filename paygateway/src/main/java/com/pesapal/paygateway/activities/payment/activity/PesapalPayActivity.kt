@@ -3,6 +3,7 @@ package com.pesapal.paygateway.activities.payment.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -208,6 +209,7 @@ class PesapalPayActivity : AppCompatActivity() {
                 }
                 "success_mpesa" -> {
                     if (transactionStatusResponse != null) {
+                        binding.cancelPayment.visibility = View.GONE
                         loadFragment(MpesaSuccessFragment.newInstance(transactionStatusResponse!!))
                     }
                 }
@@ -242,6 +244,7 @@ class PesapalPayActivity : AppCompatActivity() {
             when(it.status){
                 Status.SUCCESS -> {
                     transactionStatusResponse = it.data
+                    binding.cancelPayment.visibility = View.GONE
                     loadFragment(CardPaymentSuccessFragment.newInstance(transactionStatusResponse!!))
                 }
                 else -> {

@@ -2,7 +2,6 @@ package com.pesapal.paygateway.activities.payment.fragment.mpesa.stk
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import com.pesapal.paygateway.activities.payment.utils.PrefManager
 import com.pesapal.paygateway.activities.payment.utils.TextDrawable
 import com.pesapal.paygateway.activities.payment.utils.hideKeyboard
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
-import java.math.BigDecimal
 
 class MpesaPesapalFragment : Fragment() {
 

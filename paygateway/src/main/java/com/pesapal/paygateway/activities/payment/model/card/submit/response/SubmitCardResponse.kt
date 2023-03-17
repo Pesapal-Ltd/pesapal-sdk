@@ -1,6 +1,7 @@
 package com.pesapal.paygateway.activities.payment.model.card.submit.response
 
 import com.google.gson.annotations.SerializedName
+import com.pesapal.paygateway.activities.payment.model.mobile_money.Error
 
 data class SubmitCardResponse(@SerializedName("merchant_reference")
                               val merchantReference: String = "",

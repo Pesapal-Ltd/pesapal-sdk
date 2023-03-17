@@ -4,15 +4,11 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.pesapal.paygateway.activities.payment.utils.Status
@@ -20,7 +16,6 @@ import com.pesapal.paygateway.databinding.FragmentMpesaPendingBinding
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
-import java.math.BigDecimal
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -98,7 +93,9 @@ class MpesaPendingFragment : Fragment() {
 
     private fun handleResend(){
         delayTime = 1000L
-        viewModel.mobileMoneyTransactionStatusBackground(mobileMoneyRequest.trackingId)
+        var mobileMoneyRequest: MobileMoneyRequest = mobileMoneyRequest
+        mobileMoneyRequest.trackingId =  mobileMoneyRequest.trackingId
+        viewModel.sendMobileMoneyCheckOut(mobileMoneyRequest,"")
     }
 
     private fun handleViewModel(){

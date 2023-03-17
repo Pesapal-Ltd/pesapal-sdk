@@ -45,17 +45,17 @@ interface ApiServices {
     suspend fun getTransactionStatus(@Header("Authorization") token: String, @Query("orderTrackingId") orderTrackingId: String) : TransactionStatusResponse
 
     //to be used later
-    @POST("api/fx/quote")
-    suspend fun getFxRate(@Body forexChange: ForexChange) : ForexExchangeResponse
-
-    @POST("api/Transactions/SignCardinalCheckoutRequest")
-    suspend fun getServerJwt(@Header("Authorization") token: String, @Body requestServerJwt: RequestServerJwt) : ResponseServerJwt
-
-    @POST("https://cybqa.pesapal.com/pesapalcharging/api/Transaction/CheckEnrollMent")
-    suspend fun check3ds(@Header("Authorization") token: String, @Body checkDSecureRequest: CheckDSecureRequest) : CheckDsResponse
-
-    @POST("https://cybqa.pesapal.com/pesapalcharging/api/Token/RequestApiToken")
-    suspend fun dsToken( @Body dsTokenRequest: DsTokenRequest) : AuthResponseModel
+//    @POST("api/fx/quote")
+//    suspend fun getFxRate(@Body forexChange: ForexChange) : ForexExchangeResponse
+//
+//    @POST("api/Transactions/SignCardinalCheckoutRequest")
+//    suspend fun getServerJwt(@Header("Authorization") token: String, @Body requestServerJwt: RequestServerJwt) : ResponseServerJwt
+//
+//    @POST("https://cybqa.pesapal.com/pesapalcharging/api/Transaction/CheckEnrollMent")
+//    suspend fun check3ds(@Header("Authorization") token: String, @Body checkDSecureRequest: CheckDSecureRequest) : CheckDsResponse
+//
+//    @POST("https://cybqa.pesapal.com/pesapalcharging/api/Token/RequestApiToken")
+//    suspend fun dsToken( @Body dsTokenRequest: DsTokenRequest) : AuthResponseModel
 
 
 }

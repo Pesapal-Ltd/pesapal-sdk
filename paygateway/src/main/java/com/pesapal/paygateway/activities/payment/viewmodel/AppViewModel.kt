@@ -9,9 +9,6 @@ import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterI
 import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.auth.AuthResponseModel
 import com.pesapal.paygateway.activities.payment.model.card.submit.request.SubmitCardRequest
-import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
-import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
-import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
 import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
 import com.pesapal.paygateway.activities.payment.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.paygateway.activities.payment.model.card.order_id.response.CardOrderTrackingIdResponse
@@ -223,6 +220,7 @@ class AppViewModel : ViewModel() {
 
         }
     }
+
 
     fun mobileMoneyTransactionStatusBackground(trackingId: String){
         _transactionStatusBg.postValue(Resource.loading("Confirming payment ... "))
