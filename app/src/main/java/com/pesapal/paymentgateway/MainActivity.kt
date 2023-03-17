@@ -80,20 +80,15 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         catalogueModelList = arrayListOf()
         itemModelList = arrayListOf()
         orderId = createTransactionID()
-
         catalogueModelList.addAll(
             listOf(
-                CatalogueModel.ProductsBean("Blue Shirt",R.drawable.blue_shirt, BigDecimal(1).setScale(2)),
-                CatalogueModel.ProductsBean("Red Shirt",R.drawable.red_shirt, BigDecimal(5).setScale(2)),
-            )
-        )
-
+                CatalogueModel.ProductsBean("Chips",R.drawable.chips, BigDecimal(1).setScale(2)),
+                CatalogueModel.ProductsBean("Burgers",R.drawable.burgers, BigDecimal(5).setScale(2)),
+            ))
         demoCartAdapter = DemoCartAdapter(this)
         binding.rv.layoutManager = LinearLayoutManager(this)
         binding.rv.adapter = demoCartAdapter
         demoCartAdapter.setData(catalogueModelList)
-
-
     }
 
     private fun handleClicks(){

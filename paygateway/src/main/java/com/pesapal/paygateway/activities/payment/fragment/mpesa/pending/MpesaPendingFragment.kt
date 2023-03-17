@@ -87,7 +87,9 @@ class MpesaPendingFragment : Fragment() {
     }
 
     private fun handleBackgroundConfirmation(delayTime: Long){
-        viewModel.mobileMoneyTransactionStatusBackground(mobileMoneyRequest.trackingId)
+        Handler().postDelayed({
+            viewModel.mobileMoneyTransactionStatusBackground(mobileMoneyRequest.trackingId)
+        },delayTime)
     }
 
     private fun handleConfirmation(){
@@ -95,7 +97,7 @@ class MpesaPendingFragment : Fragment() {
     }
 
     private fun handleResend(){
-        delayTime = 12000L
+        delayTime = 1000L
         viewModel.mobileMoneyTransactionStatusBackground(mobileMoneyRequest.trackingId)
     }
 
@@ -159,13 +161,12 @@ class MpesaPendingFragment : Fragment() {
                     }
                 }
                 Status.SUCCESS -> {
-                    showMessage("Payment confirmed successfully ")
                     handleTimeStop()
                     proceedToSuccessScreen(it.data!!)
                 }
                 Status.ERROR -> {
                     if(delayTime != 30000L){
-                        delayTime += 100
+                        delayTime += 1000
                         handleBackgroundConfirmation(delayTime)
                     }
 
@@ -263,6 +264,7 @@ class MpesaPendingFragment : Fragment() {
     }
 
     private fun stopCountDownTimer() {
+        delayTime = 30000L
         binding.tvTime.text = "00:00"
         countDownTimer!!.cancel()
         hideDialog()
