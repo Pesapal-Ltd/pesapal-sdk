@@ -95,7 +95,7 @@ class MpesaPendingFragment : Fragment() {
         delayTime = 1000L
         var mobileMoneyRequest: MobileMoneyRequest = mobileMoneyRequest
         mobileMoneyRequest.trackingId =  mobileMoneyRequest.trackingId
-        viewModel.sendMobileMoneyCheckOut(mobileMoneyRequest,"")
+        viewModel.sendMobileMoneyCheckOut(mobileMoneyRequest,"Resending OTP ...")
     }
 
     private fun handleViewModel(){

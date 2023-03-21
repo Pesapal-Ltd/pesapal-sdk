@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.cardinalcommerce.cardinalmobilesdk.Cardinal
@@ -26,9 +27,10 @@ import com.pesapal.paygateway.activities.payment.fragment.mpesa.pending.MpesaPen
 import com.pesapal.paygateway.activities.payment.fragment.mpesa.stk.MpesaPesapalFragment
 import com.pesapal.paygateway.activities.payment.fragment.mpesa.success.MpesaSuccessFragment
 import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
-import com.pesapal.paygateway.activities.payment.model.payment.PaymentDetails
+import com.pesapal.paygateway.activities.payment.model.error.TransactionError
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paygateway.activities.payment.model.payment.PaymentDetails
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.paygateway.activities.payment.utils.PrefManager
 import com.pesapal.paygateway.activities.payment.utils.Status
@@ -46,6 +48,7 @@ class PesapalPayActivity : AppCompatActivity() {
 
     private var mobileMoneyRequest: MobileMoneyRequest? = null
     private var transactionStatusResponse: TransactionStatusResponse? = null
+    private var transactionErrorMessage: String? = null
     private var cardinal: Cardinal = Cardinal.getInstance()
 
     private val viewModel: AppViewModel by viewModels()
@@ -266,6 +269,21 @@ class PesapalPayActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.handleError.observe(this){
+            when(it.status){
+                Status.SUCCESS -> {
+                    var result = it.data
+                    handleError(result!!.message)
+                }
+                Status.ERROR -> {
+                    transactionErrorMessage = it.message!!
+                    handleError(transactionErrorMessage!!)
+                }
+
+                else -> {}
+            }
+        }
+
 
     }
 
@@ -282,9 +300,21 @@ class PesapalPayActivity : AppCompatActivity() {
     private fun returnPaymentStatus(status: String) {
         val returnIntent = Intent()
         returnIntent.putExtra("status", status)
-        if(transactionStatusResponse != null) {
-            returnIntent.putExtra("result", transactionStatusResponse)
+        when(status){
+            "COMPLETED" -> {
+                returnIntent.putExtra("data", transactionStatusResponse)
+            }
+            "ERROR" -> {
+                returnIntent.putExtra("data", transactionErrorMessage)
+            }
+            "CANCELLED" -> {
+                returnIntent.putExtra("data", "Transaction Cancelled")
+            }
+            else -> {
+                returnIntent.putExtra("data", "An error occurred, Please try again later ...")
+            }
         }
+
         setResult(RESULT_OK, returnIntent)
         finish()
     }
@@ -297,6 +327,22 @@ class PesapalPayActivity : AppCompatActivity() {
         transaction.addToBackStack(frag)
         transaction.commit()
     }
+
+    private fun handleError(message: String){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage(message)
+        //Button One : Yes
+        builder.setPositiveButton("Okay"
+        ) { dialog, which ->
+            dialog.cancel()
+            returnPaymentStatus("ERROR")
+        }
+
+        val diag: AlertDialog = builder.create()
+        diag.show()
+    }
+
 
 
     private fun showMessage(message: String) {
@@ -347,6 +393,7 @@ class PesapalPayActivity : AppCompatActivity() {
         cardinal.configure(this, cardinalConfigurationParameters)
         getAllWarnings()
     }
+
 
 
 }

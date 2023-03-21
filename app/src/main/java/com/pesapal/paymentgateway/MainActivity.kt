@@ -1,6 +1,7 @@
 package com.pesapal.paymentgateway
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +17,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity
-import com.pesapal.paygateway.activities.payment.model.payment.PaymentDetails
 import com.pesapal.paygateway.activities.payment.utils.PESAPALAPI3SDK
 import com.pesapal.paymentgateway.adapter.DemoCartAdapter
 import com.pesapal.paymentgateway.databinding.ActivityMainBinding
 import com.pesapal.paymentgateway.model.CatalogueModel
 import com.pesapal.paymentgateway.model.UserModel
+import com.pesapal.paymentgateway.model.pesapalsdk.success.TransactionStatusResponse
 import com.pesapal.paymentgateway.profile.ProfileActivity
 import com.pesapal.paymentgateway.utils.PrefManager
 import com.pesapal.paymentgateway.utils.TimeUtils
@@ -143,8 +144,8 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun showMessage(message: String){
+        Log.e(" error ", " message $message")
         Toast.makeText(this@MainActivity,message, Toast.LENGTH_LONG).show()
-
     }
 
     override fun onResume() {
@@ -199,7 +200,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     private fun initPayment(){
         val myIntent = Intent(this, PesapalPayActivity::class.java)
         myIntent.putExtra("amount",total.toString())
-        myIntent.putExtra("order_id",orderId)
+        myIntent.putExtra("order_id","11")
         myIntent.putExtra("currency",PrefManager.getCurrency())
         myIntent.putExtra("firstName",userModel.firstName)
         myIntent.putExtra("lastName",userModel.lastName)
@@ -233,18 +234,45 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         }else if (requestCode == PAYMENT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 val result = data?.getStringExtra("status")
-                if (result.equals("COMPLETED")){
-                    itemModelList.clear()
-                    demoCartAdapter.notifyDataSetChanged()
-                    orderId = createTransactionID()
-                    showMessage("Payment confirmed successfully, Continue shopping ...")
-                }else{
-                    orderId = createTransactionID()
-                    binding.tvOrderId.text = "Order ID $orderId"
-                    showMessage("An error occurred processing payment ...")
+                orderId = createTransactionID()
+                binding.tvOrderId.text = "Order ID $orderId"
+                when(result){
+                    "COMPLETED" -> {
+                        val transactionStatusResponse = data?.getStringExtra("data") as TransactionStatusResponse
+                        handleCompletedTxn(transactionStatusResponse)
+                    }
+                    "ERROR" -> {
+                        val message = data.getStringExtra("data")
+                        handleFailedTxn(message!!)
+                    }
+                    "CANCELLED" -> {
+                        val message = data.getStringExtra("data")
+                        handleCancelledTxn(message!!)
+                    }
+                    else -> {
+                        handleDefaultError("An Error Occurred, Please try again later ...")
+                    }
                 }
             }
         }
+    }
+
+    private fun handleCompletedTxn(transactionStatusResponse: TransactionStatusResponse){
+        itemModelList.clear()
+        demoCartAdapter.notifyDataSetChanged()
+        showMessage(transactionStatusResponse.description!!)
+    }
+
+    private fun handleFailedTxn(message: String){
+        showMessage(message)
+    }
+
+    private fun handleCancelledTxn(message: String){
+        showMessage(message)
+    }
+
+    private fun handleDefaultError(message: String){
+        showMessage(message)
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {

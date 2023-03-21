@@ -12,12 +12,11 @@ import com.pesapal.paygateway.activities.payment.model.card.submit.request.Submi
 import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
 import com.pesapal.paygateway.activities.payment.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.paygateway.activities.payment.model.card.order_id.response.CardOrderTrackingIdResponse
-import com.pesapal.paygateway.activities.payment.model.card.status.response.CheckCardPaymentStatusResponse
 import com.pesapal.paygateway.activities.payment.model.card.submit.response.SubmitCardResponse
+import com.pesapal.paygateway.activities.payment.model.error.TransactionError
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyResponse
 import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
-import com.pesapal.paygateway.activities.payment.model.server_jwt.RequestServerJwt
 import com.pesapal.paygateway.activities.payment.model.server_jwt.response.ResponseServerJwt
 import com.pesapal.paygateway.activities.payment.repo.PaymentRepository
 import com.pesapal.paygateway.activities.payment.utils.Resource
@@ -54,6 +53,11 @@ class AppViewModel : ViewModel() {
     private var _completeCardPayment = MutableLiveData<Resource<TransactionStatusResponse>>()
     val completeCardPayment: LiveData<Resource<TransactionStatusResponse>>
         get() = _completeCardPayment
+
+
+    private var _handleError = MutableLiveData<Resource<TransactionError>>()
+    val handleError: LiveData<Resource<TransactionError>>
+        get() = _handleError
 
 
 
@@ -101,12 +105,14 @@ class AppViewModel : ViewModel() {
             when (result.status) {
                 Status.ERROR -> {
                     _authPaymentResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
                     _authPaymentResponse.postValue(Resource.success(result.data))
                 }
                 else -> {
                     _authPaymentResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
                 }
             }
         }
@@ -119,11 +125,14 @@ class AppViewModel : ViewModel() {
             when(result.status){
                 Status.ERROR -> {
                     _registerIpnResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
                     _registerIpnResponse.postValue(Resource.success(result.data))
                 }
-                else -> {}
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
             }
 
         }
@@ -137,11 +146,14 @@ class AppViewModel : ViewModel() {
             when(result.status){
                 Status.ERROR -> {
                     _cardOrderTrackingIdResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
                     _cardOrderTrackingIdResponse.postValue(Resource.success(result.data))
                 }
-                else -> {}
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
             }
 
         }
@@ -154,11 +166,14 @@ class AppViewModel : ViewModel() {
             when(result.status){
                 Status.ERROR -> {
                     _submitCardResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
                     _submitCardResponse.postValue(Resource.success(result.data))
                 }
-                else -> {}
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
             }
 
         }
@@ -172,11 +187,14 @@ class AppViewModel : ViewModel() {
             when(result.status){
                 Status.ERROR -> {
                     _cardPaymentStatus.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
                     _cardPaymentStatus.postValue(Resource.success(result.data))
                 }
-                else -> {}
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
             }
 
         }
@@ -193,11 +211,14 @@ class AppViewModel : ViewModel() {
             when(result.status){
                 Status.ERROR -> {
                     _mobileMoneyResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
                     _mobileMoneyResponse.postValue(Resource.success(result.data))
                 }
-                else -> {}
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
             }
 
         }
@@ -211,11 +232,14 @@ class AppViewModel : ViewModel() {
             when(result.status){
                 Status.ERROR -> {
                     _transactionStatus.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
                     _transactionStatus.postValue(Resource.success(result.data))
                 }
-                else -> {}
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
             }
 
         }
@@ -229,11 +253,14 @@ class AppViewModel : ViewModel() {
             when(result.status){
                 Status.ERROR -> {
                     _transactionStatusBg.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
                     _transactionStatusBg.postValue(Resource.success(result.data))
                 }
-                else -> {}
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
             }
 
         }

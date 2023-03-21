@@ -1,5 +1,6 @@
 package com.pesapal.paygateway.activities.payment.model.registerIpn_url
-import com.pesapal.paygateway.activities.payment.model.mobile_money.Error
+
+import com.pesapal.paygateway.activities.payment.model.error.TransactionError
 
 data class RegisterIpnResponse(
     val id: String,
@@ -10,6 +11,6 @@ data class RegisterIpnResponse(
     val ipn_notification_type_description: String,
     val ipn_status: String,
     val ipn_status_decription: String,
-    val error: Error,
+    val error: TransactionError,
     val status: String?,
 )
