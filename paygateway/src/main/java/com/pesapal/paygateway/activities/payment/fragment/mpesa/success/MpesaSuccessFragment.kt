@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.pesapal.paygateway.databinding.FragmentMpesaPaymentSuccessBinding
-import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 
 class MpesaSuccessFragment : Fragment() {

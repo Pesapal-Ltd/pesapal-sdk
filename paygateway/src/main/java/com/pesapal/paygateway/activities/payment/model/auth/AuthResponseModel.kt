@@ -1,6 +1,6 @@
 package com.pesapal.paygateway.activities.payment.model.auth
 
-import com.pesapal.paygateway.activities.payment.model.error.TransactionError
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionError
 
 data class AuthResponseModel(val expiryDate: String = "",
                              val error: TransactionError,

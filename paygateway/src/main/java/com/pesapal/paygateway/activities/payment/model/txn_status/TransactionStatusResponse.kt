@@ -1,7 +1,6 @@
-package com.pesapal.paygateway.activities.payment.model.mobile_money
+package com.pesapal.paygateway.activities.payment.model.txn_status
 
 import com.google.gson.annotations.SerializedName
-import com.pesapal.paygateway.activities.payment.model.error.TransactionError
 
 data class TransactionStatusResponse(@SerializedName("amount")
                                      val amount: Int = 0,

@@ -2,7 +2,6 @@ package com.pesapal.paygateway.activities.payment.fragment.card.data
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,7 @@ import com.pesapal.paygateway.activities.payment.model.card.submit.request.Submi
 import com.pesapal.paygateway.activities.payment.model.card.submit.request.SubscriptionDetails
 import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
 import com.pesapal.paygateway.activities.payment.model.card.order_id.request.CardOrderTrackingIdRequest
-import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.model.payment.PaymentDetails
 import com.pesapal.paygateway.activities.payment.setButtonEnabled
 import com.pesapal.paygateway.activities.payment.utils.FragmentExtension.hideKeyboard

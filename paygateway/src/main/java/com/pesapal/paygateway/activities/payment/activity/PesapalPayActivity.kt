@@ -27,9 +27,8 @@ import com.pesapal.paygateway.activities.payment.fragment.mpesa.pending.MpesaPen
 import com.pesapal.paygateway.activities.payment.fragment.mpesa.stk.MpesaPesapalFragment
 import com.pesapal.paygateway.activities.payment.fragment.mpesa.success.MpesaSuccessFragment
 import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
-import com.pesapal.paygateway.activities.payment.model.error.TransactionError
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
-import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.model.payment.PaymentDetails
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.paygateway.activities.payment.utils.PrefManager
@@ -142,11 +141,11 @@ class PesapalPayActivity : AppCompatActivity() {
 
     private fun handleClick() {
         binding.cancelPayment.setOnClickListener {
-            returnPaymentStatus("failed")
+            handleError("CANCEL","Are you sure you want to cancel this transaction.")
         }
 
         binding.tvClose.setOnClickListener {
-            returnPaymentStatus("failed")
+            handleError("CANCEL","Are you sure you want to cancel this transaction.")
         }
 
     }
@@ -195,6 +194,7 @@ class PesapalPayActivity : AppCompatActivity() {
         viewModel.loadSuccessMpesa.observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
+                    binding.cancelPayment.visibility = View.GONE
                     transactionStatusResponse = it.data
                     viewModel.loadFragment("success_mpesa")
                 }
@@ -235,7 +235,8 @@ class PesapalPayActivity : AppCompatActivity() {
         viewModel.paymentDone.observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    returnPaymentStatus(it.data!!)
+                    Log.e(" status ", " == "+transactionStatusResponse)
+                    returnPaymentStatus("COMPLETED")
                 }
                 else -> {
 
@@ -273,11 +274,11 @@ class PesapalPayActivity : AppCompatActivity() {
             when(it.status){
                 Status.SUCCESS -> {
                     var result = it.data
-                    handleError(result!!.message)
+                    handleError("ERROR",result!!.message)
                 }
                 Status.ERROR -> {
                     transactionErrorMessage = it.message!!
-                    handleError(transactionErrorMessage!!)
+                    handleError("ERROR",transactionErrorMessage!!)
                 }
 
                 else -> {}
@@ -328,19 +329,30 @@ class PesapalPayActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-    private fun handleError(message: String){
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle("Error")
-        builder.setMessage(message)
-        //Button One : Yes
-        builder.setPositiveButton("Okay"
-        ) { dialog, which ->
-            dialog.cancel()
-            returnPaymentStatus("ERROR")
-        }
+    private fun handleError(header: String, message: String){
+        var status = header
+        if(header == "CANCEL"){
+            status = "CANCELLED"
+            returnPaymentStatus(status)
+        }else {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.setTitle(header)
+            builder.setCancelable(false)
+            builder.setMessage(message)
+            //Button One : Yes
+            builder.setPositiveButton(
+                "Okay"
+            ) { dialog, which ->
+                dialog.cancel()
+                if (header == "CANCEL") {
+                    status = "CANCELLED"
+                }
+                returnPaymentStatus(status)
+            }
 
-        val diag: AlertDialog = builder.create()
-        diag.show()
+            val diag: AlertDialog = builder.create()
+            diag.show()
+        }
     }
 
 

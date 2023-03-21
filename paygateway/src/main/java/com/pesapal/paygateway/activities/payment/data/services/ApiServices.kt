@@ -4,12 +4,11 @@ import com.pesapal.paygateway.activities.payment.model.auth.AuthRequestModel
 import com.pesapal.paygateway.activities.payment.model.auth.AuthResponseModel
 import com.pesapal.paygateway.activities.payment.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.paygateway.activities.payment.model.card.order_id.response.CardOrderTrackingIdResponse
-import com.pesapal.paygateway.activities.payment.model.card.status.response.CheckCardPaymentStatusResponse
 import com.pesapal.paygateway.activities.payment.model.card.submit.request.SubmitCardRequest
 import com.pesapal.paygateway.activities.payment.model.card.submit.response.SubmitCardResponse
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyResponse
-import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.paygateway.activities.payment.model.registerIpn_url.RegisterIpnResponse
 import retrofit2.http.*
@@ -32,7 +31,7 @@ interface ApiServices {
     suspend fun submitCardRequest(@Header("Authorization") token: String, @Body submitCardRequest: SubmitCardRequest) : SubmitCardResponse
 
     @GET("api/Transactions/GetTransactionStatus")
-    suspend fun checkCardPaymentStatus(@Header("Authorization") token: String, @Query("orderTrackingId") orderTrackingId: String) : CheckCardPaymentStatusResponse
+    suspend fun checkCardPaymentStatus(@Header("Authorization") token: String, @Query("orderTrackingId") orderTrackingId: String) : TransactionStatusResponse
 
     @GET("api/Transactions/GetTransactionStatus")
     suspend fun getTransactionStatus(@Header("Authorization") token: String, @Query("orderTrackingId") orderTrackingId: String) : TransactionStatusResponse

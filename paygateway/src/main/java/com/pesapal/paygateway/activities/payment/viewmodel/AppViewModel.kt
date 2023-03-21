@@ -13,10 +13,10 @@ import com.pesapal.paygateway.activities.payment.model.card.BillingAddress
 import com.pesapal.paygateway.activities.payment.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.paygateway.activities.payment.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.paygateway.activities.payment.model.card.submit.response.SubmitCardResponse
-import com.pesapal.paygateway.activities.payment.model.error.TransactionError
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionError
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyResponse
-import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.model.server_jwt.response.ResponseServerJwt
 import com.pesapal.paygateway.activities.payment.repo.PaymentRepository
 import com.pesapal.paygateway.activities.payment.utils.Resource
@@ -60,7 +60,6 @@ class AppViewModel : ViewModel() {
         get() = _handleError
 
 
-
     private var _mobileMoneyResponse = MutableLiveData<Resource<MobileMoneyResponse>>()
     val mobileMoneyResponse: LiveData<Resource<MobileMoneyResponse>>
         get() = _mobileMoneyResponse
@@ -94,9 +93,6 @@ class AppViewModel : ViewModel() {
     val loadSuccessMpesa: LiveData<Resource<TransactionStatusResponse>>
     get() = _loadSuccessMpesa
 
-    private var _serverJwt = MutableLiveData<Resource<ResponseServerJwt>>()
-    val serverJwt: LiveData<Resource<ResponseServerJwt>>
-    get() = _serverJwt
 
     fun authPayment(authRequestModel: AuthRequestModel) {
         _authPaymentResponse.postValue(Resource.loading("Initiating payment process ... "))
@@ -183,14 +179,14 @@ class AppViewModel : ViewModel() {
     fun checkCardPaymentStatus(trackingId: String){
         _cardPaymentStatus.postValue(Resource.loading("Confirming payment ... "))
         viewModelScope.launch {
-            val result = paymentRepository.getTransactionStatus(trackingId)
+            val result = paymentRepository.getCardTransactionStatus(trackingId)
             when(result.status){
                 Status.ERROR -> {
                     _cardPaymentStatus.postValue(Resource.error(result.message!!))
                     _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
-                    _cardPaymentStatus.postValue(Resource.success(result.data))
+                        _cardPaymentStatus.postValue(Resource.success(result.data))
                 }
                 else -> {
                     _handleError.postValue(Resource.error(result.message!!))
@@ -235,7 +231,11 @@ class AppViewModel : ViewModel() {
                     _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
-                    _transactionStatus.postValue(Resource.success(result.data))
+                    if(result.data!!.paymentStatusDescription == "Completed") {
+                        _transactionStatus.postValue(Resource.success(result.data))
+                    }else{
+                        _transactionStatus.postValue(Resource.error("Awaiting payment .."))
+                    }
                 }
                 else -> {
                     _handleError.postValue(Resource.error(result.message!!))
@@ -256,7 +256,11 @@ class AppViewModel : ViewModel() {
                     _handleError.postValue(Resource.error(result.message))
                 }
                 Status.SUCCESS -> {
-                    _transactionStatusBg.postValue(Resource.success(result.data))
+                    if(result.data!!.paymentStatusDescription == "Completed") {
+                        _transactionStatusBg.postValue(Resource.success(result.data))
+                    }else{
+                        _transactionStatusBg.postValue(Resource.error("Awaiting payment .."))
+                    }
                 }
                 else -> {
                     _handleError.postValue(Resource.error(result.message!!))

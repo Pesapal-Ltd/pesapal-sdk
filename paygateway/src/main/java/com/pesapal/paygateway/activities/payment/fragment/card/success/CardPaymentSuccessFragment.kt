@@ -2,15 +2,13 @@ package com.pesapal.paygateway.activities.payment.fragment.card.success
 
 import android.content.ClipData
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
-import android.text.ClipboardManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 import com.pesapal.paygateway.databinding.FragmentCardTxnStatusBinding
 

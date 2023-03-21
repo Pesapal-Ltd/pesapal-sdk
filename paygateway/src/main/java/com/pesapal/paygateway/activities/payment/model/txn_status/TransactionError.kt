@@ -1,4 +1,4 @@
-package com.pesapal.paygateway.activities.payment.model.error
+package com.pesapal.paygateway.activities.payment.model.txn_status
 
 import com.google.gson.annotations.SerializedName
 

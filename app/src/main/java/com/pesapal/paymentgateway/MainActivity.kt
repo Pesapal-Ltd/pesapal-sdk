@@ -1,7 +1,6 @@
 package com.pesapal.paymentgateway
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -17,12 +16,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.utils.PESAPALAPI3SDK
 import com.pesapal.paymentgateway.adapter.DemoCartAdapter
 import com.pesapal.paymentgateway.databinding.ActivityMainBinding
 import com.pesapal.paymentgateway.model.CatalogueModel
 import com.pesapal.paymentgateway.model.UserModel
-import com.pesapal.paymentgateway.model.pesapalsdk.success.TransactionStatusResponse
 import com.pesapal.paymentgateway.profile.ProfileActivity
 import com.pesapal.paymentgateway.utils.PrefManager
 import com.pesapal.paymentgateway.utils.TimeUtils
@@ -200,7 +199,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     private fun initPayment(){
         val myIntent = Intent(this, PesapalPayActivity::class.java)
         myIntent.putExtra("amount",total.toString())
-        myIntent.putExtra("order_id","11")
+        myIntent.putExtra("order_id",orderId)
         myIntent.putExtra("currency",PrefManager.getCurrency())
         myIntent.putExtra("firstName",userModel.firstName)
         myIntent.putExtra("lastName",userModel.lastName)
@@ -238,7 +237,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
                 binding.tvOrderId.text = "Order ID $orderId"
                 when(result){
                     "COMPLETED" -> {
-                        val transactionStatusResponse = data?.getStringExtra("data") as TransactionStatusResponse
+                        val transactionStatusResponse = data?.getSerializableExtra("data") as TransactionStatusResponse
                         handleCompletedTxn(transactionStatusResponse)
                     }
                     "ERROR" -> {
@@ -260,7 +259,11 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     private fun handleCompletedTxn(transactionStatusResponse: TransactionStatusResponse){
         itemModelList.clear()
         demoCartAdapter.notifyDataSetChanged()
-        showMessage(transactionStatusResponse.description!!)
+        if(transactionStatusResponse.description != null) {
+            showMessage(transactionStatusResponse.description!!)
+        }else{
+            showMessage(transactionStatusResponse.message!!)
+        }
     }
 
     private fun handleFailedTxn(message: String){

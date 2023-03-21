@@ -8,16 +8,10 @@ import com.pesapal.paygateway.activities.payment.model.auth.AuthResponseModel
 import com.pesapal.paygateway.activities.payment.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.paygateway.activities.payment.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.paygateway.activities.payment.model.card.submit.request.SubmitCardRequest
-import com.pesapal.paygateway.activities.payment.model.card.status.response.CheckCardPaymentStatusResponse
 import com.pesapal.paygateway.activities.payment.model.card.submit.response.SubmitCardResponse
-import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
-import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
-import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyResponse
-import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
-import com.pesapal.paygateway.activities.payment.model.server_jwt.RequestServerJwt
-import com.pesapal.paygateway.activities.payment.model.server_jwt.response.ResponseServerJwt
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.utils.PrefManager
 import com.pesapal.paygateway.activities.payment.utils.RetrofitErrorUtil
 import com.pesapal.paygateway.activities.payment.utils.Resource
@@ -131,17 +125,30 @@ class PaymentRepository {
 
     }
 
+    suspend fun getCardTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
+        return withContext(Dispatchers.IO){
+            try{
+                val transactionStatus = apiService.checkCardPaymentStatus("Bearer "+ PrefManager.getToken(),orderTrackingId)
+                if(transactionStatus.status != null && transactionStatus.status == "200") {
+                        Resource.success(transactionStatus)
+                }else{
+                    val error = transactionStatus.error?.message!!
+                    Resource.error(error)
+                }
+            }catch (e: Exception){
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+
+    }
+
+
     suspend fun getTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
         return withContext(Dispatchers.IO){
             try{
                 val transactionStatus = apiService.getTransactionStatus("Bearer "+ PrefManager.getToken(),orderTrackingId)
-                val completed = transactionStatus.paymentStatusDescription
-                if(transactionStatus.status != null && transactionStatus.status == "200") {
-                    if(completed == "Completed") {
+                if(transactionStatus.status != null && (transactionStatus.status == "200" || transactionStatus.status == "500")) {
                         Resource.success(transactionStatus)
-                    }else{
-                        Resource.error("Awaiting Payment")
-                    }
                 }else{
                     val error = transactionStatus.error?.message!!
                     Resource.error(error)

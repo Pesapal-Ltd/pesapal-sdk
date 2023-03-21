@@ -14,7 +14,7 @@ import androidx.fragment.app.activityViewModels
 import com.pesapal.paygateway.activities.payment.utils.Status
 import com.pesapal.paygateway.databinding.FragmentMpesaPendingBinding
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
-import com.pesapal.paygateway.activities.payment.model.mobile_money.TransactionStatusResponse
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionStatusResponse
 import com.pesapal.paygateway.activities.payment.viewmodel.AppViewModel
 import java.util.*
 import java.util.concurrent.TimeUnit

@@ -1,7 +1,7 @@
 package com.pesapal.paygateway.activities.payment.model.mobile_money
 
 import com.google.gson.annotations.SerializedName
-import com.pesapal.paygateway.activities.payment.model.error.TransactionError
+import com.pesapal.paygateway.activities.payment.model.txn_status.TransactionError
 
 data class MobileMoneyResponse(@SerializedName("payment_message")
                                val paymentMessage: String = "",
