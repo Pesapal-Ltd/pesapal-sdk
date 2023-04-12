@@ -1,0 +1,298 @@
+package com.pesapal.sdk.activities.payment.viewmodel
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.pesapal.sdk.activities.payment.model.registerIpn_url.RegisterIpnRequest
+import com.pesapal.sdk.activities.payment.model.registerIpn_url.RegisterIpnResponse
+import com.pesapal.sdk.activities.payment.model.auth.AuthRequestModel
+import com.pesapal.sdk.activities.payment.model.auth.AuthResponseModel
+import com.pesapal.sdk.activities.payment.model.card.submit.request.SubmitCardRequest
+import com.pesapal.sdk.activities.payment.model.card.BillingAddress
+import com.pesapal.sdk.activities.payment.model.card.order_id.request.CardOrderTrackingIdRequest
+import com.pesapal.sdk.activities.payment.model.card.order_id.response.CardOrderTrackingIdResponse
+import com.pesapal.sdk.activities.payment.model.card.submit.response.SubmitCardResponse
+import com.pesapal.sdk.activities.payment.model.txn_status.TransactionError
+import com.pesapal.sdk.activities.payment.model.mobile_money.MobileMoneyRequest
+import com.pesapal.sdk.activities.payment.model.mobile_money.MobileMoneyResponse
+import com.pesapal.sdk.activities.payment.model.txn_status.TransactionStatusResponse
+import com.pesapal.sdk.activities.payment.repo.PaymentRepository
+import com.pesapal.sdk.activities.payment.utils.Resource
+import com.pesapal.sdk.activities.payment.utils.Status
+import kotlinx.coroutines.launch
+
+class AppViewModel : ViewModel() {
+
+    private val paymentRepository = PaymentRepository()
+
+    private var _authPaymentResponse = MutableLiveData<Resource<AuthResponseModel>>()
+    val authPaymentResponse: LiveData<Resource<AuthResponseModel>>
+        get() = _authPaymentResponse
+
+
+    private var _registerIpnResponse = MutableLiveData<Resource<RegisterIpnResponse>>()
+    val registerIpnResponse: LiveData<Resource<RegisterIpnResponse>>
+        get() = _registerIpnResponse
+
+
+    private var _cardOrderTrackingIdResponse = MutableLiveData<Resource<CardOrderTrackingIdResponse>>()
+    val cardOrderTrackingIdResponse: LiveData<Resource<CardOrderTrackingIdResponse>>
+        get() = _cardOrderTrackingIdResponse
+
+    private var _submitCardResponse = MutableLiveData<Resource<SubmitCardResponse>>()
+    val submitCardResponse: LiveData<Resource<SubmitCardResponse>>
+        get() = _submitCardResponse
+
+
+    private var _cardPaymentStatus = MutableLiveData<Resource<TransactionStatusResponse>>()
+    val cardPaymentStatus: LiveData<Resource<TransactionStatusResponse>>
+        get() = _cardPaymentStatus
+
+    private var _completeCardPayment = MutableLiveData<Resource<TransactionStatusResponse>>()
+    val completeCardPayment: LiveData<Resource<TransactionStatusResponse>>
+        get() = _completeCardPayment
+
+
+    private var _handleError = MutableLiveData<Resource<TransactionError>>()
+    val handleError: LiveData<Resource<TransactionError>>
+        get() = _handleError
+
+
+    private var _mobileMoneyResponse = MutableLiveData<Resource<MobileMoneyResponse>>()
+    val mobileMoneyResponse: LiveData<Resource<MobileMoneyResponse>>
+        get() = _mobileMoneyResponse
+
+    private var _transactionStatus = MutableLiveData<Resource<TransactionStatusResponse>>()
+    val transactionStatus: LiveData<Resource<TransactionStatusResponse>>
+        get() = _transactionStatus
+
+    private var _transactionStatusBg = MutableLiveData<Resource<TransactionStatusResponse>>()
+    val transactionStatusBg: LiveData<Resource<TransactionStatusResponse>>
+        get() = _transactionStatusBg
+
+    private var _paymentDone = MutableLiveData<Resource<String>>()
+    val paymentDone: LiveData<Resource<String>>
+        get() = _paymentDone
+
+    private var _loadFragment = MutableLiveData<Resource<String>>()
+    val loadFragment: LiveData<Resource<String>>
+    get() = _loadFragment
+
+    private var _loadCardDetails = MutableLiveData<Resource<BillingAddress>>()
+    val loadCardDetails: LiveData<Resource<BillingAddress>>
+    get() = _loadCardDetails
+
+    private var _loadPendingMpesa = MutableLiveData<Resource<MobileMoneyRequest>>()
+    val loadPendingMpesa: LiveData<Resource<MobileMoneyRequest>>
+    get() = _loadPendingMpesa
+
+
+    private var _loadSuccessMpesa = MutableLiveData<Resource<TransactionStatusResponse>>()
+    val loadSuccessMpesa: LiveData<Resource<TransactionStatusResponse>>
+    get() = _loadSuccessMpesa
+
+
+    fun authPayment(authRequestModel: AuthRequestModel) {
+        _authPaymentResponse.postValue(Resource.loading("Initiating payment process ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.authPayment(authRequestModel)
+            when (result.status) {
+                Status.ERROR -> {
+                    _authPaymentResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
+                }
+                Status.SUCCESS -> {
+                    _authPaymentResponse.postValue(Resource.success(result.data))
+                }
+                else -> {
+                    _authPaymentResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
+                }
+            }
+        }
+    }
+
+    fun registerIpn(registerIpnRequest: RegisterIpnRequest){
+        _registerIpnResponse.postValue(Resource.loading("Registering Ipn ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.registerApi(registerIpnRequest)
+            when(result.status){
+                Status.ERROR -> {
+                    _registerIpnResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
+                }
+                Status.SUCCESS -> {
+                    _registerIpnResponse.postValue(Resource.success(result.data))
+                }
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
+            }
+
+        }
+    }
+
+
+    fun generateCardOrderTrackingId(cardOrderTrackingIdRequest: CardOrderTrackingIdRequest, action: String){
+        _cardOrderTrackingIdResponse.postValue(Resource.loading(action))
+        viewModelScope.launch {
+            val result = paymentRepository.generateCardOrderTrackingId(cardOrderTrackingIdRequest)
+            when(result.status){
+                Status.ERROR -> {
+                    _cardOrderTrackingIdResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
+                }
+                Status.SUCCESS -> {
+                    _cardOrderTrackingIdResponse.postValue(Resource.success(result.data))
+                }
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
+            }
+
+        }
+    }
+
+    fun submitCardRequest(submitCardRequest: SubmitCardRequest){
+        _submitCardResponse.postValue(Resource.loading("Processing request"))
+        viewModelScope.launch {
+            val result = paymentRepository.submitCardRequest(submitCardRequest)
+            when(result.status){
+                Status.ERROR -> {
+                    _submitCardResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
+                }
+                Status.SUCCESS -> {
+                    _submitCardResponse.postValue(Resource.success(result.data))
+                }
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
+            }
+
+        }
+    }
+
+
+    fun checkCardPaymentStatus(trackingId: String){
+        _cardPaymentStatus.postValue(Resource.loading("Confirming payment ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.getCardTransactionStatus(trackingId)
+            when(result.status){
+                Status.ERROR -> {
+                    _cardPaymentStatus.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
+                }
+                Status.SUCCESS -> {
+                        _cardPaymentStatus.postValue(Resource.success(result.data))
+                }
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
+            }
+
+        }
+    }
+
+    fun completeCardPayment(transactionStatusResponse: TransactionStatusResponse){
+        _completeCardPayment.postValue(Resource.success(transactionStatusResponse))
+    }
+
+    fun sendMobileMoneyCheckOut(mobileMoneyRequest: MobileMoneyRequest, action: String){
+        _mobileMoneyResponse.postValue(Resource.loading(action))
+        viewModelScope.launch {
+            val result = paymentRepository.mobileMoneyApi(mobileMoneyRequest)
+            when(result.status){
+                Status.ERROR -> {
+                    _mobileMoneyResponse.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
+                }
+                Status.SUCCESS -> {
+                    _mobileMoneyResponse.postValue(Resource.success(result.data))
+                }
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
+            }
+
+        }
+    }
+
+
+    fun mobileMoneyTransactionStatus(trackingId: String){
+        _transactionStatus.postValue(Resource.loading("Confirming payment ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.getTransactionStatus(trackingId)
+            when(result.status){
+                Status.ERROR -> {
+                    _transactionStatus.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
+                }
+                Status.SUCCESS -> {
+                    if(result.data!!.paymentStatusDescription == "Completed") {
+                        _transactionStatus.postValue(Resource.success(result.data))
+                    }else{
+                        _transactionStatus.postValue(Resource.error("Awaiting payment .."))
+                    }
+                }
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
+            }
+
+        }
+    }
+
+
+    fun mobileMoneyTransactionStatusBackground(trackingId: String){
+        _transactionStatusBg.postValue(Resource.loading("Confirming payment ... "))
+        viewModelScope.launch {
+            val result = paymentRepository.getTransactionStatus(trackingId)
+            when(result.status){
+                Status.ERROR -> {
+                    _transactionStatusBg.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
+                }
+                Status.SUCCESS -> {
+                    if(result.data!!.paymentStatusDescription == "Completed") {
+                        _transactionStatusBg.postValue(Resource.success(result.data))
+                    }else{
+                        _transactionStatusBg.postValue(Resource.error("Awaiting payment .."))
+                    }
+                }
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
+            }
+
+        }
+    }
+
+
+    fun handlePaymentStatus(status: String){
+        _paymentDone.postValue(Resource.success(status))
+    }
+
+
+    fun showPendingMpesaPayment(mobileMoneyRequest: MobileMoneyRequest){
+        _loadPendingMpesa.postValue(Resource.success(mobileMoneyRequest))
+    }
+
+
+
+    fun showSuccessMpesaPayment(transactionStatusResponse: TransactionStatusResponse){
+        _loadSuccessMpesa.postValue(Resource.success(transactionStatusResponse))
+    }
+
+
+    fun loadFragment(frag: String){
+        _loadFragment.postValue(Resource.loadFragment(frag) )
+    }
+
+    fun loadFragmentV1(billingAddress: BillingAddress){
+            _loadCardDetails.postValue(Resource.loadFragment(billingAddress) )
+    }
+
+
+}
