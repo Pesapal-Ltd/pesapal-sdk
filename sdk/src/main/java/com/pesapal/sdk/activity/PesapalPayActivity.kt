@@ -18,11 +18,9 @@ import com.cardinalcommerce.shared.models.Warning
 import com.cardinalcommerce.shared.userinterfaces.UiCustomization
 import com.pesapal.sdk.BuildConfig
 import com.pesapal.sdk.R
-import com.pesapal.sdk.fragment.auth.AuthFragment
 import com.pesapal.sdk.fragment.card.address.CardFragmentAddressData
 import com.pesapal.sdk.fragment.card.data.CardFragmentCardData
 import com.pesapal.sdk.fragment.card.success.CardPaymentSuccessFragment
-import com.pesapal.sdk.fragment.main.MainPesapalFragment
 import com.pesapal.sdk.fragment.mpesa.pending.MpesaPendingFragment
 import com.pesapal.sdk.fragment.mpesa.stk.MpesaPesapalFragment
 import com.pesapal.sdk.fragment.mpesa.success.MpesaSuccessFragment
@@ -33,6 +31,7 @@ import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.sdk.viewmodel.AppViewModel
 import com.pesapal.sdk.databinding.ActivityPesapalPayBinding
+import com.pesapal.sdk.fragment.details.MainPesapalFragment
 import org.json.JSONArray
 import java.math.BigDecimal
 
@@ -126,7 +125,7 @@ class PesapalPayActivity : AppCompatActivity() {
             )
 
             if (consumerKey != "" && consumerSecret != "") {
-                loadFragment(AuthFragment.newInstance(paymentDetails!!))
+//                loadFragment(AuthFragment.newInstance(paymentDetails!!))
             } else {
                 showMessage("Consumer data required ...")
             }
@@ -222,7 +221,7 @@ class PesapalPayActivity : AppCompatActivity() {
                     }
                 }
                 "card" -> {
-                    loadFragment(CardFragmentAddressData.newInstance(billingAddress!!))
+//                    loadFragment(CardFragmentAddressData.newInstance(billingAddress!!))
                 }
 
             }

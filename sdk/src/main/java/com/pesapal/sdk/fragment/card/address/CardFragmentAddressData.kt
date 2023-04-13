@@ -5,21 +5,24 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.R
-import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.databinding.FragmentNewCardAddressBinding
+import com.pesapal.sdk.model.card.BillingAddress
+import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.setButtonEnabled
-import com.pesapal.sdk.viewmodel.AppViewModel
+import com.pesapal.sdk.utils.PrefManager
+import java.math.BigDecimal
 
 
 class CardFragmentAddressData : Fragment() {
 
     private lateinit var binding: FragmentNewCardAddressBinding
-    private val viewModel: AppViewModel by activityViewModels()
     private lateinit var billingAddress: BillingAddress
+    private lateinit var paymentDetails: PaymentDetails
     private var isFirstNameFilled = false
     private var isSurnameFilled = false
     private var isEmailFilled = false
@@ -29,13 +32,7 @@ class CardFragmentAddressData : Fragment() {
     private var isCityFilled = false
     private var enable = false
 
-    companion object {
-        fun newInstance(billingAddress: BillingAddress): CardFragmentAddressData {
-            val fragment = CardFragmentAddressData()
-            fragment.billingAddress = billingAddress
-            return fragment
-        }
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,10 +45,83 @@ class CardFragmentAddressData : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        paymentData()
         handleClickListener()
         handleChangeListener()
         initData()
     }
+
+
+    private fun paymentData() {
+        val intent = requireActivity().intent
+        if (intent != null) {
+
+            var consumerKey: String? = null
+            var consumerSecret: String? = null
+            var ipnUrl: String? = null
+            var accountNumber: String? = null
+            var callbackUrl: String? = null
+            if (PrefManager.getString("consumer_key",null) != null) {
+                consumerKey = PrefManager.getString("consumer_key",null)!!
+            }
+
+            if (PrefManager.getString("consumer_secret",null) != null) {
+                consumerSecret = PrefManager.getString("consumer_secret",null)!!
+            }
+
+            if (PrefManager.getString("account_number",null) != null) {
+                accountNumber = PrefManager.getString("account_number",null)!!
+            }
+
+            if (PrefManager.getString("callback_url",null) != null) {
+                callbackUrl = PrefManager.getString("callback_url",null)!!
+            }
+
+            if (PrefManager.getString("ipn_url",null) != null) {
+                ipnUrl = PrefManager.getString("ipn_url",null)!!
+            }
+
+
+            val firstName = intent.getStringExtra("firstName")
+            val lastName = intent.getStringExtra("lastName")
+            val email = intent.getStringExtra("email")
+            val city = intent.getStringExtra("city")
+            val address = intent.getStringExtra("address")
+            val postalCode = intent.getStringExtra("postalCode")
+
+            billingAddress = BillingAddress(
+                firstName = firstName,
+                lastName = lastName,
+                middleName = lastName,
+                emailAddress = email,
+                line = address,
+                line2 = address,
+                postalCode = postalCode,
+                city = city
+            )
+
+            val amount = intent.getStringExtra("amount")
+            val orderId = intent.getStringExtra("order_id")
+            val currency = intent.getStringExtra("currency")
+
+            paymentDetails = PaymentDetails(
+                amount = BigDecimal(amount),
+                order_id = orderId,
+                currency = currency,
+                accountNumber = accountNumber,
+                callbackUrl = callbackUrl,
+                consumer_key = consumerKey,
+                consumer_secret =  consumerSecret,
+                ipn_url = ipnUrl,
+            )
+
+
+        } else {
+            showMessage("Consumer data required ...")
+        }
+
+    }
+
 
     private fun initData(){
         binding.etFirstName.setText(billingAddress.firstName)
@@ -147,7 +217,9 @@ class CardFragmentAddressData : Fragment() {
                 postalCode = binding.etPostal.text.toString(),
                 zipCode = binding.etAddress.text.toString(),
                 )
-                viewModel.loadFragmentV1(billingAddress)
+
+            val action = CardFragmentAddressDataDirections.actionPesapalCardFragmentAddressToPesapalCardFragmentCardData(paymentDetails,billingAddress)
+            findNavController().navigate(action)
         }
     }
 
@@ -173,6 +245,10 @@ class CardFragmentAddressData : Fragment() {
     override fun onResume() {
         super.onResume()
         checkFilled()
+    }
+
+    private fun showMessage(message: String){
+        Toast.makeText(requireContext(),message,Toast.LENGTH_LONG).show()
     }
 
 

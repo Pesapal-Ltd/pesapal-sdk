@@ -3,22 +3,31 @@ package com.pesapal.sdk.fragment.auth
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.databinding.FragmentAuthorizingBinding
 import com.pesapal.sdk.model.auth.AuthRequestModel
+import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
+import com.pesapal.sdk.utils.Status
 import com.pesapal.sdk.viewmodel.AppViewModel
+import java.math.BigDecimal
 
 class AuthFragment : Fragment() {
 
     private lateinit var binding: FragmentAuthorizingBinding
-    private val viewModel: AppViewModel by activityViewModels()
-    private lateinit var paymentDetails : PaymentDetails
+    private val viewModel: AuthViewModel by viewModels()
+    private lateinit var paymentDetails: PaymentDetails
+    private lateinit var billingAddress: BillingAddress
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,24 +40,124 @@ class AuthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initData()
+        handleViewModel()
+        paymentData()
     }
 
     private fun initData(){
-        com.pesapal.sdk.utils.PrefManager.setToken(null)
+        PrefManager.setToken(null)
         val authRequestModel = AuthRequestModel(paymentDetails.consumer_key,paymentDetails.consumer_secret)
         Handler(Looper.getMainLooper()).postDelayed({
             viewModel.authPayment(authRequestModel)
         },800)
     }
 
+    private fun handleViewModel(){
+        viewModel.authResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.LOADING -> {
+                    binding.loader.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    binding.loader.visibility = View.GONE
 
-    companion object{
-        fun newInstance(paymentDetails: PaymentDetails): AuthFragment {
-            val fragment = AuthFragment()
-            fragment.paymentDetails = paymentDetails
-            return fragment
+                    val token = it.data?.token
+                    PrefManager.setToken(token)
+                    proceed()
+                }
+                Status.ERROR -> {
+                    binding.loader.visibility = View.GONE
+
+                    showMessage(it.message!!)
+                }
+
+            }
         }
     }
+
+
+    private fun proceed(){
+        val action = AuthFragmentDirections.actionAuthFragmentToPesapalMainFragment(paymentDetails)
+       findNavController().navigate(action)
+    }
+
+    private fun paymentData() {
+        val intent = requireActivity().intent
+        if (intent != null) {
+            var consumerKey: String? = null
+            var consumerSecret: String? = null
+            var ipnUrl: String? = null
+            var accountNumber: String? = null
+            var callbackUrl: String? = null
+            if (PrefManager.getString("consumer_key",null) != null) {
+                consumerKey = PrefManager.getString("consumer_key",null)!!
+            }
+
+            if (PrefManager.getString("consumer_secret",null) != null) {
+                consumerSecret = PrefManager.getString("consumer_secret",null)!!
+            }
+
+            if (PrefManager.getString("account_number",null) != null) {
+                accountNumber = PrefManager.getString("account_number",null)!!
+            }
+
+            if (PrefManager.getString("callback_url",null) != null) {
+                callbackUrl = PrefManager.getString("callback_url",null)!!
+            }
+
+            if (PrefManager.getString("ipn_url",null) != null) {
+                ipnUrl = PrefManager.getString("ipn_url",null)!!
+            }
+
+
+            val amount = intent.getStringExtra("amount")
+            val orderId = intent.getStringExtra("order_id")
+            val currency = intent.getStringExtra("currency")
+
+            paymentDetails = PaymentDetails(
+                amount = BigDecimal(amount),
+                order_id = orderId,
+                currency = currency,
+                accountNumber = accountNumber,
+                callbackUrl = callbackUrl,
+                consumer_key = consumerKey,
+                consumer_secret =  consumerSecret,
+                ipn_url = ipnUrl,
+            )
+
+            val firstName = intent.getStringExtra("firstName")
+            val lastName = intent.getStringExtra("lastName")
+            val email = intent.getStringExtra("email")
+            val city = intent.getStringExtra("city")
+            val address = intent.getStringExtra("address")
+            val postalCode = intent.getStringExtra("postalCode")
+
+            billingAddress = BillingAddress(
+                firstName = firstName,
+                lastName = lastName,
+                middleName = lastName,
+                emailAddress = email,
+                line = address,
+                line2 = address,
+                postalCode = postalCode,
+                city = city
+            )
+
+            if (consumerKey != "" && consumerSecret != "") {
+                initData()
+            } else {
+                showMessage("Consumer data required ...")
+            }
+
+        } else {
+            showMessage("Consumer data required ...")
+        }
+
+    }
+
+    private fun showMessage(message: String){
+        Toast.makeText(requireContext(),message,Toast.LENGTH_LONG).show()
+    }
+
 
 }

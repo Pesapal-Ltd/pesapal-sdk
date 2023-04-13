@@ -197,7 +197,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun initPayment(){
-        val myIntent = Intent(this, com.pesapal.sdk.activity.PesapalPayActivity::class.java)
+        val myIntent = Intent(this, com.pesapal.sdk.activity.PesapalSdkActivity::class.java)
         myIntent.putExtra("amount",total.toString())
         myIntent.putExtra("order_id",orderId)
         myIntent.putExtra("currency",PrefManager.getCurrency())

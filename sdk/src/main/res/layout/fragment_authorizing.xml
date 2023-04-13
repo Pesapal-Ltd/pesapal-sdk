@@ -8,6 +8,7 @@
 
 
     <com.agrawalsuneet.dotsloader.loaders.CircularDotsLoader
+        android:id="@+id/loader"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -15,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:loader_animDur="100"
+        android:visibility="gone"
         app:loader_bigCircleRadius="32dp"
         app:loader_circleRadius="6dp"
         app:loader_defaultColor="@color/purple_700"

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_pesapal_pay"
+    app:startDestination="@+id/authFragment">
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.pesapal.sdk.fragment.auth.AuthFragment"
+        android:label="Payment Methods"
+        tools:layout="@layout/fragment_authorizing">
+        <action
+            android:id="@+id/action_authFragment_to_pesapalMainFragment"
+            app:destination="@id/pesapalMainFragment">
+            <argument
+                android:name="paymentDetails"
+                app:argType="com.pesapal.sdk.model.payment.PaymentDetails" />
+        </action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/pesapalMainFragment"
+        android:name="com.pesapal.sdk.fragment.details.MainPesapalFragment"
+        android:label="Payment Methods"
+        tools:layout="@layout/fragment_pesapal_main">
+        <action
+            android:id="@+id/action_pesapalMainFragment_to_pesapalCardFragment"
+            app:destination="@id/nav_graph_card">
+            <argument
+                android:name="paymentDetails"
+                app:argType="com.pesapal.sdk.model.payment.PaymentDetails" />
+
+        </action>
+        <action
+            android:id="@+id/action_pesapalMainFragment_to_nav_graph_mpesa"
+            app:destination="@id/nav_graph_mpesa" >
+            <argument
+                android:name="paymentDetails"
+                app:argType="com.pesapal.sdk.model.payment.PaymentDetails" />
+        </action>
+    </fragment>
+
+    <include app:graph="@navigation/nav_graph_card" />
+
+    <include app:graph="@navigation/nav_graph_mpesa" />
+
+
+</navigation>

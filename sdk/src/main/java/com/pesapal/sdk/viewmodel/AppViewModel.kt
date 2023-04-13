@@ -98,11 +98,11 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             val result = paymentRepository.authPayment(authRequestModel)
             when (result.status) {
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     _authPaymentResponse.postValue(Resource.error(result.message!!))
                     _handleError.postValue(Resource.error(result.message))
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     _authPaymentResponse.postValue(Resource.success(result.data))
                 }
                 else -> {
@@ -118,11 +118,11 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             val result = paymentRepository.registerApi(registerIpnRequest)
             when(result.status){
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     _registerIpnResponse.postValue(Resource.error(result.message!!))
                     _handleError.postValue(Resource.error(result.message))
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     _registerIpnResponse.postValue(Resource.success(result.data))
                 }
                 else -> {
@@ -139,11 +139,11 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             val result = paymentRepository.generateCardOrderTrackingId(cardOrderTrackingIdRequest)
             when(result.status){
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     _cardOrderTrackingIdResponse.postValue(Resource.error(result.message!!))
                     _handleError.postValue(Resource.error(result.message))
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     _cardOrderTrackingIdResponse.postValue(Resource.success(result.data))
                 }
                 else -> {
@@ -159,11 +159,11 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             val result = paymentRepository.submitCardRequest(submitCardRequest)
             when(result.status){
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     _submitCardResponse.postValue(Resource.error(result.message!!))
                     _handleError.postValue(Resource.error(result.message))
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     _submitCardResponse.postValue(Resource.success(result.data))
                 }
                 else -> {
@@ -180,11 +180,11 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             val result = paymentRepository.getCardTransactionStatus(trackingId)
             when(result.status){
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     _cardPaymentStatus.postValue(Resource.error(result.message!!))
                     _handleError.postValue(Resource.error(result.message))
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                         _cardPaymentStatus.postValue(Resource.success(result.data))
                 }
                 else -> {
@@ -204,11 +204,11 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             val result = paymentRepository.mobileMoneyApi(mobileMoneyRequest)
             when(result.status){
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     _mobileMoneyResponse.postValue(Resource.error(result.message!!))
                     _handleError.postValue(Resource.error(result.message))
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     _mobileMoneyResponse.postValue(Resource.success(result.data))
                 }
                 else -> {
@@ -225,11 +225,11 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             val result = paymentRepository.getTransactionStatus(trackingId)
             when(result.status){
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     _transactionStatus.postValue(Resource.error(result.message!!))
                     _handleError.postValue(Resource.error(result.message))
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     if(result.data!!.paymentStatusDescription == "Completed") {
                         _transactionStatus.postValue(Resource.success(result.data))
                     }else{
@@ -250,11 +250,11 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             val result = paymentRepository.getTransactionStatus(trackingId)
             when(result.status){
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     _transactionStatusBg.postValue(Resource.error(result.message!!))
                     _handleError.postValue(Resource.error(result.message))
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     if(result.data!!.paymentStatusDescription == "Completed") {
                         _transactionStatusBg.postValue(Resource.success(result.data))
                     }else{

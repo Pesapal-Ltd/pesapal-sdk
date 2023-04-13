@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph_card">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_card"
+    app:startDestination="@+id/pesapalCardFragmentAddress">
+
+    <fragment
+        android:id="@+id/pesapalCardFragmentAddress"
+        android:name="com.pesapal.sdk.fragment.card.address.CardFragmentAddressData"
+        android:label="Card Address"
+        tools:layout="@layout/fragment_new_card_address">
+        <action
+            android:id="@+id/action_pesapalCardFragmentAddress_to_pesapalCardFragmentCardData"
+            app:destination="@id/pesapalCardFragmentCardData">
+            <argument
+                android:name="paymentDetails"
+                app:argType="com.pesapal.sdk.model.payment.PaymentDetails" />
+            <argument
+                android:name="billingAddress"
+                app:argType="com.pesapal.sdk.model.card.BillingAddress" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/pesapalCardFragmentCardData"
+        android:name="com.pesapal.sdk.fragment.card.data.CardFragmentCardData"
+        android:label="Card Address"
+        tools:layout="@layout/fragment_new_card_details">
+        <action
+            android:id="@+id/action_pesapalCardFragmentCardData_to_pesapalCardFragmentSuccess"
+            app:destination="@id/pesapalCardFragmentSuccess" >
+            <argument
+                android:name="transactionStatusResponse"
+                app:argType="com.pesapal.sdk.model.txn_status.TransactionStatusResponse" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/pesapalCardFragmentSuccess"
+        android:name="com.pesapal.sdk.fragment.card.success.CardPaymentSuccessFragment"
+        android:label="Card Address"
+        tools:layout="@layout/fragment_mpesa_payment_success"/>
 
 </navigation>

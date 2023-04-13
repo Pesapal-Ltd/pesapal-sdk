@@ -10,6 +10,9 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
 import com.cardinalcommerce.cardinalmobilesdk.Cardinal
 import com.pesapal.sdk.model.card.CardDetails
 import com.pesapal.sdk.model.card.submit.request.EnrollmentCheckResult
@@ -23,10 +26,12 @@ import com.pesapal.sdk.setButtonEnabled
 import com.pesapal.sdk.utils.FragmentExtension.hideKeyboard
 import com.pesapal.sdk.viewmodel.AppViewModel
 import com.pesapal.sdk.databinding.FragmentNewCardDetailsBinding
+import com.pesapal.sdk.fragment.auth.AuthFragmentDirections
+import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 
 class CardFragmentCardData : Fragment() {
 
-    private val viewModel: AppViewModel by activityViewModels()
+    private val viewModel: CardViewModel by viewModels()
     private lateinit var cardOrderTrackingIdRequest: CardOrderTrackingIdRequest
     private lateinit var pDialog: ProgressDialog
     private lateinit var binding: FragmentNewCardDetailsBinding
@@ -67,6 +72,8 @@ class CardFragmentCardData : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        paymentDetails = arguments?.getSerializable("paymentDetails") as PaymentDetails
+        billingAddress = arguments?.getSerializable("billingAddress") as BillingAddress
         initData()
     }
 
@@ -162,7 +169,9 @@ class CardFragmentCardData : Fragment() {
     }
 
     private fun handleCompletePayment(transactionStatusResponse: TransactionStatusResponse){
-            viewModel.completeCardPayment(transactionStatusResponse)
+        val action = CardFragmentCardDataDirections.actionPesapalCardFragmentCardDataToPesapalCardFragmentSuccess(transactionStatusResponse)
+        findNavController().navigate(action)
+//            viewModel.completeCardPayment(transactionStatusResponse)
     }
 
     private fun handleViewModel() {
@@ -327,7 +336,7 @@ class CardFragmentCardData : Fragment() {
         }
 
         binding.etCvv.addTextChangedListener {
-            isCvvFilled = if (it != null && it.isNotEmpty()) {
+            isCvvFilled = if (!it.isNullOrEmpty()) {
                 it.toString().length >= MAX_LENGTH_CVV_CODE
             } else {
                 false
@@ -336,7 +345,7 @@ class CardFragmentCardData : Fragment() {
         }
 
         binding.monthField.addTextChangedListener { it ->
-            if (it != null && it.isNotEmpty()) {
+            if (!it.isNullOrEmpty()) {
                 var formattedMonth: String
 
                 it.toString().let {
@@ -359,7 +368,7 @@ class CardFragmentCardData : Fragment() {
             checkFilled()
         }
         binding.yearField.addTextChangedListener { it ->
-            if (it != null && it.isNotEmpty()) {
+            if (!it.isNullOrEmpty()) {
                 var formattedYear = ""
                 it.toString().let {
                     formattedYear = formatCardExpiryYear(it)

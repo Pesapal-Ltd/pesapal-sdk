@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.payment.newpackage.PaymentMainActivity">
+   >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clToolbar"
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/clToolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_pesapal_pay"
+        app:navGraph="@navigation/nav_pesapal_main"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

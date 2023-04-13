@@ -10,6 +10,10 @@
             android:name="com.pesapal.sdk.activity.PesapalPayActivity"
             android:exported="false"
             android:theme="@style/Theme.PayGateway" />
+        <activity
+            android:name="com.pesapal.sdk.activity.PesapalSdkActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PayGateway" />
     </application>
 
 </manifest>

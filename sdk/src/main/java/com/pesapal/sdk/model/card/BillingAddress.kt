@@ -1,6 +1,7 @@
 package com.pesapal.sdk.model.card
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class BillingAddress(@SerializedName("line_1")
                           val line: String? = "",
@@ -27,4 +28,4 @@ data class BillingAddress(@SerializedName("line_1")
                           @SerializedName("zip_code")
                           val zipCode: String? = ""
 
-)
+): Serializable
