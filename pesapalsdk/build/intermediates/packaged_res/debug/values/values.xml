@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="black">#FF000000</color>
+    <color name="colorBackgroundInactive">#E0E0E0</color>
+    <color name="colorGreyOutline">#949494</color>
+    <color name="colorGreyText">#666666</color>
+    <color name="colorPrimaryAltLight">#1E61A7</color>
+    <color name="dark_faded_bg">#F6F8FB</color>
+    <color name="faded_blue">#E1EAFA</color>
+    <color name="light_gray_color">#efefef</color>
+    <color name="purple_100">#3A7BE1</color>
+    <color name="purple_200">#1751AD</color>
+    <color name="purple_500">#1751AD</color>
+    <color name="purple_700">#0A3A86</color>
+    <color name="txn_success">#2cc38a</color>
+    <color name="un_selected_color_primary">#76A0E2</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="add_a_friend">Add a Friend</string>
+    <string name="add_card">Add Card</string>
+    <string name="add_card_address">Address</string>
+    <string name="add_card_city">City</string>
+    <string name="add_card_country">Country/Region</string>
+    <string name="add_card_email">Email</string>
+    <string name="add_card_firstName">First Name</string>
+    <string name="add_card_headerStepText">Step 1 of 3: Billing Address</string>
+    <string name="add_card_invalidEmail">Invalid Email</string>
+    <string name="add_card_phone">Phone number</string>
+    <string name="add_card_postalCode">Postal Code</string>
+    <string name="add_card_surname">Surname</string>
+    <string name="allow_phone_symbols">0123456789+</string>
+    <string name="app_name">Pesapal Payment Gateway</string>
+    <string name="card_is_changed">Card changed</string>
+    <string name="change_card">Change Card</string>
+    <string name="country_currency_dialog_title">Set your currency</string>
+    <string name="current_card_cardNumber">Card Number</string>
+    <string name="current_card_cvv">CVV</string>
+    <string name="current_card_expiry">Expiry (MM/YY)</string>
+    <string name="current_card_nameOnCard">Name on Card</string>
+    <string name="current_card_stepThreeHeader">Step 3 of 3: Transaction Status</string>
+    <string name="current_card_stepTwoHeader">Step 2 of 3: Card Details</string>
+    <string name="current_card_title">Add Card</string>
+    <string name="current_mpesa_stepOneHeader">Step 1 of 3: Payment Details</string>
+    <string name="current_mpesa_stepThreeHeader">Step 3 of 3: Transaction Status</string>
+    <string name="current_mpesa_stepTwoHeader">Step 2 of 3: Payment Confirmation</string>
+    <string name="enable_card">Enable card</string>
+    <string name="hint_mm">MM</string>
+    <string name="hint_yy">YY</string>
+    <string name="mm">MM</string>
+    <string name="new_card_invalidEmail">Invalid Email</string>
+    <string name="uri_is_null">Uri is NULL</string>
+    <string name="user_not_registered">User Not Registered</string>
+    <style name="AppTheme.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+    </style>
+    <style name="AppTheme.App.TextInputLayout.V3" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="colorAccent">@color/purple_500</item>
+        <item name="colorControlNormal">@color/teal_200</item>
+        <item name="colorControlActivated">@color/purple_500</item>
+        <item name="colorControlHighlight">@color/purple_500</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxStrokeColor">@color/purple_500</item>
+    </style>
+    <style name="NoBackgroundDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@null</item>
+    </style>
+    <style name="TextAppearance.App.TextInputLayout.V3" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColor">@color/purple_500</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColorHint">@color/purple_500</item>
+    </style>
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/textinputlayout_color</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
+    <style name="TextInputLayoutStyleWithBorder" parent="TextInputLayoutStyle">
+        <item name="android:textColorHint">@color/purple_500</item>
+        <item name="android:textColor">@color/purple_500</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+    </style>
+    <style name="Theme.PayGateway" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        
+        <item name="android:statusBarColor" ns1:targetApi="l">?attr/colorPrimaryVariant</item>
+        
+    </style>
+    <style name="Theme.PesapalPaymentGateway" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        
+        <item name="android:statusBarColor" ns1:targetApi="l">?attr/colorPrimaryVariant</item>
+        
+    </style>
+</resources>

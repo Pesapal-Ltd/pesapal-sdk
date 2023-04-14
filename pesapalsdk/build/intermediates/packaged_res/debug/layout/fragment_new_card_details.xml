@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/dark_faded_bg"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+                 <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#EAEEF2"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="19sp"
+                        android:text="@string/current_card_stepTwoHeader"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/clMpesaMethod"
+                    android:layout_width="match_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:elevation="0dp"
+                    android:layout_height="wrap_content">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="27dp"
+                    android:layout_marginEnd="27dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="29dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/card_logo_visa_img"
+                            android:layout_width="50dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="20dp"
+                            android:src="@drawable/ic_card_type_visa"
+                            android:visibility="invisible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/card_logo_unknown_img"
+                            android:layout_width="50dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="20dp"
+                            android:src="@drawable/ic_card_type_unknown"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/card_logo_mastercard_img"
+                            android:layout_width="50dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="20dp"
+                            android:src="@drawable/ic_card_type_mastercard"
+                            android:visibility="invisible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/AppTheme.App.TextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout.V3"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.santalu.maskedittext.MaskEditText
+                                android:id="@+id/et_number_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/current_card_cardNumber"
+                                android:inputType="numberDecimal|numberSigned"
+                                android:maxEms="16"
+                                android:nextFocusLeft="@+id/month_field"
+                                android:nextFocusDown="@+id/month_field"
+                                android:paddingStart="20dp"
+                                android:textSize="12sp"
+                                android:text="4000000000001091"
+                                app:met_mask="#### #### #### ####" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="26dp"
+                        android:orientation="horizontal">
+
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/expiry_month_container"
+                            style="@style/AppTheme.App.TextInputLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:hint="@string/mm"
+                            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout.V3"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/expiry_year_container"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/month_field"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="2"
+                                android:textSize="12sp"
+                                android:text="12"
+                                android:nextFocusRight="@id/year_field"
+                                android:nextFocusDown="@id/year_field" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/expiry_year_container"
+                            style="@style/AppTheme.App.TextInputLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_yy"
+                            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout.V3"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/et_cvv_layout"
+                            app:layout_constraintStart_toEndOf="@+id/expiry_month_container"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/year_field"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="2"
+                                android:textSize="12sp"
+                                android:text="26"
+                                android:nextFocusRight="@id/et_cvv"
+                                android:nextFocusDown="@id/et_cvv" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/et_cvv_layout"
+                            style="@style/AppTheme.App.TextInputLayout"
+                            android:layout_width="135dp"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout.V3"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/expiry_year_container"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_cvv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/current_card_cvv"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:maxLines="1"
+                                android:text="121"
+                                android:textSize="12sp"
+                                android:nextFocusRight="@+id/et_name_on_card"
+                                android:nextFocusDown="@+id/et_name_on_card"
+                                android:paddingStart="20dp"
+                                 />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <ImageView
+                            android:id="@+id/cvv_info_icon"
+                            android:layout_width="40dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:contentDescription="@string/current_card_cvv"
+                            android:src="@drawable/ic_card_cvv_info"
+                            app:layout_constraintBottom_toBottomOf="@id/et_cvv_layout"
+                            app:layout_constraintEnd_toEndOf="@id/et_cvv_layout"
+                            app:layout_constraintTop_toTopOf="@id/et_cvv_layout" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/acbCreateCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginBottom="32dp"
+                        android:background="@drawable/view_button_inactive"
+                        android:text="Proceed"
+                        android:layout_marginTop="50dp"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

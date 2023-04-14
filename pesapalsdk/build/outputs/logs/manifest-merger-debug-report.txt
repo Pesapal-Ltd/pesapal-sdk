@@ -1,0 +1,39 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:2:1-17:12
+INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:2:1-17:12
+INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:2:1-17:12
+	package
+		ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:3:5-37
+		INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+		INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:5:5-15:19
+	android:label
+		ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:7:9-41
+	android:name
+		ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:6:9-47
+activity#com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity
+ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:10:9-13:40
+	android:exported
+		ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:13:13-37
+	android:theme
+		ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:12:13-52
+	android:name
+		ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:11:13-97
+uses-sdk
+INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+		ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+		INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+		ADDED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+		INJECTED from /Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml

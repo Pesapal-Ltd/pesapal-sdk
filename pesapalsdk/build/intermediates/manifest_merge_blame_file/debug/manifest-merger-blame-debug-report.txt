@@ -1,0 +1,27 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.pesapal.paygateway" >
+4
+5    <uses-sdk
+6        android:minSdkVersion="21"
+6-->/Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+7        android:targetSdkVersion="33" />
+7-->/Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml
+8
+9    <application
+9-->/Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:5:5-15:19
+10        android:name="com.pesapal.paygateway.activities.payment.App"
+10-->/Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:6:9-47
+11        android:label="@string/app_name" >
+11-->/Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:7:9-41
+12        <activity
+12-->/Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:10:9-13:40
+13            android:name="com.pesapal.paygateway.activities.payment.activity.PesapalPayActivity"
+13-->/Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:11:13-97
+14            android:exported="false"
+14-->/Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:13:13-37
+15            android:theme="@style/Theme.PayGateway" />
+15-->/Users/richardkamere/StudioProjects/pesapal/paymentgateway/paygateway/src/main/AndroidManifest.xml:12:13-52
+16    </application>
+17
+18</manifest>
