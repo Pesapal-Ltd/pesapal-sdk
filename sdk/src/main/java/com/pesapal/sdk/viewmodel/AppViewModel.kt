@@ -117,7 +117,6 @@ class AppViewModel : ViewModel() {
         }
     }
 
-
     fun mobileMoneyTransactionStatus(trackingId: String){
         _transactionStatus.postValue(Resource.loading("Confirming payment ... "))
         viewModelScope.launch {
@@ -141,7 +140,6 @@ class AppViewModel : ViewModel() {
 
         }
     }
-
 
     fun mobileMoneyTransactionStatusBackground(trackingId: String){
         _transactionStatusBg.postValue(Resource.loading("Confirming payment ... "))
