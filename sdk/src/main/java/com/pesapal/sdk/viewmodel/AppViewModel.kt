@@ -30,7 +30,6 @@ class AppViewModel : ViewModel() {
     val authPaymentResponse: LiveData<Resource<AuthResponseModel>>
         get() = _authPaymentResponse
 
-
     private var _registerIpnResponse = MutableLiveData<Resource<RegisterIpnResponse>>()
     val registerIpnResponse: LiveData<Resource<RegisterIpnResponse>>
         get() = _registerIpnResponse
