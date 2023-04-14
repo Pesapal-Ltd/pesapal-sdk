@@ -125,7 +125,6 @@ class PesapalPayActivity : AppCompatActivity() {
             )
 
             if (consumerKey != "" && consumerSecret != "") {
-//                loadFragment(AuthFragment.newInstance(paymentDetails!!))
             } else {
                 showMessage("Consumer data required ...")
             }
@@ -352,12 +351,9 @@ class PesapalPayActivity : AppCompatActivity() {
         }
     }
 
-
-
     private fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
-
 
     private fun getAllWarnings() {
         val warnings: List<Warning> = cardinal.warnings
