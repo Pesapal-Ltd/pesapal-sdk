@@ -5,7 +5,6 @@
     android:id="@+id/nav_graph_mpesa"
     app:startDestination="@id/mpesaPesapalFragment"
     >
-
     <fragment
         android:id="@+id/mpesaPesapalFragment"
         android:name="com.pesapal.sdk.fragment.mpesa.stk.MpesaPesapalFragment"

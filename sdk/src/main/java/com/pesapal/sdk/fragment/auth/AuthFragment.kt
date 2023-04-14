@@ -75,7 +75,6 @@ class AuthFragment : Fragment() {
         }
     }
 
-
     private fun proceed(){
         val action = AuthFragmentDirections.actionAuthFragmentToPesapalMainFragment(paymentDetails)
        findNavController().navigate(action)
