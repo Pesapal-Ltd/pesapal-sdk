@@ -79,7 +79,6 @@ class AuthFragment : Fragment() {
         val action = AuthFragmentDirections.actionAuthFragmentToPesapalMainFragment(paymentDetails)
        findNavController().navigate(action)
     }
-
     private fun paymentData() {
         val intent = requireActivity().intent
         if (intent != null) {
@@ -153,7 +152,6 @@ class AuthFragment : Fragment() {
         }
 
     }
-
     private fun showMessage(message: String){
         Toast.makeText(requireContext(),message,Toast.LENGTH_LONG).show()
     }
