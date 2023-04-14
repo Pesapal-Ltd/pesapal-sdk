@@ -38,11 +38,9 @@ class AppViewModel : ViewModel() {
     val completeCardPayment: LiveData<Resource<TransactionStatusResponse>>
         get() = _completeCardPayment
 
-
     private var _handleError = MutableLiveData<Resource<TransactionError>>()
     val handleError: LiveData<Resource<TransactionError>>
         get() = _handleError
-
 
     private var _mobileMoneyResponse = MutableLiveData<Resource<MobileMoneyResponse>>()
     val mobileMoneyResponse: LiveData<Resource<MobileMoneyResponse>>
