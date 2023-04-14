@@ -1,5 +1,4 @@
 package com.pesapal.sdk.fragment.auth
-
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -21,7 +20,6 @@ import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.utils.Status
 import com.pesapal.sdk.viewmodel.AppViewModel
 import java.math.BigDecimal
-
 class AuthFragment : Fragment() {
 
     private lateinit var binding: FragmentAuthorizingBinding

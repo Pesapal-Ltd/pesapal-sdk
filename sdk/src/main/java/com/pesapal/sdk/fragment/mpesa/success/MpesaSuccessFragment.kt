@@ -13,11 +13,9 @@ import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.viewmodel.AppViewModel
 
 class MpesaSuccessFragment : Fragment() {
-
     private lateinit var binding: FragmentMpesaPaymentSuccessBinding
     private lateinit var transactionStatusResponse: TransactionStatusResponse
     private val viewModel: AppViewModel by activityViewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
