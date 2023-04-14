@@ -2,13 +2,35 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_mpesa">
+    android:id="@+id/nav_graph_mpesa"
+    app:startDestination="@id/mpesaPesapalFragment"
+    >
 
     <fragment
-        android:id="@+id/pesapalMpesaFragment"
+        android:id="@+id/mpesaPesapalFragment"
+        android:name="com.pesapal.sdk.fragment.mpesa.stk.MpesaPesapalFragment"
+        android:label="Mpesa Payment"
+        tools:layout="@layout/fragment_pesapal_mpesa">
+        <action
+            android:id="@+id/action_mpesaPesapalFragment_to_mpesaPendingFragment"
+            app:destination="@id/mpesaPendingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mpesaPendingFragment"
         android:name="com.pesapal.sdk.fragment.mpesa.pending.MpesaPendingFragment"
         android:label="Mpesa Payment"
-        tools:layout="@layout/fragment_pesapal_mpesa"/>
+        tools:layout="@layout/fragment_mpesa_pending">
+        <action
+            android:id="@+id/action_mpesaPendingFragment_to_mpesaSuccessFragment"
+            app:destination="@id/mpesaSuccessFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mpesaSuccessFragment"
+        android:name="com.pesapal.sdk.fragment.mpesa.success.MpesaSuccessFragment"
+        android:label="Mpesa Payment"
+        tools:layout="@layout/fragment_mpesa_payment_success"/>
 
 
 </navigation>
