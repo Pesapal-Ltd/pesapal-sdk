@@ -36,18 +36,6 @@ class AppViewModel : ViewModel() {
         get() = _registerIpnResponse
 
 
-    private var _cardOrderTrackingIdResponse = MutableLiveData<Resource<CardOrderTrackingIdResponse>>()
-    val cardOrderTrackingIdResponse: LiveData<Resource<CardOrderTrackingIdResponse>>
-        get() = _cardOrderTrackingIdResponse
-
-    private var _submitCardResponse = MutableLiveData<Resource<SubmitCardResponse>>()
-    val submitCardResponse: LiveData<Resource<SubmitCardResponse>>
-        get() = _submitCardResponse
-
-
-    private var _cardPaymentStatus = MutableLiveData<Resource<TransactionStatusResponse>>()
-    val cardPaymentStatus: LiveData<Resource<TransactionStatusResponse>>
-        get() = _cardPaymentStatus
 
     private var _completeCardPayment = MutableLiveData<Resource<TransactionStatusResponse>>()
     val completeCardPayment: LiveData<Resource<TransactionStatusResponse>>
