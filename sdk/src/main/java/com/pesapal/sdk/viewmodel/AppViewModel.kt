@@ -93,26 +93,6 @@ class AppViewModel : ViewModel() {
     get() = _loadSuccessMpesa
 
 
-    fun authPayment(authRequestModel: AuthRequestModel) {
-        _authPaymentResponse.postValue(Resource.loading("Initiating payment process ... "))
-        viewModelScope.launch {
-            val result = paymentRepository.authPayment(authRequestModel)
-            when (result.status) {
-                Status.ERROR -> {
-                    _authPaymentResponse.postValue(Resource.error(result.message!!))
-                    _handleError.postValue(Resource.error(result.message))
-                }
-                Status.SUCCESS -> {
-                    _authPaymentResponse.postValue(Resource.success(result.data))
-                }
-                else -> {
-                    _authPaymentResponse.postValue(Resource.error(result.message!!))
-                    _handleError.postValue(Resource.error(result.message))
-                }
-            }
-        }
-    }
-
     fun registerIpn(registerIpnRequest: RegisterIpnRequest){
         _registerIpnResponse.postValue(Resource.loading("Registering Ipn ... "))
         viewModelScope.launch {

@@ -2,7 +2,6 @@ package com.pesapal.sdk
 
 import android.widget.Button
 
-
 fun Button.setButtonEnabled(isEnabled: Boolean) {
     val alphaVisible = 1F
     val alphaInvisible = 0.2F
