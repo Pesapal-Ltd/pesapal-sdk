@@ -5,3 +5,4 @@ Test automation 16
 Test in progress
 Back to todo
 testing directly from github
+Testing from source tree
