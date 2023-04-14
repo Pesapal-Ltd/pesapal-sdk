@@ -366,7 +366,6 @@ class PesapalPayActivity : AppCompatActivity() {
 
     }
 
-
     private fun initCardinal() {
         val cardinalConfigurationParameters = CardinalConfigurationParameters()
         cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
