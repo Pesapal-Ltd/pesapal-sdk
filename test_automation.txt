@@ -6,4 +6,5 @@ Test in progress
 Back to todo
 testing directly from github
 Testing from source tree
-testing from IDE ISAO
+Test new jira
+Test jira
