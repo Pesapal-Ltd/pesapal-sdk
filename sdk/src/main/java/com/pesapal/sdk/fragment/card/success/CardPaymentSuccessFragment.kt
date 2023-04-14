@@ -38,6 +38,7 @@ class CardPaymentSuccessFragment : Fragment() {
         handleClicks()
     }
 
+
     private fun handleClicks(){
         binding.btnDone.setOnClickListener {
             viewModel.handlePaymentStatus("COMPLETED")
