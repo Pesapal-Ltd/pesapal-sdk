@@ -1,5 +1,4 @@
 package com.pesapal.sdk.fragment.mpesa.success
-
 import android.content.ClipData
 import android.content.Context
 import android.os.Bundle
@@ -11,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.viewmodel.AppViewModel
-
 class MpesaSuccessFragment : Fragment() {
     private lateinit var binding: FragmentMpesaPaymentSuccessBinding
     private lateinit var transactionStatusResponse: TransactionStatusResponse
