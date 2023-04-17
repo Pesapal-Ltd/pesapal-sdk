@@ -1,10 +1,12 @@
-package com.pesapal.sdk.fragment.mpesa.success
+package com.pesapal.sdk.fragment.mobile_money.mpesa.success
 import android.content.ClipData
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
@@ -25,6 +27,7 @@ class MpesaSuccessFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        transactionStatusResponse = requireArguments().getSerializable("transactionStatusResponse") as TransactionStatusResponse
         initData()
     }
 
@@ -35,7 +38,7 @@ class MpesaSuccessFragment : Fragment() {
 
     private fun handleClicks(){
         binding.btnDone.setOnClickListener {
-            viewModel.handlePaymentStatus("COMPLETED")
+            returnPaymentStatus()
         }
         binding.imageViewCopy.setOnClickListener {
             setClipboard(requireContext(),transactionStatusResponse.confirmationCode!!)
@@ -53,6 +56,14 @@ class MpesaSuccessFragment : Fragment() {
         binding.tvTxnId.text = "TXN ID: "+transactionStatusResponse.confirmationCode
     }
 
+
+    private fun returnPaymentStatus() {
+        val returnIntent = Intent()
+        returnIntent.putExtra("status", "COMPLETED")
+        returnIntent.putExtra("data", transactionStatusResponse)
+        requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
+        requireActivity().finish()
+    }
 
     companion object{
         fun newInstance(transactionStatusResponse: TransactionStatusResponse): MpesaSuccessFragment {

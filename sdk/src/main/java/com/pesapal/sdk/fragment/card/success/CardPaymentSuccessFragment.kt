@@ -2,10 +2,12 @@ package com.pesapal.sdk.fragment.card.success
 
 import android.content.ClipData
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
@@ -40,11 +42,20 @@ class CardPaymentSuccessFragment : Fragment() {
 
     private fun handleClicks(){
         binding.btnDone.setOnClickListener {
-//            viewModel.handlePaymentStatus("COMPLETED")
+            returnPaymentStatus()
         }
         binding.imageViewCopy.setOnClickListener {
             setClipboard(requireContext(),transactionStatusResponse.confirmationCode!!)
         }
+    }
+
+
+    private fun returnPaymentStatus() {
+        val returnIntent = Intent()
+        returnIntent.putExtra("status", "COMPLETED")
+        returnIntent.putExtra("data", transactionStatusResponse)
+        requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
+        requireActivity().finish()
     }
 
     private fun setClipboard(context: Context, text: String) {

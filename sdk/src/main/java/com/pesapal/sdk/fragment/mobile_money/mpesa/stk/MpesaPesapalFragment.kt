@@ -1,4 +1,4 @@
-package com.pesapal.sdk.fragment.mpesa.stk
+package com.pesapal.sdk.fragment.mobile_money.mpesa.stk
 
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -7,22 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import com.pesapal.sdk.utils.Status
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.databinding.FragmentPesapalMpesaBinding
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.mobile_money.MobileMoneyResponse
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.utils.PrefManager
+import com.pesapal.sdk.utils.Status
 import com.pesapal.sdk.utils.hideKeyboard
-import com.pesapal.sdk.viewmodel.AppViewModel
 import java.math.BigDecimal
 
 class MpesaPesapalFragment : Fragment() {
 
     private lateinit var binding: FragmentPesapalMpesaBinding
-    private val viewModel: AppViewModel by activityViewModels()
+    private val viewModel: MpesaPesapalViewModel by viewModels()
     private lateinit var pDialog: ProgressDialog
     private lateinit var billingAddress: BillingAddress
     private lateinit var paymentDetails: PaymentDetails
@@ -159,7 +159,7 @@ class MpesaPesapalFragment : Fragment() {
             description = "Express Order",
             callbackUrl = paymentDetails.callbackUrl!!,
             cancellationUrl = "",
-            notificationId = com.pesapal.sdk.utils.PrefManager.getIpnId(),
+            notificationId = PrefManager.getIpnId(),
             language = "",
             termsAndConditionsId = "",
             billingAddress = billingAddress,
@@ -200,7 +200,8 @@ class MpesaPesapalFragment : Fragment() {
         if(mobileMoneyResponse != null) {
             mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
         }
-        viewModel.showPendingMpesaPayment(mobileMoneyRequest )
+        val action = MpesaPesapalFragmentDirections.actionMpesaPesapalFragmentToMpesaPendingFragment(mobileMoneyRequest)
+        findNavController().navigate(action)
     }
 
     private fun showMessage(message: String){

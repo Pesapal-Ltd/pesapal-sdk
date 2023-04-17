@@ -7,27 +7,36 @@
     >
     <fragment
         android:id="@+id/mpesaPesapalFragment"
-        android:name="com.pesapal.sdk.fragment.mpesa.stk.MpesaPesapalFragment"
+        android:name="com.pesapal.sdk.fragment.mobile_money.mpesa.stk.MpesaPesapalFragment"
         android:label="Mpesa Payment"
         tools:layout="@layout/fragment_pesapal_mpesa">
         <action
             android:id="@+id/action_mpesaPesapalFragment_to_mpesaPendingFragment"
-            app:destination="@id/mpesaPendingFragment" />
+            app:destination="@id/mpesaPendingFragment">
+
+            <argument
+                android:name="mobileMoneyRequest"
+                app:argType="com.pesapal.sdk.model.mobile_money.MobileMoneyRequest" />
+        </action>
     </fragment>
 
     <fragment
         android:id="@+id/mpesaPendingFragment"
-        android:name="com.pesapal.sdk.fragment.mpesa.pending.MpesaPendingFragment"
+        android:name="com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingFragment"
         android:label="Mpesa Payment"
         tools:layout="@layout/fragment_mpesa_pending">
         <action
             android:id="@+id/action_mpesaPendingFragment_to_mpesaSuccessFragment"
-            app:destination="@id/mpesaSuccessFragment" />
+            app:destination="@id/mpesaSuccessFragment">
+            <argument
+                android:name="transactionStatusResponse"
+                app:argType="com.pesapal.sdk.model.txn_status.TransactionStatusResponse" />
+        </action>
     </fragment>
 
     <fragment
         android:id="@+id/mpesaSuccessFragment"
-        android:name="com.pesapal.sdk.fragment.mpesa.success.MpesaSuccessFragment"
+        android:name="com.pesapal.sdk.fragment.mobile_money.mpesa.success.MpesaSuccessFragment"
         android:label="Mpesa Payment"
         tools:layout="@layout/fragment_mpesa_payment_success"/>
 

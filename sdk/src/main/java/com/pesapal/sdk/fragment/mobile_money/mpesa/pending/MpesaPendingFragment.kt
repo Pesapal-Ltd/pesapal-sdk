@@ -1,4 +1,4 @@
-package com.pesapal.sdk.fragment.mpesa.pending
+package com.pesapal.sdk.fragment.mobile_money.mpesa.pending
 
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -10,19 +10,19 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import com.pesapal.sdk.utils.Status
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.databinding.FragmentMpesaPendingBinding
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
-import com.pesapal.sdk.viewmodel.AppViewModel
-import java.util.*
+import com.pesapal.sdk.utils.Status
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 class MpesaPendingFragment : Fragment() {
 
     private lateinit var binding: FragmentMpesaPendingBinding
-    private val viewModel: AppViewModel by activityViewModels()
+    private val viewModel: MpesaPendingViewModel by viewModels()
     private lateinit var mobileMoneyRequest: MobileMoneyRequest
     private lateinit var pDialog: ProgressDialog
     private var delayTime = 1000L
@@ -46,6 +46,7 @@ class MpesaPendingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mobileMoneyRequest = requireArguments().getSerializable("mobileMoneyRequest") as MobileMoneyRequest
         initData()
         handleBackgroundConfirmation(delayTime)
     }
@@ -104,21 +105,19 @@ class MpesaPendingFragment : Fragment() {
         viewModel.mobileMoneyResponse.observe(requireActivity()){
             if(::pDialog.isInitialized) {
                 when (it.status) {
-                    com.pesapal.sdk.utils.Status.LOADING -> {
+                    Status.LOADING -> {
                         pDialog = ProgressDialog(requireContext())
                         pDialog.setMessage(it.message)
                         pDialog.show()
                     }
-                    com.pesapal.sdk.utils.Status.SUCCESS -> {
+                    Status.SUCCESS -> {
                         pDialog.dismiss()
                         binding.clLipaNaMpesa.visibility = View.GONE
                     }
-                    com.pesapal.sdk.utils.Status.ERROR -> {
+                    Status.ERROR -> {
                         pDialog.dismiss()
                         showMessage(it.message!!)
 
-                    }
-                    else -> {
                     }
                 }
             }
@@ -126,24 +125,22 @@ class MpesaPendingFragment : Fragment() {
 
         viewModel.transactionStatus.observe(requireActivity()){
                 when (it.status) {
-                    com.pesapal.sdk.utils.Status.LOADING -> {
+                    Status.LOADING -> {
                         pDialog = ProgressDialog(requireContext())
                         pDialog.setMessage(it.message)
                         pDialog.show()
                     }
-                    com.pesapal.sdk.utils.Status.SUCCESS -> {
+                    Status.SUCCESS -> {
                         if(::pDialog.isInitialized) {
                             pDialog.dismiss()
                             proceedToSuccessScreen(it.data!!)
                         }
                     }
-                    com.pesapal.sdk.utils.Status.ERROR -> {
+                    Status.ERROR -> {
                         if(::pDialog.isInitialized) {
                             pDialog.dismiss()
                             showMessage(it.message!!)
                         }
-                    }
-                    else -> {
                     }
                 }
         }
@@ -151,17 +148,17 @@ class MpesaPendingFragment : Fragment() {
 
         viewModel.transactionStatusBg.observe(requireActivity()){
             when (it.status) {
-                com.pesapal.sdk.utils.Status.LOADING -> {
+                Status.LOADING -> {
                     if(!timerStated) {
                         timerStated = true
                         handleBackgroundCheck()
                     }
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     handleTimeStop()
                     proceedToSuccessScreen(it.data!!)
                 }
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     if(delayTime != 30000L){
                         delayTime += 1000
                         handleBackgroundConfirmation(delayTime)
@@ -188,7 +185,8 @@ class MpesaPendingFragment : Fragment() {
     }
 
     private fun proceedToSuccessScreen(transactionStatusResponse: TransactionStatusResponse){
-        viewModel.showSuccessMpesaPayment(transactionStatusResponse)
+        var action = MpesaPendingFragmentDirections.actionMpesaPendingFragmentToMpesaSuccessFragment(transactionStatusResponse)
+        findNavController().navigate(action)
     }
 
     private fun showMessage(message: String){

@@ -21,9 +21,9 @@ import com.pesapal.sdk.R
 import com.pesapal.sdk.fragment.card.address.CardFragmentAddressData
 import com.pesapal.sdk.fragment.card.data.CardFragmentCardData
 import com.pesapal.sdk.fragment.card.success.CardPaymentSuccessFragment
-import com.pesapal.sdk.fragment.mpesa.pending.MpesaPendingFragment
-import com.pesapal.sdk.fragment.mpesa.stk.MpesaPesapalFragment
-import com.pesapal.sdk.fragment.mpesa.success.MpesaSuccessFragment
+import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingFragment
+import com.pesapal.sdk.fragment.mobile_money.mpesa.stk.MpesaPesapalFragment
+import com.pesapal.sdk.fragment.mobile_money.mpesa.success.MpesaSuccessFragment
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
@@ -240,18 +240,6 @@ class PesapalPayActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.completeCardPayment.observe(this){
-            when(it.status){
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
-                    transactionStatusResponse = it.data
-                    binding.cancelPayment.visibility = View.GONE
-                    loadFragment(CardPaymentSuccessFragment.newInstance(transactionStatusResponse!!))
-                }
-                else -> {
-
-                }
-            }
-        }
 
 
         viewModel.loadCardDetails.observe(this) {
@@ -270,7 +258,7 @@ class PesapalPayActivity : AppCompatActivity() {
             when(it.status){
                 com.pesapal.sdk.utils.Status.SUCCESS -> {
                     var result = it.data
-                    handleError("ERROR",result!!.message)
+                    handleError("ERROR",result!!.message!!)
                 }
                 com.pesapal.sdk.utils.Status.ERROR -> {
                     transactionErrorMessage = it.message!!
