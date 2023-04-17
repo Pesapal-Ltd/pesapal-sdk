@@ -25,7 +25,7 @@ class AuthRepository {
                     if(error == ""){
                         error =  sendLogs.error.code
                     }
-                    Resource.error(error)
+                    Resource.error(error!!)
                 }
             } catch (e: Exception) {
                 Resource.error(RetrofitErrorUtil.serverException(e))

@@ -357,13 +357,11 @@ class PesapalPayActivity : AppCompatActivity() {
 
     private fun getAllWarnings() {
         val warnings: List<Warning> = cardinal.warnings
-
         for (warning in warnings) {
             Log.e(" id ", warning.id);
             Log.e(" severity ", warning.severity.toString());
             Log.e(" message ", warning.message.toString());
         }
-
     }
 
     private fun initCardinal() {

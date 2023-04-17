@@ -16,7 +16,6 @@ class CardPaymentSuccessFragment : Fragment() {
 
     private lateinit var binding: FragmentCardTxnStatusBinding
     private lateinit var transactionStatusResponse: TransactionStatusResponse
-    private val viewModel: AppViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +40,7 @@ class CardPaymentSuccessFragment : Fragment() {
 
     private fun handleClicks(){
         binding.btnDone.setOnClickListener {
-            viewModel.handlePaymentStatus("COMPLETED")
+//            viewModel.handlePaymentStatus("COMPLETED")
         }
         binding.imageViewCopy.setOnClickListener {
             setClipboard(requireContext(),transactionStatusResponse.confirmationCode!!)
@@ -55,17 +54,7 @@ class CardPaymentSuccessFragment : Fragment() {
     }
     private fun handleDisplay(){
         binding.tvTxnId.text = "TXN ID: "+transactionStatusResponse.confirmationCode
-//        binding.tvPaymentMethod.text = "PAYMENT METHOD: "+transactionStatusResponse.paymentMethod!!.uppercase()
-//        binding.tvAmount.text = "AMOUNT: "+transactionStatusResponse.currency +". "+transactionStatusResponse.amount
     }
 
-
-    companion object{
-        fun newInstance(transactionStatusResponse: TransactionStatusResponse): CardPaymentSuccessFragment {
-            val fragment = CardPaymentSuccessFragment()
-            fragment.transactionStatusResponse = transactionStatusResponse
-            return fragment
-        }
-    }
 
 }
