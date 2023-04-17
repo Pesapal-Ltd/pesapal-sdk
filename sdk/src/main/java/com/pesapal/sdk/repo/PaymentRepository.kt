@@ -19,26 +19,6 @@ class PaymentRepository {
 
     private val apiService = com.pesapal.sdk.data.api.ApiClient.apiServices
 
-    suspend fun authPayment(
-        authRequestModel: AuthRequestModel
-    ): Resource<AuthResponseModel> {
-        return  withContext(Dispatchers.IO) {
-            try {
-                val sendLogs = apiService.authPayment(authRequestModel)
-                if(sendLogs.status != null && sendLogs.status == "200") {
-                    Resource.success(sendLogs)
-                }else{
-                    var error = sendLogs.error.message
-                    if(error == ""){
-                        error =  sendLogs.error.code
-                    }
-                    Resource.error(error)
-                }
-            } catch (e: Exception) {
-                Resource.error(com.pesapal.sdk.utils.RetrofitErrorUtil.serverException(e))
-            }
-        }
-    }
 
     suspend fun registerApi(registerIpnRequest: RegisterIpnRequest): Resource<RegisterIpnResponse> {
         return withContext(Dispatchers.IO){
@@ -79,65 +59,6 @@ class PaymentRepository {
 
     }
 
-
-    suspend fun generateCardOrderTrackingId(cardOrderTrackingIdRequest: CardOrderTrackingIdRequest): Resource<CardOrderTrackingIdResponse> {
-        return withContext(Dispatchers.IO){
-            try{
-                val cardExpressCheckoutResponse = apiService.generateCardOrderTrackingId("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(),cardOrderTrackingIdRequest)
-                if(cardExpressCheckoutResponse.status != null && (cardExpressCheckoutResponse.status == "200" || cardExpressCheckoutResponse.status =="500")) {
-                    Resource.success(cardExpressCheckoutResponse)
-                }else{
-                    var error = cardExpressCheckoutResponse.error?.message
-                    if(error == ""){
-                        error =  cardExpressCheckoutResponse.error?.code
-                    }
-                    Resource.error(error!!)
-                }
-            }catch (e: Exception){
-                Resource.error(com.pesapal.sdk.utils.RetrofitErrorUtil.serverException(e))
-            }
-        }
-
-    }
-
-
-
-    suspend fun submitCardRequest(processCardRequestV: SubmitCardRequest): Resource<SubmitCardResponse> {
-        return withContext(Dispatchers.IO){
-            try{
-                val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(),processCardRequestV)
-                if(cardExpressCheckoutResponse.status == "200" && cardExpressCheckoutResponse.error == null) {
-                    Resource.success(cardExpressCheckoutResponse)
-                }else{
-                    var error = cardExpressCheckoutResponse.error?.message
-                    if(error == ""){
-                        error =  cardExpressCheckoutResponse.error?.code
-                    }
-                    Resource.error(error!!)
-                }
-            }catch (e: Exception){
-                Resource.error(com.pesapal.sdk.utils.RetrofitErrorUtil.serverException(e))
-            }
-        }
-
-    }
-
-    suspend fun getCardTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
-        return withContext(Dispatchers.IO){
-            try{
-                val transactionStatus = apiService.checkCardPaymentStatus("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(),orderTrackingId)
-                if(transactionStatus.status != null && transactionStatus.status == "200") {
-                        Resource.success(transactionStatus)
-                }else{
-                    val error = transactionStatus.error?.message!!
-                    Resource.error(error)
-                }
-            }catch (e: Exception){
-                Resource.error(com.pesapal.sdk.utils.RetrofitErrorUtil.serverException(e))
-            }
-        }
-
-    }
 
 
     suspend fun getTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {

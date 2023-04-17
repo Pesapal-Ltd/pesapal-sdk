@@ -186,9 +186,5 @@ class AppViewModel : ViewModel() {
         _loadFragment.postValue(Resource.loadFragment(frag) )
     }
 
-    fun loadFragmentV1(billingAddress: BillingAddress){
-            _loadCardDetails.postValue(Resource.loadFragment(billingAddress) )
-    }
-
 
 }
