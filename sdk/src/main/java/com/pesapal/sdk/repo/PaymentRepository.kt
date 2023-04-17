@@ -19,7 +19,6 @@ class PaymentRepository {
 
     private val apiService = com.pesapal.sdk.data.api.ApiClient.apiServices
 
-
     suspend fun registerApi(registerIpnRequest: RegisterIpnRequest): Resource<RegisterIpnResponse> {
         return withContext(Dispatchers.IO){
             try{
