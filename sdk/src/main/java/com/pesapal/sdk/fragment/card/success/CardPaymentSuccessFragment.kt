@@ -38,8 +38,6 @@ class CardPaymentSuccessFragment : Fragment() {
         handleDisplay()
         handleClicks()
     }
-
-
     private fun handleClicks(){
         binding.btnDone.setOnClickListener {
             returnPaymentStatus()
