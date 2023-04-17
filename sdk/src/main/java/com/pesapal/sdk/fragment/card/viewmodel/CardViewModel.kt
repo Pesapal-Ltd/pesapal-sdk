@@ -31,10 +31,6 @@ class CardViewModel : ViewModel() {
     val cardPaymentStatus: LiveData<Resource<TransactionStatusResponse>>
         get() = _cardPaymentStatus
 
-    private var _completeCardPayment = MutableLiveData<Resource<TransactionStatusResponse>>()
-    val completeCardPayment: LiveData<Resource<TransactionStatusResponse>>
-        get() = _completeCardPayment
-
 
     fun generateCardOrderTrackingId(cardOrderTrackingIdRequest: CardOrderTrackingIdRequest, action: String){
         _cardOrderTrackingIdResponse.postValue(Resource.loading(action))

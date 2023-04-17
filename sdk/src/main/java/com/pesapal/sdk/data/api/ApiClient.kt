@@ -14,10 +14,10 @@ object ApiClient {
                 return Retrofit.Builder()
                     .baseUrl(Configs.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client(com.pesapal.sdk.data.api.ApiClient.getOkHttpClient())
+                    .client(getOkHttpClient())
                     .build() }
 
-        val apiServices: ApiServices get() = com.pesapal.sdk.data.api.ApiClient.retrofit.create(ApiServices::class.java)
+        val apiServices: ApiServices get() = retrofit.create(ApiServices::class.java)
 
         private fun getOkHttpClient(): OkHttpClient {
             val interceptor = HttpLoggingInterceptor()
@@ -25,21 +25,9 @@ object ApiClient {
             val builder = OkHttpClient.Builder()
             builder.addInterceptor(interceptor)
                 .addInterceptor { chain ->
-//                    if(PrefManager.getToken() != null) {
-//                        val token =  "Bearer "+PrefManager.getToken()
-//                        val newRequest = chain.request().newBuilder()
-//                            .addHeader(
-//                                "Authorization",
-//                                token
-//                            )
-//                            .build()
-//                        chain.proceed(newRequest)
-//                    }else{
                         val newRequest = chain.request().newBuilder()
                             .build()
                         chain.proceed(newRequest)
-//                    }
-
                 }
             return builder.build()
         }

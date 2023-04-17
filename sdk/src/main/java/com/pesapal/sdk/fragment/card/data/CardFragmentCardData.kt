@@ -171,7 +171,6 @@ class CardFragmentCardData : Fragment() {
     private fun handleCompletePayment(transactionStatusResponse: TransactionStatusResponse){
         val action = CardFragmentCardDataDirections.actionPesapalCardFragmentCardDataToPesapalCardFragmentSuccess(transactionStatusResponse)
         findNavController().navigate(action)
-//            viewModel.completeCardPayment(transactionStatusResponse)
     }
 
     private fun handleViewModel() {

@@ -11,12 +11,6 @@ object TimeUtils {
         return dateFormat.format(cal.time)
     }
 
-    fun getIntoMiliseconds(myDate: String): Long? {
-        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
-        val date = sdf.parse(myDate)
-
-        return date.time
-    }
 
 
 }

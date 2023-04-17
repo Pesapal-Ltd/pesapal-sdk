@@ -21,41 +21,6 @@ class MpesaPesapalViewModel : ViewModel() {
     val mobileMoneyResponse: LiveData<Resource<MobileMoneyResponse>>
         get() = _mobileMoneyResponse
 
-    private var _transactionStatus = MutableLiveData<Resource<TransactionStatusResponse>>()
-    val transactionStatus: LiveData<Resource<TransactionStatusResponse>>
-        get() = _transactionStatus
-
-    private var _transactionStatusBg = MutableLiveData<Resource<TransactionStatusResponse>>()
-    val transactionStatusBg: LiveData<Resource<TransactionStatusResponse>>
-        get() = _transactionStatusBg
-
-    private var _paymentDone = MutableLiveData<Resource<String>>()
-    val paymentDone: LiveData<Resource<String>>
-        get() = _paymentDone
-
-    private var _loadFragment = MutableLiveData<Resource<String>>()
-    val loadFragment: LiveData<Resource<String>>
-        get() = _loadFragment
-
-    private var _loadCardDetails = MutableLiveData<Resource<BillingAddress>>()
-    val loadCardDetails: LiveData<Resource<BillingAddress>>
-        get() = _loadCardDetails
-
-    private var _loadPendingMpesa = MutableLiveData<Resource<MobileMoneyRequest>>()
-    val loadPendingMpesa: LiveData<Resource<MobileMoneyRequest>>
-        get() = _loadPendingMpesa
-
-
-    private var _loadSuccessMpesa = MutableLiveData<Resource<TransactionStatusResponse>>()
-    val loadSuccessMpesa: LiveData<Resource<TransactionStatusResponse>>
-        get() = _loadSuccessMpesa
-
-
-
-
-
-
-
     fun sendMobileMoneyCheckOut(mobileMoneyRequest: MobileMoneyRequest, action: String){
         _mobileMoneyResponse.postValue(Resource.loading(action))
         viewModelScope.launch {
@@ -66,50 +31,6 @@ class MpesaPesapalViewModel : ViewModel() {
                 }
                 Status.SUCCESS -> {
                     _mobileMoneyResponse.postValue(Resource.success(result.data))
-                }
-                else -> {
-                }
-            }
-
-        }
-    }
-
-    fun mobileMoneyTransactionStatus(trackingId: String){
-        _transactionStatus.postValue(Resource.loading("Confirming payment ... "))
-        viewModelScope.launch {
-            val result = mpesaRepository.getTransactionStatus(trackingId)
-            when(result.status){
-                Status.ERROR -> {
-                    _transactionStatus.postValue(Resource.error(result.message!!))
-                }
-                Status.SUCCESS -> {
-                    if(result.data!!.paymentStatusDescription == "Completed") {
-                        _transactionStatus.postValue(Resource.success(result.data))
-                    }else{
-                        _transactionStatus.postValue(Resource.error("Awaiting payment .."))
-                    }
-                }
-                else -> {
-                }
-            }
-
-        }
-    }
-
-    fun mobileMoneyTransactionStatusBackground(trackingId: String){
-        _transactionStatusBg.postValue(Resource.loading("Confirming payment ... "))
-        viewModelScope.launch {
-            val result = mpesaRepository.getTransactionStatus(trackingId)
-            when(result.status){
-                Status.ERROR -> {
-                    _transactionStatusBg.postValue(Resource.error(result.message!!))
-                }
-                Status.SUCCESS -> {
-                    if(result.data!!.paymentStatusDescription == "Completed") {
-                        _transactionStatusBg.postValue(Resource.success(result.data))
-                    }else{
-                        _transactionStatusBg.postValue(Resource.error("Awaiting payment .."))
-                    }
                 }
                 else -> {
                 }

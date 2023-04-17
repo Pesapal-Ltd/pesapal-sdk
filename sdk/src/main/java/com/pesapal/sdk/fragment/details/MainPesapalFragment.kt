@@ -6,18 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.pesapal.sdk.R
+import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.utils.TimeUtils
-import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
-import com.pesapal.sdk.fragment.auth.AuthFragmentDirections
-import com.pesapal.sdk.viewmodel.AppViewModel
-import kotlin.Int
-import kotlin.getValue
 
 class MainPesapalFragment: Fragment() {
     private lateinit var binding: FragmentPesapalMainBinding
