@@ -49,7 +49,6 @@ class CardPaymentSuccessFragment : Fragment() {
         }
     }
 
-
     private fun returnPaymentStatus() {
         val returnIntent = Intent()
         returnIntent.putExtra("status", "COMPLETED")
