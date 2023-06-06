@@ -43,7 +43,7 @@ publishing {
             version = '1.0.0' // Replace with your desired version number
 
             // Configure the artifact to publish
-            artifact("sdk/build/outputs/aar/sdk-release.aar")
+            artifact("artifacts/sdk-release.aar")
         }
     }
 }
