@@ -15,7 +15,8 @@ object ApiClient {
                     .baseUrl(Configs.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(getOkHttpClient())
-                    .build() }
+                    .build()
+            }
 
         val apiServices: ApiServices get() = retrofit.create(ApiServices::class.java)
 

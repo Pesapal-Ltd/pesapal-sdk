@@ -2,24 +2,22 @@ package com.pesapal.sdk.fragment.auth
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.databinding.FragmentAuthorizingBinding
 import com.pesapal.sdk.model.auth.AuthRequestModel
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
+import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
+import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.Status
-import com.pesapal.sdk.viewmodel.AppViewModel
 import java.math.BigDecimal
+
 class AuthFragment : Fragment() {
 
     private lateinit var binding: FragmentAuthorizingBinding
@@ -58,10 +56,9 @@ class AuthFragment : Fragment() {
                 }
                 Status.SUCCESS -> {
                     binding.loader.visibility = View.GONE
-
                     val token = it.data?.token
                     PrefManager.setToken(token)
-                    proceed()
+                    registerIpn()
                 }
                 Status.ERROR -> {
                     binding.loader.visibility = View.GONE
@@ -71,6 +68,22 @@ class AuthFragment : Fragment() {
 
             }
         }
+
+        viewModel.registerIpnResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val ipnId = it.data?.ipn_id
+                    PrefManager.setIpnId(ipnId)
+                    proceed()
+                }
+
+                Status.ERROR -> {
+                }
+                else -> {
+                }
+            }
+        }
+
     }
 
     private fun proceed(){
@@ -150,6 +163,17 @@ class AuthFragment : Fragment() {
         }
 
     }
+
+
+    private fun registerIpn() {
+        if(paymentDetails.ipn_url != null && paymentDetails.ipn_notification_type !=null) {
+            val registerIpnRequest = RegisterIpnRequest(paymentDetails.ipn_url!!, paymentDetails.ipn_notification_type!!)
+            viewModel.registerIpn(registerIpnRequest)
+        }else{
+            showMessage("Ipn Data Required")
+        }
+    }
+
     private fun showMessage(message: String){
         Toast.makeText(requireContext(),message,Toast.LENGTH_LONG).show()
     }

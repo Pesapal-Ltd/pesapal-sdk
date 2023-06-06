@@ -41,12 +41,10 @@ class PesapalPayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPesapalPayBinding
     private var paymentDetails: PaymentDetails? = null
     private var billingAddress: BillingAddress? = null
-
     private var mobileMoneyRequest: MobileMoneyRequest? = null
     private var transactionStatusResponse: TransactionStatusResponse? = null
     private var transactionErrorMessage: String? = null
     private var cardinal: Cardinal = Cardinal.getInstance()
-
     private val viewModel: AppViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,6 +166,7 @@ class PesapalPayActivity : AppCompatActivity() {
                 com.pesapal.sdk.utils.Status.SUCCESS -> {
                     val ipnId = it.data?.ipn_id
                     com.pesapal.sdk.utils.PrefManager.setIpnId(ipnId)
+                    Log.e(" ipnId "," ==> " +ipnId);
                     viewModel.loadFragment("choose")
                 }
                 com.pesapal.sdk.utils.Status.ERROR -> {

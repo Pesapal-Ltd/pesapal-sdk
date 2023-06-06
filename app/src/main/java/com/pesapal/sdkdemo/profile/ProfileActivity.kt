@@ -22,10 +22,8 @@ class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var binding: ActivityProfileBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
-
     var testCurrency = mutableListOf<String>()
     var otherCurrency = mutableListOf("KES", "UGX", "USD")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater);
@@ -39,7 +37,6 @@ class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
         this.setSupportActionBar(binding.toolbar);
         this.supportActionBar!!.title = getString(R.string.handle_profile)
     }
-
     private fun configureGoogleSign() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(com.pesapal.sdkdemo.R.string.default_web_client_id))
@@ -47,8 +44,6 @@ class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
-
-
     private fun initData(){
         auth = FirebaseAuth.getInstance()
 
@@ -57,20 +52,15 @@ class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
         testCurrency.add(default)
         otherCurrency.remove(default)
         testCurrency.addAll(otherCurrency)
-
-
-
         val ad = ArrayAdapter(this,
             android.R.layout.simple_spinner_item,
             testCurrency
         )
-
         // set simple layout resource file
         // for each item of spinner
         ad.setDropDownViewResource(
             android.R.layout
                 .simple_spinner_dropdown_item);
-
         // Set the ArrayAdapter (ad) data on the
         // Spinner which binds data to spinner
         binding.layoutProfile.spinnerCurrency.adapter = ad;

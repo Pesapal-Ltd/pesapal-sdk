@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs'
-
+    id 'maven-publish'
 }
 
 android {
@@ -33,6 +33,21 @@ android {
     }
 
 }
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.pesapal.sdk' // Replace with your desired group ID
+            artifactId = 'pesapal-sdk' // Replace with your library's artifact ID
+            version = '1.0.0' // Replace with your desired version number
+
+            // Configure the artifact to publish
+            artifact("sdk/build/outputs/aar/sdk-release.aar")
+        }
+    }
+}
+
 
 dependencies {
     def nav_version = "2.5.1"

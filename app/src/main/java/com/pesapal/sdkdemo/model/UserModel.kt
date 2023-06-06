@@ -1,5 +1,4 @@
 package com.pesapal.sdkdemo.model
-
 data class UserModel(
     var displayName: String? = "",
     var firstName: String? = "",
