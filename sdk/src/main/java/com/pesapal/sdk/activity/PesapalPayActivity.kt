@@ -303,6 +303,21 @@ class PesapalPayActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun returnIntent(status: String, obj : Any){
+        val returnIntent = Intent()
+        returnIntent.putExtra("status", status)
+        val data = if(obj is String){
+            obj
+        }
+        else{
+            obj as TransactionStatusResponse
+        }
+        returnIntent.putExtra("data", data)
+
+        setResult(RESULT_OK, returnIntent)
+        finish()
+    }
+
     private fun loadFragment(fragment: Fragment) {
         // load fragment
         val transaction = supportFragmentManager.beginTransaction()
@@ -383,6 +398,10 @@ class PesapalPayActivity : AppCompatActivity() {
         getAllWarnings()
     }
 
+    companion object {
+        val STATUS_COMPLETED = "COMPLETED"
+        val STATUS_CANCELLED = "CANCELLED"
+    }
 
 
 }

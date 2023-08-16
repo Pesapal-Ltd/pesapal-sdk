@@ -188,6 +188,8 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
                 val photoUrl: String? = it.result.get("photoUrl").toString()
                 val time: String? = it.result.get("time").toString()
                 userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
+                userModel = UserModel(null,null,null,null,null,null)
+
                 initPayment()
             }else{
                 showMessage("Unable to get your account ")
@@ -199,11 +201,11 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     private fun initPayment(){
         val myIntent = Intent(this, com.pesapal.sdk.activity.PesapalSdkActivity::class.java)
         myIntent.putExtra("amount",total.toString())
-        myIntent.putExtra("order_id",orderId)
-        myIntent.putExtra("currency",PrefManager.getCurrency())
-        myIntent.putExtra("firstName",userModel.firstName)
-        myIntent.putExtra("lastName",userModel.lastName)
-        myIntent.putExtra("email",userModel.email)
+//        myIntent.putExtra("order_id",orderId)
+//        myIntent.putExtra("currency",PrefManager.getCurrency())
+//        myIntent.putExtra("firstName",userModel.firstName)
+//        myIntent.putExtra("lastName",userModel.lastName)
+//        myIntent.putExtra("email",userModel.email)
         startActivityForResult(myIntent,PAYMENT_REQUEST)
     }
 

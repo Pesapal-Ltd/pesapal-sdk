@@ -1,4 +1,5 @@
 package com.pesapal.sdk.fragment.auth
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -6,14 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.databinding.FragmentAuthorizingBinding
 import com.pesapal.sdk.model.auth.AuthRequestModel
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
+import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.Status
 import java.math.BigDecimal
@@ -24,6 +28,12 @@ class AuthFragment : Fragment() {
     private val viewModel: AuthViewModel by viewModels()
     private lateinit var paymentDetails: PaymentDetails
     private lateinit var billingAddress: BillingAddress
+
+
+    var dataRequiredAvailable = true
+    var errorMessage = ""
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -123,45 +133,80 @@ class AuthFragment : Fragment() {
             val orderId = intent.getStringExtra("order_id")
             val currency = intent.getStringExtra("currency")
 
-            paymentDetails = PaymentDetails(
-                amount = BigDecimal(amount),
-                order_id = orderId,
-                currency = currency,
-                accountNumber = accountNumber,
-                callbackUrl = callbackUrl,
-                consumer_key = consumerKey,
-                consumer_secret =  consumerSecret,
-                ipn_url = ipnUrl,
-            )
 
-            val firstName = intent.getStringExtra("firstName")
-            val lastName = intent.getStringExtra("lastName")
-            val email = intent.getStringExtra("email")
-            val city = intent.getStringExtra("city")
-            val address = intent.getStringExtra("address")
-            val postalCode = intent.getStringExtra("postalCode")
 
-            billingAddress = BillingAddress(
-                firstName = firstName,
-                lastName = lastName,
-                middleName = lastName,
-                emailAddress = email,
-                line = address,
-                line2 = address,
-                postalCode = postalCode,
-                city = city
-            )
+            if (consumerKey == "" && consumerSecret == "") {
 
-            if (consumerKey != "" && consumerSecret != "") {
-                initData()
-            } else {
+                setErrorElements("Consumer data required ...")
                 showMessage("Consumer data required ...")
+
+            } else if(amount == null){
+                setErrorElements("Data -> Amount missing")
             }
+
+            if(dataRequiredAvailable) {
+                initData()
+                paymentDetails = PaymentDetails(
+                    amount = BigDecimal(amount),
+                    order_id = orderId,
+                    currency = currency,
+                    accountNumber = accountNumber,
+                    callbackUrl = callbackUrl,
+                    consumer_key = consumerKey,
+                    consumer_secret = consumerSecret,
+                    ipn_url = ipnUrl,
+                )
+
+                val firstName = intent.getStringExtra("firstName")
+                val lastName = intent.getStringExtra("lastName")
+                val email = intent.getStringExtra("email")
+                val city = intent.getStringExtra("city")
+                val address = intent.getStringExtra("address")
+                val postalCode = intent.getStringExtra("postalCode")
+
+                billingAddress = BillingAddress(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = lastName,
+                    emailAddress = email,
+                    line = address,
+                    line2 = address,
+                    postalCode = postalCode,
+                    city = city
+                )
+
+            }
+            else{
+                returnIntent(PesapalPayActivity.STATUS_CANCELLED,errorMessage)
+
+            }
+
 
         } else {
             showMessage("Consumer data required ...")
         }
 
+    }
+
+    private fun setErrorElements(message: String){
+        dataRequiredAvailable = false
+        errorMessage = message
+    }
+
+
+    private fun returnIntent(status: String, obj : Any){
+        val returnIntent = Intent()
+        returnIntent.putExtra("status", status)
+        val data = if(obj is String){
+            obj
+        }
+        else{
+            obj as TransactionStatusResponse
+        }
+        returnIntent.putExtra("data", data)
+
+        requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
+        requireActivity().finish()
     }
 
 
