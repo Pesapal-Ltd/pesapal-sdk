@@ -134,7 +134,6 @@ class AuthFragment : Fragment() {
             val currency = intent.getStringExtra("currency")
 
 
-
             if (consumerKey == "" && consumerSecret == "") {
 
                 setErrorElements("Consumer data required ...")
