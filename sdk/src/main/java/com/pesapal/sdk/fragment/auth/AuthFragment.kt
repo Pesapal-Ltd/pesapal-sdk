@@ -139,12 +139,23 @@ class AuthFragment : Fragment() {
                 setErrorElements("Consumer data required ...")
                 showMessage("Consumer data required ...")
 
-            } else if(amount == null){
-                setErrorElements("Data -> Amount missing")
+            } else if(amount.isNullOrEmpty()){
+                setErrorElements("Data -> Amount is missing")
+            }
+            else if(orderId.isNullOrEmpty()){
+                setErrorElements("Data -> OrderId is missing")
+            }
+            else if(currency.isNullOrEmpty()){
+                setErrorElements("Data -> Currency format is missing")
+            } else if(accountNumber.isNullOrEmpty()){
+                setErrorElements("Data -> Account number is missing")
+            } else if(callbackUrl.isNullOrEmpty()){
+                setErrorElements("Data -> Callback url is missing")
+            } else if(ipnUrl.isNullOrEmpty()){
+                setErrorElements("Data -> IPN is missing")
             }
 
             if(dataRequiredAvailable) {
-                initData()
                 paymentDetails = PaymentDetails(
                     amount = BigDecimal(amount),
                     order_id = orderId,
@@ -155,6 +166,8 @@ class AuthFragment : Fragment() {
                     consumer_secret = consumerSecret,
                     ipn_url = ipnUrl,
                 )
+
+                initData()
 
                 val firstName = intent.getStringExtra("firstName")
                 val lastName = intent.getStringExtra("lastName")

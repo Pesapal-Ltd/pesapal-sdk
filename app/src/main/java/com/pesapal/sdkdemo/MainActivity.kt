@@ -52,7 +52,13 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun initSdk(){
-        com.pesapal.sdk.utils.PESAPALAPI3SDK().init(PrefManager.getConsumerKey(),PrefManager.getConsumerSecret(),PrefManager.getAccount(), PrefManager.getCallBackUrl(), "https://test.dev")
+        com.pesapal.sdk.utils.PESAPALAPI3SDK().init(
+            PrefManager.getConsumerKey(),
+            PrefManager.getConsumerSecret(),
+            PrefManager.getAccount(),
+            PrefManager.getCallBackUrl(),
+            "https://test.dev"
+        )
     }
 
     private fun initData(){
@@ -201,8 +207,8 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     private fun initPayment(){
         val myIntent = Intent(this, com.pesapal.sdk.activity.PesapalSdkActivity::class.java)
         myIntent.putExtra("amount",total.toString())
-//        myIntent.putExtra("order_id",orderId)
-//        myIntent.putExtra("currency",PrefManager.getCurrency())
+        myIntent.putExtra("order_id",orderId)
+        myIntent.putExtra("currency",PrefManager.getCurrency())
 //        myIntent.putExtra("firstName",userModel.firstName)
 //        myIntent.putExtra("lastName",userModel.lastName)
 //        myIntent.putExtra("email",userModel.email)
