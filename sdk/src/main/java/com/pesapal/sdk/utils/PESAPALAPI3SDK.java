@@ -3,10 +3,10 @@ package com.pesapal.sdk.utils;
 public class PESAPALAPI3SDK {
 
     public void init(String consumerkey, String consumersecret,String accountNumber, String callbackUrl, String ipnUrl){
-         PrefManager.putString("consumer_key", consumerkey);
-         PrefManager.putString("consumer_secret", consumersecret);
-         PrefManager.putString("account_number", accountNumber);
-         PrefManager.putString("callback_url", callbackUrl);
-         PrefManager.putString("ipn_url", ipnUrl);
+         PrefManager.putStringEncrypted("consumer_key", consumerkey);
+         PrefManager.putStringEncrypted("consumer_secret", consumersecret);
+         PrefManager.putStringEncrypted("account_number", accountNumber);
+         PrefManager.putStringEncrypted("callback_url", callbackUrl);
+         PrefManager.putStringEncrypted("ipn_url", ipnUrl);
     }
 }

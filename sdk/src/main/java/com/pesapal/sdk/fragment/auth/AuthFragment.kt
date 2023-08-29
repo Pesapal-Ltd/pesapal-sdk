@@ -100,6 +100,7 @@ class AuthFragment : Fragment() {
         val action = AuthFragmentDirections.actionAuthFragmentToPesapalMainFragment(paymentDetails)
        findNavController().navigate(action)
     }
+
     private fun paymentData() {
         val intent = requireActivity().intent
         if (intent != null) {
@@ -108,24 +109,29 @@ class AuthFragment : Fragment() {
             var ipnUrl: String? = null
             var accountNumber: String? = null
             var callbackUrl: String? = null
-            if (PrefManager.getString("consumer_key",null) != null) {
-                consumerKey = PrefManager.getString("consumer_key",null)!!
+            if (PrefManager.getString("consumer_key") != null) {
+//                consumerKey = PrefManager.getString("consumer_key",null)!!
+                consumerKey = PrefManager.getString("consumer_key")!!
             }
 
-            if (PrefManager.getString("consumer_secret",null) != null) {
-                consumerSecret = PrefManager.getString("consumer_secret",null)!!
+            if (PrefManager.getString("consumer_secret") != null) {
+//                consumerSecret = PrefManager.getString("consumer_secret",null)!!
+                consumerSecret = PrefManager.getString("consumer_secret")!!
             }
 
-            if (PrefManager.getString("account_number",null) != null) {
-                accountNumber = PrefManager.getString("account_number",null)!!
+            if (PrefManager.getString("account_number") != null) {
+//                accountNumber = PrefManager.getString("account_number",null)!!
+                accountNumber = PrefManager.getString("account_number")!!
             }
 
-            if (PrefManager.getString("callback_url",null) != null) {
-                callbackUrl = PrefManager.getString("callback_url",null)!!
+            if (PrefManager.getString("callback_url") != null) {
+//                callbackUrl = PrefManager.getString("callback_url",null)!!
+                callbackUrl = PrefManager.getString("callback_url")!!
             }
 
-            if (PrefManager.getString("ipn_url",null) != null) {
-                ipnUrl = PrefManager.getString("ipn_url",null)!!
+            if (PrefManager.getString("ipn_url") != null) {
+//                ipnUrl = PrefManager.getString("ipn_url",null)!!
+                ipnUrl = PrefManager.getString("ipn_url")!!
             }
 
 
@@ -139,7 +145,8 @@ class AuthFragment : Fragment() {
                 setErrorElements("Consumer data required ...")
                 showMessage("Consumer data required ...")
 
-            } else if(amount.isNullOrEmpty()){
+            }
+            else if(amount.isNullOrEmpty()){
                 setErrorElements("Data -> Amount is missing")
             }
             else if(orderId.isNullOrEmpty()){
@@ -147,11 +154,14 @@ class AuthFragment : Fragment() {
             }
             else if(currency.isNullOrEmpty()){
                 setErrorElements("Data -> Currency format is missing")
-            } else if(accountNumber.isNullOrEmpty()){
+            }
+            else if(accountNumber.isNullOrEmpty()){
                 setErrorElements("Data -> Account number is missing")
-            } else if(callbackUrl.isNullOrEmpty()){
+            }
+            else if(callbackUrl.isNullOrEmpty()){
                 setErrorElements("Data -> Callback url is missing")
-            } else if(ipnUrl.isNullOrEmpty()){
+            }
+            else if(ipnUrl.isNullOrEmpty()){
                 setErrorElements("Data -> IPN is missing")
             }
 

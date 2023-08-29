@@ -209,9 +209,9 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         myIntent.putExtra("amount",total.toString())
         myIntent.putExtra("order_id",orderId)
         myIntent.putExtra("currency",PrefManager.getCurrency())
-//        myIntent.putExtra("firstName",userModel.firstName)
-//        myIntent.putExtra("lastName",userModel.lastName)
-//        myIntent.putExtra("email",userModel.email)
+        myIntent.putExtra("firstName",userModel.firstName)
+        myIntent.putExtra("lastName",userModel.lastName)
+        myIntent.putExtra("email",userModel.email)
         startActivityForResult(myIntent,PAYMENT_REQUEST)
     }
 
