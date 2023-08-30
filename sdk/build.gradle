@@ -23,7 +23,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -45,10 +45,35 @@ android {
 def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
 
+def scope, clientId, clientSecret
+
+Properties props = new Properties()
+def propFile = file('github.properties')   //pay attention to the path
+// todo add this to README file. authorization.properties should not be committed to version control
+if (propFile.canRead()) {
+    //Override authorization properties when file found
+    props.load(new FileInputStream(propFile))
+
+    if (props != null
+            && props.containsKey('gpr.usr')
+            && props.containsKey('gpr.key')) {
+
+        scope = props['gpr.usr']
+        clientId = props['gpr.key']
+    }
+
+}
+
+Properties properties = new Properties()
+properties.load(rootProject.file('local.properties').newDataInputStream())
+def sdkDir = properties.getProperty('usr')
+def ndkDir = properties.getProperty('key')
+
+
 
 def LIB_GROUP_ID = 'com.pesapal.sdk'
 def LIB_ARTIFACT_ID = 'pesapal_sdk'
-def LIB_VERSION = '1.0.0'
+def LIB_VERSION = '1.0.3'
 
 
 
@@ -59,51 +84,48 @@ publishing {
             url = uri("https://maven.pkg.github.com/pesapalsnm/pesapalgatewayLib")
             credentials {
 
-                username = githubProperties['gpr.usr'] ?: "Fix key"
-                password = githubProperties['gpr.key'] ?: "Fix password"
+//                username = githubProperties['gpr.usr'] ?: "Fix key"
+//                password = githubProperties['gpr.key'] ?: "Fix password"
+                username = "a"
+                password = "z"
             }
         }
-//        maven {
-//            name = 'CustomMavenRepo'
-////                url = "file://${buildDir}/repo"
-//            url = uri("file://${buildDir}/local-repository")
-//        }
-//        mavenLocal()
+
     }
 
     /**
      * https://github.com/enefce/AndroidLibraryForGitHubPackagesDemo
+     * https://stackoverflow.com/questions/55864101/no-longer-able-to-use-bundlereleaseaar-in-mavenpublication -> Build first then publish
      */
 
     //Attempting to use MavenLocal()
     publications {
-        pesapal_sdk(MavenPublication) {
+        release(MavenPublication) {
             groupId LIB_GROUP_ID
             artifactId LIB_ARTIFACT_ID
             version LIB_VERSION
 //            artifact("$buildDir/outputs/aar/${LIB_ARTIFACT_ID}-release.aar")
+            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
 //            artifact(releaseSourcesJar)
+//            artifact("$buildDir/outputs/aar/module-debug.aar")
+//            artifact(bundleReleaseAar)
 
-
-            task sourcesJar(type: Jar) {
-                from android.sourceSets.main.java.srcDirs
-                classifier = 'sources'
-            }
-            artifacts {
-//                archives file(getArtifactId() + ".aar")
-                archives sourcesJar
-            }
-//            pom.withXml {
-//                def dependenciesNode = asNode().appendNode('dependencies')
-//
-//                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-//                configurations.api.allDependencies.each {
-//                    def dependencyNode = dependenciesNode.appendNode('dependency')
-//                    dependencyNode.appendNode('groupId', it.group)
-//                    dependencyNode.appendNode('artifactId', it.name)
-//                    dependencyNode.appendNode('version', it.version)
-//                }
+//            artifacts {           // this worked
+////                archives file(getArtifactId() + ".aar")
+//                archives sourcesJar
 //            }
+
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.api.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
         }
     }
 }
@@ -111,43 +133,43 @@ publishing {
 
 dependencies {
     def nav_version = "2.5.1"
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    api 'androidx.core:core-ktx:1.8.0'
+    api 'androidx.appcompat:appcompat:1.5.0'
+    api 'com.google.android.material:material:1.6.1'
+    api 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
 
 
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    api "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    api "androidx.navigation:navigation-ui-ktx:$nav_version"
 
 
     // Mask
-    implementation 'com.github.santalu:mask-edittext:1.1.1'
+    api 'com.github.santalu:mask-edittext:1.1.1'
 
     //county picker
-    implementation 'com.hbb20:ccp:2.6.1'
+    api 'com.hbb20:ccp:2.6.1'
 
     // Spin kit
-    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
+    api 'com.github.ybq:Android-SpinKit:1.2.0'
 
     /* Retrofit & OkHttp  */
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:converter-gson:2.9.0'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
+    api 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
     /* view model */
-    implementation "android.arch.lifecycle:viewmodel:1.1.1"
-    implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
+    api "android.arch.lifecycle:viewmodel:1.1.1"
+    api 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
 
-    implementation 'org.jfrog.cardinalcommerce.gradle:cardinalmobilesdk:2.2.6-1'
+    api 'org.jfrog.cardinalcommerce.gradle:cardinalmobilesdk:2.2.6-1'
 
     // sec
-    implementation("androidx.security:security-crypto:1.0.0")
+    api("androidx.security:security-crypto:1.0.0")
 
 
 }
