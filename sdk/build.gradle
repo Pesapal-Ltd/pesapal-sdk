@@ -23,7 +23,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -45,35 +45,10 @@ android {
 def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
 
-def scope, clientId, clientSecret
-
-Properties props = new Properties()
-def propFile = file('github.properties')   //pay attention to the path
-// todo add this to README file. authorization.properties should not be committed to version control
-if (propFile.canRead()) {
-    //Override authorization properties when file found
-    props.load(new FileInputStream(propFile))
-
-    if (props != null
-            && props.containsKey('gpr.usr')
-            && props.containsKey('gpr.key')) {
-
-        scope = props['gpr.usr']
-        clientId = props['gpr.key']
-    }
-
-}
-
-Properties properties = new Properties()
-properties.load(rootProject.file('local.properties').newDataInputStream())
-def sdkDir = properties.getProperty('usr')
-def ndkDir = properties.getProperty('key')
-
-
 
 def LIB_GROUP_ID = 'com.pesapal.sdk'
 def LIB_ARTIFACT_ID = 'pesapal_sdk'
-def LIB_VERSION = '1.0.3'
+def LIB_VERSION = '1.0.4'
 
 
 
@@ -84,18 +59,21 @@ publishing {
             url = uri("https://maven.pkg.github.com/pesapalsnm/pesapalgatewayLib")
             credentials {
 
-//                username = githubProperties['gpr.usr'] ?: "Fix key"
-//                password = githubProperties['gpr.key'] ?: "Fix password"
-                username = "a"
-                password = "z"
+                username = githubProperties['gpr.usr'] ?: "Fix key"
+                password = githubProperties['gpr.key'] ?: "Fix password"
             }
         }
-
+//        maven {
+//            name = 'CustomMavenRepo'
+////                url = "file://${buildDir}/repo"
+//            url = uri("file://${buildDir}/local-repository")
+//        }
+//        mavenLocal()
     }
 
     /**
      * https://github.com/enefce/AndroidLibraryForGitHubPackagesDemo
-     * https://stackoverflow.com/questions/55864101/no-longer-able-to-use-bundlereleaseaar-in-mavenpublication -> Build first then publish
+     * https://stackoverflow.com/questions/55864101/no-longer-able-to-use-bundlereleaseaar-in-mavenpublication -> Artifact aar name
      */
 
     //Attempting to use MavenLocal()
@@ -107,14 +85,16 @@ publishing {
 //            artifact("$buildDir/outputs/aar/${LIB_ARTIFACT_ID}-release.aar")
             artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
 //            artifact(releaseSourcesJar)
-//            artifact("$buildDir/outputs/aar/module-debug.aar")
-//            artifact(bundleReleaseAar)
 
-//            artifacts {           // this worked
+
+//            task sourcesJar(type: Jar) {
+//                from android.sourceSets.main.java.srcDirs
+//                classifier = 'sources'
+//            }
+//            artifacts {
 ////                archives file(getArtifactId() + ".aar")
 //                archives sourcesJar
 //            }
-
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
 
