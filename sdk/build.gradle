@@ -8,6 +8,7 @@ plugins {
 
 android {
     compileSdk 33
+
     defaultConfig {
         minSdk 21
         targetSdk 33
@@ -17,13 +18,14 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+
     buildTypes {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -48,9 +50,12 @@ githubProperties.load(new FileInputStream(rootProject.file("github.properties"))
 
 def LIB_GROUP_ID = 'com.pesapal.sdk'
 def LIB_ARTIFACT_ID = 'pesapal_sdk'
-def LIB_VERSION = '1.0.4'
+def LIB_VERSION = '1.0.5'
 
-
+    /**
+     * todo
+     * 1. Setting a namespace for resources -> https://developer.android.com/build/publish-library/prep-lib-release#groovy
+     */
 
 publishing {
     repositories {
@@ -59,8 +64,8 @@ publishing {
             url = uri("https://maven.pkg.github.com/pesapalsnm/pesapalgatewayLib")
             credentials {
 
-                username = githubProperties['gpr.usr'] ?: "Fix key"
-                password = githubProperties['gpr.key'] ?: "Fix password"
+                username = 'A'
+                password = 'B'
             }
         }
 //        maven {
@@ -122,7 +127,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
 
-
     api "androidx.navigation:navigation-fragment-ktx:$nav_version"
     api "androidx.navigation:navigation-ui-ktx:$nav_version"
 
@@ -146,7 +150,7 @@ dependencies {
     api "android.arch.lifecycle:viewmodel:1.1.1"
     api 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
 
-    api 'org.jfrog.cardinalcommerce.gradle:cardinalmobilesdk:2.2.6-1'
+//    api 'org.jfrog.cardinalcommerce.gradle:cardinalmobilesdk:2.2.6-1'
 
     // sec
     api("androidx.security:security-crypto:1.0.0")

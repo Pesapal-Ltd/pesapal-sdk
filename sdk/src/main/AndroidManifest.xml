@@ -8,7 +8,7 @@
 
         <activity
             android:name="com.pesapal.sdk.activity.PesapalPayActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.PayGateway" />
         <activity
             android:name="com.pesapal.sdk.activity.PesapalSdkActivity"
