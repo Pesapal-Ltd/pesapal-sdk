@@ -1,18 +1,25 @@
 package com.pesapal.sdk.fragment.details
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.pesapal.sdk.R
+import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
+import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.TimeUtils
 
 class MainPesapalFragment: Fragment() {
@@ -37,8 +44,30 @@ class MainPesapalFragment: Fragment() {
         paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
         billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                returnIntent(PesapalPayActivity.STATUS_CANCELLED,"Txn Cancelled")
+
+            }
+
+        })
         initData()
         handlePaymentOptions()
+    }
+
+    private fun returnIntent(status: String, obj : Any){
+        val returnIntent = Intent()
+        returnIntent.putExtra("status", status)
+        val data = if(obj is String){
+            obj
+        }
+        else{
+            obj as TransactionStatusResponse
+        }
+        returnIntent.putExtra("data", data)
+
+        requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
+        requireActivity().finish()
     }
 
     private fun initData(){
@@ -53,6 +82,7 @@ class MainPesapalFragment: Fragment() {
             if (chip != null && chip.isChecked) {
                 configureSelectedChip(chip)
             }
+
             when (i) {
                 R.id.mpesa -> {
                     configureUnselectedChip(chipGroup.findViewById(R.id.card))
@@ -69,11 +99,19 @@ class MainPesapalFragment: Fragment() {
 
     private fun proceedMpesa(){
         val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToNavGraphMpesa(paymentDetails,billingAddress)
-        findNavController().navigate(action)
+        clearSelectionAndProceed(action)
     }
 
     private fun proceedToCard(){
         val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToPesapalCardFragment(paymentDetails, billingAddress)
+        clearSelectionAndProceed(action)
+    }
+
+    /**
+     * The chip group selection needs to cleared or it causes a loop and return to the selected chip navigating to the fragment
+     */
+    private fun clearSelectionAndProceed(action: NavDirections) {
+        binding.paymentOptionGroup.clearCheck()
         findNavController().navigate(action)
     }
 

@@ -146,7 +146,7 @@ class CardFragmentCardData : Fragment() {
             checkoutSessionId = "",
         )
 
-        var subscriptionDetails = SubscriptionDetails(
+        val subscriptionDetails = SubscriptionDetails(
             endDate = "0001-01-01T00:00:00",
             startDate = "0001-01-01T00:00:00",
             amount = 0,
@@ -154,7 +154,7 @@ class CardFragmentCardData : Fragment() {
             frequency = 0
         )
 
-        var submitCardRequest = SubmitCardRequest(
+        val submitCardRequest = SubmitCardRequest(
             cvv = cardDetails.cvv,
             enrollmentCheckResult = enrollmentCheckResult,
             subscriptionDetails = subscriptionDetails,

@@ -17,7 +17,7 @@ import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.Status
 import com.pesapal.sdk.utils.hideKeyboard
-import java.math.BigDecimal
+
 
 class MpesaPesapalFragment : Fragment() {
 
@@ -50,6 +50,10 @@ class MpesaPesapalFragment : Fragment() {
 
     private fun initData(){
         prefillCountryCode()
+        binding.phone.setOnFocusChangeListener { _, hasFocus ->
+            binding.phoneLayout.hint = if (hasFocus) "Phone" else "700123456"
+        }
+
         handleClicks()
     }
 

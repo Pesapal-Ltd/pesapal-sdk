@@ -61,78 +61,6 @@ class PesapalPayActivity : AppCompatActivity() {
         initCardinal()
     }
 
-//    private fun getPaymentData() {
-//        val intent = intent
-//        if (intent != null) {
-//            var consumerKey: String? = null
-//            var consumerSecret: String? = null
-//            var ipnUrl: String? = null
-//            var accountNumber: String? = null
-//            var callbackUrl: String? = null
-//            if (com.pesapal.sdk.utils.PrefManager.getString("consumer_key",null) != null) {
-//                consumerKey = com.pesapal.sdk.utils.PrefManager.getString("consumer_key",null)!!
-//            }
-//
-//            if (com.pesapal.sdk.utils.PrefManager.getString("consumer_secret",null) != null) {
-//                consumerSecret = com.pesapal.sdk.utils.PrefManager.getString("consumer_secret",null)!!
-//            }
-//
-//            if (com.pesapal.sdk.utils.PrefManager.getString("account_number",null) != null) {
-//                accountNumber = com.pesapal.sdk.utils.PrefManager.getString("account_number",null)!!
-//            }
-//
-//            if (com.pesapal.sdk.utils.PrefManager.getString("callback_url",null) != null) {
-//                callbackUrl = com.pesapal.sdk.utils.PrefManager.getString("callback_url",null)!!
-//            }
-//
-//            if (com.pesapal.sdk.utils.PrefManager.getString("ipn_url",null) != null) {
-//                ipnUrl = com.pesapal.sdk.utils.PrefManager.getString("ipn_url",null)!!
-//            }
-//
-//
-//            val amount = intent.getStringExtra("amount")
-//            val orderId = intent.getStringExtra("order_id")
-//            val currency = intent.getStringExtra("currency")
-//
-//            paymentDetails = PaymentDetails(
-//                amount = BigDecimal(amount),
-//                order_id = orderId,
-//                currency = currency,
-//                accountNumber = accountNumber,
-//                callbackUrl = callbackUrl,
-//                consumer_key = consumerKey,
-//                consumer_secret =  consumerSecret,
-//                ipn_url = ipnUrl,
-//            )
-//
-//            val firstName = intent.getStringExtra("firstName")
-//            val lastName = intent.getStringExtra("lastName")
-//            val email = intent.getStringExtra("email")
-//            val city = intent.getStringExtra("city")
-//            val address = intent.getStringExtra("address")
-//            val postalCode = intent.getStringExtra("postalCode")
-//
-//            billingAddress = BillingAddress(
-//                firstName = firstName,
-//                lastName = lastName,
-//                middleName = lastName,
-//                emailAddress = email,
-//                line = address,
-//                line2 = address,
-//                postalCode = postalCode,
-//                city = city
-//            )
-//
-//            if (consumerKey != "" && consumerSecret != "") {
-//            } else {
-//                showMessage("Consumer data required ...")
-//            }
-//
-//        } else {
-//            showMessage("Consumer data required ...")
-//        }
-//
-//    }
     private fun getPaymentData() {
     val intent = intent
     if (intent != null) {
@@ -143,7 +71,7 @@ class PesapalPayActivity : AppCompatActivity() {
         var callbackUrl: String? = null
         if (PrefManager.getString("consumer_key") != null) {
 //                consumerKey = PrefManager.getString("consumer_key",null)!!
-//            consumerKey = PrefManager.getString("consumer_key")!!
+            consumerKey = PrefManager.getString("consumer_key")!!
         }
 
         if (PrefManager.getString("consumer_secret") != null) {
