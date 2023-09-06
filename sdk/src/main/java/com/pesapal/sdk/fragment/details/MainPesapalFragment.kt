@@ -11,12 +11,16 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.pesapal.sdk.R
 import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
+import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.utils.TimeUtils
 
 class MainPesapalFragment: Fragment() {
     private lateinit var binding: FragmentPesapalMainBinding
+
     private lateinit var paymentDetails: PaymentDetails
+    private lateinit var billingAddress: BillingAddress
+
     val dateTime = TimeUtils.getCurrentDateTime()
 
     override fun onCreateView(
@@ -31,6 +35,8 @@ class MainPesapalFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
+        billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
+
         initData()
         handlePaymentOptions()
     }
@@ -62,12 +68,12 @@ class MainPesapalFragment: Fragment() {
     }
 
     private fun proceedMpesa(){
-        val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToNavGraphMpesa(paymentDetails)
+        val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToNavGraphMpesa(paymentDetails,billingAddress)
         findNavController().navigate(action)
     }
 
     private fun proceedToCard(){
-        val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToPesapalCardFragment(paymentDetails)
+        val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToPesapalCardFragment(paymentDetails, billingAddress)
         findNavController().navigate(action)
     }
 

@@ -3,6 +3,7 @@ package com.pesapal.sdk.fragment.card.data
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,6 +92,10 @@ class CardFragmentCardData : Fragment() {
             Integer.parseInt(binding.monthField.text.toString()),
             binding.etCvv.text.toString(),
         )
+
+        Log.e("Card","Paymentdetails null  is " + (paymentDetails == null))
+
+        Log.e("Card","Order id  is " + paymentDetails.order_id!!)
 
 
         cardOrderTrackingIdRequest = CardOrderTrackingIdRequest(

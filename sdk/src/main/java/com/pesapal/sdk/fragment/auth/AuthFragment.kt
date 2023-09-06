@@ -97,7 +97,7 @@ class AuthFragment : Fragment() {
     }
 
     private fun proceed(){
-        val action = AuthFragmentDirections.actionAuthFragmentToPesapalMainFragment(paymentDetails)
+        val action = AuthFragmentDirections.actionAuthFragmentToPesapalMainFragment(paymentDetails, billingAddress)
        findNavController().navigate(action)
     }
 
@@ -140,7 +140,7 @@ class AuthFragment : Fragment() {
             val currency = intent.getStringExtra("currency")
 
 
-            if (consumerKey == "" && consumerSecret == "") {
+            if (consumerKey.isNullOrEmpty() || consumerSecret.isNullOrEmpty()) {
 
                 setErrorElements("Consumer data required ...")
                 showMessage("Consumer data required ...")

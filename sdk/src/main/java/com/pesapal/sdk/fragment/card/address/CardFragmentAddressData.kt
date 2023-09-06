@@ -5,7 +5,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -14,8 +13,6 @@ import com.pesapal.sdk.databinding.FragmentNewCardAddressBinding
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.setButtonEnabled
-import com.pesapal.sdk.utils.PrefManager
-import java.math.BigDecimal
 
 
 class CardFragmentAddressData : Fragment() {
@@ -45,83 +42,14 @@ class CardFragmentAddressData : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        paymentData()
+//        paymentData()
+        paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
+        billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
+
         handleClickListener()
         handleChangeListener()
         initData()
     }
-
-
-    private fun paymentData() {
-        val intent = requireActivity().intent
-        if (intent != null) {
-
-            var consumerKey: String? = null
-            var consumerSecret: String? = null
-            var ipnUrl: String? = null
-            var accountNumber: String? = null
-            var callbackUrl: String? = null
-            if (PrefManager.getString("consumer_key",null) != null) {
-                consumerKey = PrefManager.getString("consumer_key",null)!!
-            }
-
-            if (PrefManager.getString("consumer_secret",null) != null) {
-                consumerSecret = PrefManager.getString("consumer_secret",null)!!
-            }
-
-            if (PrefManager.getString("account_number",null) != null) {
-                accountNumber = PrefManager.getString("account_number",null)!!
-            }
-
-            if (PrefManager.getString("callback_url",null) != null) {
-                callbackUrl = PrefManager.getString("callback_url",null)!!
-            }
-
-            if (PrefManager.getString("ipn_url",null) != null) {
-                ipnUrl = PrefManager.getString("ipn_url",null)!!
-            }
-
-
-            val firstName = intent.getStringExtra("firstName")
-            val lastName = intent.getStringExtra("lastName")
-            val email = intent.getStringExtra("email")
-            val city = intent.getStringExtra("city")
-            val address = intent.getStringExtra("address")
-            val postalCode = intent.getStringExtra("postalCode")
-
-            billingAddress = BillingAddress(
-                firstName = firstName,
-                lastName = lastName,
-                middleName = lastName,
-                emailAddress = email,
-                line = address,
-                line2 = address,
-                postalCode = postalCode,
-                city = city
-            )
-
-            val amount = intent.getStringExtra("amount")
-            val orderId = intent.getStringExtra("order_id")
-            val currency = intent.getStringExtra("currency")
-
-            paymentDetails = PaymentDetails(
-                amount = BigDecimal(amount),
-                order_id = orderId,
-                currency = currency,
-                accountNumber = accountNumber,
-                callbackUrl = callbackUrl,
-                consumer_key = consumerKey,
-                consumer_secret =  consumerSecret,
-                ipn_url = ipnUrl,
-            )
-
-
-        } else {
-            showMessage("Consumer data required ...")
-        }
-
-    }
-
 
     private fun initData(){
         binding.etFirstName.setText(billingAddress.firstName)
@@ -153,7 +81,6 @@ class CardFragmentAddressData : Fragment() {
             }else{
                 isEmailFilled = false
             }
-
         }
 
 
@@ -247,9 +174,6 @@ class CardFragmentAddressData : Fragment() {
         checkFilled()
     }
 
-    private fun showMessage(message: String){
-        Toast.makeText(requireContext(),message,Toast.LENGTH_LONG).show()
-    }
 
 
 }
