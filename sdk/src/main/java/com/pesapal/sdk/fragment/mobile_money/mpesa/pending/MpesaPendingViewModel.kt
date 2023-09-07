@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pesapal.sdk.fragment.mobile_money.mpesa.repo.MpesaRepository
-import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.mobile_money.MobileMoneyResponse
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse

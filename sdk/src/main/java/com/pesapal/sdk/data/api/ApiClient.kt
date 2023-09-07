@@ -24,6 +24,7 @@ object ApiClient {
             val interceptor = HttpLoggingInterceptor()
             interceptor.level = HttpLoggingInterceptor.Level.BODY
             val builder = OkHttpClient.Builder()
+
             builder.addInterceptor(interceptor)
                 .addInterceptor { chain ->
                         val newRequest = chain.request().newBuilder()

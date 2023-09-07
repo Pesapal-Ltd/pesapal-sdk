@@ -1,5 +1,6 @@
 package com.pesapal.sdk.model.mobile_money
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import com.pesapal.sdk.model.card.BillingAddress
 import java.io.Serializable

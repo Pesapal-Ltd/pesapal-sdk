@@ -10,9 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.cardinalcommerce.cardinalmobilesdk.Cardinal
 import com.pesapal.sdk.model.card.CardDetails
@@ -25,9 +23,7 @@ import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.setButtonEnabled
 import com.pesapal.sdk.utils.FragmentExtension.hideKeyboard
-import com.pesapal.sdk.viewmodel.AppViewModel
 import com.pesapal.sdk.databinding.FragmentNewCardDetailsBinding
-import com.pesapal.sdk.fragment.auth.AuthFragmentDirections
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 
 class CardFragmentCardData : Fragment() {
@@ -93,11 +89,6 @@ class CardFragmentCardData : Fragment() {
             binding.etCvv.text.toString(),
         )
 
-        Log.e("Card","Paymentdetails null  is " + (paymentDetails == null))
-
-        Log.e("Card","Order id  is " + paymentDetails.order_id!!)
-
-
         cardOrderTrackingIdRequest = CardOrderTrackingIdRequest(
             id = paymentDetails.order_id!!,
             sourceChannel = 2,
@@ -123,7 +114,7 @@ class CardFragmentCardData : Fragment() {
 
     }
     private fun submitCardRequest() {
-        var enrollmentCheckResult = EnrollmentCheckResult(
+        val enrollmentCheckResult = EnrollmentCheckResult(
             authenticationResult = "",
             authenticationAttempted = false,
             directoryServerTransactionId = "",
@@ -228,7 +219,7 @@ class CardFragmentCardData : Fragment() {
                 }
                 com.pesapal.sdk.utils.Status.SUCCESS -> {
                     pDialog.dismiss()
-                    var result = it.data!!
+                    val result = it.data!!
                     handleCompletePayment(result)
                 }
                 com.pesapal.sdk.utils.Status.ERROR -> {
@@ -243,9 +234,6 @@ class CardFragmentCardData : Fragment() {
         }
 
     }
-
-
-
 
 
     private fun showMessage(message: String) {

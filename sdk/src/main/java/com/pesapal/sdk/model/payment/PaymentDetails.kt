@@ -1,5 +1,6 @@
 package com.pesapal.sdk.model.payment
 
+import androidx.annotation.Keep
 import java.io.Serializable
 import java.math.BigDecimal
 

@@ -139,7 +139,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_height="wrap_content"
                         app:ccp_countryPreference="KE,UG,TZ"
-                        />
+                        app:ccp_rememberLastSelection="true"
+                    />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
