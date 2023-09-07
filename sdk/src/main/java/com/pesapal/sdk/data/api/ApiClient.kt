@@ -1,5 +1,6 @@
 package com.pesapal.sdk.data.api
 
+import com.pesapal.sdk.BuildConfig
 import com.pesapal.sdk.Configs
 import com.pesapal.sdk.data.services.ApiServices
 import okhttp3.OkHttpClient
@@ -24,13 +25,14 @@ object ApiClient {
             val interceptor = HttpLoggingInterceptor()
             interceptor.level = HttpLoggingInterceptor.Level.BODY
             val builder = OkHttpClient.Builder()
-
-            builder.addInterceptor(interceptor)
-                .addInterceptor { chain ->
+            if(BuildConfig.DEBUG) {
+                builder.addInterceptor(interceptor)
+                    .addInterceptor { chain ->
                         val newRequest = chain.request().newBuilder()
                             .build()
                         chain.proceed(newRequest)
-                }
+                    }
+            }
             return builder.build()
         }
 
