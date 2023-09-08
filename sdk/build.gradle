@@ -6,6 +6,7 @@ plugins {
     id 'maven-publish'
 }
 
+
 android {
     compileSdk 33
 
@@ -42,7 +43,44 @@ android {
 
 }
 
+/**
+ * TODO Transfer logic to automation.gradle and import/apply from
+ */
+tasks.register('hello') {
+    doLast {
+//        assembleRelease
+//        task("assembleRelease")
+    }
+    println 'Hello world!'
 
+}
+
+
+task fooExec(type: Exec) {
+    workingDir "${buildDir}"
+    commandLine 'echo', 'hello'
+    doLast {
+        println "Executed!"
+    }
+}
+
+task libReleasePub (type: GradleBuild) {
+    /**
+     * This task first calls assemble release to create the release variant
+     * Source -> https://stackoverflow.com/questions/32907275/gradle-custom-task-which-runs-multiple-tasks
+     */
+    tasks = ['assembleRelease','publishReleasePublicationToGithubPackagesRepository']
+
+    /**
+     * TODO
+     * 1. Check that an sdk release.aar actually exists before publication online
+     * 2. Find a why to switch from a demo/dev URL uri("https://maven.pkg.github.com/pesapalsnm/pesapalgatewayLib") to prod uri"/pesapalgatewayLibraryProd"
+     * 3. With URL switch it should also switch the credentials. The separate URL should also have separate passwords as they will shared with merchants
+     * 4. Catch error such as "   > Could not PUT 'https://maven.pkg.github.com/pesapalsnm/pesapalgatewayLib/com/pesapal/sdk/pesapal_sdk/1.1.6/pesapal_sdk-1.1.6.aar'. Received status code 409 from server: Conflict"
+     * 5. If error above can be caught try and bump version automatically
+     *
+     */
+}
 
 def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
@@ -66,8 +104,8 @@ publishing {
             url = uri("https://maven.pkg.github.com/pesapalsnm/pesapalgatewayLib")
             credentials {
 
-                username = 'a'
-                password = 'b'
+                username = 'pesapalsnm'
+                password = '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'
             }
         }
 
@@ -112,13 +150,17 @@ publishing {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
+                    dependencyNode.appendNode('version', it.version)s
                 }
             }
         }
 
     }
 }
+
+
+
+
 
 
 dependencies {
