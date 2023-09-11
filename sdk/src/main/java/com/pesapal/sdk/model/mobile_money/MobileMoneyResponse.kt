@@ -3,7 +3,7 @@ package com.pesapal.sdk.model.mobile_money
 import com.google.gson.annotations.SerializedName
 import com.pesapal.sdk.model.txn_status.TransactionError
 
-data class MobileMoneyResponse(@SerializedName("payment_message")
+internal data class MobileMoneyResponse(@SerializedName("payment_message")
                                val paymentMessage: String = "",
                                @SerializedName("account_number")
                                val accountNumber: String = "",

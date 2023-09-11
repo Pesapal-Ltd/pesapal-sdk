@@ -13,7 +13,7 @@ import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnResponse
 import retrofit2.http.*
 
-interface ApiServices {
+internal interface ApiServices {
 
     @POST("api/Auth/RequestToken")
     suspend fun authPayment(@Body authRequestModel: AuthRequestModel) : AuthResponseModel

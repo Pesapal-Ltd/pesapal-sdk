@@ -22,7 +22,7 @@ import com.pesapal.sdk.utils.Resource
 import com.pesapal.sdk.utils.Status
 import kotlinx.coroutines.launch
 
-class AppViewModel : ViewModel() {
+internal class AppViewModel : ViewModel() {
 
     private val paymentRepository = PaymentRepository()
 

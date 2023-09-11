@@ -6,7 +6,7 @@ import com.pesapal.sdk.model.card.BillingAddress
 import java.io.Serializable
 import java.math.BigDecimal
 
-data class MobileMoneyRequest(@SerializedName("account_number")
+internal data class MobileMoneyRequest(@SerializedName("account_number")
                               val accountNumber: String = "",
                               @SerializedName("amount")
                               val amount: BigDecimal = BigDecimal.ZERO,

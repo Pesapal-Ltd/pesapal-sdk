@@ -3,7 +3,7 @@ package com.pesapal.sdk.model.card.order_id.response
 import com.google.gson.annotations.SerializedName
 import com.pesapal.sdk.model.txn_status.TransactionError
 
-data class CardOrderTrackingIdResponse(@SerializedName("payment_message")
+internal data class CardOrderTrackingIdResponse(@SerializedName("payment_message")
                                val paymentMessage: String = "",
                                        @SerializedName("account_number")
                                val accountNumber: String = "",

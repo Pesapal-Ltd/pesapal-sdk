@@ -3,7 +3,7 @@ package com.pesapal.sdk.model.card.submit.request
 import com.google.gson.annotations.SerializedName
 import com.pesapal.sdk.model.card.BillingAddress
 
-data class SubmitCardRequest(@SerializedName("cvv")
+internal data class SubmitCardRequest(@SerializedName("cvv")
                                val cvv: String = "",
                              @SerializedName("enrollment_check_result")
                                val enrollmentCheckResult: EnrollmentCheckResult,

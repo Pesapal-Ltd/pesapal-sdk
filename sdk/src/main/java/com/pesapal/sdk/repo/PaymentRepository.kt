@@ -9,7 +9,7 @@ import com.pesapal.sdk.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class PaymentRepository {
+internal class PaymentRepository {
 
     private val apiService = com.pesapal.sdk.data.api.ApiClient.apiServices
 

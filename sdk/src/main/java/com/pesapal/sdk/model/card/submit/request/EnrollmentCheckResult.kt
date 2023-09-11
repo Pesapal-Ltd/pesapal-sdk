@@ -2,7 +2,7 @@ package com.pesapal.sdk.model.card.submit.request
 
 import com.google.gson.annotations.SerializedName
 
-data class EnrollmentCheckResult(@SerializedName("authenticationResult")
+internal data class EnrollmentCheckResult(@SerializedName("authenticationResult")
                                  val authenticationResult: String? = null,
                                  @SerializedName("authentication_attempted")
                                  val authenticationAttempted: Boolean = false,

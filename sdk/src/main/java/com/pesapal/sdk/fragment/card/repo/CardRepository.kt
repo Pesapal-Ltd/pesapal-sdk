@@ -12,7 +12,7 @@ import com.pesapal.sdk.utils.RetrofitErrorUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class CardRepository {
+internal class CardRepository {
 
     private val apiService = ApiClient.apiServices
     suspend fun generateCardOrderTrackingId(cardOrderTrackingIdRequest: CardOrderTrackingIdRequest): Resource<CardOrderTrackingIdResponse> {

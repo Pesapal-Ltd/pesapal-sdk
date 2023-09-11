@@ -173,7 +173,7 @@ class MpesaPendingFragment : Fragment() {
     }
 
     companion object{
-        fun newInstance(mobileMoneyRequest: MobileMoneyRequest): MpesaPendingFragment {
+        internal fun newInstance(mobileMoneyRequest: MobileMoneyRequest): MpesaPendingFragment {
             val mpesaPendingFragment = MpesaPendingFragment()
             mpesaPendingFragment.mobileMoneyRequest = mobileMoneyRequest
             return mpesaPendingFragment

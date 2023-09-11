@@ -19,7 +19,7 @@ object ApiClient {
                     .build()
             }
 
-        val apiServices: ApiServices get() = retrofit.create(ApiServices::class.java)
+        internal val apiServices: ApiServices get() = retrofit.create(ApiServices::class.java)
 
         private fun getOkHttpClient(): OkHttpClient {
             val interceptor = HttpLoggingInterceptor()

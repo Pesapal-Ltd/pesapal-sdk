@@ -2,7 +2,7 @@ package com.pesapal.sdk.model.registerIpn_url
 
 import com.pesapal.sdk.model.txn_status.TransactionError
 
-data class RegisterIpnResponse(
+internal data class RegisterIpnResponse(
     val id: String,
     val url: String,
     val created_date: String,

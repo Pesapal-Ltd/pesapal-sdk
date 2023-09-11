@@ -3,7 +3,7 @@ package com.pesapal.sdk.model.card
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class BillingAddress(@SerializedName("line_1")
+internal data class BillingAddress(@SerializedName("line_1")
                           val line: String? = "",
                           @SerializedName("country_code")
                           val countryCode: String? = "",

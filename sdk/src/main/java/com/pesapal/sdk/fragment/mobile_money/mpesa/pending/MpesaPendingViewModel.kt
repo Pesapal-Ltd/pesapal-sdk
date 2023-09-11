@@ -12,7 +12,7 @@ import com.pesapal.sdk.utils.Resource
 import com.pesapal.sdk.utils.Status
 import kotlinx.coroutines.launch
 
-class MpesaPendingViewModel : ViewModel(){
+internal class MpesaPendingViewModel : ViewModel(){
 
     var mpesaRepository = MpesaRepository()
 

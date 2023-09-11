@@ -14,7 +14,7 @@ import com.pesapal.sdk.utils.Resource
 import com.pesapal.sdk.utils.Status
 import kotlinx.coroutines.launch
 
-class CardViewModel : ViewModel() {
+internal class CardViewModel : ViewModel() {
 
     private var cardRepository = CardRepository()
 

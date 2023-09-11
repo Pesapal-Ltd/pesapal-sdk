@@ -2,7 +2,7 @@ package com.pesapal.sdk.model.card.submit.request
 
 import com.google.gson.annotations.SerializedName
 
-data class SubscriptionDetails(@SerializedName("end_date")
+internal data class SubscriptionDetails(@SerializedName("end_date")
                                val endDate: String = "",
                                @SerializedName("amount")
                                val amount: Int = 0,
