@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ class AuthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("Auth", "onViewCreated called")
         handleViewModel()
         paymentData()
     }
@@ -100,6 +102,9 @@ class AuthFragment : Fragment() {
 
     private fun proceed(){
         val action = AuthFragmentDirections.actionAuthFragmentToPesapalMainFragment(paymentDetails, billingAddress)
+        Log.e("Auth", "Pre Firstname -> ${billingAddress.firstName}")
+        Log.e("Auth", "Pre lastname -> ${billingAddress.lastName}")
+        Log.e("Auth", "Pre email -> ${billingAddress.emailAddress}")
        findNavController().navigate(action)
     }
 
@@ -179,7 +184,6 @@ class AuthFragment : Fragment() {
                     ipn_url = ipnUrl,
                 )
 
-                initData()
 
                 val firstName = intent.getStringExtra(PESAPALAPI3SDK.FIRST_NAME )
                 val lastName = intent.getStringExtra(PESAPALAPI3SDK.LAST_NAME)
@@ -189,6 +193,9 @@ class AuthFragment : Fragment() {
                 val postalCode = intent.getStringExtra("postalCode")
 
 
+                Log.e("Auth", "Firstname -> $firstName")
+                Log.e("Auth", "lastname -> $lastName")
+                Log.e("Auth", "email -> $email")
 
                 billingAddress = BillingAddress(
                     firstName = firstName,
@@ -200,6 +207,10 @@ class AuthFragment : Fragment() {
                     postalCode = postalCode,
                     city = city
                 )
+                Log.e("AutImmediate", "Firstname -> ${billingAddress.firstName}")
+
+                initData()
+
 
             }
             else{

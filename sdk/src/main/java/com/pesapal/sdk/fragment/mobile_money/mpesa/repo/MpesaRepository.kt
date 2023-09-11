@@ -10,7 +10,7 @@ import com.pesapal.sdk.utils.RetrofitErrorUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MpesaRepository {
+internal class MpesaRepository {
     private val apiService = ApiClient.apiServices
 
 

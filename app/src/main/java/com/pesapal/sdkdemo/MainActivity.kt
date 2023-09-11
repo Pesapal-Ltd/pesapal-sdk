@@ -187,22 +187,23 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     private fun startPayment(){
         val db = FirebaseFirestore.getInstance()
         val documentBalance = db.collection("users").document(auth.currentUser?.email!!).get()
-        documentBalance.addOnCompleteListener {
-            if(it.isSuccessful){
-                val displayName: String = it.result.get("displayName").toString()
-                val firstName: String = it.result.get("firstName").toString()
-                val lastName: String = it.result.get("lastName").toString()
-                val email: String? = it.result.get("email").toString()
-                val photoUrl: String? = it.result.get("photoUrl").toString()
-                val time: String? = it.result.get("time").toString()
-                userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
-                userModel = UserModel(null,null,null,null,null,null)
+//        documentBalance.addOnCompleteListener {
+//            if(it.isSuccessful){
+//                val displayName: String = it.result.get("displayName").toString()
+//                val firstName: String = it.result.get("firstName").toString()
+//                val lastName: String = it.result.get("lastName").toString()
+//                val email: String? = it.result.get("email").toString()
+//                val photoUrl: String? = it.result.get("photoUrl").toString()
+//                val time: String? = it.result.get("time").toString()
+//                userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
+//                userModel = UserModel(null,null,null,null,null,null)
+//
+//                initPayment()
+//            }else{
+//                showMessage("Unable to get your account ")
+//            }
+//        }
 
-                initPayment()
-            }else{
-                showMessage("Unable to get your account ")
-            }
-        }
         val displayName: String = "Samuel"
         val firstName: String = "Samuel"
         val lastName: String = "Nyamai"
@@ -210,6 +211,8 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         val photoUrl: String? = null
         val time: String? = null
         userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
+
+
 //        userModel = UserModel(null,null,null,null,null,null)
 
         initPayment()

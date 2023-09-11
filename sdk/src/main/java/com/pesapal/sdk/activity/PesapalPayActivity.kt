@@ -50,12 +50,12 @@ class PesapalPayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPesapalPayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initData()
+//        initData()
         handleViewModel()
     }
 
     private fun initData() {
-        getPaymentData()
+//        getPaymentData()
         handleClick()
         initCardinal()
     }

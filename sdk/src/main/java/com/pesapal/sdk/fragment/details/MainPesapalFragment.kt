@@ -104,6 +104,9 @@ class MainPesapalFragment: Fragment() {
 
     private fun proceedToCard(){
         val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToPesapalCardFragment(paymentDetails, billingAddress)
+        Log.e("Main", "Firstname -> ${billingAddress.firstName}")
+        Log.e("Main", "lastname -> ${billingAddress.lastName}")
+        Log.e("Main", "email -> ${billingAddress.emailAddress}")
         clearSelectionAndProceed(action)
     }
 

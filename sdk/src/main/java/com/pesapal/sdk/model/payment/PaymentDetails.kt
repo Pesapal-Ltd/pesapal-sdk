@@ -19,7 +19,7 @@ import java.math.BigDecimal
 
 
 internal class PaymentDetails(
-    internal var order_id: String? = "",
+    var order_id: String? = "",
     var amount: BigDecimal = BigDecimal.ONE,
     var order_tracking_id: String? = "",
     var currency: String? = "",
