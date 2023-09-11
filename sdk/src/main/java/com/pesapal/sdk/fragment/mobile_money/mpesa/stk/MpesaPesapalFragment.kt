@@ -143,7 +143,7 @@ class MpesaPesapalFragment : Fragment() {
     }
 
     companion object{
-        fun newInstance(billingAddress: BillingAddress,paymentDetails: PaymentDetails): MpesaPesapalFragment {
+        internal fun newInstance(billingAddress: BillingAddress, paymentDetails: PaymentDetails): MpesaPesapalFragment {
             val fragment = MpesaPesapalFragment()
             fragment.billingAddress = billingAddress
             fragment.paymentDetails = paymentDetails

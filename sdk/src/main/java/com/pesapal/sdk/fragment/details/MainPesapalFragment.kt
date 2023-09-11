@@ -131,7 +131,7 @@ class MainPesapalFragment: Fragment() {
     }
 
     companion object{
-        fun newInstance(paymentDetails: PaymentDetails):MainPesapalFragment{
+        internal fun newInstance(paymentDetails: PaymentDetails):MainPesapalFragment{
             val fragment = MainPesapalFragment()
             fragment.paymentDetails = paymentDetails
             return fragment

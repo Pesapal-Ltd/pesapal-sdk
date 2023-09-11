@@ -16,7 +16,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.pesapal.sdk.activity.PesapalSdkActivity
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
+import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdkdemo.adapter.DemoCartAdapter
 import com.pesapal.sdkdemo.databinding.ActivityMainBinding
 import com.pesapal.sdkdemo.model.CatalogueModel
@@ -215,14 +217,14 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun initPayment(){
-        val myIntent = Intent(this, com.pesapal.sdk.activity.PesapalSdkActivity::class.java)
-        myIntent.putExtra("amount",total.toString())
-        myIntent.putExtra("order_id",orderId)
-        myIntent.putExtra("currency",PrefManager.getCurrency())
-        myIntent.putExtra("firstName",userModel.firstName)
-        myIntent.putExtra("lastName",userModel.lastName)
-        myIntent.putExtra("email",userModel.email)
-        startActivityForResult(myIntent,PAYMENT_REQUEST)
+        val myIntent = Intent(this, PesapalSdkActivity::class.java)
+        myIntent.putExtra(PESAPALAPI3SDK.AMOUNT     , total.toString())
+        myIntent.putExtra(PESAPALAPI3SDK.ORDER_ID   ,orderId)
+        myIntent.putExtra(PESAPALAPI3SDK.CURRENCY   ,PESAPALAPI3SDK.CURRENCY_CODE_KES)
+        myIntent.putExtra(PESAPALAPI3SDK.FIRST_NAME ,userModel.firstName)
+        myIntent.putExtra(PESAPALAPI3SDK.LAST_NAME  ,userModel.lastName)
+        myIntent.putExtra(PESAPALAPI3SDK.EMAIL      ,userModel.email)
+        startActivityForResult(myIntent             ,PAYMENT_REQUEST)
     }
 
     override fun Clicked(isAdd: Boolean, story: CatalogueModel.ProductsBean) {

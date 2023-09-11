@@ -18,6 +18,13 @@ public class PrefManager {
 
     public static final String MAP_PREF = "826af370-30c6-4509-8c17-fd0096868b60";
 
+    public static String con_key  = "7a85a0aa-a66f-427d-88af-4483e2877bc0";
+    public static String con_sec  = "669339e8-a54e-4f95-99c7-91798109d756";
+    public static String acc_num  = "334977dd-ff7e-4e26-8bd6-9488623e5404";
+    public static String call_url = "71615ec2-324f-4a01-a555-4af0b8463048";
+    public static String ipn_url  = "98f396e6-fb44-4265-ba18-518ff3864fb4";
+
+
     public static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.getInstance()
                 .getApplicationContext());

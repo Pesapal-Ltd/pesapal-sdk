@@ -83,6 +83,7 @@
 }
 -keep class com.pesapal.sdk.utils.PESAPALAPI3SDK{
     public <methods>;
+    public <fields>;
 }
 
 -keepnames class androidx.navigation.fragment.NavHostFragment

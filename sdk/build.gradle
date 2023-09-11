@@ -88,7 +88,7 @@ githubProperties.load(new FileInputStream(rootProject.file("github.properties"))
 
 def LIB_GROUP_ID = 'com.pesapal.sdk'
 def LIB_ARTIFACT_ID = 'pesapal_sdk'
-def LIB_VERSION = '1.1.6'
+def LIB_VERSION = '1.1.8'
 
     //todo Remember Debug has interceptor on. All public versions should be release variants
 
@@ -104,8 +104,6 @@ publishing {
             url = uri("https://maven.pkg.github.com/pesapalsnm/pesapalgatewayLib")
             credentials {
 
-                username = 'pesapalsnm'
-                password = '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'
             }
         }
 

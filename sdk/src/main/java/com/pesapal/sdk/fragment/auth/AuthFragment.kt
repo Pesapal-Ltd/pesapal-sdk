@@ -19,6 +19,7 @@ import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
+import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.Status
 import java.math.BigDecimal
@@ -110,35 +111,35 @@ class AuthFragment : Fragment() {
             var ipnUrl: String? = null
             var accountNumber: String? = null
             var callbackUrl: String? = null
-            if (PrefManager.getString("consumer_key") != null) {
+            if (PrefManager.getString(PrefManager.con_key) != null) {
 //                consumerKey = PrefManager.getString("consumer_key",null)!!
-                consumerKey = PrefManager.getString("consumer_key")!!
+                consumerKey = PrefManager.getString(PrefManager.con_key)!!
             }
 
-            if (PrefManager.getString("consumer_secret") != null) {
+            if (PrefManager.getString(PrefManager.con_sec) != null) {
 //                consumerSecret = PrefManager.getString("consumer_secret",null)!!
-                consumerSecret = PrefManager.getString("consumer_secret")!!
+                consumerSecret = PrefManager.getString(PrefManager.con_sec)!!
             }
 
-            if (PrefManager.getString("account_number") != null) {
+            if (PrefManager.getString(PrefManager.acc_num) != null) {
 //                accountNumber = PrefManager.getString("account_number",null)!!
-                accountNumber = PrefManager.getString("account_number")!!
+                accountNumber = PrefManager.getString(PrefManager.acc_num)!!
             }
 
-            if (PrefManager.getString("callback_url") != null) {
+            if (PrefManager.getString(PrefManager.call_url) != null) {
 //                callbackUrl = PrefManager.getString("callback_url",null)!!
-                callbackUrl = PrefManager.getString("callback_url")!!
+                callbackUrl = PrefManager.getString(PrefManager.call_url)!!
             }
 
-            if (PrefManager.getString("ipn_url") != null) {
+            if (PrefManager.getString(PrefManager.ipn_url) != null) {
 //                ipnUrl = PrefManager.getString("ipn_url",null)!!
-                ipnUrl = PrefManager.getString("ipn_url")!!
+                ipnUrl = PrefManager.getString(PrefManager.ipn_url)!!
             }
 
 
-            val amount = intent.getStringExtra("amount")
-            val orderId = intent.getStringExtra("order_id")
-            val currency = intent.getStringExtra("currency")
+            val amount = intent.getStringExtra(PESAPALAPI3SDK.AMOUNT)
+            val orderId = intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
+            val currency = intent.getStringExtra(PESAPALAPI3SDK.CURRENCY)
 
 
             if (consumerKey.isNullOrEmpty() || consumerSecret.isNullOrEmpty()) {
@@ -180,12 +181,14 @@ class AuthFragment : Fragment() {
 
                 initData()
 
-                val firstName = intent.getStringExtra("firstName")
-                val lastName = intent.getStringExtra("lastName")
-                val email = intent.getStringExtra("email")
+                val firstName = intent.getStringExtra(PESAPALAPI3SDK.FIRST_NAME )
+                val lastName = intent.getStringExtra(PESAPALAPI3SDK.LAST_NAME)
+                val email = intent.getStringExtra(PESAPALAPI3SDK.EMAIL)
                 val city = intent.getStringExtra("city")
                 val address = intent.getStringExtra("address")
                 val postalCode = intent.getStringExtra("postalCode")
+
+
 
                 billingAddress = BillingAddress(
                     firstName = firstName,
@@ -200,7 +203,7 @@ class AuthFragment : Fragment() {
 
             }
             else{
-                returnIntent(PesapalPayActivity.STATUS_CANCELLED,errorMessage)
+                returnIntent(PesapalPayActivity.STATUS_CANCELLED, errorMessage)
 
             }
 
