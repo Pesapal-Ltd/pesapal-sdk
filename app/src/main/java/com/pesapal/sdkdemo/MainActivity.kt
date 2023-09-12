@@ -59,7 +59,8 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             PrefManager.getConsumerSecret(),
             PrefManager.getAccount(),
             PrefManager.getCallBackUrl(),
-            "https://test.dev"
+            "https://test.dev",
+            true
         )
     }
 

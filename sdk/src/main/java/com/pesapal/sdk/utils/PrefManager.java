@@ -24,6 +24,8 @@ public class PrefManager {
     public static String call_url = "71615ec2-324f-4a01-a555-4af0b8463048";
     public static String ipn_url  = "98f396e6-fb44-4265-ba18-518ff3864fb4";
 
+    public static String PREF_IS_URL_LIVE = "021b44e3-33c3-4781-a29a-6637c4ccb10e";
+
 
     public static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.getInstance()

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
+import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.TimeUtils
 
 class MainPesapalFragment: Fragment() {
@@ -43,15 +45,31 @@ class MainPesapalFragment: Fragment() {
         paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
         billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                returnIntent(PesapalPayActivity.STATUS_CANCELLED,"Txn Cancelled")
-
-            }
-
-        })
         initData()
         handlePaymentOptions()
+        handleCustomBackPress()
+        demoViewInform()
+    }
+
+    private fun demoViewInform(){
+        val isLive = PrefManager.getBoolean(PrefManager.PREF_IS_URL_LIVE, true)
+//        Log.e("Main","Is live ")
+        if(!isLive){
+        }
+        binding.tvDemoVersion.isVisible =  !isLive
+
+    }
+
+    private fun handleCustomBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    returnIntent(PesapalPayActivity.STATUS_CANCELLED, "Txn Cancelled")
+
+                }
+
+            })
     }
 
     private fun returnIntent(status: String, obj : Any){
