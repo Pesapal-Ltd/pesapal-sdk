@@ -127,7 +127,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-
     }
 
     private fun handleGoogleSignIn() {
@@ -204,15 +203,13 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 //            }
 //        }
 
-        val displayName: String = "Samuel"
-        val firstName: String = "Samuel"
-        val lastName: String = "Nyamai"
-        val email: String? = "samuelnyamai7387@gmail.com"
+        val displayName = "Samuel"
+        val firstName = "Samuel"
+        val lastName = "Nyamai"
+        val email = "samuelnyamai7387@gmail.com"
         val photoUrl: String? = null
         val time: String? = null
         userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
-
-
 //        userModel = UserModel(null,null,null,null,null,null)
 
         initPayment()

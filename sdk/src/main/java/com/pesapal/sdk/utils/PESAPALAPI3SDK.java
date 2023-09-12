@@ -12,12 +12,6 @@ public class PESAPALAPI3SDK {
     public static String CURRENCY_CODE_KES      = "KES";
     public static String CURRENCY_CODE_USD      = "USD";
     public void init(String consumerkey, String consumersecret,String accountNumber, String callbackUrl, String ipnUrl){
-//         PrefManager.putStringEncrypted("consumer_key", consumerkey);
-//         PrefManager.putStringEncrypted("consumer_secret", consumersecret);
-//         PrefManager.putStringEncrypted("account_number", accountNumber);
-//         PrefManager.putStringEncrypted("callback_url", callbackUrl);
-//         PrefManager.putStringEncrypted("ipn_url", ipnUrl);
-
         PrefManager.putStringEncrypted(PrefManager.con_key, consumerkey);
         PrefManager.putStringEncrypted(PrefManager.con_sec, consumersecret);
         PrefManager.putStringEncrypted(PrefManager.acc_num, accountNumber);

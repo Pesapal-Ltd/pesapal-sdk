@@ -119,7 +119,6 @@ public class PrefManager {
         if(encryptedSharedPreferences == null)
             return null;
         String data = encryptedSharedPreferences.getString(preferenceName, null);
-//        Log.e("Pmg" ,"Data is " + data);
         return  data;
     }
 

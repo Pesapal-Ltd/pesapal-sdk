@@ -102,9 +102,6 @@ class AuthFragment : Fragment() {
 
     private fun proceed(){
         val action = AuthFragmentDirections.actionAuthFragmentToPesapalMainFragment(paymentDetails, billingAddress)
-        Log.e("Auth", "Pre Firstname -> ${billingAddress.firstName}")
-        Log.e("Auth", "Pre lastname -> ${billingAddress.lastName}")
-        Log.e("Auth", "Pre email -> ${billingAddress.emailAddress}")
        findNavController().navigate(action)
     }
 
@@ -117,27 +114,22 @@ class AuthFragment : Fragment() {
             var accountNumber: String? = null
             var callbackUrl: String? = null
             if (PrefManager.getString(PrefManager.con_key) != null) {
-//                consumerKey = PrefManager.getString("consumer_key",null)!!
                 consumerKey = PrefManager.getString(PrefManager.con_key)!!
             }
 
             if (PrefManager.getString(PrefManager.con_sec) != null) {
-//                consumerSecret = PrefManager.getString("consumer_secret",null)!!
                 consumerSecret = PrefManager.getString(PrefManager.con_sec)!!
             }
 
             if (PrefManager.getString(PrefManager.acc_num) != null) {
-//                accountNumber = PrefManager.getString("account_number",null)!!
                 accountNumber = PrefManager.getString(PrefManager.acc_num)!!
             }
 
             if (PrefManager.getString(PrefManager.call_url) != null) {
-//                callbackUrl = PrefManager.getString("callback_url",null)!!
                 callbackUrl = PrefManager.getString(PrefManager.call_url)!!
             }
 
             if (PrefManager.getString(PrefManager.ipn_url) != null) {
-//                ipnUrl = PrefManager.getString("ipn_url",null)!!
                 ipnUrl = PrefManager.getString(PrefManager.ipn_url)!!
             }
 
@@ -148,10 +140,8 @@ class AuthFragment : Fragment() {
 
 
             if (consumerKey.isNullOrEmpty() || consumerSecret.isNullOrEmpty()) {
-
                 setErrorElements("Consumer data required ...")
                 showMessage("Consumer data required ...")
-
             }
             else if(amount.isNullOrEmpty()){
                 setErrorElements("Data -> Amount is missing")
@@ -192,11 +182,6 @@ class AuthFragment : Fragment() {
                 val address = intent.getStringExtra("address")
                 val postalCode = intent.getStringExtra("postalCode")
 
-
-                Log.e("Auth", "Firstname -> $firstName")
-                Log.e("Auth", "lastname -> $lastName")
-                Log.e("Auth", "email -> $email")
-
                 billingAddress = BillingAddress(
                     firstName = firstName,
                     lastName = lastName,
@@ -207,17 +192,12 @@ class AuthFragment : Fragment() {
                     postalCode = postalCode,
                     city = city
                 )
-                Log.e("AutImmediate", "Firstname -> ${billingAddress.firstName}")
 
                 initData()
-
-
             }
             else{
                 returnIntent(PesapalPayActivity.STATUS_CANCELLED, errorMessage)
-
             }
-
 
         } else {
             showMessage("Consumer data required ...")

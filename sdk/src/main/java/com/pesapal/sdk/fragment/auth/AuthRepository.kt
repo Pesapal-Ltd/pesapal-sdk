@@ -50,7 +50,7 @@ internal class AuthRepository {
                     Resource.error(error!!)
                 }
             }catch (e: Exception){
-                Resource.error(com.pesapal.sdk.utils.RetrofitErrorUtil.serverException(e))
+                Resource.error(RetrofitErrorUtil.serverException(e))
             }
         }
     }

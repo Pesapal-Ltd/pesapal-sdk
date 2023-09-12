@@ -2,7 +2,6 @@ package com.pesapal.sdk.fragment.card.address
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +42,6 @@ class CardFragmentAddressData : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        paymentData()
         paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
         billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
 
@@ -53,10 +51,6 @@ class CardFragmentAddressData : Fragment() {
     }
 
     private fun initData(){
-        Log.e("AuthCard", "Firstname -> ${(billingAddress == null)}")
-        Log.e("AuthCard", "Firstname -> ${billingAddress.firstName}")
-        Log.e("Auth", "lastname -> ${billingAddress.lastName}")
-        Log.e("Auth", "email -> ${billingAddress.emailAddress}")
         binding.etFirstName.setText(billingAddress.firstName)
         binding.etSurname.setText(billingAddress.lastName)
         binding.etEmail.setText(billingAddress.emailAddress)

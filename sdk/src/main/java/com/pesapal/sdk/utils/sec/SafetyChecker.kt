@@ -11,7 +11,6 @@ import com.pesapal.sdk.utils.PrefManager
 object SafetyChecker {
 
     fun checkDevice(){
-
     }
 
 

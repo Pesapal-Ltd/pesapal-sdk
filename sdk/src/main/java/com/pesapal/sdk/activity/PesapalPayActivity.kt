@@ -35,6 +35,11 @@ import com.pesapal.sdk.utils.PrefManager
 import org.json.JSONArray
 import java.math.BigDecimal
 
+/**
+ * Author : Richard Kamere
+ * Deprecated. Do not delete. Contains CARDINAL Logic
+ * Previous implementation before using nav graph
+ */
 
 class PesapalPayActivity : AppCompatActivity() {
 
@@ -69,27 +74,22 @@ class PesapalPayActivity : AppCompatActivity() {
             var accountNumber: String? = null
             var callbackUrl: String? = null
             if (PrefManager.getString(PrefManager.con_key) != null) {
-//                consumerKey = PrefManager.getString("consumer_key",null)!!
                 consumerKey = PrefManager.getString(PrefManager.con_key)!!
             }
 
             if (PrefManager.getString(PrefManager.con_sec) != null) {
-//                consumerSecret = PrefManager.getString("consumer_secret",null)!!
                 consumerSecret = PrefManager.getString(PrefManager.con_sec)!!
             }
 
             if (PrefManager.getString(PrefManager.acc_num) != null) {
-//                accountNumber = PrefManager.getString("account_number",null)!!
                 accountNumber = PrefManager.getString(PrefManager.acc_num)!!
             }
 
             if (PrefManager.getString(PrefManager.call_url) != null) {
-//                callbackUrl = PrefManager.getString("callback_url",null)!!
                 callbackUrl = PrefManager.getString(PrefManager.call_url)!!
             }
 
             if (PrefManager.getString(PrefManager.ipn_url) != null) {
-//                ipnUrl = PrefManager.getString("ipn_url",null)!!
                 ipnUrl = PrefManager.getString(PrefManager.ipn_url)!!
             }
 
@@ -212,7 +212,7 @@ class PesapalPayActivity : AppCompatActivity() {
             when (it.status) {
                 com.pesapal.sdk.utils.Status.SUCCESS -> {
                     val ipnId = it.data?.ipn_id
-                    com.pesapal.sdk.utils.PrefManager.setIpnId(ipnId)
+                    PrefManager.setIpnId(ipnId)
                     Log.e(" ipnId "," ==> " +ipnId);
                     viewModel.loadFragment("choose")
                 }
