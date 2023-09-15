@@ -105,6 +105,11 @@ class AuthFragment : Fragment() {
        findNavController().navigate(action)
     }
 
+    private enum class ErrorCode(code: String){
+        CONSUMER_KEY("10100"),
+        CONSUMER_SECRET("10100")
+    }
+
     private fun paymentData() {
         val intent = requireActivity().intent
         if (intent != null) {
@@ -139,27 +144,41 @@ class AuthFragment : Fragment() {
             val currency = intent.getStringExtra(PESAPALAPI3SDK.CURRENCY)
 
 
-            if (consumerKey.isNullOrEmpty() || consumerSecret.isNullOrEmpty()) {
-                setErrorElements("Consumer data required ...")
-                showMessage("Consumer data required ...")
+            if (consumerKey.isNullOrEmpty()) {
+                setErrorElements("Error Code: 10100")
+//                setErrorElements("Consumer data required ...")
+//                setErrorElements(ErrorCode.CONSUMER_KEY)
+//                showMessage("Consumer data required ...")
+            }
+            else if(consumerSecret.isNullOrEmpty()) {
+//                setErrorElements("Consumer data required ...")
+                setErrorElements("Error Code: 10500")
+//                setErrorElements(ErrorCode.CONSUMER_SECRET)
+//                showMessage("Consumer data required ...")
             }
             else if(amount.isNullOrEmpty()){
-                setErrorElements("Data -> Amount is missing")
+//                setErrorElements("Data -> Amount is missing")
+                setErrorElements("Error Code: 10201")
             }
             else if(orderId.isNullOrEmpty()){
-                setErrorElements("Data -> OrderId is missing")
+//                setErrorElements("Data -> OrderId is missing")
+                setErrorElements("Error Code: 10202")
             }
             else if(currency.isNullOrEmpty()){
-                setErrorElements("Data -> Currency format is missing")
+//                setErrorElements("Data -> Currency format is missing")
+                setErrorElements("Error Code: 10203")
             }
             else if(accountNumber.isNullOrEmpty()){
-                setErrorElements("Data -> Account number is missing")
+//                setErrorElements("Data -> Account number is missing")
+                setErrorElements("Error Code: 10204")
             }
             else if(callbackUrl.isNullOrEmpty()){
-                setErrorElements("Data -> Callback url is missing")
+//                setErrorElements("Data -> Callback url is missing")
+                setErrorElements("Error Code: 10205")
             }
             else if(ipnUrl.isNullOrEmpty()){
-                setErrorElements("Data -> IPN is missing")
+//                setErrorElements("Data -> IPN is missing")
+                setErrorElements("Error Code: 10206")
             }
 
             if(dataRequiredAvailable) {
@@ -200,7 +219,11 @@ class AuthFragment : Fragment() {
             }
 
         } else {
-            showMessage("Consumer data required ...")
+//            showMessage("Consumer data required ...")
+            setErrorElements("Error Code: 10400")
+
+            returnIntent(PesapalPayActivity.STATUS_CANCELLED, errorMessage)
+
         }
 
     }
@@ -209,6 +232,12 @@ class AuthFragment : Fragment() {
         dataRequiredAvailable = false
         errorMessage = message
     }
+
+    private fun setErrorElements(errorCode: ErrorCode){
+        dataRequiredAvailable = false
+        errorMessage = errorCode.name
+    }
+
 
 
     private fun returnIntent(status: String, obj : Any){
