@@ -17,13 +17,13 @@ dependencyResolutionManagement {
         jcenter()
 
         maven { url 'https://jitpack.io' }
-        maven {
-            url  "https://cardinalcommerceprod.jfrog.io/artifactory/android"
-            credentials {
-                username 'cybersource_pesapal_jmasai' // Artifactory username
-                password 'AKCp8nz2Jj2iQZcRGVNCgAALhLYV97KA9aqaa43CwFu2B5fHxT3TYrYssHhw9A1GPRgxwUHpe' // Artifactory API Key
-            }
-        }
+//        maven {
+//            url  "https://cardinalcommerceprod.jfrog.io/artifactory/android"
+//            credentials {
+//                username 'cybersource_pesapal_jmasai' // Artifactory username
+//                password 'AKCp8nz2Jj2iQZcRGVNCgAALhLYV97KA9aqaa43CwFu2B5fHxT3TYrYssHhw9A1GPRgxwUHpe' // Artifactory API Key
+//            }
+//        }
 
     }
 }

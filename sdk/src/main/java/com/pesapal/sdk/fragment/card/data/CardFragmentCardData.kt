@@ -12,7 +12,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.cardinalcommerce.cardinalmobilesdk.Cardinal
 import com.pesapal.sdk.model.card.CardDetails
 import com.pesapal.sdk.model.card.submit.request.EnrollmentCheckResult
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
@@ -41,7 +40,7 @@ class CardFragmentCardData : Fragment() {
     private var expiryMonth = false
     private var expiryYear = false
     private var enable = false
-    var cardinal: Cardinal? = null
+//    var cardinal: Cardinal? = null
 
     companion object {
         private const val MAX_LENGTH_CVV_CODE = 3
@@ -75,7 +74,7 @@ class CardFragmentCardData : Fragment() {
     }
 
     private fun initData() {
-        cardinal = Cardinal.getInstance()
+//        cardinal = Cardinal.getInstance()
         handleViewModel()
         handleChangeListener()
     }

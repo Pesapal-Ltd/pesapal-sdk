@@ -9,13 +9,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.cardinalcommerce.cardinalmobilesdk.Cardinal
-import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalEnvironment
-import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalRenderType
-import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
-import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
-import com.cardinalcommerce.shared.models.Warning
-import com.cardinalcommerce.shared.userinterfaces.UiCustomization
 import com.pesapal.sdk.BuildConfig
 import com.pesapal.sdk.R
 import com.pesapal.sdk.fragment.card.data.CardFragmentCardData
@@ -49,7 +42,7 @@ class PesapalPayActivity : AppCompatActivity() {
     private var mobileMoneyRequest: MobileMoneyRequest? = null
     private var transactionStatusResponse: TransactionStatusResponse? = null
     private var transactionErrorMessage: String? = null
-    private var cardinal: Cardinal = Cardinal.getInstance()
+//    private var cardinal: Cardinal = Cardinal.getInstance()
     private val viewModel: AppViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +55,7 @@ class PesapalPayActivity : AppCompatActivity() {
     private fun initData() {
 //        getPaymentData()
         handleClick()
-        initCardinal()
+//        initCardinal()
     }
 
     private fun getPaymentData() {
@@ -404,46 +397,46 @@ class PesapalPayActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    private fun getAllWarnings() {
-        val warnings: List<Warning> = cardinal.warnings
-        for (warning in warnings) {
-            Log.e(" id ", warning.id);
-            Log.e(" severity ", warning.severity.toString());
-            Log.e(" message ", warning.message.toString());
-        }
-    }
+//    private fun getAllWarnings() {
+//        val warnings: List<Warning> = cardinal.warnings
+//        for (warning in warnings) {
+//            Log.e(" id ", warning.id);
+//            Log.e(" severity ", warning.severity.toString());
+//            Log.e(" message ", warning.message.toString());
+//        }
+//    }
 
-    private fun initCardinal() {
-        val cardinalConfigurationParameters = CardinalConfigurationParameters()
-        cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
-        cardinalConfigurationParameters.requestTimeout = 8000
-        cardinalConfigurationParameters.challengeTimeout = 5
-        val rTYPE = JSONArray()
-        rTYPE.put(CardinalRenderType.OTP)
-        rTYPE.put(CardinalRenderType.SINGLE_SELECT)
-        rTYPE.put(CardinalRenderType.MULTI_SELECT)
-        rTYPE.put(CardinalRenderType.OOB)
-        rTYPE.put(CardinalRenderType.HTML)
-        cardinalConfigurationParameters.renderType = rTYPE
-        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
-
-        if (BuildConfig.DEBUG) {
-            cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
-            cardinalConfigurationParameters.isEnableLogging = true
-        } else {
-            cardinalConfigurationParameters.environment = CardinalEnvironment.PRODUCTION
-            cardinalConfigurationParameters.isEnableLogging = false
-        }
-
-//     cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
-//     cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
-//     cardinalConfigurationParameters.isLocationDataConsentGiven = true
-
-        val yourUICustomizationObject = UiCustomization()
-        cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
-        cardinal.configure(this, cardinalConfigurationParameters)
-        getAllWarnings()
-    }
+//    private fun initCardinal() {
+//        val cardinalConfigurationParameters = CardinalConfigurationParameters()
+//        cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
+//        cardinalConfigurationParameters.requestTimeout = 8000
+//        cardinalConfigurationParameters.challengeTimeout = 5
+//        val rTYPE = JSONArray()
+//        rTYPE.put(CardinalRenderType.OTP)
+//        rTYPE.put(CardinalRenderType.SINGLE_SELECT)
+//        rTYPE.put(CardinalRenderType.MULTI_SELECT)
+//        rTYPE.put(CardinalRenderType.OOB)
+//        rTYPE.put(CardinalRenderType.HTML)
+//        cardinalConfigurationParameters.renderType = rTYPE
+//        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+//
+//        if (BuildConfig.DEBUG) {
+//            cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
+//            cardinalConfigurationParameters.isEnableLogging = true
+//        } else {
+//            cardinalConfigurationParameters.environment = CardinalEnvironment.PRODUCTION
+//            cardinalConfigurationParameters.isEnableLogging = false
+//        }
+//
+////     cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+////     cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
+////     cardinalConfigurationParameters.isLocationDataConsentGiven = true
+//
+//        val yourUICustomizationObject = UiCustomization()
+//        cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
+//        cardinal.configure(this, cardinalConfigurationParameters)
+//        getAllWarnings()
+//    }
 
     companion object {
         val STATUS_COMPLETED = "COMPLETED"

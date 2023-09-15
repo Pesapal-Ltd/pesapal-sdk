@@ -82,20 +82,20 @@ task libReleasePub (type: GradleBuild) {
      */
 }
 
-def githubProperties = new Properties()
-githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
+//def githubProperties = new Properties()
+//githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
 
 
 def LIB_GROUP_ID = 'com.pesapal.sdk'
 def LIB_ARTIFACT_ID = 'pesapal_sdk'
-def LIB_VERSION = '1.1.9'
+def LIB_VERSION = '1.2.0'
 
-    //todo Remember Debug has interceptor on. All public versions should be release variants
+//todo Remember Debug has interceptor on. All public versions should be release variants
 
-    /**
-     * todo
-     * 1. Setting a namespace for resources -> https://developer.android.com/build/publish-library/prep-lib-release#groovy
-     */
+/**
+ * todo
+ * 1. Setting a namespace for resources -> https://developer.android.com/build/publish-library/prep-lib-release#groovy
+ */
 
 publishing {
     repositories {
@@ -105,6 +105,7 @@ publishing {
             credentials {
                 username = 'a'
                 password = 'b'
+
             }
         }
 
@@ -195,7 +196,7 @@ dependencies {
     api "android.arch.lifecycle:viewmodel:1.1.1"
     api 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
 
-    api 'org.jfrog.cardinalcommerce.gradle:cardinalmobilesdk:2.2.6-1'
+//    api 'org.jfrog.cardinalcommerce.gradle:cardinalmobilesdk:2.2.6-1'
 
     // sec
     api("androidx.security:security-crypto:1.0.0")
