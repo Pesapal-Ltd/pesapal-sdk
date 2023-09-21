@@ -46,14 +46,14 @@ android {
 /**
  * TODO Transfer logic to automation.gradle and import/apply from
  */
-tasks.register('hello') {
-    doLast {
-//        assembleRelease
-//        task("assembleRelease")
-    }
-    println 'Hello world!'
-
-}
+//tasks.register('hello') {
+//    doLast {
+////        assembleRelease
+////        task("assembleRelease")
+//    }
+//    println 'Hello world!'
+//
+//}
 
 
 task fooExec(type: Exec) {

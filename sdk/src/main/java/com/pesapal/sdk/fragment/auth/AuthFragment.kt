@@ -142,6 +142,7 @@ class AuthFragment : Fragment() {
             val amount = intent.getStringExtra(PESAPALAPI3SDK.AMOUNT)
             val orderId = intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
             val currency = intent.getStringExtra(PESAPALAPI3SDK.CURRENCY)
+            var country = intent.getStringExtra(PESAPALAPI3SDK.COUNTRY)
 
 
             if (consumerKey.isNullOrEmpty()) {
@@ -181,6 +182,10 @@ class AuthFragment : Fragment() {
                 setErrorElements("Error Code: 10206")
             }
 
+            if(country.isNullOrEmpty()){
+                country = PESAPALAPI3SDK.COUNTRY_KE
+            }
+
             if(dataRequiredAvailable) {
                 paymentDetails = PaymentDetails(
                     amount = BigDecimal(amount),
@@ -191,7 +196,9 @@ class AuthFragment : Fragment() {
                     consumer_key = consumerKey,
                     consumer_secret = consumerSecret,
                     ipn_url = ipnUrl,
+                    country = country
                 )
+
 
 
                 val firstName = intent.getStringExtra(PESAPALAPI3SDK.FIRST_NAME )

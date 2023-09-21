@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.COUNTRY_KE
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.TimeUtils
 
@@ -49,8 +51,17 @@ class MainPesapalFragment: Fragment() {
         handlePaymentOptions()
         handleCustomBackPress()
         demoViewInform()
+        val mobileProviders = evaluateRegionProvider()
+        addDynamicChipGroupViews()
     }
 
+    private fun evaluateRegionProvider(){
+//        if(COUNTRY_KE)
+    }
+
+    /**
+     * If the application is in demo show text view indicating so
+     */
     private fun demoViewInform(){
         val isLive = PrefManager.getBoolean(PrefManager.PREF_IS_URL_LIVE, true)
 //        Log.e("Main","Is live ")
@@ -70,6 +81,18 @@ class MainPesapalFragment: Fragment() {
                 }
 
             })
+    }
+
+    /**
+     * Add mobile money dynamically depending on regions
+     */
+    private fun addDynamicChipGroupViews(){
+        val newContext = ContextThemeWrapper(requireContext(), R.style.chip_style_custom)
+        val chip = Chip(newContext)
+//        chip.tag =
+        chip.text = "Added"
+        binding.paymentOptionGroup.addView(chip)
+
     }
 
     private fun returnIntent(status: String, obj : Any){

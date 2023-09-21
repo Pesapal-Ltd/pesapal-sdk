@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.pesapal.sdk.R
 import com.pesapal.sdk.databinding.FragmentPesapalMpesaBinding
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
@@ -42,6 +43,10 @@ class MpesaPesapalFragment : Fragment() {
 
         paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
         billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
+
+        binding.tvInst1.text = getString(R.string.provide_mobile_money, paymentDetails.mobile_provider)
+        binding.tvInst3.text = getString(R.string.provide_mobile_pin, paymentDetails.mobile_provider)
+        binding.tvInst5.text = getString(R.string.enter_mobile_number, paymentDetails.mobile_provider)
 
         initData()
         handleViewModel()

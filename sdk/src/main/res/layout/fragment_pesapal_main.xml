@@ -194,7 +194,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/card"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    style="@style/chip_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Card"
@@ -208,6 +208,12 @@
                     app:rippleColor="@color/purple_200"
                     app:textEndPadding="16dp"
                     app:textStartPadding="16dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/cardaaaaaaa"
+                    style="@style/chip_style_custom"
+                    android:text="Test"
+                    />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/mpesa"

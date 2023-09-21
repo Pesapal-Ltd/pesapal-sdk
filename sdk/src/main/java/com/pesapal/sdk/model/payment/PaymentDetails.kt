@@ -1,5 +1,6 @@
 package com.pesapal.sdk.model.payment
 
+import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import java.io.Serializable
 import java.math.BigDecimal
 
@@ -15,4 +16,6 @@ internal class PaymentDetails(
     var consumer_secret: String? = "",
     var ipn_url: String? = "",
     var ipn_notification_type: String? = "GET",
+    var country: String? = "",
+    var mobile_provider:String = ""
 ): Serializable

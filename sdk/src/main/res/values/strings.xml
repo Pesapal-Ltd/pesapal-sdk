@@ -41,4 +41,10 @@
     <string name="current_mpesa_stepThreeHeader">Step 3 of 3: Transaction Status</string>
 
 
+    <string name="provide_mobile_money">1. Provide your $1%s mobile number</string>
+    <string name="provide_mobile_pin">3. Confirm the transaction by providing your \n $1%s PIN</string>
+    <string name="enter_mobile_number">Enter $1%s Number</string>
+<!--    <string name="enter_mobile_number">Enter mobile Number</string>-->
+
+
 </resources>
