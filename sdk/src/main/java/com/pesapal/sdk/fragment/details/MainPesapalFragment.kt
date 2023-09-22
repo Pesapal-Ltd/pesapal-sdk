@@ -30,6 +30,7 @@ import com.pesapal.sdk.utils.CountryCodeEval.MPESA
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
 import com.pesapal.sdk.utils.CountryCodeEval.MTN_UG
 import com.pesapal.sdk.utils.CountryCodeEval.TIGO_TANZANIA
+import java.math.BigDecimal
 
 class MainPesapalFragment: Fragment() {
     private lateinit var binding: FragmentPesapalMainBinding
@@ -89,6 +90,7 @@ class MainPesapalFragment: Fragment() {
         val isLive = PrefManager.getBoolean(PrefManager.PREF_IS_URL_LIVE, true)
         binding.tvDemoVersion.isVisible =  !isLive
     }
+
 
     private fun handleCustomBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -154,7 +156,7 @@ class MainPesapalFragment: Fragment() {
                 }
                 MPESA,AIRTEL_KE, MTN_UG, AIRTEL_UG, TIGO_TANZANIA, MPESA_TZ, AIRTEL_TZ -> {
                     configureUnselectedChip(chipGroup.findViewById(R.id.card))
-                    proceedMpesa()
+                    proceedMpesa(i)
                 }
 //                R.id.mpesa -> {
 //                    configureUnselectedChip(chipGroup.findViewById(R.id.card))
@@ -166,7 +168,8 @@ class MainPesapalFragment: Fragment() {
 
     }
 
-    private fun proceedMpesa(){
+    private fun proceedMpesa(i: Int) {
+        paymentDetails.mobile_provider = BigDecimal(i)
         val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToNavGraphMpesa(paymentDetails,billingAddress)
         clearSelectionAndProceed(action)
     }

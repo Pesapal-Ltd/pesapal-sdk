@@ -16,6 +16,6 @@ internal class PaymentDetails(
     var consumer_secret: String? = "",
     var ipn_url: String? = "",
     var ipn_notification_type: String? = "GET",
-    var country: PESAPALAPI3SDK.COUNTRIES_ENUM?,
-    var mobile_provider:String = ""
+    var country: PESAPALAPI3SDK.COUNTRIES_ENUM? = null,
+    var mobile_provider:BigDecimal? = BigDecimal.ONE,
 ): Serializable

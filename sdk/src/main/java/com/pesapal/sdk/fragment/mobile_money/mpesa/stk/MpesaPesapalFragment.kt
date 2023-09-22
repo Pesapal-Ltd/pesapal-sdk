@@ -15,9 +15,11 @@ import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.mobile_money.MobileMoneyResponse
 import com.pesapal.sdk.model.payment.PaymentDetails
+import com.pesapal.sdk.utils.CountryCodeEval
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.Status
 import com.pesapal.sdk.utils.hideKeyboard
+import java.math.BigDecimal
 
 
 class MpesaPesapalFragment : Fragment() {
@@ -28,6 +30,7 @@ class MpesaPesapalFragment : Fragment() {
     private lateinit var billingAddress: BillingAddress
     private lateinit var paymentDetails: PaymentDetails
     private var mobileMoneyResponse: MobileMoneyResponse? = null
+    var  mobileProvider: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,9 +47,12 @@ class MpesaPesapalFragment : Fragment() {
         paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
         billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
 
-        binding.tvInst1.text = getString(R.string.provide_mobile_money, paymentDetails.mobile_provider)
-        binding.tvInst3.text = getString(R.string.provide_mobile_pin, paymentDetails.mobile_provider)
-        binding.tvInst5.text = getString(R.string.enter_mobile_number, paymentDetails.mobile_provider)
+        mobileProvider = paymentDetails.mobile_provider!!.toInt()
+        val mobileProviderName = CountryCodeEval.mapping[mobileProvider]
+
+        binding.tvInst1.text = getString(R.string.provide_mobile_money, mobileProviderName)
+        binding.tvInst3.text = getString(R.string.provide_mobile_pin,   mobileProviderName)
+        binding.tvInst5.text = getString(R.string.enter_mobile_number,  mobileProviderName)
 
         initData()
         handleViewModel()
@@ -90,7 +96,7 @@ class MpesaPesapalFragment : Fragment() {
             id = paymentDetails.order_id!!,
             sourceChannel = 2,
             msisdn = phoneNumber,
-            paymentMethodId = 1,
+            paymentMethodId = mobileProvider,
             accountNumber = paymentDetails.accountNumber!!,
             currency = paymentDetails.currency!!,
             allowedCurrencies = "",

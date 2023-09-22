@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mpesaPesapalFragment"
         android:name="com.pesapal.sdk.fragment.mobile_money.mpesa.stk.MpesaPesapalFragment"
-        android:label="Mpesa Payment"
+        android:label="Mobile Money"
         tools:layout="@layout/fragment_pesapal_mpesa">
         <action
             android:id="@+id/action_mpesaPesapalFragment_to_mpesaPendingFragment"
@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/mpesaPendingFragment"
         android:name="com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingFragment"
-        android:label="Mpesa Payment"
+        android:label="Mobile Money"
         tools:layout="@layout/fragment_mpesa_pending">
         <action
             android:id="@+id/action_mpesaPendingFragment_to_mpesaSuccessFragment"
@@ -37,7 +37,7 @@
     <fragment
         android:id="@+id/mpesaSuccessFragment"
         android:name="com.pesapal.sdk.fragment.mobile_money.mpesa.success.MpesaSuccessFragment"
-        android:label="Mpesa Payment"
+        android:label="Mobile Money"
         tools:layout="@layout/fragment_mpesa_payment_success"/>
 
 
