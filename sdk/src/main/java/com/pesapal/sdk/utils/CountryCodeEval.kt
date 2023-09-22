@@ -13,20 +13,20 @@ object CountryCodeEval {
     var AIRTEL_TZ = 9
 
     // todo use a set to ensure items added are unique
-    private val kenyaProvider = listOf(
+    val kenyaProvider = listOf(
         CountryCode("Mpesa"  ,MPESA),
         CountryCode("Airtel" , AIRTEL_KE)
     )
 
-    private val ugandaProvider = listOf(
+    val ugandaProvider = listOf(
         CountryCode("MTN"  , MTN_UG),
         CountryCode("Airtel" , AIRTEL_UG)
     )
 
-    private val tanzaniaProvider = listOf(
+    val tanzaniaProvider = listOf(
         CountryCode("Mpesa"  , MPESA_TZ),
         CountryCode("Tigo" , TIGO_TANZANIA),
-        CountryCode("Airel" , AIRTEL_TZ)
+        CountryCode("Airtel" , AIRTEL_TZ)
     )
 
 }

@@ -26,8 +26,6 @@ public class PESAPALAPI3SDK {
     }
 
 
-
-
     public void init(String consumerkey, String consumersecret,String accountNumber, String callbackUrl, String ipnUrl, boolean isLive){
         PrefManager.putStringEncrypted(PrefManager.con_key, consumerkey);
         PrefManager.putStringEncrypted(PrefManager.con_sec, consumersecret);

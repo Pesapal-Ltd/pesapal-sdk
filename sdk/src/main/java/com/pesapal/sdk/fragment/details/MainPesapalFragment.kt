@@ -22,11 +22,14 @@ import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
-import com.pesapal.sdk.utils.PESAPALAPI3SDK
-import com.pesapal.sdk.utils.PESAPALAPI3SDK.COUNTRY
-import com.pesapal.sdk.utils.PESAPALAPI3SDK.COUNTRY_KE
-import com.pesapal.sdk.utils.PrefManager
-import com.pesapal.sdk.utils.TimeUtils
+import com.pesapal.sdk.utils.*
+import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_KE
+import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_TZ
+import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_UG
+import com.pesapal.sdk.utils.CountryCodeEval.MPESA
+import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
+import com.pesapal.sdk.utils.CountryCodeEval.MTN_UG
+import com.pesapal.sdk.utils.CountryCodeEval.TIGO_TANZANIA
 
 class MainPesapalFragment: Fragment() {
     private lateinit var binding: FragmentPesapalMainBinding
@@ -34,7 +37,7 @@ class MainPesapalFragment: Fragment() {
     private lateinit var paymentDetails: PaymentDetails
     private lateinit var billingAddress: BillingAddress
 
-    val dateTime = TimeUtils.getCurrentDateTime()
+    private var mobileProviders = listOf<CountryCode>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,30 +54,31 @@ class MainPesapalFragment: Fragment() {
         billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
 
         initData()
-        handlePaymentOptions()
         handleCustomBackPress()
         demoViewInform()
-        val mobileProviders = evaluateRegionProvider()
-        addDynamicChipGroupViews()
+        mobileProviders = evaluateRegionProvider()
+        addDynamicChipGroupViews(mobileProviders)
+        handlePaymentOptions()
+
     }
 
-    private fun evaluateRegionProvider(){
-        val countryChosen = when(paymentDetails.country){
+    private fun evaluateRegionProvider(): List<CountryCode> {
+        Log.e("Mainpf", "Country is ${paymentDetails.country}" )
+         return when(paymentDetails.country){
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE ->{
-                "KE"
+                 CountryCodeEval.kenyaProvider
             }
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_TZ -> {
-
-                "TZ"
+                 CountryCodeEval.tanzaniaProvider
             }
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_UG -> {
-                "UG"
+                 CountryCodeEval.ugandaProvider
             }
             else -> {
-                "Display on the card"
+                listOf()
             }
+
         }
-        Log.i("Mainpf", "Country is $countryChosen")
 
     }
 
@@ -83,11 +87,7 @@ class MainPesapalFragment: Fragment() {
      */
     private fun demoViewInform(){
         val isLive = PrefManager.getBoolean(PrefManager.PREF_IS_URL_LIVE, true)
-//        Log.e("Main","Is live ")
-        if(!isLive){
-        }
         binding.tvDemoVersion.isVisible =  !isLive
-
     }
 
     private fun handleCustomBackPress() {
@@ -96,23 +96,24 @@ class MainPesapalFragment: Fragment() {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     returnIntent(PesapalPayActivity.STATUS_CANCELLED, "Txn Cancelled")
-
                 }
-
             })
     }
 
     /**
      * Add mobile money dynamically depending on regions
      */
-    private fun addDynamicChipGroupViews(){
-        val newContext = ContextThemeWrapper(requireContext(), R.style.chip_style_custom)
-        val chip = Chip(newContext)
-//        chip.tag =
-        chip.text = "Added"
-        binding.paymentOptionGroup.addView(chip)
-
+    private fun addDynamicChipGroupViews(mobileProviders: List<CountryCode>) {
+        mobileProviders.forEach{ provider ->
+            val newContext = ContextThemeWrapper(requireContext(), R.style.chip_style_custom)
+            val chip = Chip(newContext)
+            chip.id = provider.paymentMethodId
+            chip.text = provider.mobileProvider
+            chip.isCheckable = true
+            binding.paymentOptionGroup.addView(chip)
+        }
     }
+
 
     private fun returnIntent(status: String, obj : Any){
         val returnIntent = Intent()
@@ -132,25 +133,34 @@ class MainPesapalFragment: Fragment() {
     private fun initData(){
         binding.tvAmount.text = "${paymentDetails.currency} ${paymentDetails.amount}"
         binding.tvOrderNumber.text = paymentDetails.order_id
-        binding.tvDateTime.text = dateTime
+        binding.tvDateTime.text = TimeUtils.getCurrentDateTime()
     }
 
     private fun handlePaymentOptions(){
         binding.paymentOptionGroup.setOnCheckedChangeListener { chipGroup: ChipGroup, i: Int ->
+            Log.e("MainPF"," Something clicked $i")
+
             val chip = chipGroup.findViewById<Chip>(i)
             if (chip != null && chip.isChecked) {
                 configureSelectedChip(chip)
             }
 
             when (i) {
-                R.id.mpesa -> {
+                R.id.card -> {
+                    // todo work on unselecting all other chips
+//                    configureUnselectedChip(chipGroup.findViewById(R.id.mpesa))
+                    proceedToCard()
+
+                }
+                MPESA,AIRTEL_KE, MTN_UG, AIRTEL_UG, TIGO_TANZANIA, MPESA_TZ, AIRTEL_TZ -> {
                     configureUnselectedChip(chipGroup.findViewById(R.id.card))
                     proceedMpesa()
                 }
-                R.id.card -> {
-                    configureUnselectedChip(chipGroup.findViewById(R.id.mpesa))
-                    proceedToCard()
-                }
+//                R.id.mpesa -> {
+//                    configureUnselectedChip(chipGroup.findViewById(R.id.card))
+//                    proceedMpesa()
+//                }
+
             }
         }
 

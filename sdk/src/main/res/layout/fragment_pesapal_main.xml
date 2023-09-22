@@ -209,29 +209,6 @@
                     app:textEndPadding="16dp"
                     app:textStartPadding="16dp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/cardaaaaaaa"
-                    style="@style/chip_style_custom"
-                    android:text="Test"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/mpesa"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mpesa"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black"
-                    android:visibility="visible"
-                    app:checkedIconEnabled="false"
-                    app:chipBackgroundColor="@color/colorBackgroundInactive"
-                    app:chipCornerRadius="5dp"
-                    app:chipStrokeWidth="0dp"
-                    android:textSize="12sp"
-                    app:textEndPadding="16dp"
-                    app:textStartPadding="16dp"
-                    tools:visibility="visible" />
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -255,3 +232,28 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!--<com.google.android.material.chip.Chip-->
+<!--android:id="@+id/cardaaaaaaa"-->
+<!--style="@style/chip_style_custom"-->
+<!--android:text="Test"-->
+<!--    />-->
+
+<!--<com.google.android.material.chip.Chip-->
+<!--android:id="@+id/mpesa"-->
+<!--style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:text="Mpesa"-->
+<!--android:textAllCaps="false"-->
+<!--android:textColor="@color/black"-->
+<!--android:visibility="visible"-->
+<!--app:checkedIconEnabled="false"-->
+<!--app:chipBackgroundColor="@color/colorBackgroundInactive"-->
+<!--app:chipCornerRadius="5dp"-->
+<!--app:chipStrokeWidth="0dp"-->
+<!--android:textSize="12sp"-->
+<!--app:textEndPadding="16dp"-->
+<!--app:textStartPadding="16dp"-->
+<!--tools:visibility="visible" />-->
