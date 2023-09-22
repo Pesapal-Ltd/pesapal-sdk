@@ -3,6 +3,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,12 +19,13 @@ import com.pesapal.sdkdemo.model.UserModel
 import com.pesapal.sdkdemo.utils.PrefManager
 import com.squareup.picasso.Picasso
 
-class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
     private lateinit var binding: ActivityProfileBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     var testCurrency = mutableListOf<String>()
     var otherCurrency = mutableListOf("KES", "UGX", "USD")
+    var countriesList = mutableListOf("Kenya", "Uganda", "Tanzania")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater);
@@ -56,6 +58,11 @@ class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
             android.R.layout.simple_spinner_item,
             testCurrency
         )
+
+        val adCountry = ArrayAdapter(this,
+            android.R.layout.simple_spinner_item,
+            countriesList
+        )
         // set simple layout resource file
         // for each item of spinner
         ad.setDropDownViewResource(
@@ -63,7 +70,17 @@ class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 .simple_spinner_dropdown_item);
         // Set the ArrayAdapter (ad) data on the
         // Spinner which binds data to spinner
-        binding.layoutProfile.spinnerCurrency.adapter = ad;
+        binding.layoutProfile.spinnerCurrency.adapter = ad
+
+
+        adCountry.setDropDownViewResource(
+            android.R.layout
+                .simple_spinner_dropdown_item);
+        // Set the ArrayAdapter (ad) data on the
+        // Spinner which binds data to spinner
+        binding.layoutProfile.spinnerCountry.adapter = adCountry
+        binding.layoutProfile.spinnerCountry.onItemSelectedListener = countryItemSelectedListener
+
 
 
         if(auth.currentUser != null){
@@ -125,6 +142,19 @@ class ProfileActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private fun showMessage(message: String){
         Toast.makeText(this,message, Toast.LENGTH_LONG).show()
     }
+
+    private val countryItemSelectedListener = object : OnItemSelectedListener{
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            val country = countriesList[p2]
+            PrefManager.setCountry(country)
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {
+            TODO("Not yet implemented")
+        }
+
+    }
+
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         val currency = testCurrency[p2]
         PrefManager.setCurrency(currency)

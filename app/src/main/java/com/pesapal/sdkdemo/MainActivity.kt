@@ -222,11 +222,32 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         myIntent.putExtra(PESAPALAPI3SDK.AMOUNT     , total.toString())
         myIntent.putExtra(PESAPALAPI3SDK.ORDER_ID   ,orderId)
         myIntent.putExtra(PESAPALAPI3SDK.CURRENCY   ,PESAPALAPI3SDK.CURRENCY_CODE_KES)
-        myIntent.putExtra(PESAPALAPI3SDK.COUNTRY   ,PESAPALAPI3SDK.COUNTRY_KE)
+//        myIntent.putExtra(PESAPALAPI3SDK.COUNTRY    ,"PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE")
+        myIntent.putExtra(PESAPALAPI3SDK.COUNTRY    ,translateCountryToEnum())
+
         myIntent.putExtra(PESAPALAPI3SDK.FIRST_NAME ,userModel.firstName)
         myIntent.putExtra(PESAPALAPI3SDK.LAST_NAME  ,userModel.lastName)
         myIntent.putExtra(PESAPALAPI3SDK.EMAIL      ,userModel.email)
         startActivityForResult(myIntent             ,PAYMENT_REQUEST)
+    }
+
+    /**
+     * Converts the country chosen to an to the relevant ENUM
+     */
+    private fun translateCountryToEnum(): PESAPALAPI3SDK.COUNTRIES_ENUM{
+        return when(PrefManager.getCountry()){
+
+            "Uganda" -> {
+                PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_UG
+            }
+            "Tanzania" ->{
+                PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_TZ
+            }
+            else -> {
+                PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE
+            }
+
+        }
     }
 
     override fun Clicked(isAdd: Boolean, story: CatalogueModel.ProductsBean) {

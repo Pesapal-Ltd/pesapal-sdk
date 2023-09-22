@@ -126,6 +126,30 @@
             android:layout_width="match_parent"
             android:background="@color/faded_blue"
             android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:text="Test Country"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerCountry"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/faded_blue"
+            android:layout_height="1dp"/>
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton

@@ -2,6 +2,7 @@ package com.pesapal.sdk.fragment.details
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
+import com.pesapal.sdk.utils.PESAPALAPI3SDK
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.COUNTRY
 import com.pesapal.sdk.utils.PESAPALAPI3SDK.COUNTRY_KE
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.TimeUtils
@@ -56,7 +59,23 @@ class MainPesapalFragment: Fragment() {
     }
 
     private fun evaluateRegionProvider(){
-//        if(COUNTRY_KE)
+        val countryChosen = when(paymentDetails.country){
+            PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE ->{
+                "KE"
+            }
+            PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_TZ -> {
+
+                "TZ"
+            }
+            PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_UG -> {
+                "UG"
+            }
+            else -> {
+                "Display on the card"
+            }
+        }
+        Log.i("Mainpf", "Country is $countryChosen")
+
     }
 
     /**

@@ -58,110 +58,110 @@ class PesapalPayActivity : AppCompatActivity() {
 //        initCardinal()
     }
 
-    private fun getPaymentData() {
-        val intent = intent
-        if (intent != null) {
-            var consumerKey: String? = null
-            var consumerSecret: String? = null
-            var ipnUrl: String? = null
-            var accountNumber: String? = null
-            var callbackUrl: String? = null
-            if (PrefManager.getString(PrefManager.con_key) != null) {
-                consumerKey = PrefManager.getString(PrefManager.con_key)!!
-            }
-
-            if (PrefManager.getString(PrefManager.con_sec) != null) {
-                consumerSecret = PrefManager.getString(PrefManager.con_sec)!!
-            }
-
-            if (PrefManager.getString(PrefManager.acc_num) != null) {
-                accountNumber = PrefManager.getString(PrefManager.acc_num)!!
-            }
-
-            if (PrefManager.getString(PrefManager.call_url) != null) {
-                callbackUrl = PrefManager.getString(PrefManager.call_url)!!
-            }
-
-            if (PrefManager.getString(PrefManager.ipn_url) != null) {
-                ipnUrl = PrefManager.getString(PrefManager.ipn_url)!!
-            }
-
-
-            val amount = intent.getStringExtra(PESAPALAPI3SDK.AMOUNT)
-            val orderId = intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
-            val currency = intent.getStringExtra(PESAPALAPI3SDK.CURRENCY)
-
-
-            if (consumerKey.isNullOrEmpty() || consumerSecret.isNullOrEmpty()) {
-
-                setErrorElements("Consumer data required ...")
-                showMessage("Consumer data required ...")
-
-            }
-            else if(amount.isNullOrEmpty()){
-                setErrorElements("Data -> Amount is missing")
-            }
-            else if(orderId.isNullOrEmpty()){
-                setErrorElements("Data -> OrderId is missing")
-            }
-            else if(currency.isNullOrEmpty()){
-                setErrorElements("Data -> Currency format is missing")
-            }
-            else if(accountNumber.isNullOrEmpty()){
-                setErrorElements("Data -> Account number is missing")
-            }
-            else if(callbackUrl.isNullOrEmpty()){
-                setErrorElements("Data -> Callback url is missing")
-            }
-            else if(ipnUrl.isNullOrEmpty()){
-                setErrorElements("Data -> IPN is missing")
-            }
-
-            if(dataRequiredAvailable) {
-                paymentDetails = PaymentDetails(
-                    amount = BigDecimal(amount),
-                    order_id = orderId,
-                    currency = currency,
-                    accountNumber = accountNumber,
-                    callbackUrl = callbackUrl,
-                    consumer_key = consumerKey,
-                    consumer_secret = consumerSecret,
-                    ipn_url = ipnUrl,
-                )
-
-                initData()
-
-                val firstName = intent.getStringExtra(PESAPALAPI3SDK.FIRST_NAME )
-                val lastName = intent.getStringExtra(PESAPALAPI3SDK.LAST_NAME)
-                val email = intent.getStringExtra(PESAPALAPI3SDK.EMAIL)
-                val city = intent.getStringExtra("city")
-                val address = intent.getStringExtra("address")
-                val postalCode = intent.getStringExtra("postalCode")
-
-
-
-                billingAddress = BillingAddress(
-                    firstName = firstName,
-                    lastName = lastName,
-                    middleName = lastName,
-                    emailAddress = email,
-                    line = address,
-                    line2 = address,
-                    postalCode = postalCode,
-                    city = city
-                )
-
-            }
-            else{
-                returnIntent(STATUS_CANCELLED, errorMessage)
-            }
-
-
-        } else {
-            showMessage("Consumer data required ...")
-        }
-
-    }
+//    private fun getPaymentData() {
+//        val intent = intent
+//        if (intent != null) {
+//            var consumerKey: String? = null
+//            var consumerSecret: String? = null
+//            var ipnUrl: String? = null
+//            var accountNumber: String? = null
+//            var callbackUrl: String? = null
+//            if (PrefManager.getString(PrefManager.con_key) != null) {
+//                consumerKey = PrefManager.getString(PrefManager.con_key)!!
+//            }
+//
+//            if (PrefManager.getString(PrefManager.con_sec) != null) {
+//                consumerSecret = PrefManager.getString(PrefManager.con_sec)!!
+//            }
+//
+//            if (PrefManager.getString(PrefManager.acc_num) != null) {
+//                accountNumber = PrefManager.getString(PrefManager.acc_num)!!
+//            }
+//
+//            if (PrefManager.getString(PrefManager.call_url) != null) {
+//                callbackUrl = PrefManager.getString(PrefManager.call_url)!!
+//            }
+//
+//            if (PrefManager.getString(PrefManager.ipn_url) != null) {
+//                ipnUrl = PrefManager.getString(PrefManager.ipn_url)!!
+//            }
+//
+//
+//            val amount = intent.getStringExtra(PESAPALAPI3SDK.AMOUNT)
+//            val orderId = intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
+//            val currency = intent.getStringExtra(PESAPALAPI3SDK.CURRENCY)
+//
+//
+//            if (consumerKey.isNullOrEmpty() || consumerSecret.isNullOrEmpty()) {
+//
+//                setErrorElements("Consumer data required ...")
+//                showMessage("Consumer data required ...")
+//
+//            }
+//            else if(amount.isNullOrEmpty()){
+//                setErrorElements("Data -> Amount is missing")
+//            }
+//            else if(orderId.isNullOrEmpty()){
+//                setErrorElements("Data -> OrderId is missing")
+//            }
+//            else if(currency.isNullOrEmpty()){
+//                setErrorElements("Data -> Currency format is missing")
+//            }
+//            else if(accountNumber.isNullOrEmpty()){
+//                setErrorElements("Data -> Account number is missing")
+//            }
+//            else if(callbackUrl.isNullOrEmpty()){
+//                setErrorElements("Data -> Callback url is missing")
+//            }
+//            else if(ipnUrl.isNullOrEmpty()){
+//                setErrorElements("Data -> IPN is missing")
+//            }
+//
+//            if(dataRequiredAvailable) {
+//                paymentDetails = PaymentDetails(
+//                    amount = BigDecimal(amount),
+//                    order_id = orderId,
+//                    currency = currency,
+//                    accountNumber = accountNumber,
+//                    callbackUrl = callbackUrl,
+//                    consumer_key = consumerKey,
+//                    consumer_secret = consumerSecret,
+//                    ipn_url = ipnUrl,
+//                )
+//
+//                initData()
+//
+//                val firstName = intent.getStringExtra(PESAPALAPI3SDK.FIRST_NAME )
+//                val lastName = intent.getStringExtra(PESAPALAPI3SDK.LAST_NAME)
+//                val email = intent.getStringExtra(PESAPALAPI3SDK.EMAIL)
+//                val city = intent.getStringExtra("city")
+//                val address = intent.getStringExtra("address")
+//                val postalCode = intent.getStringExtra("postalCode")
+//
+//
+//
+//                billingAddress = BillingAddress(
+//                    firstName = firstName,
+//                    lastName = lastName,
+//                    middleName = lastName,
+//                    emailAddress = email,
+//                    line = address,
+//                    line2 = address,
+//                    postalCode = postalCode,
+//                    city = city
+//                )
+//
+//            }
+//            else{
+//                returnIntent(STATUS_CANCELLED, errorMessage)
+//            }
+//
+//
+//        } else {
+//            showMessage("Consumer data required ...")
+//        }
+//
+//    }
 
     var dataRequiredAvailable = true
     var errorMessage = ""

@@ -21,6 +21,10 @@ public class PESAPALAPI3SDK {
     public static String COUNTRY_TZ = "TZ";
     public static String COUNTRY_UG = "UG";
 
+    public enum COUNTRIES_ENUM {
+        COUNTRY_KE, COUNTRY_TZ, COUNTRY_UG
+    }
+
 
 
 

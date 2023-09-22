@@ -13,6 +13,8 @@ public class PrefManager {
     private static final String CALL_BACK_URL = "CALL_BACK_URL";
     private static final String ACCOUNT = "ACCOUNT";
 
+    private static final String COUNTRY ="COUNTRY";
+
     public static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.getInstance()
                 .getApplicationContext());
@@ -83,6 +85,12 @@ public class PrefManager {
         return getString(ACCOUNT, "1000101");
     }
 
+    public static String getCountry(){
+        return getString(COUNTRY, "");
+    }
+    public static void setCountry(String country){
+         putString(COUNTRY, country);
+    }
 
 
 }

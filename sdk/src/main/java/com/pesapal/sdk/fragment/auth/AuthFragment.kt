@@ -142,8 +142,14 @@ class AuthFragment : Fragment() {
             val amount = intent.getStringExtra(PESAPALAPI3SDK.AMOUNT)
             val orderId = intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
             val currency = intent.getStringExtra(PESAPALAPI3SDK.CURRENCY)
-            var country = intent.getStringExtra(PESAPALAPI3SDK.COUNTRY)
+            var country : PESAPALAPI3SDK.COUNTRIES_ENUM? = null
+            try {
+                 country = intent.getSerializableExtra(PESAPALAPI3SDK.COUNTRY) as PESAPALAPI3SDK.COUNTRIES_ENUM
+            }
+            catch (exception: java.lang.ClassCastException){
+//                setErrorElements("Error Code: 10207")
 
+            }
 
             if (consumerKey.isNullOrEmpty()) {
                 setErrorElements("Error Code: 10100")
@@ -182,9 +188,7 @@ class AuthFragment : Fragment() {
                 setErrorElements("Error Code: 10206")
             }
 
-            if(country.isNullOrEmpty()){
-                country = PESAPALAPI3SDK.COUNTRY_KE
-            }
+
 
             if(dataRequiredAvailable) {
                 paymentDetails = PaymentDetails(
