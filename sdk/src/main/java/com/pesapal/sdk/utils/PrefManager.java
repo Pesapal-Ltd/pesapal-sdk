@@ -17,7 +17,7 @@ public class PrefManager {
     private static final String TOKEN= "token";
     private static final String IPN_ID= "ipn_id";
 
-    public static final String MAP_PREF = "826af370-30c6-4509-8c17-fd0096868b60" + BuildConfig.LIBRARY_PACKAGE_NAME;
+    public static final String MAP_PREF = "826af370-30c6-4509-8c17-fd0096868b6" + BuildConfig.LIBRARY_PACKAGE_NAME;
 
     public static String con_key  = "7a85a0aa-a66f-427d-88af-4483e2877bc0";
     public static String con_sec  = "669339e8-a54e-4f95-99c7-91798109d756";

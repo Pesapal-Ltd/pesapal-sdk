@@ -47,12 +47,6 @@ class MpesaPesapalFragment : Fragment() {
         paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
         billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
 
-        mobileProvider = paymentDetails.mobile_provider!!.toInt()
-        val mobileProviderName = CountryCodeEval.mapping[mobileProvider]
-
-        binding.tvInst1.text = getString(R.string.provide_mobile_money, mobileProviderName)
-        binding.tvInst3.text = getString(R.string.provide_mobile_pin,   mobileProviderName)
-        binding.tvInst5.text = getString(R.string.enter_mobile_number,  mobileProviderName)
 
         initData()
         handleViewModel()
@@ -60,7 +54,15 @@ class MpesaPesapalFragment : Fragment() {
 
 
     private fun initData(){
+        mobileProvider = paymentDetails.mobile_provider!!.toInt()
+        val mobileProviderName = CountryCodeEval.mapping[mobileProvider]
+
+        binding.tvInst1.text = getString(R.string.provide_mobile_money, mobileProviderName)
+        binding.tvInst3.text = getString(R.string.provide_mobile_pin,   mobileProviderName)
+        binding.tvInst5.text = getString(R.string.enter_mobile_number,  mobileProviderName)
+
         prefillCountryCode()
+
         binding.phone.setOnFocusChangeListener { _, hasFocus ->
             binding.phoneLayout.hint = if (hasFocus) "Phone" else "700123456"
         }
