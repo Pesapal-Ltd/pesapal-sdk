@@ -105,11 +105,6 @@ class AuthFragment : Fragment() {
        findNavController().navigate(action)
     }
 
-    private enum class ErrorCode(code: String){
-        CONSUMER_KEY("10100"),
-        CONSUMER_SECRET("10100")
-    }
-
     private fun paymentData() {
         val intent = requireActivity().intent
         if (intent != null) {
@@ -146,8 +141,9 @@ class AuthFragment : Fragment() {
             try {
                  country = intent.getSerializableExtra(PESAPALAPI3SDK.COUNTRY) as PESAPALAPI3SDK.COUNTRIES_ENUM
             }
-            catch (exception: java.lang.ClassCastException){
+            catch (exception: Exception){
 //                setErrorElements("Error Code: 10207")
+                // todo could show an info toast and proceed, It would show only the card
 
             }
 
@@ -243,12 +239,6 @@ class AuthFragment : Fragment() {
         dataRequiredAvailable = false
         errorMessage = message
     }
-
-    private fun setErrorElements(errorCode: ErrorCode){
-        dataRequiredAvailable = false
-        errorMessage = errorCode.name
-    }
-
 
 
     private fun returnIntent(status: String, obj : Any){
