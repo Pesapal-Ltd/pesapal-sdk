@@ -38,7 +38,7 @@ class MainPesapalFragment: Fragment() {
     private lateinit var paymentDetails: PaymentDetails
     private lateinit var billingAddress: BillingAddress
 
-    private var mobileProviders = listOf<CountryCode>()
+    private var mobileProviders = listOf<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +63,7 @@ class MainPesapalFragment: Fragment() {
 
     }
 
-    private fun evaluateRegionProvider(): List<CountryCode> {
+    private fun evaluateRegionProvider(): List<Int> {
         Log.e("Mainpf", "Country is ${paymentDetails.country}" )
          return when(paymentDetails.country){
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE ->{
@@ -105,11 +105,12 @@ class MainPesapalFragment: Fragment() {
     /**
      * Add mobile money dynamically depending on regions
      */
-    private fun addDynamicChipGroupViews(mobileProviders: List<CountryCode>) {
-        mobileProviders.forEach{ provider ->
+    private fun addDynamicChipGroupViews(mobileProviders: List<Int>) {
+        mobileProviders.forEach{ providerInt ->
             val newContext = ContextThemeWrapper(requireContext(), R.style.chip_style_custom)
             val chip = Chip(newContext)
-            chip.id = provider.paymentMethodId
+            val provider = CountryCodeEval.mappingAllCountries[providerInt]
+            chip.id = provider!!.paymentMethodId
             chip.text = provider.mobileProvider
             chip.isCheckable = true
             binding.paymentOptionGroup.addView(chip)

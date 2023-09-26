@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             PrefManager.getAccount(),
             PrefManager.getCallBackUrl(),
             "https://test.dev",
-            true
+            false
         )
     }
 
@@ -207,7 +207,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         val displayName = "Samuel"
         val firstName = "Samuel"
         val lastName = "Nyamai"
-        val email = "samuelnyamai7387@gmail.com"
+        val email = "samuel@pesapal.com"
         val photoUrl: String? = null
         val time: String? = null
         userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)

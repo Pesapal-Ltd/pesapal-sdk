@@ -32,6 +32,8 @@ class MpesaPesapalFragment : Fragment() {
     private var mobileMoneyResponse: MobileMoneyResponse? = null
     var  mobileProvider: Int = 0
 
+    var countryCode: Int? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,7 +57,11 @@ class MpesaPesapalFragment : Fragment() {
 
     private fun initData(){
         mobileProvider = paymentDetails.mobile_provider!!.toInt()
-        val mobileProviderName = CountryCodeEval.mapping[mobileProvider]
+
+        val mobileProvider = CountryCodeEval.mappingAllCountries[mobileProvider]
+        val mobileProviderName = mobileProvider!!.mobileProvider
+        countryCode = mobileProvider.countryCode
+
 
         binding.tvInst1.text = getString(R.string.provide_mobile_money, mobileProviderName)
         binding.tvInst3.text = getString(R.string.provide_mobile_pin,   mobileProviderName)
@@ -71,11 +77,11 @@ class MpesaPesapalFragment : Fragment() {
     }
 
     private fun prefillCountryCode(){
-        binding.phone.tag = "+254"
+        binding.phone.tag = "+" + countryCode.toString()
         binding.phone.setCompoundDrawables(
             com.pesapal.sdk.utils.TextDrawable(
                 binding.phone,
-                "\u2706  " + 254
+                "\u2706  $countryCode"
             ), null, null, null
         )
     }
@@ -93,7 +99,7 @@ class MpesaPesapalFragment : Fragment() {
 
     private fun prepareMobileMoney(): MobileMoneyRequest {
         hideKeyboard()
-        val phoneNumber = "254"+binding.phone.text.toString()
+        val phoneNumber = countryCode.toString() + binding.phone.text.toString()
         return MobileMoneyRequest(
             id = paymentDetails.order_id!!,
             sourceChannel = 2,
