@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:clickable="true"
     android:focusable="true"
     android:background="@color/dark_faded_bg">
@@ -269,6 +270,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvInstb" />
 
                     <androidx.appcompat.widget.AppCompatButton
+                        tools:visibility="gone"
                         android:id="@+id/btnLipab"
                         android:layout_width="0dp"
                         android:layout_height="40dp"

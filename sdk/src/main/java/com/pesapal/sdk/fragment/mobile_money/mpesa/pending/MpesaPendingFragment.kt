@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.databinding.FragmentMpesaPendingBinding
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
+import com.pesapal.sdk.utils.CountryCodeEval
 import com.pesapal.sdk.utils.Status
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -58,13 +60,19 @@ class MpesaPendingFragment : Fragment() {
     }
 
     private fun handlePrefill(){
-        binding.tvInstLipa4.text = "4. Enter Account No as "+mobileMoneyRequest.accountNumber
-        binding.tvInstLipa5.text = "5. Enter the Amount "+mobileMoneyRequest.currency+" "+mobileMoneyRequest.amount.setScale(2)
+        binding.tvInstLipa4.text = "4. Enter Account No as " + mobileMoneyRequest.accountNumber
+        binding.tvInstLipa5.text = "5. Enter the Amount " + mobileMoneyRequest.currency + " " + mobileMoneyRequest.amount.setScale(2)
     }
 
     private fun handleClick(){
-        binding.btnLipab.setOnClickListener {
-            showLipaNaMpesa()
+        Log.e("Mpesapending","Msisgn is " + mobileMoneyRequest.msisdn)
+        if(mobileMoneyRequest.msisdn!!.contains(CountryCodeEval.KE_COUNTRY_CODE.toString())) {
+            binding.btnLipab.setOnClickListener {
+                showLipaNaMpesa()
+            }
+        }
+        else{
+            binding.btnLipab.visibility = View.GONE
         }
 
         binding.btnSendLipa.setOnClickListener {

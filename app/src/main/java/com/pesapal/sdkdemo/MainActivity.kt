@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             PrefManager.getAccount(),
             PrefManager.getCallBackUrl(),
             "https://test.dev",
-            false
+            true
         )
     }
 
