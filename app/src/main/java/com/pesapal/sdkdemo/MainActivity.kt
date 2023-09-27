@@ -187,33 +187,31 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     private fun startPayment(){
         val db = FirebaseFirestore.getInstance()
         val documentBalance = db.collection("users").document(auth.currentUser?.email!!).get()
-//        documentBalance.addOnCompleteListener {
-//            if(it.isSuccessful){
-//                val displayName: String = it.result.get("displayName").toString()
-//                val firstName: String = it.result.get("firstName").toString()
-//                val lastName: String = it.result.get("lastName").toString()
-//                val email: String? = it.result.get("email").toString()
-//                val photoUrl: String? = it.result.get("photoUrl").toString()
-//                val time: String? = it.result.get("time").toString()
-//                userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
-//                userModel = UserModel(null,null,null,null,null,null)
-//
-//                initPayment()
-//            }else{
-//                showMessage("Unable to get your account ")
-//            }
-//        }
+        documentBalance.addOnCompleteListener {
+            if(it.isSuccessful){
+                val displayName: String = it.result.get("displayName").toString()
+                val firstName: String = it.result.get("firstName").toString()
+                val lastName: String = it.result.get("lastName").toString()
+                val email: String? = it.result.get("email").toString()
+                val photoUrl: String? = it.result.get("photoUrl").toString()
+                val time: String? = it.result.get("time").toString()
+                userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
 
-        val displayName = "Samuel"
-        val firstName = "Samuel"
-        val lastName = "Nyamai"
-        val email = "samuel@pesapal.com"
-        val photoUrl: String? = null
-        val time: String? = null
-        userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
-//        userModel = UserModel(null,null,null,null,null,null)
+                initPayment()
+            }else{
+                showMessage("Unable to get your account ")
+            }
+        }
 
-        initPayment()
+//        val displayName = "Samuel"
+//        val firstName = "Samuel"
+//        val lastName = "Nyamai"
+//        val email = "samuel@pesapal.com"
+//        val photoUrl: String? = null
+//        val time: String? = null
+//        userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
+
+//        initPayment()
 
     }
 
@@ -236,7 +234,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
      */
     private fun translateCountryToEnum(): PESAPALAPI3SDK.COUNTRIES_ENUM{
         return when(PrefManager.getCountry()){
-
             "Uganda" -> {
                 PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_UG
             }
@@ -246,7 +243,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             else -> {
                 PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE
             }
-
         }
     }
 

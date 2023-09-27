@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.pesapal.sdk.R
 import com.pesapal.sdk.databinding.FragmentMpesaPendingBinding
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
@@ -54,6 +55,11 @@ class MpesaPendingFragment : Fragment() {
     }
 
     private fun initData(){
+        if(mobileMoneyRequest.msisdn!!.contains(CountryCodeEval.KE_COUNTRY_CODE.toString())) {
+        }
+
+        val mobileProvider = CountryCodeEval.mappingAllCountries[mobileMoneyRequest.paymentMethodId]!!.mobileProvider
+        binding.tvPrompt1.text = getString(R.string.enter_pin, mobileProvider)
         handleClick()
         handleViewModel()
         handlePrefill()
@@ -73,6 +79,7 @@ class MpesaPendingFragment : Fragment() {
         }
         else{
             binding.btnLipab.visibility = View.GONE
+            binding.tvPrompt2.visibility = View.GONE
         }
 
         binding.btnSendLipa.setOnClickListener {

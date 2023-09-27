@@ -44,7 +44,8 @@
     <string name="provide_mobile_money">1. Provide your %s mobile number</string>
     <string name="provide_mobile_pin">3. Confirm the transaction by providing your \n %s PIN</string>
     <string name="enter_mobile_number">Enter %s Number</string>
-<!--    <string name="enter_mobile_number">Enter mobile Number</string>-->
+    <string name="enter_pin">2. Confirm transaction by entering %s PIN</string>
+    <!--    <string name="enter_mobile_number">Enter mobile Number</string>-->
 
 
 </resources>
