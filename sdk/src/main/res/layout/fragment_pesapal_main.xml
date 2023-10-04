@@ -116,6 +116,7 @@
                     android:id="@+id/tvAmount"
                     android:layout_width="wrap_content"
                     android:textSize="12sp"
+                    tools:text="UGX 200"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvIAmount"
                     android:textStyle="normal"

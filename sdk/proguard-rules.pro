@@ -86,6 +86,17 @@
     public <fields>;
 }
 
+-keepclassmembers class * extends java.lang.Enum {
+    <fields>;
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep public enum com.company.appname.**{
+    *;
+}
+
+
 -keepnames class androidx.navigation.fragment.NavHostFragment
 -keepnames class com.pesapal.sdk.fragment.auth.AuthFragment
 -keep class * extends androidx.fragment.app.Fragment{}

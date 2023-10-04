@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             PrefManager.getAccount(),
             PrefManager.getCallBackUrl(),
             "https://test.dev",
-            true
+            false
         )
     }
 
@@ -219,9 +219,12 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         val myIntent = Intent(this, PesapalSdkActivity::class.java)
         myIntent.putExtra(PESAPALAPI3SDK.AMOUNT     , total.toString())
         myIntent.putExtra(PESAPALAPI3SDK.ORDER_ID   ,orderId)
-        myIntent.putExtra(PESAPALAPI3SDK.CURRENCY   ,PESAPALAPI3SDK.CURRENCY_CODE_KES)
-//        myIntent.putExtra(PESAPALAPI3SDK.COUNTRY    ,"PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE")
+
+        myIntent.putExtra(PESAPALAPI3SDK.CURRENCY   ,currency)
+//        myIntent.putExtra(PESAPALAPI3SDK.CURRENCY   ,PESAPALAPI3SDK.CURRENCY_CODE_KES)
+
         myIntent.putExtra(PESAPALAPI3SDK.COUNTRY    ,translateCountryToEnum())
+//        myIntent.putExtra(PESAPALAPI3SDK.COUNTRY    ,"PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE")
 
         myIntent.putExtra(PESAPALAPI3SDK.FIRST_NAME ,userModel.firstName)
         myIntent.putExtra(PESAPALAPI3SDK.LAST_NAME  ,userModel.lastName)
