@@ -107,8 +107,8 @@ publishing {
 //            url = uri("https://maven.pkg.github.com/pesapalsnm/pesapalgatewayLib")              // For developers
             url = uri("https://maven.pkg.github.com/pesapalsnm/androidPaymentGatewaySDK")         // For PRODUCTION Public use
             credentials {
-                username = 'pesapalsnm'
-                password = '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'
+                username = 'a'
+                password = ''
 
             }
         }

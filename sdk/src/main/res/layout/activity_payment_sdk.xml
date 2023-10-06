@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/clToolbar"
         android:layout_width="match_parent"
-        android:background="#1751AD"
+        android:background="@color/colorPrimaryAltLight"
         app:titleTextColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

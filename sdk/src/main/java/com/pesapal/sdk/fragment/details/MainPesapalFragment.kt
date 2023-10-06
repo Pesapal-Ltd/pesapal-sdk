@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
@@ -26,6 +27,7 @@ import com.pesapal.sdk.utils.*
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_KE
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_TZ
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_UG
+import com.pesapal.sdk.utils.CountryCodeEval.CARD
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
 import com.pesapal.sdk.utils.CountryCodeEval.MTN_UG
@@ -39,6 +41,7 @@ class MainPesapalFragment: Fragment() {
     private lateinit var billingAddress: BillingAddress
 
     private var mobileProviders = listOf<Int>()
+    private var selectedChip: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,9 +81,7 @@ class MainPesapalFragment: Fragment() {
             else -> {
                 listOf()
             }
-
         }
-
     }
 
     /**
@@ -106,6 +107,15 @@ class MainPesapalFragment: Fragment() {
      * Add mobile money dynamically depending on regions
      */
     private fun addDynamicChipGroupViews(mobileProviders: List<Int>) {
+
+        val newContext = ContextThemeWrapper(requireContext(), R.style.chip_style_custom)
+        val chip = Chip(newContext)
+        chip.id = CARD
+        chip.text = "Card"
+        chip.isCheckable = true
+        chip.setChipBackgroundColorResource(R.color.background_color_chip_state_list_changer)
+        binding.paymentOptionGroup.addView(chip)
+
         mobileProviders.forEach{ providerInt ->
             val newContext = ContextThemeWrapper(requireContext(), R.style.chip_style_custom)
             val chip = Chip(newContext)
@@ -113,25 +123,12 @@ class MainPesapalFragment: Fragment() {
             chip.id = provider!!.paymentMethodId
             chip.text = provider.mobileProvider
             chip.isCheckable = true
+            chip.setChipBackgroundColorResource(R.color.background_color_chip_state_list_changer)
+
             binding.paymentOptionGroup.addView(chip)
         }
     }
 
-
-    private fun returnIntent(status: String, obj : Any){
-        val returnIntent = Intent()
-        returnIntent.putExtra("status", status)
-        val data = if(obj is String){
-            obj
-        }
-        else{
-            obj as TransactionStatusResponse
-        }
-        returnIntent.putExtra("data", data)
-
-        requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
-        requireActivity().finish()
-    }
 
     private fun initData(){
         binding.tvAmount.text = "${paymentDetails.currency} ${paymentDetails.amount}"
@@ -146,27 +143,43 @@ class MainPesapalFragment: Fragment() {
             val chip = chipGroup.findViewById<Chip>(i)
             if (chip != null && chip.isChecked) {
                 configureSelectedChip(chip)
+                if(selectedChip != null && selectedChip>0) {
+                    Log.e("MainPF"," Selected chip is $selectedChip")
+
+                    configureUnselectedChip(chipGroup.findViewById(selectedChip!!))
+                }
+            }
+            selectedChip = i
+        }
+
+        binding.btnProceedPayment.setOnClickListener{
+            if(selectedChip >0)
+                proceedSelected(selectedChip!!)
+            else{
+                Toast.makeText(requireContext(),"Please select a method", Toast.LENGTH_SHORT).show()
             }
 
-            when (i) {
-                R.id.card -> {
-                    // todo work on unselecting all other chips
-//                    configureUnselectedChip(chipGroup.findViewById(R.id.mpesa))
-                    proceedToCard()
+        }
 
-                }
-                MPESA,AIRTEL_KE, MTN_UG, AIRTEL_UG, TIGO_TANZANIA, MPESA_TZ, AIRTEL_TZ -> {
-                    configureUnselectedChip(chipGroup.findViewById(R.id.card))
-                    proceedMpesa(i)
-                }
+    }
+
+    private fun proceedSelected(i : Int){
+        when (i) {
+            CARD -> {
+                // todo work on unselecting all other chips
+                //    configureUnselectedChip(chipGroup.findViewById(R.id.mpesa))
+                proceedToCard()
+            }
+            MPESA,AIRTEL_KE, MTN_UG, AIRTEL_UG, TIGO_TANZANIA, MPESA_TZ, AIRTEL_TZ -> {
+//                    configureUnselectedChip(chipGroup.findViewById(R.id.card))
+                proceedMpesa(i)
+            }
 //                R.id.mpesa -> {
 //                    configureUnselectedChip(chipGroup.findViewById(R.id.card))
 //                    proceedMpesa()
 //                }
 
-            }
         }
-
     }
 
     private fun proceedMpesa(i: Int) {
@@ -184,23 +197,46 @@ class MainPesapalFragment: Fragment() {
      * The chip group selection needs to cleared or it causes a loop and return to the selected chip navigating to the fragment
      */
     private fun clearSelectionAndProceed(action: NavDirections) {
-        binding.paymentOptionGroup.clearCheck()
+//        binding.paymentOptionGroup.clearCheck()
         findNavController().navigate(action)
     }
 
 
+    /**
+     * todo delete. modifications to the style affect the color scheme
+     */
     private fun configureUnselectedChip(chip: Chip) {
-        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.un_selected_color_primary))
-        chip.setChipBackgroundColorResource(R.color.colorBackgroundInactive)
-        chip.setTextColor(resources.getColor(R.color.black))
-        chip.chipStrokeWidth = 0.0f
+//        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.un_selected_color_primary))
+////        chip.setChipBackgroundColorResource(R.color.colorBackgroundInactive)
+//        chip.setTextColor(resources.getColor(R.color.black))
+//        chip.chipStrokeWidth = 0.0f
     }
 
+    /**
+     * todo delete. modifications to the style affect the color scheme
+     */
     private fun configureSelectedChip(chip: Chip) {
-        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        chip.setChipBackgroundColorResource(R.color.purple_200)
-        chip.setRippleColorResource(R.color.purple_200)
-        chip.chipStrokeWidth = 0.0f
+//        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+////        chip.setChipBackgroundColorResource(R.color.background_color_chip_state_list)
+//        chip.setRippleColorResource(R.color.blue_pesapal)
+//        chip.chipStrokeWidth = 0.0f
+
+    }
+
+    
+    private fun returnIntent(status: String, obj : Any){
+        val returnIntent = Intent()
+        returnIntent.putExtra("status", status)
+        val data = if(obj is String){
+            obj
+        }
+        else{
+            obj as TransactionStatusResponse
+        }
+        returnIntent.putExtra("data", data)
+
+        requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
+        requireActivity().finish()
     }
 
     companion object{
