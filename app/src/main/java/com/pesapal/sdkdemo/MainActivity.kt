@@ -98,6 +98,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             listOf(
                 CatalogueModel.ProductsBean("Chips",R.drawable.chips, BigDecimal(1).setScale(2)),
                 CatalogueModel.ProductsBean("Burgers",R.drawable.burgers, BigDecimal(5).setScale(2)),
+                CatalogueModel.ProductsBean("Milkshakes",R.drawable.burgers, BigDecimal(500).setScale(2)),
             ))
         demoCartAdapter = DemoCartAdapter(this)
         binding.rv.layoutManager = LinearLayoutManager(this)

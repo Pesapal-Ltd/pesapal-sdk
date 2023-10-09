@@ -24,11 +24,12 @@ object CountryCodeEval {
     private const val TIGO_PROV_NAME   = "Tigo"
 
 
+
     val mappingAllCountries = hashMapOf(
         MPESA     to     CountryCode(MPESA_PROV_NAME  , MPESA, KE_COUNTRY_CODE),
         AIRTEL_KE to     CountryCode(AIRTEL_PROV_NAME , AIRTEL_KE, KE_COUNTRY_CODE),
-        MTN_UG    to     CountryCode(MTN_PROV_NAME    , MTN_UG, UG_COUNTRY_CODE),
-        AIRTEL_UG to     CountryCode(AIRTEL_PROV_NAME , AIRTEL_UG, UG_COUNTRY_CODE),
+        MTN_UG    to     CountryCode(MTN_PROV_NAME    , MTN_UG, UG_COUNTRY_CODE,    minimumAmount = 500),
+        AIRTEL_UG to     CountryCode(AIRTEL_PROV_NAME , AIRTEL_UG, UG_COUNTRY_CODE, minimumAmount = 50),
         TIGO_TANZANIA to CountryCode(TIGO_PROV_NAME   , TIGO_TANZANIA, TZ_COUNTRY_CODE),
         MPESA_TZ  to     CountryCode(MPESA_PROV_NAME  , MPESA_TZ, TZ_COUNTRY_CODE),
         AIRTEL_TZ to     CountryCode(AIRTEL_PROV_NAME , AIRTEL_TZ, TZ_COUNTRY_CODE),

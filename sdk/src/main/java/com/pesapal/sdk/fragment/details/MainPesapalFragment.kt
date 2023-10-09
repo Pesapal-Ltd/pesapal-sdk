@@ -178,14 +178,27 @@ class MainPesapalFragment: Fragment() {
 //                    configureUnselectedChip(chipGroup.findViewById(R.id.card))
 //                    proceedMpesa()
 //                }
-
         }
     }
 
     private fun proceedMpesa(i: Int) {
-        paymentDetails.mobile_provider = BigDecimal(i)
-        val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToNavGraphMpesa(paymentDetails,billingAddress)
-        clearSelectionAndProceed(action)
+        val mobileProvider = CountryCodeEval.mappingAllCountries[i]
+        val min = mobileProvider!!.minimumAmount
+        val canProceedMinMeet = paymentDetails.amount >= min.toBigDecimal()
+        if(canProceedMinMeet) {
+            paymentDetails.mobile_provider = BigDecimal(i)
+            val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToNavGraphMpesa(
+                paymentDetails,
+                billingAddress
+            )
+            clearSelectionAndProceed(action)
+        }
+        else{
+            Toast.makeText(requireContext(), "Minimum amount for ${mobileProvider.mobileProvider} is $min/=", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkMinMaxAmount(mobileProvider: Int){
     }
 
     private fun proceedToCard(){
@@ -220,7 +233,6 @@ class MainPesapalFragment: Fragment() {
 ////        chip.setChipBackgroundColorResource(R.color.background_color_chip_state_list)
 //        chip.setRippleColorResource(R.color.blue_pesapal)
 //        chip.chipStrokeWidth = 0.0f
-
     }
 
     
