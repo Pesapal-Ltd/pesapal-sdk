@@ -39,5 +39,12 @@ internal class MpesaPesapalViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Without resetting it will pick Status success on back press and result in a loop going to the next fragment
+     */
+    fun resetMobileResponse() {
+        _mobileMoneyResponse = MutableLiveData<Resource<MobileMoneyResponse>>()
+    }
+
 
 }

@@ -74,7 +74,7 @@ class CardFragmentAddressData : Fragment() {
         }
 
         binding.etEmail.addTextChangedListener {
-            if(it != null && it.isNotEmpty()) {
+            if(!it.isNullOrEmpty()) {
                 isEmailFilled = checkValidEmail(it.toString())
                 checkFilled()
             }else{
@@ -84,8 +84,7 @@ class CardFragmentAddressData : Fragment() {
 
 
         binding.etPhoneNumber.addTextChangedListener {
-
-            if(it != null && it.isNotEmpty()){
+            if(!it.isNullOrEmpty()){
                 val minLength = 3
                 val phoneText = it.toString()
                 isPhoneFilled = phoneText.length > minLength
@@ -93,8 +92,6 @@ class CardFragmentAddressData : Fragment() {
             }else{
                 isPhoneFilled = false
             }
-
-
         }
         binding.etAddress.addTextChangedListener {
             isAddressFilled = it.toString().isNotEmpty()
@@ -102,7 +99,7 @@ class CardFragmentAddressData : Fragment() {
 
         }
         binding.etPostal.addTextChangedListener {
-            if(it != null && it.isNotEmpty()){
+            if(!it.isNullOrEmpty()){
                 val minPostalCodeLength = 2
                 val postalCodeText = it.toString()
                 isPostalCodeFilled = postalCodeText.length > minPostalCodeLength

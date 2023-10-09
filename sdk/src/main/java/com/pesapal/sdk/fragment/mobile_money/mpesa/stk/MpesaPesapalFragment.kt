@@ -19,7 +19,6 @@ import com.pesapal.sdk.utils.CountryCodeEval
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.Status
 import com.pesapal.sdk.utils.hideKeyboard
-import java.math.BigDecimal
 
 
 class MpesaPesapalFragment : Fragment() {
@@ -146,6 +145,8 @@ class MpesaPesapalFragment : Fragment() {
     }
 
     private fun showPendingMpesaPayment(){
+        viewModel.resetMobileResponse()
+
         val mobileMoneyRequest = prepareMobileMoney()
         mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
         paymentDetails.order_tracking_id = mobileMoneyResponse!!.orderTrackingId
