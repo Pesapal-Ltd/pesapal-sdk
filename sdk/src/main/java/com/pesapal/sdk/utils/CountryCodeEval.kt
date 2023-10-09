@@ -18,7 +18,7 @@ object CountryCodeEval {
     private const val TZ_COUNTRY_CODE = 255
     private const val UG_COUNTRY_CODE = 256
 
-    private const val MPESA_PROV_NAME  = "Mpesa"
+    const val MPESA_PROV_NAME  = "Mpesa"
     private const val AIRTEL_PROV_NAME = "Airtel"
     private const val MTN_PROV_NAME    = "MTN"
     private const val TIGO_PROV_NAME   = "Tigo"

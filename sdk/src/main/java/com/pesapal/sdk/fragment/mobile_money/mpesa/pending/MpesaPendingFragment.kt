@@ -18,6 +18,7 @@ import com.pesapal.sdk.databinding.FragmentMpesaPendingBinding
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.CountryCodeEval
+import com.pesapal.sdk.utils.CountryCodeEval.MPESA_PROV_NAME
 import com.pesapal.sdk.utils.Status
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -33,6 +34,7 @@ class MpesaPendingFragment : Fragment() {
     private var countDownTimer: CountDownTimer? = null
     private var timerStatus = TimerStatus.STOPPED
     private var timerStated = false
+    private var mobileProvider = ""
 
 
     override fun onCreateView(
@@ -55,11 +57,10 @@ class MpesaPendingFragment : Fragment() {
     }
 
     private fun initData(){
-        if(mobileMoneyRequest.msisdn!!.contains(CountryCodeEval.KE_COUNTRY_CODE.toString())) {
-        }
+        mobileProvider = CountryCodeEval.mappingAllCountries[mobileMoneyRequest.paymentMethodId]!!.mobileProvider
+        binding.tvPrompt1.text = getString(R.string.prompt_2, mobileProvider)
+        binding.tvPrompt.text = getString(R.string.prompt_1, mobileMoneyRequest.msisdn)
 
-        val mobileProvider = CountryCodeEval.mappingAllCountries[mobileMoneyRequest.paymentMethodId]!!.mobileProvider
-        binding.tvPrompt1.text = getString(R.string.enter_pin, mobileProvider)
         handleClick()
         handleViewModel()
         handlePrefill()
@@ -72,14 +73,14 @@ class MpesaPendingFragment : Fragment() {
 
     private fun handleClick(){
         Log.e("Mpesapending","Msisgn is " + mobileMoneyRequest.msisdn)
-        if(mobileMoneyRequest.msisdn!!.contains(CountryCodeEval.KE_COUNTRY_CODE.toString())) {
+        if(mobileProvider.contains(MPESA_PROV_NAME)) {
             binding.btnLipab.setOnClickListener {
                 showLipaNaMpesa()
             }
         }
         else{
             binding.btnLipab.visibility = View.GONE
-            binding.tvPrompt2.visibility = View.GONE
+            binding.tvPrompt3.visibility = View.GONE
         }
 
         binding.btnSendLipa.setOnClickListener {
@@ -95,8 +96,11 @@ class MpesaPendingFragment : Fragment() {
     }
 
     private fun showLipaNaMpesa(){
-        binding.clBackgroundCheck.visibility = View.GONE
-        binding.clLipaNaMpesa.visibility = View.VISIBLE
+        if(mobileProvider.contains(MPESA_PROV_NAME)) {
+            binding.clBackgroundCheck.visibility = View.GONE
+            binding.clLipaNaMpesa.visibility = View.VISIBLE
+        }
+
     }
 
     private fun handleBackgroundConfirmation(delayTime: Long){

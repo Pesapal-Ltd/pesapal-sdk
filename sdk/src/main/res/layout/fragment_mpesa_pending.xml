@@ -202,7 +202,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="20dp"
-                                        android:text="1. Payment prompt sent to your phone"
+                                        android:text="@string/prompt_1"
                                         android:textColor="@color/black"
                                         android:textSize="12sp"
                                         android:layout_marginTop="10dp"
@@ -214,7 +214,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="20dp"
-                                        android:text="@string/enter_pin"
+                                        android:text="@string/prompt_2"
                                         android:textColor="@color/black"
                                         android:textSize="12sp"
                                         android:layout_marginTop="10dp"
@@ -226,12 +226,26 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="20dp"
-                                        android:text="3. If you didn't get prompt Click Lipa na Mpesa"
+                                        android:layout_marginEnd="20dp"
+                                        android:text="@string/prompt3"
                                         android:textColor="@color/black"
                                         android:textSize="12sp"
                                         android:layout_marginTop="10dp"
                                         app:layout_constraintStart_toStartOf="parent"
                                         app:layout_constraintTop_toBottomOf="@+id/tvPrompt1" />
+
+                                    <TextView
+                                        android:id="@+id/tvPrompt3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="20dp"
+                                        android:layout_marginEnd="20dp"
+                                        android:text="@string/prompt4"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        android:layout_marginTop="10dp"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@+id/tvPrompt2" />
 
                                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -291,6 +305,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
+                    tools:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
