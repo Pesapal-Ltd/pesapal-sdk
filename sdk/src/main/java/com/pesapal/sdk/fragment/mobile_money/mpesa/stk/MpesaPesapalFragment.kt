@@ -68,21 +68,34 @@ class MpesaPesapalFragment : Fragment() {
 
         prefillCountryCode()
 
-        binding.phone.setOnFocusChangeListener { _, hasFocus ->
-            binding.phoneLayout.hint = if (hasFocus) "Phone" else "700123456"
-        }
 
         handleClicks()
     }
 
     private fun prefillCountryCode(){
         binding.phone.tag = "+" + countryCode.toString()
+        var placeHolderCountryCode = countryCode.toString()
+        var hint = "700123456"
+        if(countryCode!! == CountryCodeEval.UG_COUNTRY_CODE){
+            placeHolderCountryCode = "07"
+            hint = hint.drop(1)
+        }
+
+
+
         binding.phone.setCompoundDrawables(
             com.pesapal.sdk.utils.TextDrawable(
                 binding.phone,
-                "\u2706  $countryCode"
+                "\u2706  $placeHolderCountryCode"
             ), null, null, null
         )
+
+        binding.phoneLayout.hint = hint
+
+        binding.phone.setOnFocusChangeListener { _, hasFocus ->
+            binding.phoneLayout.hint = if (hasFocus) "Phone" else hint
+        }
+
     }
 
     private fun handleClicks(){
@@ -98,7 +111,8 @@ class MpesaPesapalFragment : Fragment() {
 
     private fun prepareMobileMoney(): MobileMoneyRequest {
         hideKeyboard()
-        val phoneNumber = countryCode.toString() + binding.phone.text.toString()
+        val modified_phone_prefix = if(countryCode!! == CountryCodeEval.UG_COUNTRY_CODE){ "7" } else ""
+        val phoneNumber = countryCode.toString() + modified_phone_prefix + binding.phone.text.toString()
         return MobileMoneyRequest(
             id = paymentDetails.order_id!!,
             sourceChannel = 2,

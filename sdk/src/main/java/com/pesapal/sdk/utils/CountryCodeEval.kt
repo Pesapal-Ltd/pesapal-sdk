@@ -16,7 +16,7 @@ object CountryCodeEval {
 
     const val KE_COUNTRY_CODE = 254
     private const val TZ_COUNTRY_CODE = 255
-    private const val UG_COUNTRY_CODE = 256
+    const val UG_COUNTRY_CODE = 256
 
     const val MPESA_PROV_NAME  = "Mpesa"
     private const val AIRTEL_PROV_NAME = "Airtel"

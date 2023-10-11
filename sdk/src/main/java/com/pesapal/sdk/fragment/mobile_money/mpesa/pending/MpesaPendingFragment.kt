@@ -59,7 +59,12 @@ class MpesaPendingFragment : Fragment() {
     private fun initData(){
         mobileProvider = CountryCodeEval.mappingAllCountries[mobileMoneyRequest.paymentMethodId]!!.mobileProvider
         binding.tvPrompt1.text = getString(R.string.prompt_2, mobileProvider)
-        binding.tvPrompt.text = getString(R.string.prompt_1, mobileMoneyRequest.msisdn)
+        var phoneNumber = mobileMoneyRequest.msisdn
+
+        if(phoneNumber!!.contains(CountryCodeEval.UG_COUNTRY_CODE.toString())){
+            phoneNumber = phoneNumber.replace(CountryCodeEval.UG_COUNTRY_CODE.toString(), "0")
+        }
+        binding.tvPrompt.text = getString(R.string.prompt_1, phoneNumber)
 
         handleClick()
         handleViewModel()
