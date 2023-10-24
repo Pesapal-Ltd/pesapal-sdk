@@ -26,6 +26,7 @@ import com.pesapal.sdk.utils.Status
 import java.math.BigDecimal
 
 class AuthFragment : Fragment() {
+    val TAG ="AuFr"
 
     private lateinit var binding: FragmentAuthorizingBinding
     private val viewModel: AuthViewModel by viewModels()
@@ -218,6 +219,8 @@ class AuthFragment : Fragment() {
                     postalCode = postalCode,
                     city = city
                 )
+                Log.i(TAG, "ConKey: $consumerKey")
+                Log.i(TAG, "ConSec: $consumerSecret")
 
                 initData()
             }

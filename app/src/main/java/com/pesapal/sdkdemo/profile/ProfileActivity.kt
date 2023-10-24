@@ -1,6 +1,7 @@
 package com.pesapal.sdkdemo.profile
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
@@ -19,6 +20,7 @@ import com.pesapal.sdkdemo.model.UserModel
 import com.pesapal.sdkdemo.utils.PrefManager
 import com.squareup.picasso.Picasso
 
+data class KeysSecret(val country:String, val key:String, val secret: String)
 class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
     private lateinit var binding: ActivityProfileBinding
     private lateinit var auth: FirebaseAuth
@@ -26,6 +28,13 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
     var testCurrency = mutableListOf<String>()
     var otherCurrency = mutableListOf("KES", "UGX", "USD")
     var countriesList = mutableListOf("Kenya", "Uganda", "Tanzania")
+    val demoKeys = listOf(
+        KeysSecret("Kenya","qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW","osGQ364R49cXKeOYSpaOnT++rHs="),
+        KeysSecret("Uganda","TDpigBOOhs+zAl8cwH2Fl82jJGyD8xev","1KpqkfsMaihIcOlhnBo/gBZ5smw="),
+        KeysSecret("Tanzania","ngW+UEcnDhltUc5fxPfrCD987xMh3Lx8","q27RChYs5UkypdcNYKzuUw460Dg="),
+        )
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater);
@@ -83,11 +92,26 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
 
 
 
+        val currencySelected: Int = ad.getPosition(PrefManager.getCurrency())
+        val countrySelected: Int = adCountry.getPosition(PrefManager.getCountry())
+
+        binding.layoutProfile.spinnerCurrency.setSelection(currencySelected)
+        binding.layoutProfile.spinnerCountry.setSelection(countrySelected)
+
+
         if(auth.currentUser != null){
             fetchUserDetails()
         }else{
             binding.layoutProfile.btnSignout.visibility = View.GONE
         }
+
+        binding.layoutProfile.toggle.isChecked = PrefManager.getIsProduction()
+
+        binding.layoutProfile.toggle.setOnCheckedChangeListener { _, isChecked ->
+            PrefManager.setIsProduction(isChecked)
+
+        }
+
         handleClick()
 
     }
@@ -145,8 +169,11 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
 
     private val countryItemSelectedListener = object : OnItemSelectedListener{
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            Log.i("ProfileActivity", "Position $p2")
             val country = countriesList[p2]
             PrefManager.setCountry(country)
+            PrefManager.setConsumerKey(demoKeys[p2].key)
+            PrefManager.setConsumerSecret(demoKeys[p2].secret)
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {

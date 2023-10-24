@@ -33,7 +33,7 @@ import java.util.*
 class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     private lateinit var binding:ActivityMainBinding
-    private var currency = PrefManager.getCurrency()
+    private var currency = ""
     private lateinit var auth: FirebaseAuth
     private var total = BigDecimal.ZERO
     private lateinit var demoCartAdapter: DemoCartAdapter
@@ -45,12 +45,12 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     private var PAYMENT_REQUEST = 100001
     private var RC_SIGN_IN = 100002
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
-        initData()
-        initSdk()
+
     }
 
     private fun initSdk(){
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             PrefManager.getAccount(),
             PrefManager.getCallBackUrl(),
             "https://test.dev",
-            false
+            PrefManager.getIsProduction()
         )
     }
 
@@ -162,6 +162,9 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
         }
         currency = PrefManager.getCurrency()
+        initData()
+        initSdk()
+        updateBasketList()
         configureGoogleSign()
     }
 

@@ -12,7 +12,7 @@ public class PrefManager {
     private static final String CONSUMER_SECRET= "CONSUMER_SECRET";
     private static final String CALL_BACK_URL = "CALL_BACK_URL";
     private static final String ACCOUNT = "ACCOUNT";
-
+    private static final String IS_PRODUCTION = "IS_PRODUCTION";
     private static final String COUNTRY ="COUNTRY";
 
     public static SharedPreferences getPreferences() {
@@ -58,7 +58,11 @@ public class PrefManager {
     }
 
     public static String getConsumerKey(){
-        return getString(CONSUMER_KEY, "qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW");
+//        return getString(CONSUMER_KEY, "qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW");
+//        return getString(CONSUMER_KEY, "TDpigBOOhs+zAl8cwH2Fl82jJGyD8xev");
+        return getString(CONSUMER_KEY, "");
+
+
     }
 
     public static void setConsumerSecret(String consumerSecret){
@@ -66,9 +70,18 @@ public class PrefManager {
     }
 
     public static String getConsumerSecret(){
-        return getString(CONSUMER_SECRET,"osGQ364R49cXKeOYSpaOnT++rHs=");
+//        return getString(CONSUMER_SECRET,"osGQ364R49cXKeOYSpaOnT++rHs=");
+//        return getString(CONSUMER_SECRET,"1KpqkfsMaihIcOlhnBo/gBZ5smw=");
+        return getString(CONSUMER_SECRET,"");
     }
 
+    public static Boolean getIsProduction(){
+        return getBoolean(IS_PRODUCTION, false);
+    }
+
+    public static void setIsProduction(boolean isProd){
+        putBoolean(IS_PRODUCTION, isProd);
+    }
     public static void setCallBackUrl(String callBackUrl){
         putString(CALL_BACK_URL, callBackUrl);
     }
