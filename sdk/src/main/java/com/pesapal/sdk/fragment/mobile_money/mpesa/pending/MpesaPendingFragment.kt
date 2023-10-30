@@ -92,6 +92,10 @@ class MpesaPendingFragment : Fragment() {
             handleConfirmation()
         }
 
+        binding.btnSendLipab.setOnClickListener{
+            handleConfirmation()
+        }
+
         binding.btnResendPrompt.setOnClickListener {
             binding.clLipaNaMpesa.visibility = View.GONE
             binding.clBackgroundCheck.visibility = View.VISIBLE
@@ -291,7 +295,13 @@ class MpesaPendingFragment : Fragment() {
 
     private fun hideDialog() {
         timerStated = false
-        showLipaNaMpesa()
+        if(mobileProvider.contains(MPESA_PROV_NAME)) {
+            showLipaNaMpesa()
+        }
+        else{
+            binding.btnSendLipab.visibility = View.VISIBLE
+
+        }
     }
 
     enum class TimerStatus {

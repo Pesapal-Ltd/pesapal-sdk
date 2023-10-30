@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -52,6 +53,7 @@
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
@@ -268,20 +270,47 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnResendPromptb"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/bg_round"
-                        android:text="Resend Prompt"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        app:layout_constraintEnd_toStartOf="@+id/btnLipab"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvInstb" />
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/linearParent"
+                       android:layout_marginStart="10dp"
+                       android:layout_marginTop="30dp"
+                       android:layout_marginEnd="10dp"
+                       app:layout_constraintEnd_toStartOf="@+id/btnLipab"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintTop_toBottomOf="@+id/tvInstb"
+                       >
+                       <androidx.appcompat.widget.AppCompatButton
+                           android:id="@+id/btnResendPromptb"
+                           android:layout_width="0dp"
+                           android:layout_height="40dp"
+                           android:layout_weight="1"
+                           android:layout_marginStart="10dp"
+                           android:layout_marginEnd="10dp"
+
+                           android:background="@drawable/bg_round"
+                           android:text="Resend Prompt"
+                           android:textAllCaps="false"
+                           android:textColor="@color/white"
+                           />
+                       <androidx.appcompat.widget.AppCompatButton
+                           android:id="@+id/btnSendLipab"
+                           android:layout_width="0dp"
+                           android:layout_height="40dp"
+                           android:layout_weight="1"
+                           android:visibility="gone"
+                           tools:visibility="visible"
+                           android:layout_marginStart="10dp"
+                           android:layout_marginEnd="10dp"
+                           android:background="@drawable/bg_bounder_round"
+                           android:text="Check Payment"
+                           android:textAllCaps="false"
+                           android:textColor="@color/black"
+                           />
+
+                   </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatButton
                         tools:visibility="gone"
@@ -296,7 +325,7 @@
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/btnResendPromptb"
+                        app:layout_constraintStart_toEndOf="@+id/linearParent"
                         app:layout_constraintTop_toBottomOf="@+id/tvInstb" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -305,7 +334,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    tools:visibility="gone"
+                    tools:visibility="gonex"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -440,21 +469,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnSendLipa"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/bg_round"
-                        android:text="Proceed"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        app:layout_constraintEnd_toStartOf="@+id/btnResendPrompt"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvInstLipa" />
-
-                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnResendPrompt"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
@@ -465,9 +479,28 @@
                         android:text="Resend Prompt"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
+                        app:layout_constraintEnd_toStartOf="@+id/btnSendLipa"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvInstLipa"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnSendLipa"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/bg_round"
+                        android:text="Proceed"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/btnSendLipa"
-                        app:layout_constraintTop_toBottomOf="@+id/tvInstLipa" />
+                        app:layout_constraintStart_toEndOf="@+id/btnResendPrompt"
+                        app:layout_constraintTop_toBottomOf="@+id/tvInstLipa"
+
+                        />
+
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
