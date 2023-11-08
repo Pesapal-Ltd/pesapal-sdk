@@ -61,9 +61,7 @@ class MpesaPendingFragment : Fragment() {
         binding.tvPrompt1.text = getString(R.string.prompt_2, mobileProvider)
         var phoneNumber = mobileMoneyRequest.msisdn
 
-        if(phoneNumber!!.contains(CountryCodeEval.UG_COUNTRY_CODE.toString())){
-            phoneNumber = phoneNumber.replace(CountryCodeEval.UG_COUNTRY_CODE.toString(), "0")
-        }
+
         binding.tvPrompt.text = getString(R.string.prompt_1, phoneNumber)
 
         handleClick()

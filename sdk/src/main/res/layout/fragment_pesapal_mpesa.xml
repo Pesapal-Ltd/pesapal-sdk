@@ -163,7 +163,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvInst5"
                     style="@style/AppTheme.App.TextInputLayout"
                     android:id="@+id/phone_layout"
-                    android:hint="700123456"
+                    android:hint="07XX XXX XXX"
                     app:boxBackgroundColor="@android:color/transparent"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
