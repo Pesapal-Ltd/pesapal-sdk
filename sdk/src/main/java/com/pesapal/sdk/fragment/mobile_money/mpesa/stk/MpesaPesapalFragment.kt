@@ -101,7 +101,7 @@ class MpesaPesapalFragment : Fragment() {
 
     private fun handleClicks(){
         binding.btnSend.setOnClickListener {
-            if(binding.phone.text.toString().isNotEmpty()) {
+            if(binding.phone.text.toString().isNotEmpty() && binding.phone.text.toString().length == 10) {
                 val request = prepareMobileMoney()
                 viewModel.sendMobileMoneyCheckOut(request, "Sending payment prompt ...")
             }else{

@@ -85,9 +85,9 @@ class CardFragmentAddressData : Fragment() {
 
         binding.etPhoneNumber.addTextChangedListener {
             if(!it.isNullOrEmpty()){
-                val minLength = 3
+                val minLength = 10
                 val phoneText = it.toString()
-                isPhoneFilled = phoneText.length > minLength
+                isPhoneFilled = phoneText.length == minLength
                 checkFilled()
             }else{
                 isPhoneFilled = false
