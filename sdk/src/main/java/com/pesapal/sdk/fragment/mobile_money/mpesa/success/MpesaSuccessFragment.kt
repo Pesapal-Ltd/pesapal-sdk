@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -28,6 +29,17 @@ class MpesaSuccessFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         transactionStatusResponse = requireArguments().getSerializable("transactionStatusResponse") as TransactionStatusResponse
         initData()
+        handleCustomBackPress()
+    }
+
+    private fun handleCustomBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    returnPaymentStatus()
+                }
+            })
     }
 
     private fun initData(){
