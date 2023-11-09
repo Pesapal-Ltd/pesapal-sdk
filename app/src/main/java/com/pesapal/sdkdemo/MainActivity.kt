@@ -25,6 +25,7 @@ import com.pesapal.sdkdemo.model.CatalogueModel
 import com.pesapal.sdkdemo.model.UserModel
 import com.pesapal.sdkdemo.profile.ProfileActivity
 import com.pesapal.sdkdemo.utils.PrefManager
+import com.pesapal.sdkdemo.utils.PrefUtil
 import com.pesapal.sdkdemo.utils.TimeUtils
 import com.squareup.picasso.Picasso
 import java.math.BigDecimal
@@ -54,6 +55,9 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun initSdk(){
+        if(PrefManager.getConsumerKey() == ""){
+            PrefUtil.setData(0)
+        }
         com.pesapal.sdk.utils.PESAPALAPI3SDK().init(
             PrefManager.getConsumerKey(),
             PrefManager.getConsumerSecret(),

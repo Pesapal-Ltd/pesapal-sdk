@@ -18,6 +18,10 @@ import com.pesapal.sdkdemo.R
 import com.pesapal.sdkdemo.databinding.ActivityProfileBinding
 import com.pesapal.sdkdemo.model.UserModel
 import com.pesapal.sdkdemo.utils.PrefManager
+import com.pesapal.sdkdemo.utils.PrefUtil
+import com.pesapal.sdkdemo.utils.PrefUtil.countriesList
+import com.pesapal.sdkdemo.utils.PrefUtil.demoKeys
+import com.pesapal.sdkdemo.utils.PrefUtil.otherCurrency
 import com.squareup.picasso.Picasso
 
 data class KeysSecret(val country:String, val key:String, val secret: String)
@@ -26,13 +30,7 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     var testCurrency = mutableListOf<String>()
-    var otherCurrency = mutableListOf("KES", "UGX", "USD")
-    var countriesList = mutableListOf("Kenya", "Uganda", "Tanzania")
-    val demoKeys = listOf(
-        KeysSecret("Kenya","qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW","osGQ364R49cXKeOYSpaOnT++rHs="),
-        KeysSecret("Uganda","TDpigBOOhs+zAl8cwH2Fl82jJGyD8xev","1KpqkfsMaihIcOlhnBo/gBZ5smw="),
-        KeysSecret("Tanzania","ngW+UEcnDhltUc5fxPfrCD987xMh3Lx8","q27RChYs5UkypdcNYKzuUw460Dg="),
-        )
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -170,10 +168,7 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
     private val countryItemSelectedListener = object : OnItemSelectedListener{
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             Log.i("ProfileActivity", "Position $p2")
-            val country = countriesList[p2]
-            PrefManager.setCountry(country)
-            PrefManager.setConsumerKey(demoKeys[p2].key)
-            PrefManager.setConsumerSecret(demoKeys[p2].secret)
+            PrefUtil.setData(p2)
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {

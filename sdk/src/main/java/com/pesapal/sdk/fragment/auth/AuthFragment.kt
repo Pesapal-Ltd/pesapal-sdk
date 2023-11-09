@@ -164,6 +164,10 @@ class AuthFragment : Fragment() {
 //                setErrorElements("Data -> Amount is missing")
                 setErrorElements("Error Code: 10201")
             }
+            else if(amount.toInt() < 1){
+//                setErrorElements("Data -> Amount is missing")
+                setErrorElements("Error Code: 102011")
+            }
             else if(orderId.isNullOrEmpty()){
 //                setErrorElements("Data -> OrderId is missing")
                 setErrorElements("Error Code: 10202")
