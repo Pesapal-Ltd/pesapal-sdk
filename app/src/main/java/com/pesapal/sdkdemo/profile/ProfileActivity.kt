@@ -58,8 +58,8 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
 
         binding.layoutProfile.spinnerCurrency.onItemSelectedListener = this;
         val default = PrefManager.getCurrency()
-        testCurrency.add(default)
-        otherCurrency.remove(default)
+//        testCurrency.add(default)
+//        otherCurrency.remove(default)
         testCurrency.addAll(otherCurrency)
         val ad = ArrayAdapter(this,
             android.R.layout.simple_spinner_item,
