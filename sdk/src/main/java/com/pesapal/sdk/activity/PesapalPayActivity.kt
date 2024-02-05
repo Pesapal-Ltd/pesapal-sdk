@@ -9,6 +9,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.cardinalcommerce.cardinalmobilesdk.Cardinal
+import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalEnvironment
+import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalRenderType
+import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
+import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
+import com.cardinalcommerce.shared.models.Warning
+import com.cardinalcommerce.shared.userinterfaces.UiCustomization
 import com.pesapal.sdk.BuildConfig
 import com.pesapal.sdk.R
 import com.pesapal.sdk.fragment.card.data.CardFragmentCardData
@@ -22,6 +29,7 @@ import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.sdk.viewmodel.AppViewModel
 import com.pesapal.sdk.databinding.ActivityPesapalPayBinding
+import com.pesapal.sdk.fragment.card.address.CardFragmentAddressData
 import com.pesapal.sdk.fragment.details.MainPesapalFragment
 import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdk.utils.PrefManager
@@ -42,126 +50,126 @@ class PesapalPayActivity : AppCompatActivity() {
     private var mobileMoneyRequest: MobileMoneyRequest? = null
     private var transactionStatusResponse: TransactionStatusResponse? = null
     private var transactionErrorMessage: String? = null
-//    private var cardinal: Cardinal = Cardinal.getInstance()
+    private var cardinal: Cardinal = Cardinal.getInstance()
     private val viewModel: AppViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPesapalPayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        initData()
+        initData()
         handleViewModel()
     }
 
     private fun initData() {
-//        getPaymentData()
+        getPaymentData()
         handleClick()
-//        initCardinal()
+        initCardinal()
     }
 
-//    private fun getPaymentData() {
-//        val intent = intent
-//        if (intent != null) {
-//            var consumerKey: String? = null
-//            var consumerSecret: String? = null
-//            var ipnUrl: String? = null
-//            var accountNumber: String? = null
-//            var callbackUrl: String? = null
-//            if (PrefManager.getString(PrefManager.con_key) != null) {
-//                consumerKey = PrefManager.getString(PrefManager.con_key)!!
-//            }
-//
-//            if (PrefManager.getString(PrefManager.con_sec) != null) {
-//                consumerSecret = PrefManager.getString(PrefManager.con_sec)!!
-//            }
-//
-//            if (PrefManager.getString(PrefManager.acc_num) != null) {
-//                accountNumber = PrefManager.getString(PrefManager.acc_num)!!
-//            }
-//
-//            if (PrefManager.getString(PrefManager.call_url) != null) {
-//                callbackUrl = PrefManager.getString(PrefManager.call_url)!!
-//            }
-//
-//            if (PrefManager.getString(PrefManager.ipn_url) != null) {
-//                ipnUrl = PrefManager.getString(PrefManager.ipn_url)!!
-//            }
-//
-//
-//            val amount = intent.getStringExtra(PESAPALAPI3SDK.AMOUNT)
-//            val orderId = intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
-//            val currency = intent.getStringExtra(PESAPALAPI3SDK.CURRENCY)
-//
-//
-//            if (consumerKey.isNullOrEmpty() || consumerSecret.isNullOrEmpty()) {
-//
-//                setErrorElements("Consumer data required ...")
-//                showMessage("Consumer data required ...")
-//
-//            }
-//            else if(amount.isNullOrEmpty()){
-//                setErrorElements("Data -> Amount is missing")
-//            }
-//            else if(orderId.isNullOrEmpty()){
-//                setErrorElements("Data -> OrderId is missing")
-//            }
-//            else if(currency.isNullOrEmpty()){
-//                setErrorElements("Data -> Currency format is missing")
-//            }
-//            else if(accountNumber.isNullOrEmpty()){
-//                setErrorElements("Data -> Account number is missing")
-//            }
-//            else if(callbackUrl.isNullOrEmpty()){
-//                setErrorElements("Data -> Callback url is missing")
-//            }
-//            else if(ipnUrl.isNullOrEmpty()){
-//                setErrorElements("Data -> IPN is missing")
-//            }
-//
-//            if(dataRequiredAvailable) {
-//                paymentDetails = PaymentDetails(
-//                    amount = BigDecimal(amount),
-//                    order_id = orderId,
-//                    currency = currency,
-//                    accountNumber = accountNumber,
-//                    callbackUrl = callbackUrl,
-//                    consumer_key = consumerKey,
-//                    consumer_secret = consumerSecret,
-//                    ipn_url = ipnUrl,
-//                )
-//
-//                initData()
-//
-//                val firstName = intent.getStringExtra(PESAPALAPI3SDK.FIRST_NAME )
-//                val lastName = intent.getStringExtra(PESAPALAPI3SDK.LAST_NAME)
-//                val email = intent.getStringExtra(PESAPALAPI3SDK.EMAIL)
-//                val city = intent.getStringExtra("city")
-//                val address = intent.getStringExtra("address")
-//                val postalCode = intent.getStringExtra("postalCode")
-//
-//
-//
-//                billingAddress = BillingAddress(
-//                    firstName = firstName,
-//                    lastName = lastName,
-//                    middleName = lastName,
-//                    emailAddress = email,
-//                    line = address,
-//                    line2 = address,
-//                    postalCode = postalCode,
-//                    city = city
-//                )
-//
-//            }
-//            else{
-//                returnIntent(STATUS_CANCELLED, errorMessage)
-//            }
-//
-//
-//        } else {
-//            showMessage("Consumer data required ...")
-//        }
-//
-//    }
+    private fun getPaymentData() {
+        val intent = intent
+        if (intent != null) {
+            var consumerKey: String? = null
+            var consumerSecret: String? = null
+            var ipnUrl: String? = null
+            var accountNumber: String? = null
+            var callbackUrl: String? = null
+            if (PrefManager.getString(PrefManager.con_key) != null) {
+                consumerKey = PrefManager.getString(PrefManager.con_key)!!
+            }
+
+            if (PrefManager.getString(PrefManager.con_sec) != null) {
+                consumerSecret = PrefManager.getString(PrefManager.con_sec)!!
+            }
+
+            if (PrefManager.getString(PrefManager.acc_num) != null) {
+                accountNumber = PrefManager.getString(PrefManager.acc_num)!!
+            }
+
+            if (PrefManager.getString(PrefManager.call_url) != null) {
+                callbackUrl = PrefManager.getString(PrefManager.call_url)!!
+            }
+
+            if (PrefManager.getString(PrefManager.ipn_url) != null) {
+                ipnUrl = PrefManager.getString(PrefManager.ipn_url)!!
+            }
+
+
+            val amount = intent.getStringExtra(PESAPALAPI3SDK.AMOUNT)
+            val orderId = intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
+            val currency = intent.getStringExtra(PESAPALAPI3SDK.CURRENCY)
+
+
+            if (consumerKey.isNullOrEmpty() || consumerSecret.isNullOrEmpty()) {
+
+                setErrorElements("Consumer data required ...")
+                showMessage("Consumer data required ...")
+
+            }
+            else if(amount.isNullOrEmpty()){
+                setErrorElements("Data -> Amount is missing")
+            }
+            else if(orderId.isNullOrEmpty()){
+                setErrorElements("Data -> OrderId is missing")
+            }
+            else if(currency.isNullOrEmpty()){
+                setErrorElements("Data -> Currency format is missing")
+            }
+            else if(accountNumber.isNullOrEmpty()){
+                setErrorElements("Data -> Account number is missing")
+            }
+            else if(callbackUrl.isNullOrEmpty()){
+                setErrorElements("Data -> Callback url is missing")
+            }
+            else if(ipnUrl.isNullOrEmpty()){
+                setErrorElements("Data -> IPN is missing")
+            }
+
+            if(dataRequiredAvailable) {
+                paymentDetails = PaymentDetails(
+                    amount = BigDecimal(amount),
+                    order_id = orderId,
+                    currency = currency,
+                    accountNumber = accountNumber,
+                    callbackUrl = callbackUrl,
+                    consumer_key = consumerKey,
+                    consumer_secret = consumerSecret,
+                    ipn_url = ipnUrl,
+                )
+
+                initData()
+
+                val firstName = intent.getStringExtra(PESAPALAPI3SDK.FIRST_NAME )
+                val lastName = intent.getStringExtra(PESAPALAPI3SDK.LAST_NAME)
+                val email = intent.getStringExtra(PESAPALAPI3SDK.EMAIL)
+                val city = intent.getStringExtra("city")
+                val address = intent.getStringExtra("address")
+                val postalCode = intent.getStringExtra("postalCode")
+
+
+
+                billingAddress = BillingAddress(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = lastName,
+                    emailAddress = email,
+                    line = address,
+                    line2 = address,
+                    postalCode = postalCode,
+                    city = city
+                )
+
+            }
+            else{
+                returnIntent(STATUS_CANCELLED, errorMessage)
+            }
+
+
+        } else {
+            showMessage("Consumer data required ...")
+        }
+
+    }
 
     var dataRequiredAvailable = true
     var errorMessage = ""
@@ -397,46 +405,46 @@ class PesapalPayActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-//    private fun getAllWarnings() {
-//        val warnings: List<Warning> = cardinal.warnings
-//        for (warning in warnings) {
-//            Log.e(" id ", warning.id);
-//            Log.e(" severity ", warning.severity.toString());
-//            Log.e(" message ", warning.message.toString());
-//        }
-//    }
+    private fun getAllWarnings() {
+        val warnings: List<Warning> = cardinal.warnings
+        for (warning in warnings) {
+            Log.e(" id ", warning.id);
+            Log.e(" severity ", warning.severity.toString());
+            Log.e(" message ", warning.message.toString());
+        }
+    }
 
-//    private fun initCardinal() {
-//        val cardinalConfigurationParameters = CardinalConfigurationParameters()
-//        cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
-//        cardinalConfigurationParameters.requestTimeout = 8000
-//        cardinalConfigurationParameters.challengeTimeout = 5
-//        val rTYPE = JSONArray()
-//        rTYPE.put(CardinalRenderType.OTP)
-//        rTYPE.put(CardinalRenderType.SINGLE_SELECT)
-//        rTYPE.put(CardinalRenderType.MULTI_SELECT)
-//        rTYPE.put(CardinalRenderType.OOB)
-//        rTYPE.put(CardinalRenderType.HTML)
-//        cardinalConfigurationParameters.renderType = rTYPE
-//        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
-//
-//        if (BuildConfig.DEBUG) {
-//            cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
-//            cardinalConfigurationParameters.isEnableLogging = true
-//        } else {
-//            cardinalConfigurationParameters.environment = CardinalEnvironment.PRODUCTION
-//            cardinalConfigurationParameters.isEnableLogging = false
-//        }
-//
-////     cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
-////     cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
-////     cardinalConfigurationParameters.isLocationDataConsentGiven = true
-//
-//        val yourUICustomizationObject = UiCustomization()
-//        cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
-//        cardinal.configure(this, cardinalConfigurationParameters)
-//        getAllWarnings()
-//    }
+    private fun initCardinal() {
+        val cardinalConfigurationParameters = CardinalConfigurationParameters()
+        cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
+        cardinalConfigurationParameters.requestTimeout = 8000
+        cardinalConfigurationParameters.challengeTimeout = 5
+        val rTYPE = JSONArray()
+        rTYPE.put(CardinalRenderType.OTP)
+        rTYPE.put(CardinalRenderType.SINGLE_SELECT)
+        rTYPE.put(CardinalRenderType.MULTI_SELECT)
+        rTYPE.put(CardinalRenderType.OOB)
+        rTYPE.put(CardinalRenderType.HTML)
+        cardinalConfigurationParameters.renderType = rTYPE
+        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+
+        if (BuildConfig.DEBUG) {
+            cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
+            cardinalConfigurationParameters.isEnableLogging = true
+        } else {
+            cardinalConfigurationParameters.environment = CardinalEnvironment.PRODUCTION
+            cardinalConfigurationParameters.isEnableLogging = false
+        }
+
+//     cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+//     cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
+//     cardinalConfigurationParameters.isLocationDataConsentGiven = true
+
+        val yourUICustomizationObject = UiCustomization()
+        cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
+        cardinal.configure(this, cardinalConfigurationParameters)
+        getAllWarnings()
+    }
 
     companion object {
         val STATUS_COMPLETED = "COMPLETED"
