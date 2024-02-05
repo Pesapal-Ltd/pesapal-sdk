@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple_100">#3A7BE1</color>
+
+    <!-- The main / master app color overrides the app hence this becomes purple -->
     <color name="blue_pesapal">#1751AD</color>
+
     <color name="purple_500">#1751AD</color>
     <color name="purple_700">#0A3A86</color>
     <color name="teal_200">#FF03DAC5</color>

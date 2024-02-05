@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             PrefManager.getCallBackUrl(),
             "https://test.dev",
             PrefManager.getIsProduction()
+//            true
         )
     }
 
@@ -182,7 +183,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
                     setImage(photoUrl)
                 }
             }else{
-                showMessage("Unable to get your account ")
+//                showMessage("Unable to get your account ")
             }
         }
 
@@ -207,7 +208,26 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
                 initPayment()
             }else{
-                showMessage("Unable to get your account ")
+//                val displayName = "Job"
+//                val firstName = "Job"
+//                val lastName = "Masai"
+//                val email = "jmasai@pesapal.com"
+
+
+                val displayName = "Samuel"
+                val firstName = "Samuel"
+                val lastName = "Nyamai"
+                val email = "samuel@pesapal.com"
+
+
+                val photoUrl: String? = null
+                val time: String? = null
+                userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
+
+                initPayment()
+                showMessage("HardCoded user info ")
+
+//                showMessage("Unable to get your account ")
             }
         }
 

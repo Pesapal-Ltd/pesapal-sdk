@@ -1,42 +1,132 @@
 {
   "project_info": {
-    "project_number": "340873706356",
-    "project_id": "com-pesapal-paymentgateway",
-    "storage_bucket": "com-pesapal-paymentgateway.appspot.com"
+    "project_number": "215860305053",
+    "firebase_url": "https://pesapal-mobile.firebaseio.com",
+    "project_id": "pesapal-mobile",
+    "storage_bucket": "pesapal-mobile.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:340873706356:android:75336d3f4632a024938a21",
+        "mobilesdk_app_id": "1:215860305053:android:043710134cddf30b730874",
         "android_client_info": {
-          "package_name": "com.pesapal.paymentgateway"
+          "package_name": "com.pesapal.mobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "340873706356-60cb7r4hl2j6242d90vrf6nbh4ee9nbp.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pesapal.paymentgateway",
-            "certificate_hash": "25709ac5aff6ef87dae0a4706c5fe15d6b4860c9"
-          }
-        },
-        {
-          "client_id": "340873706356-5om8u2klijar3ra784lik4cphr3fssfp.apps.googleusercontent.com",
+          "client_id": "215860305053-n0ctc4tfranroago0gp7mgf74ogca1vb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAPMLIPS-4CuP9IgpatGrrZ6pQpA3wZa78"
+          "current_key": "AIzaSyDDOBgYkx14rDpZKvZ8NOLASvwpQg7r8Kg"
+        },
+        {
+          "current_key": "AIzaSyDHU9Gxjkf8PSmOoO6VR6AfX8RCGXJitEE"
+        },
+        {
+          "current_key": "AIzaSyBz3Jv4n8c9ndlcc-jgaIc4TOjJjsvF_uQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "340873706356-5om8u2klijar3ra784lik4cphr3fssfp.apps.googleusercontent.com",
+              "client_id": "215860305053-n0ctc4tfranroago0gp7mgf74ogca1vb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "215860305053-2i8uj4vrcer1qemknc7892b8euhak3n5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pesapal.pesapalmobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215860305053:android:bddebd6f8e7d2a26730874",
+        "android_client_info": {
+          "package_name": "com.pesapal.mobile.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215860305053-n0ctc4tfranroago0gp7mgf74ogca1vb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDOBgYkx14rDpZKvZ8NOLASvwpQg7r8Kg"
+        },
+        {
+          "current_key": "AIzaSyDHU9Gxjkf8PSmOoO6VR6AfX8RCGXJitEE"
+        },
+        {
+          "current_key": "AIzaSyBz3Jv4n8c9ndlcc-jgaIc4TOjJjsvF_uQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215860305053-n0ctc4tfranroago0gp7mgf74ogca1vb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "215860305053-2i8uj4vrcer1qemknc7892b8euhak3n5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pesapal.pesapalmobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215860305053:android:342ea1b7aa720ccb730874",
+        "android_client_info": {
+          "package_name": "com.pesapal.paymentgateway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215860305053-n0ctc4tfranroago0gp7mgf74ogca1vb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDOBgYkx14rDpZKvZ8NOLASvwpQg7r8Kg"
+        },
+        {
+          "current_key": "AIzaSyDHU9Gxjkf8PSmOoO6VR6AfX8RCGXJitEE"
+        },
+        {
+          "current_key": "AIzaSyBz3Jv4n8c9ndlcc-jgaIc4TOjJjsvF_uQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215860305053-n0ctc4tfranroago0gp7mgf74ogca1vb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "215860305053-2i8uj4vrcer1qemknc7892b8euhak3n5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pesapal.pesapalmobile"
+              }
             }
           ]
         }

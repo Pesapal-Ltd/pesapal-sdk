@@ -40,8 +40,12 @@
 
     <fragment
         android:id="@+id/pesapalCardFragmentSuccess"
-        android:name="com.pesapal.sdk.fragment.card.success.CardPaymentSuccessFragment"
-        android:label="Card Address"
+        android:name="com.pesapal.sdk.fragment.mobile_money.mpesa.success.MpesaSuccessFragment"
+        android:label="Transaction Success"
         tools:layout="@layout/fragment_mpesa_payment_success"/>
 
 </navigation>
+
+<!--    android:name="com.pesapal.sdk.fragment.card.success.CardPaymentSuccessFragment"-->
+<!--    android:label="Card Address"-->
+<!--    tools:layout="@layout/fragment_mpesa_payment_success"-->

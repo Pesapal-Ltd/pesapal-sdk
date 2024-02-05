@@ -11,9 +11,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.activity.PesapalPayActivity
+import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentAuthorizingBinding
 import com.pesapal.sdk.model.auth.AuthRequestModel
 import com.pesapal.sdk.model.card.BillingAddress
@@ -30,6 +32,7 @@ class AuthFragment : Fragment() {
 
     private lateinit var binding: FragmentAuthorizingBinding
     private val viewModel: AuthViewModel by viewModels()
+    private val pesapalSdkViewModel: PesapalSdkViewModel by activityViewModels()
     private lateinit var paymentDetails: PaymentDetails
     private lateinit var billingAddress: BillingAddress
 
@@ -139,6 +142,10 @@ class AuthFragment : Fragment() {
             val orderId = intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
             val currency = intent.getStringExtra(PESAPALAPI3SDK.CURRENCY)
             var country : PESAPALAPI3SDK.COUNTRIES_ENUM? = null
+
+            pesapalSdkViewModel.orderID = orderId
+
+
             try {
                  country = intent.getSerializableExtra(PESAPALAPI3SDK.COUNTRY) as PESAPALAPI3SDK.COUNTRIES_ENUM
             }

@@ -13,12 +13,14 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalPayActivity
+import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
@@ -32,6 +34,7 @@ import com.pesapal.sdk.utils.CountryCodeEval.MPESA
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
 import com.pesapal.sdk.utils.CountryCodeEval.MTN_UG
 import com.pesapal.sdk.utils.CountryCodeEval.TIGO_TANZANIA
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.BigDecimal
 
 class MainPesapalFragment: Fragment() {
@@ -39,6 +42,8 @@ class MainPesapalFragment: Fragment() {
 
     private lateinit var paymentDetails: PaymentDetails
     private lateinit var billingAddress: BillingAddress
+
+    private val pesapalSdkViewModel: PesapalSdkViewModel by activityViewModels()
 
     private var mobileProviders = listOf<Int>()
     private var selectedChip: Int = -1
@@ -98,7 +103,7 @@ class MainPesapalFragment: Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    returnIntent(PesapalPayActivity.STATUS_CANCELLED, "Txn Cancelled")
+                    returnIntent(PesapalPayActivity.STATUS_CANCELLED, "Payment cancelled")
                 }
             })
     }
@@ -133,6 +138,7 @@ class MainPesapalFragment: Fragment() {
     private fun initData(){
         binding.tvAmount.text = "${paymentDetails.currency} ${paymentDetails.amount}"
         binding.tvOrderNumber.text = paymentDetails.order_id
+//        binding.tvOrderNumber.text = pesapalSdkViewModel.orderID
         binding.tvDateTime.text = TimeUtils.getCurrentDateTime()
     }
 

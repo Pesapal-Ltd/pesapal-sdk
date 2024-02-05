@@ -11,11 +11,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
+import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
+import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdk.viewmodel.AppViewModel
 class MpesaSuccessFragment : Fragment() {
     private lateinit var binding: FragmentMpesaPaymentSuccessBinding
     private lateinit var transactionStatusResponse: TransactionStatusResponse
+
+    private val onboardingViewModel: CardViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,7 +69,10 @@ class MpesaSuccessFragment : Fragment() {
     }
 
     private fun handleDisplay(){
+        val orderId = requireActivity().intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
         binding.tvTxnId.text = "TXN ID: "+transactionStatusResponse.confirmationCode
+
+
     }
 
 
