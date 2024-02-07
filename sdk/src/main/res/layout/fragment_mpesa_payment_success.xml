@@ -2,11 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
     android:background="@color/dark_faded_bg"
-    android:layout_height="match_parent">
+    >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -92,7 +94,7 @@
                 <TextView
                     android:id="@+id/tvTxnId"
                     android:layout_width="wrap_content"
-                    android:text="TXN ID: 123456"
+                    tools:text="TXN ID: 123456"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="15dp"
@@ -117,7 +119,7 @@
                 <TextView
                     android:id="@+id/tvOrderId"
                     android:layout_width="wrap_content"
-                    android:text="Order ID: 123456"
+                    tools:text="Order ID: 123456"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="15dp"
@@ -141,7 +143,7 @@
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
-                    android:text="5/2/2024 11:01"
+                    tools:text="5/2/2024 11:01"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="15dp"

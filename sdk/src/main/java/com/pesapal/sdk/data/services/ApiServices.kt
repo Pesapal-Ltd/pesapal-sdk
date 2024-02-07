@@ -2,6 +2,8 @@ package com.pesapal.sdk.data.services
 
 import com.pesapal.sdk.model.auth.AuthRequestModel
 import com.pesapal.sdk.model.auth.AuthResponseModel
+import com.pesapal.sdk.model.card.CardinalRequest
+import com.pesapal.sdk.model.card.CardinalResponse
 import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.sdk.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
@@ -35,5 +37,8 @@ internal interface ApiServices {
 
     @GET("api/Transactions/GetTransactionStatus")
     suspend fun getTransactionStatus(@Header("Authorization") token: String, @Query("orderTrackingId") orderTrackingId: String) : TransactionStatusResponse
+
+    @GET("api/Transactions/SignCardinalCheckoutRequest")
+    suspend fun signCardinal(@Header("Authorization") token: String, @Body cardinalRequest: CardinalRequest) : CardinalResponse
 
 }

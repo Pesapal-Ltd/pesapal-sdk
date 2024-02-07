@@ -10,16 +10,18 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PESAPALAPI3SDK
+import com.pesapal.sdk.utils.TimeUtils
 import com.pesapal.sdk.viewmodel.AppViewModel
 class MpesaSuccessFragment : Fragment() {
     private lateinit var binding: FragmentMpesaPaymentSuccessBinding
     private lateinit var transactionStatusResponse: TransactionStatusResponse
 
-    private val onboardingViewModel: CardViewModel by activityViewModels()
+    private val pesapalSdkViewModel: PesapalSdkViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,8 +71,10 @@ class MpesaSuccessFragment : Fragment() {
     }
 
     private fun handleDisplay(){
-        val orderId = requireActivity().intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
-        binding.tvTxnId.text = "TXN ID: "+transactionStatusResponse.confirmationCode
+        binding.tvTxnId.text = "TXN ID: " + transactionStatusResponse.confirmationCode
+        binding.tvTxnId.text = "Order ID: " + pesapalSdkViewModel.orderID
+        binding.tvTime.text = TimeUtils.getCurrentDateTime()
+
 
 
     }

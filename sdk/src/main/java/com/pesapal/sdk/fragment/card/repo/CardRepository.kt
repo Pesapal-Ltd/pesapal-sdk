@@ -1,6 +1,8 @@
 package com.pesapal.sdk.fragment.card.repo
 
 import com.pesapal.sdk.data.api.ApiClient
+import com.pesapal.sdk.model.card.CardinalRequest
+import com.pesapal.sdk.model.card.CardinalResponse
 import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.sdk.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
@@ -73,4 +75,22 @@ internal class CardRepository {
         }
 
     }
+
+    suspend fun getCardinalToken(cardRequest: CardinalRequest): Resource<CardinalResponse> {
+        return withContext(Dispatchers.IO){
+            try{
+                val transactionStatus = apiService.signCardinal("Bearer "+ PrefManager.getToken(),cardRequest)
+                if(transactionStatus.status != null && transactionStatus.status == "200") {
+                    Resource.success(transactionStatus)
+                }else{
+                    val error = transactionStatus.message!!
+                    Resource.error(error)
+                }
+            }catch (e: Exception){
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+
+    }
+
 }

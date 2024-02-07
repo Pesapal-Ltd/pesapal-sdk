@@ -1,5 +1,6 @@
 package com.pesapal.sdk.fragment.card.data
 
+
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.Editable
@@ -12,6 +13,14 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.cardinalcommerce.cardinalmobilesdk.Cardinal
+import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalEnvironment
+import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalRenderType
+import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
+import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
+import com.cardinalcommerce.shared.models.Warning
+import com.cardinalcommerce.shared.userinterfaces.UiCustomization
+import com.pesapal.sdk.BuildConfig
 import com.pesapal.sdk.model.card.CardDetails
 import com.pesapal.sdk.model.card.submit.request.EnrollmentCheckResult
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
@@ -24,6 +33,10 @@ import com.pesapal.sdk.setButtonEnabled
 import com.pesapal.sdk.utils.FragmentExtension.hideKeyboard
 import com.pesapal.sdk.databinding.FragmentNewCardDetailsBinding
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
+import com.pesapal.sdk.model.card.CardDetailsX
+import com.pesapal.sdk.model.card.CardinalRequest
+import com.pesapal.sdk.model.card.CardinalResponse
+import org.json.JSONArray
 
 class CardFragmentCardData : Fragment() {
 
@@ -40,7 +53,7 @@ class CardFragmentCardData : Fragment() {
     private var expiryMonth = false
     private var expiryYear = false
     private var enable = false
-//    var cardinal: Cardinal? = null
+    lateinit var cardinal: Cardinal
 
     companion object {
         private const val MAX_LENGTH_CVV_CODE = 3
@@ -74,10 +87,54 @@ class CardFragmentCardData : Fragment() {
     }
 
     private fun initData() {
-//        cardinal = Cardinal.getInstance()
+        cardinal = Cardinal.getInstance()
+        initCardinal()
+
         handleViewModel()
         handleChangeListener()
     }
+
+    private fun initCardinal() {
+        val cardinalConfigurationParameters = CardinalConfigurationParameters()
+        cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
+        cardinalConfigurationParameters.requestTimeout = 8000
+        cardinalConfigurationParameters.challengeTimeout = 5
+        val rTYPE = JSONArray()
+        rTYPE.put(CardinalRenderType.OTP)
+        rTYPE.put(CardinalRenderType.SINGLE_SELECT)
+        rTYPE.put(CardinalRenderType.MULTI_SELECT)
+        rTYPE.put(CardinalRenderType.OOB)
+        rTYPE.put(CardinalRenderType.HTML)
+        cardinalConfigurationParameters.renderType = rTYPE
+        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+
+        if (BuildConfig.DEBUG) {
+            cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
+            cardinalConfigurationParameters.isEnableLogging = true
+        } else {
+            cardinalConfigurationParameters.environment = CardinalEnvironment.PRODUCTION
+            cardinalConfigurationParameters.isEnableLogging = false
+        }
+
+//     cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+//     cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
+//     cardinalConfigurationParameters.isLocationDataConsentGiven = true
+
+        val yourUICustomizationObject = UiCustomization()
+        cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
+        cardinal.configure(requireContext(), cardinalConfigurationParameters)
+        getAllWarnings()
+    }
+
+    private fun getAllWarnings() {
+        val warnings: List<Warning> = cardinal.warnings
+        for (warning in warnings) {
+            Log.e(" id ", warning.id);
+            Log.e(" severity ", warning.severity.toString());
+            Log.e(" message ", warning.message.toString());
+        }
+    }
+
 
     private fun generateCardOrderTackingId() {
 
@@ -156,7 +213,20 @@ class CardFragmentCardData : Fragment() {
             cardNumber = cardDetails.cardNumber
         )
 
-        viewModel.submitCardRequest(submitCardRequest)
+//        viewModel.submitCardRequest(submitCardRequest)
+
+        val cardinalRequest = CardinalRequest(
+            paymentDetails.order_id!!, CardDetailsX(
+                cardDetails.cardNumber ,
+                cardDetails.cvv,
+                cardDetails.month,
+                cardDetails.year),
+            paymentDetails.order_tracking_id!!,
+            cardinal.sdkVersion,
+            ""
+        )
+        billingAddress
+        viewModel.getCardinalToken(cardinalRequest)
     }
 
     private fun checkCardPaymentStatus(){
@@ -166,6 +236,10 @@ class CardFragmentCardData : Fragment() {
     private fun handleCompletePayment(transactionStatusResponse: TransactionStatusResponse){
         val action = CardFragmentCardDataDirections.actionPesapalCardFragmentCardDataToPesapalCardFragmentSuccess(transactionStatusResponse)
         findNavController().navigate(action)
+    }
+
+    private fun handleCardinalToken(result: CardinalResponse) {
+
     }
 
     private fun handleViewModel() {
@@ -220,6 +294,29 @@ class CardFragmentCardData : Fragment() {
                     pDialog.dismiss()
                     val result = it.data!!
                     handleCompletePayment(result)
+                }
+                com.pesapal.sdk.utils.Status.ERROR -> {
+                    showMessage(it.message!!)
+                    pDialog.dismiss()
+                }
+
+                else -> {
+                    pDialog.dismiss()
+                }
+            }
+        }
+
+
+
+        viewModel.cardinalToken.observe(requireActivity()) {
+            when (it.status) {
+                com.pesapal.sdk.utils.Status.LOADING -> {
+
+                }
+                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                    pDialog.dismiss()
+                    val result = it.data!!
+                    handleCardinalToken(result)
                 }
                 com.pesapal.sdk.utils.Status.ERROR -> {
                     showMessage(it.message!!)

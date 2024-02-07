@@ -137,15 +137,13 @@ class MainPesapalFragment: Fragment() {
 
     private fun initData(){
         binding.tvAmount.text = "${paymentDetails.currency} ${paymentDetails.amount}"
-        binding.tvOrderNumber.text = paymentDetails.order_id
-//        binding.tvOrderNumber.text = pesapalSdkViewModel.orderID
+//        binding.tvOrderNumber.text = paymentDetails.order_id
+        binding.tvOrderNumber.text = pesapalSdkViewModel.orderID
         binding.tvDateTime.text = TimeUtils.getCurrentDateTime()
     }
 
     private fun handlePaymentOptions(){
         binding.paymentOptionGroup.setOnCheckedChangeListener { chipGroup: ChipGroup, i: Int ->
-            Log.e("MainPF"," Something clicked $i")
-
             val chip = chipGroup.findViewById<Chip>(i)
             if (chip != null && chip.isChecked) {
                 configureSelectedChip(chip)
