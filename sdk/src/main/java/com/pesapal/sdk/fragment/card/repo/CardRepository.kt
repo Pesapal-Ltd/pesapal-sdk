@@ -1,8 +1,14 @@
 package com.pesapal.sdk.fragment.card.repo
 
+import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
+import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
+import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
 import com.pesapal.sdk.data.api.ApiClient
+import com.pesapal.sdk.model.auth.AuthResponseModel
 import com.pesapal.sdk.model.card.CardinalRequest
 import com.pesapal.sdk.model.card.CardinalResponse
+import com.pesapal.sdk.model.card.RequestServerJwt
+import com.pesapal.sdk.model.card.ResponseServerJwt
 import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.sdk.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
@@ -92,5 +98,57 @@ internal class CardRepository {
         }
 
     }
+
+
+    suspend fun serverJwt(requestServerJwt: RequestServerJwt): Resource<ResponseServerJwt>{
+
+        return withContext(Dispatchers.IO){
+            try{
+                val serverJwt = apiService.getServerJwt("Bearer "+ PrefManager.getToken(),requestServerJwt)
+                if(serverJwt.status == "200"){
+                    Resource.success(serverJwt)
+                }else{
+                    val error = serverJwt.message;
+                    Resource.error(error)
+                }
+
+            }catch (e: Exception){
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+    }
+
+    suspend fun dsToken(dsTokenRequest: DsTokenRequest): Resource<AuthResponseModel> {
+        return  withContext(Dispatchers.IO) {
+            try {
+                val sendLogs = apiService.dsToken(dsTokenRequest)
+                if(sendLogs.status != null && sendLogs.status == "200") {
+                    Resource.success(sendLogs)
+                }else{
+                    val error = sendLogs.error.message
+                    Resource.error(error!!)
+                }
+            } catch (e: Exception) {
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+    }
+
+    suspend fun check3ds(checkDSecureRequest: CheckDSecureRequest, token: String): Resource<CheckDsResponse> {
+        return  withContext(Dispatchers.IO) {
+            try {
+                val sendLogs = apiService.check3ds(token,checkDSecureRequest)
+//                if(sendLogs != null) {
+                Resource.success(sendLogs)
+//                }else{
+//                    val error = sendLogs.message
+//                    Resource.error(error!!)
+//                }
+            } catch (e: Exception) {
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+    }
+
 
 }

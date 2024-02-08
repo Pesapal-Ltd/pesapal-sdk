@@ -2,6 +2,7 @@ package com.pesapal.sdk.fragment.card.data
 
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -18,8 +19,21 @@ import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalEnvironment
 import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalRenderType
 import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
 import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
+import com.cardinalcommerce.cardinalmobilesdk.models.ValidateResponse
+import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
+import com.cardinalcommerce.cardinalmobilesdk.services.CardinalValidateReceiver
 import com.cardinalcommerce.shared.models.Warning
 import com.cardinalcommerce.shared.userinterfaces.UiCustomization
+import com.google.gson.Gson
+import com.pesapal.paygateway.activities.payment.model.cacontinie.Account
+import com.pesapal.paygateway.activities.payment.model.cacontinie.CCAExtension
+import com.pesapal.paygateway.activities.payment.model.cacontinie.Consumer
+import com.pesapal.paygateway.activities.payment.model.cacontinie.OrderDetails
+import com.pesapal.paygateway.activities.payment.model.cacontinie.PayloadCanContinueModel
+import com.pesapal.paygateway.activities.payment.model.check3ds.BillingDetails
+import com.pesapal.paygateway.activities.payment.model.check3ds.CardDetails3Ds
+import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
+import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
 import com.pesapal.sdk.BuildConfig
 import com.pesapal.sdk.model.card.CardDetails
 import com.pesapal.sdk.model.card.submit.request.EnrollmentCheckResult
@@ -36,7 +50,11 @@ import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 import com.pesapal.sdk.model.card.CardDetailsX
 import com.pesapal.sdk.model.card.CardinalRequest
 import com.pesapal.sdk.model.card.CardinalResponse
+import com.pesapal.sdk.model.card.RequestServerJwt
+import com.pesapal.sdk.model.card.ResponseServerJwt
+import com.pesapal.sdk.utils.Status
 import org.json.JSONArray
+import java.math.BigDecimal
 
 class CardFragmentCardData : Fragment() {
 
@@ -53,7 +71,10 @@ class CardFragmentCardData : Fragment() {
     private var expiryMonth = false
     private var expiryYear = false
     private var enable = false
-    lateinit var cardinal: Cardinal
+    var cardinal: Cardinal? = null
+
+    var responseServerJwt: ResponseServerJwt? = null
+    var consumerSessionId : String? = null
 
     companion object {
         private const val MAX_LENGTH_CVV_CODE = 3
@@ -122,12 +143,12 @@ class CardFragmentCardData : Fragment() {
 
         val yourUICustomizationObject = UiCustomization()
         cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
-        cardinal.configure(requireContext(), cardinalConfigurationParameters)
+        cardinal!!.configure(requireContext(), cardinalConfigurationParameters)
         getAllWarnings()
     }
 
     private fun getAllWarnings() {
-        val warnings: List<Warning> = cardinal.warnings
+        val warnings: List<Warning> = cardinal!!.warnings
         for (warning in warnings) {
             Log.e(" id ", warning.id);
             Log.e(" severity ", warning.severity.toString());
@@ -166,9 +187,18 @@ class CardFragmentCardData : Fragment() {
         );
 
 
-        viewModel.generateCardOrderTrackingId(cardOrderTrackingIdRequest, " Processing request ...")
+//        viewModel.generateCardOrderTrackingId(cardOrderTrackingIdRequest, " Processing request ...")
+        var requestServerJwt = RequestServerJwt(
+            BigDecimal("1500"),paymentDetails.currency!!, billingAddress = billingAddress, cardDetails = cardDetails
+        )
 
+//        initSdk();
+
+
+        viewModel.serverJwt(requestServerJwt)
     }
+
+
     private fun submitCardRequest() {
         val enrollmentCheckResult = EnrollmentCheckResult(
             authenticationResult = "",
@@ -215,18 +245,18 @@ class CardFragmentCardData : Fragment() {
 
 //        viewModel.submitCardRequest(submitCardRequest)
 
-        val cardinalRequest = CardinalRequest(
-            paymentDetails.order_id!!, CardDetailsX(
-                cardDetails.cardNumber ,
-                cardDetails.cvv,
-                cardDetails.month,
-                cardDetails.year),
-            paymentDetails.order_tracking_id!!,
-            cardinal.sdkVersion,
-            ""
-        )
-        billingAddress
-        viewModel.getCardinalToken(cardinalRequest)
+//        val cardinalRequest = CardinalRequest(
+//            paymentDetails.order_id!!, CardDetailsX(
+//                cardDetails.cardNumber ,
+//                cardDetails.cvv,
+//                cardDetails.month,
+//                cardDetails.year),
+//            paymentDetails.order_tracking_id!!,
+//            cardinal.sdkVersion,
+//            ""
+//        )
+//        billingAddress
+//        viewModel.getCardinalToken(cardinalRequest)
     }
 
     private fun checkCardPaymentStatus(){
@@ -245,17 +275,17 @@ class CardFragmentCardData : Fragment() {
     private fun handleViewModel() {
         viewModel.cardOrderTrackingIdResponse.observe(requireActivity()) {
             when (it.status) {
-                com.pesapal.sdk.utils.Status.LOADING -> {
+                Status.LOADING -> {
                     pDialog = ProgressDialog(requireContext())
                     pDialog.setMessage(it.message)
                     pDialog.show()
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     val result = it.data
                     paymentDetails.order_tracking_id = result!!.orderTrackingId
                     submitCardRequest()
                 }
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     showMessage(it.message!!)
                     pDialog.dismiss()
                 }
@@ -268,13 +298,13 @@ class CardFragmentCardData : Fragment() {
 
         viewModel.submitCardResponse.observe(requireActivity()){
             when (it.status) {
-                com.pesapal.sdk.utils.Status.LOADING -> {
+                Status.LOADING -> {
 
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     checkCardPaymentStatus()
                 }
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     showMessage(it.message!!)
                     pDialog.dismiss()
                 }
@@ -287,15 +317,15 @@ class CardFragmentCardData : Fragment() {
 
         viewModel.cardPaymentStatus.observe(requireActivity()) {
             when (it.status) {
-                com.pesapal.sdk.utils.Status.LOADING -> {
+                Status.LOADING -> {
 
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
+                Status.SUCCESS -> {
                     pDialog.dismiss()
                     val result = it.data!!
                     handleCompletePayment(result)
                 }
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     showMessage(it.message!!)
                     pDialog.dismiss()
                 }
@@ -306,30 +336,257 @@ class CardFragmentCardData : Fragment() {
             }
         }
 
-
-
-        viewModel.cardinalToken.observe(requireActivity()) {
+        viewModel.serverJwt.observe(requireActivity()){
             when (it.status) {
-                com.pesapal.sdk.utils.Status.LOADING -> {
-
+                Status.LOADING -> {
+                    pDialog = ProgressDialog(requireContext())
+                    pDialog.setMessage(it.message)
+                    pDialog.show()
                 }
-                com.pesapal.sdk.utils.Status.SUCCESS -> {
-                    pDialog.dismiss()
-                    val result = it.data!!
-                    handleCardinalToken(result)
+                Status.SUCCESS -> {
+                    responseServerJwt = it.data
+                    initSdk(responseServerJwt!!.orderJwt)
                 }
-                com.pesapal.sdk.utils.Status.ERROR -> {
+                Status.ERROR -> {
                     showMessage(it.message!!)
                     pDialog.dismiss()
                 }
-
                 else -> {
-                    pDialog.dismiss()
+                    Log.e(" else ", " ====> auth")
                 }
             }
         }
+
+        viewModel.dsToken.observe(requireActivity()){
+            when (it.status) {
+                Status.LOADING -> {
+
+                }
+                Status.SUCCESS -> {
+                    val token = it.data!!.token
+                    get3dsPayload(token);
+                }
+                Status.ERROR -> {
+
+                }
+                else -> {
+
+                }
+            }
+        }
+
+        viewModel.dsResponse.observe(requireActivity()){
+
+            when (it.status) {
+                Status.LOADING -> {
+                }
+                Status.SUCCESS -> {
+                    var response = it.data
+                    val gson = Gson()
+
+                    var responseString = gson.toJson(response)
+                    Log.e(" responseString ", responseString)
+
+                    var payAcsUrlload = response?.acsUrl
+                    var payload = response?.payload
+
+                    handle3dSecure(response!!.authenticationTransactionId,payload!!,payAcsUrlload!!);
+                }
+                Status.ERROR -> {
+                }
+                else -> {
+                    Log.e(" else ", " ====> auth")
+                }
+            }
+        }
+
+
+//        viewModel.cardinalToken.observe(requireActivity()) {
+//            when (it.status) {
+//                com.pesapal.sdk.utils.Status.LOADING -> {
+//
+//                }
+//                com.pesapal.sdk.utils.Status.SUCCESS -> {
+//                    pDialog.dismiss()
+//                    val result = it.data!!
+//                    handleCardinalToken(result)
+//                }
+//                com.pesapal.sdk.utils.Status.ERROR -> {
+//                    showMessage(it.message!!)
+//                    pDialog.dismiss()
+//                }
+//
+//                else -> {
+//                    pDialog.dismiss()
+//                }
+//            }
+//        }
 
     }
+
+    private fun get3dToken(){
+        val dsTokenRequest = DsTokenRequest("E71FC13D-5FD0-43EC-9E87-007586759EE0","677801C8-A971-46F8-957E-497213245E9B");
+        viewModel.getDsToken(dsTokenRequest)
+    }
+
+    private fun initSdk(serverJwt: String){
+
+
+        cardinal?.init(serverJwt, object: CardinalInitService {
+            /**
+             * You may have your Submit button disabled on page load. Once you are set up
+             * for CCA, you may then enable it. This will prevent users from submitting
+             * their order before CCA is ready.
+             */
+
+            override fun onSetupCompleted(consumerSessionIds: String) {
+                pDialog.dismiss()
+                consumerSessionId = consumerSessionIds
+                Log.e("TAG","COns $consumerSessionIds")
+                get3dToken()
+            }
+
+            /**
+             * If there was an error with setup, cardinal will call this function with
+             * validate response and empty serverJWT
+             * @param validateResponse
+             * @param serverJwt will be an empty
+             */
+            override fun onValidated(validateResponse: ValidateResponse, serverJwt: String?) {
+                pDialog.dismiss()
+
+            }
+        })
+
+    }
+
+
+    private fun get3dsPayload(token: String){
+
+
+
+
+        var cardDetails = CardDetails3Ds(
+            cardDetails.cvv,
+            cardDetails.cardNumber,
+            cardDetails.month.toString(),
+            cardDetails.year,
+            "001"
+        )
+
+
+        val billingAddress = BillingDetails(
+            phoneNumber = "0703318241",
+            email = "samuel@pesapal.com",
+            country = "KE",
+            currency = paymentDetails.currency,
+            firstName = "samuel",
+            lastName = "nyamai",
+            city = "Nairobi",
+            state = "",
+            postalCode = "80300",
+        )
+
+        val checkDSecureRequest = CheckDSecureRequest(
+            cardDetails,
+            billingAddress,
+            paymentDetails.amount,
+            "",
+            consumerSessionId!!,
+            paymentDetails.currency!!,
+            0,
+            "",
+            "SDK"
+        )
+
+        viewModel.check3ds(checkDSecureRequest,token)
+    }
+
+
+    private fun handle3dSecure(transactionId: String, payload: String,acsUrl: String ){
+
+        try {
+
+            var orderDetails = OrderDetails(
+                "404",
+                "P",
+                amount = paymentDetails.amount.toString(),
+                orderNumber = "test_order",
+                transactionId = consumerSessionId!!
+            )
+
+            var account = Account(
+                nameOnAccount = "samuel"+""+"nyamai",
+                cardCode = cardDetails.cvv,
+                expirationMonth = cardDetails.month.toString(),
+                expirationYear = "20" + cardDetails.year,
+                accountNumber =  cardDetails.cardNumber
+            )
+
+            var consumer = Consumer(
+                account = account
+            )
+
+            var ccaExtension = CCAExtension(
+                merchantName = "PESAPAL LTD"
+            )
+
+            var payloadCanContinueModel = PayloadCanContinueModel(
+                cCAExtension = ccaExtension,
+                consumer = consumer,
+                orderDetails = orderDetails,
+                payload = payload,
+                acsUrl = acsUrl,
+            )
+
+            val gson = Gson()
+            var stringPayload = gson.toJson(payloadCanContinueModel)
+            var stringPayloadv1 = stringPayload.replace("\\u0026", "&");
+            var stringPayloadv2 = stringPayloadv1.replace("\\u003d", "=");
+
+            Log.e(" payload ",stringPayloadv2)
+            Log.e(" transactionId ",transactionId)
+
+
+
+
+            cardinal?.cca_continue(transactionId,stringPayloadv2,requireActivity()) { p0, validateResponse, serverJWT ->
+                /**
+                 * This method is triggered when the transaction has been terminated. This is how SDK hands back
+                 * control to the merchant's application. This method will
+                 * include data on how the transaction attempt ended and
+                 * you should have your logic for reviewing the results of
+                 * the transaction and making decisions regarding next steps.
+                 * JWT will be empty if validate was not successful.
+                 *
+                 * @param validateResponse
+                 * @param serverJWT
+                 */
+                /**
+                 * This method is triggered when the transaction has been terminated. This is how SDK hands back
+                 * control to the merchant's application. This method will
+                 * include data on how the transaction attempt ended and
+                 * you should have your logic for reviewing the results of
+                 * the transaction and making decisions regarding next steps.
+                 * JWT will be empty if validate was not successful.
+                 *
+                 * @param validateResponse
+                 * @param serverJWT
+                 */
+
+                //                    handleValidation(validateResponse!!)
+                Log.e(" cca_continue ", " ===> " + validateResponse!!.errorDescription)
+            };
+
+
+        } catch (e: Exception) {
+            // Handle exception
+            Log.e(" Exception ", " ===> "+e.localizedMessage)
+
+        }
+    }
+
+
 
 
     private fun showMessage(message: String) {

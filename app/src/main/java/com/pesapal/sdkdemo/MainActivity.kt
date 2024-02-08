@@ -113,11 +113,13 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     private fun handleClicks(){
         binding.btnCheckOut.setOnClickListener {
-            if(auth.currentUser != null){
-                startPayment()
-            }else {
-                handleGoogleSignIn()
-            }
+//            if(auth.currentUser != null){
+//                startPayment()
+//            }else {
+//                handleGoogleSignIn()
+//            }
+
+            startPayment()
         }
         binding.civProfile.setOnClickListener {
             startProfile()
@@ -194,52 +196,50 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun startPayment(){
-        val db = FirebaseFirestore.getInstance()
-        val documentBalance = db.collection("users").document(auth.currentUser?.email!!).get()
-        documentBalance.addOnCompleteListener {
-            if(it.isSuccessful){
-                val displayName: String = it.result.get("displayName").toString()
-                val firstName: String = it.result.get("firstName").toString()
-                val lastName: String = it.result.get("lastName").toString()
-                val email: String? = it.result.get("email").toString()
-                val photoUrl: String? = it.result.get("photoUrl").toString()
-                val time: String? = it.result.get("time").toString()
-                userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
+//        val db = FirebaseFirestore.getInstance()
+//        val documentBalance = db.collection("users").document(auth.currentUser?.email!!).get()
+//        documentBalance.addOnCompleteListener {
+//            if(it.isSuccessful){
+//                val displayName: String = it.result.get("displayName").toString()
+//                val firstName: String = it.result.get("firstName").toString()
+//                val lastName: String = it.result.get("lastName").toString()
+//                val email: String? = it.result.get("email").toString()
+//                val photoUrl: String? = it.result.get("photoUrl").toString()
+//                val time: String? = it.result.get("time").toString()
+//                userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
+//
+//                initPayment()
+//            }else{
+//                hardCodedInfo()
+//
+////                showMessage("Unable to get your account ")
+//            }
+//        }
 
-                initPayment()
-            }else{
-//                val displayName = "Job"
+
+        hardCodedInfo()
+
+    }
+
+    private fun hardCodedInfo(){
+        //                val displayName = "Job"
 //                val firstName = "Job"
 //                val lastName = "Masai"
 //                val email = "jmasai@pesapal.com"
 
 
-                val displayName = "Samuel"
-                val firstName = "Samuel"
-                val lastName = "Nyamai"
-                val email = "samuel@pesapal.com"
+        val displayName = "Samuel"
+        val firstName = "Samuel"
+        val lastName = "Nyamai"
+        val email = "samuel@pesapal.com"
 
 
-                val photoUrl: String? = null
-                val time: String? = null
-                userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
+        val photoUrl: String? = null
+        val time: String? = null
+        userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
 
-                initPayment()
-                showMessage("HardCoded user info ")
-
-//                showMessage("Unable to get your account ")
-            }
-        }
-
-//        val displayName = "Samuel"
-//        val firstName = "Samuel"
-//        val lastName = "Nyamai"
-//        val email = "samuel@pesapal.com"
-//        val photoUrl: String? = null
-//        val time: String? = null
-//        userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
-
-//        initPayment()
+        initPayment()
+        showMessage("HardCoded user info ")
 
     }
 

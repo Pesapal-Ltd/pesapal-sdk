@@ -1,9 +1,14 @@
 package com.pesapal.sdk.data.services
 
+import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
+import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
+import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
 import com.pesapal.sdk.model.auth.AuthRequestModel
 import com.pesapal.sdk.model.auth.AuthResponseModel
 import com.pesapal.sdk.model.card.CardinalRequest
 import com.pesapal.sdk.model.card.CardinalResponse
+import com.pesapal.sdk.model.card.RequestServerJwt
+import com.pesapal.sdk.model.card.ResponseServerJwt
 import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.sdk.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
@@ -38,7 +43,22 @@ internal interface ApiServices {
     @GET("api/Transactions/GetTransactionStatus")
     suspend fun getTransactionStatus(@Header("Authorization") token: String, @Query("orderTrackingId") orderTrackingId: String) : TransactionStatusResponse
 
+
+
+    @Deprecated("OLDER VERSION")
     @GET("api/Transactions/SignCardinalCheckoutRequest")
     suspend fun signCardinal(@Header("Authorization") token: String, @Body cardinalRequest: CardinalRequest) : CardinalResponse
+
+
+    @POST("api/Transactions/SignCardinalCheckoutRequest")
+    suspend fun getServerJwt(@Header("Authorization") token: String, @Body requestServerJwt: RequestServerJwt) : ResponseServerJwt
+
+    @POST("https://cybqa.pesapal.com/pesapalcharging/api/Token/RequestApiToken")
+    suspend fun dsToken( @Body dsTokenRequest: DsTokenRequest) : AuthResponseModel
+
+    @POST("https://cybqa.pesapal.com/pesapalcharging/api/Transaction/CheckEnrollMent")
+    suspend fun check3ds(@Header("Authorization") token: String, @Body checkDSecureRequest: CheckDSecureRequest) : CheckDsResponse
+
+
 
 }

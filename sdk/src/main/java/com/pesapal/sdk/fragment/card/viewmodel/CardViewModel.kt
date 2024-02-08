@@ -4,9 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
+import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
+import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
 import com.pesapal.sdk.fragment.card.repo.CardRepository
+import com.pesapal.sdk.model.auth.AuthResponseModel
 import com.pesapal.sdk.model.card.CardinalRequest
 import com.pesapal.sdk.model.card.CardinalResponse
+import com.pesapal.sdk.model.card.RequestServerJwt
+import com.pesapal.sdk.model.card.ResponseServerJwt
 import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.sdk.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
@@ -34,9 +40,22 @@ internal class CardViewModel : ViewModel() {
         get() = _cardPaymentStatus
 
 
+    //TODO DELETE THIS LATER
     private var _cardinalToken = MutableLiveData<Resource<CardinalResponse>>()
     val cardinalToken: LiveData<Resource<CardinalResponse>>
         get() = _cardinalToken
+
+    private var _serverJwt = MutableLiveData<Resource<ResponseServerJwt>>()
+    val serverJwt: LiveData<Resource<ResponseServerJwt>>
+        get() = _serverJwt
+
+    private var _dsToken = MutableLiveData<Resource<AuthResponseModel>>()
+    val dsToken: LiveData<Resource<AuthResponseModel>>
+        get() = _dsToken
+
+    private var _dsResponse = MutableLiveData<Resource<CheckDsResponse>>()
+    val dsResponse: LiveData<Resource<CheckDsResponse>>
+        get() = _dsResponse
 
 
     fun generateCardOrderTrackingId(cardOrderTrackingIdRequest: CardOrderTrackingIdRequest, action: String){
@@ -97,7 +116,7 @@ internal class CardViewModel : ViewModel() {
     }
 
     /**
-     * Retrieve jwt token
+     * Retrieve jwt token. OLDER VERSION
      */
     fun getCardinalToken(cardinalRequest: CardinalRequest){
         _cardinalToken.postValue(Resource.loading("Preparing paymen ... "))
@@ -115,6 +134,56 @@ internal class CardViewModel : ViewModel() {
                 }
             }
 
+        }
+    }
+
+
+    fun serverJwt(requestServerJwt: RequestServerJwt){
+        _serverJwt.postValue(Resource.loading("Initializing txn ... "))
+        viewModelScope.launch {
+            val result = cardRepository.serverJwt(requestServerJwt)
+            when(result.status){
+                Status.ERROR -> {
+                    _serverJwt.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _serverJwt.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+
+        }
+    }
+
+    fun getDsToken(dsTokenRequest: DsTokenRequest) {
+        _dsToken.postValue(Resource.loading("Initiating payment process ... "))
+        viewModelScope.launch {
+            val result = cardRepository.dsToken(dsTokenRequest)
+            when (result.status) {
+                Status.ERROR -> {
+                    _dsToken.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _dsToken.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
+        }
+    }
+
+    fun check3ds(checkDSecureRequest: CheckDSecureRequest, token: String) {
+        _dsResponse.postValue(Resource.loading("Initiating payment process ... "))
+        viewModelScope.launch {
+            val result = cardRepository.check3ds(checkDSecureRequest,token)
+            when (result.status) {
+                Status.ERROR -> {
+                    _dsResponse.postValue(Resource.error(result.message!!))
+                }
+                Status.SUCCESS -> {
+                    _dsResponse.postValue(Resource.success(result.data))
+                }
+                else -> {}
+            }
         }
     }
 
