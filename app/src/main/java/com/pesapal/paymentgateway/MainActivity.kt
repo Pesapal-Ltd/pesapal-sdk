@@ -85,6 +85,8 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             listOf(
                 CatalogueModel.ProductsBean("Blue Shirt",R.drawable.blue_shirt, BigDecimal(1).setScale(2)),
                 CatalogueModel.ProductsBean("Red Shirt",R.drawable.red_shirt, BigDecimal(5).setScale(2)),
+                CatalogueModel.ProductsBean("Redds Shirt",R.drawable.red_shirt, BigDecimal(500).setScale(2)),
+                CatalogueModel.ProductsBean("Redish Shirt",R.drawable.red_shirt, BigDecimal(1000).setScale(2)),
             )
         )
 

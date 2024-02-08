@@ -28,6 +28,7 @@ import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequ
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
 import com.pesapal.paygateway.activities.payment.model.mobile_money.BillingAddress
 import com.pesapal.paygateway.activities.payment.model.mobile_money.MobileMoneyRequest
+import com.pesapal.paygateway.activities.payment.model.server_jwt.RequestServerJwt
 import com.pesapal.paygateway.activities.payment.model.server_jwt.response.ResponseServerJwt
 import com.pesapal.paygateway.activities.payment.setButtonEnabled
 import com.pesapal.paygateway.activities.payment.utils.FragmentExtension.hideKeyboard
@@ -43,8 +44,8 @@ class CardFragmentNewBilling : Fragment() {
 
     private var first_name: String? = ""
     private var last_name: String? = ""
-    private var email: String? = ""
-    private var phone: String? = ""
+    private var email: String? = "samuel@pesapal.com"
+    private var phone: String? = "0703318241"
     private var amount: BigDecimal = BigDecimal.ONE
     private lateinit var order_id: String
     private lateinit var currency: String
@@ -273,15 +274,15 @@ class CardFragmentNewBilling : Fragment() {
             cvv,
         )
 
-         billingAddress = BillingAddress(phoneNumber = phone, emailAddress = email, countryCode = "KE", firstName = first_name,
-            middleName = last_name,
+         billingAddress = BillingAddress(phoneNumber = "0703318241", emailAddress = "samuel@pesapal.com", countryCode = "KE", firstName = "samuel",
+            middleName = "nyamai",
             lastName = last_name,
             line = "",
             line2 = "",
             city = "Nairobi",
-            state = "",
-            postalCode = "",
-            zipCode = "")
+            state = "Nairobi",
+            postalCode = "80300",
+            zipCode = "431")
 
 
          mobileMoneyRequest =  MobileMoneyRequest(
@@ -305,24 +306,24 @@ class CardFragmentNewBilling : Fragment() {
         );
 
 
-        viewModel.generateOrderId(mobileMoneyRequest," Generating Order Id ..." )
+//        viewModel.generateOrderId(mobileMoneyRequest," Generating Order Id ..." )
 
 
-//        var orderTrackingId = ""
-//        var authenticationTransactionId = ""
-//        var veresEnrolled = ""
-//        var specificationVersion = "1.108"
-//
-//
-//
-//        var requestServerJwt = RequestServerJwt(
-//            BigDecimal("1500"),currency, billingAddress = billingAddress, cardDetails = cardDetails
-//        )
-//
-////        initSdk();
+        var orderTrackingId = ""
+        var authenticationTransactionId = ""
+        var veresEnrolled = ""
+        var specificationVersion = "1.108"
 
 
-//        viewModel.serverJwt(requestServerJwt)
+
+        var requestServerJwt = RequestServerJwt(
+            BigDecimal("1500"),currency, billingAddress = billingAddress, cardDetails = cardDetails
+        )
+
+//        initSdk();
+
+
+        viewModel.serverJwt(requestServerJwt)
 
 
     }
@@ -480,6 +481,7 @@ class CardFragmentNewBilling : Fragment() {
             override fun onSetupCompleted(consumerSessionIds: String) {
                 pDialog.dismiss()
                 consumerSessionId = consumerSessionIds
+                Log.e("TAG","COns $consumerSessionIds")
                 get3dToken()
             }
 
@@ -512,20 +514,20 @@ class CardFragmentNewBilling : Fragment() {
             numberCard,
             expiryMonthData,
             Integer.parseInt(expiryYearData),
-            null
+            "001"
         )
 
 
         val billingAddress = BillingDetails(
-            phoneNumber = phone!!,
-            email = email!!,
+            phoneNumber = "0703318241",
+            email = "samuel@pesapal.com",
             country = "KE",
             currency=currency,
             firstName = first_name!!,
             lastName = last_name!!,
             city = "Nairobi",
             state = "",
-            postalCode = "",
+            postalCode = "80300",
         )
 
         val checkDSecureRequest = CheckDSecureRequest(

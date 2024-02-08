@@ -1,6 +1,7 @@
 package com.pesapal.paygateway.activities.payment.model.server_jwt
 
 import com.google.gson.annotations.SerializedName
+import com.pesapal.paygateway.activities.payment.model.card_request.CardDetails
 import com.pesapal.paygateway.activities.payment.model.mobile_money.BillingAddress
 import java.math.BigDecimal
 
