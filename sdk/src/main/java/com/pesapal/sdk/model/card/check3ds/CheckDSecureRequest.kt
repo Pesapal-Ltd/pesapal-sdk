@@ -21,6 +21,9 @@ data class CheckDSecureRequest(@SerializedName("card_details")
                                val mccCode: String = "",
                                @SerializedName("device_channel")
                                val deviceChannel: String = "",
+                               @SerializedName("ip_address")
+                               val ipAddress: String = "",
+
 
 
 )

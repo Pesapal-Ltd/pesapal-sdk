@@ -53,8 +53,17 @@ import com.pesapal.sdk.model.card.CardinalResponse
 import com.pesapal.sdk.model.card.RequestServerJwt
 import com.pesapal.sdk.model.card.ResponseServerJwt
 import com.pesapal.sdk.utils.Status
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import java.math.BigDecimal
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.Scanner
 
 class CardFragmentCardData : Fragment() {
 
@@ -75,6 +84,9 @@ class CardFragmentCardData : Fragment() {
 
     var responseServerJwt: ResponseServerJwt? = null
     var consumerSessionId : String? = null
+
+    var ip: String = ""
+
 
     companion object {
         private const val MAX_LENGTH_CVV_CODE = 3
@@ -111,6 +123,7 @@ class CardFragmentCardData : Fragment() {
         cardinal = Cardinal.getInstance()
         initCardinal()
 
+        launchIp()
         handleViewModel()
         handleChangeListener()
     }
@@ -496,10 +509,85 @@ class CardFragmentCardData : Fragment() {
             paymentDetails.currency!!,
             0,
             "",
-            "SDK"
+            "SDK",
+            ip
         )
 
         viewModel.check3ds(checkDSecureRequest,token)
+    }
+
+    fun otherIp(){
+//        https://medium.com/@ISKFaisal/android-get-public-ip-address-with-java-kotlin-4d0575d2847
+        flow {
+            //do long work
+            try {
+                val url = URL("https://api.ipify.org")
+                val connection =
+                    url.openConnection() as HttpURLConnection
+                connection.setRequestProperty(
+                    "User-Agent",
+                    "Mozilla/5.0"
+                ) // Set a User-Agent to avoid HTTP 403 Forbidden error
+                Scanner(connection.inputStream, "UTF-8").useDelimiter("\\A").use { s ->
+                    ip = s.next()
+                    Log.e("Main","Ip ap is ${ip}")
+                }
+                connection.disconnect()
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+            emit(ip)
+        }.flowOn(Dispatchers.Default)
+
+//        val thread = Thread {
+//            try {
+//                val url = URL("https://api.ipify.org")
+//                val connection =
+//                    url.openConnection() as HttpURLConnection
+//                connection.setRequestProperty(
+//                    "User-Agent",
+//                    "Mozilla/5.0"
+//                ) // Set a User-Agent to avoid HTTP 403 Forbidden error
+//                Scanner(connection.inputStream, "UTF-8").useDelimiter("\\A").use { s ->
+//                    ip = s.next()
+//                    Log.e("Main","Ip ap is ${ip}")
+//                }
+//                connection.disconnect()
+//            } catch (e: java.lang.Exception) {
+//                e.printStackTrace()
+//            }
+//        }
+//
+//        thread.start()
+    }
+
+    suspend fun getIp(): String = withContext(Dispatchers.Default){
+        var ip = ""
+        try {
+            val url = URL("https://api.ipify.org")
+            val connection =
+                url.openConnection() as HttpURLConnection
+            connection.setRequestProperty(
+                "User-Agent",
+                "Mozilla/5.0"
+            ) // Set a User-Agent to avoid HTTP 403 Forbidden error
+            Scanner(connection.inputStream, "UTF-8").useDelimiter("\\A").use { s ->
+                ip = s.next()
+                Log.e("Main","Ip ap is $ip")
+            }
+            connection.disconnect()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return@withContext ip
+
+    }
+
+    private fun launchIp(){
+        CoroutineScope(Dispatchers.Default).launch{
+            val ipFetched = getIp()
+            ip = ipFetched
+        }
     }
 
 
