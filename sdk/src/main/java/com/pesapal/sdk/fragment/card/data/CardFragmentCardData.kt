@@ -139,8 +139,8 @@ class CardFragmentCardData : Fragment() {
         rTYPE.put(CardinalRenderType.MULTI_SELECT)
         rTYPE.put(CardinalRenderType.OOB)
         rTYPE.put(CardinalRenderType.HTML)
-        cardinalConfigurationParameters.renderType = rTYPE
         cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+        cardinalConfigurationParameters.renderType = rTYPE
 
         if (BuildConfig.DEBUG) {
             cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
@@ -153,6 +153,7 @@ class CardFragmentCardData : Fragment() {
 //     cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
 //     cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
 //     cardinalConfigurationParameters.isLocationDataConsentGiven = true
+
 
         val yourUICustomizationObject = UiCustomization()
         cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
@@ -498,7 +499,10 @@ class CardFragmentCardData : Fragment() {
             city = "Nairobi",
             state = "",
             postalCode = "80300",
+            ipAddress = ip
         )
+
+//        cardinal!!.ap
 
         val checkDSecureRequest = CheckDSecureRequest(
             cardDetails,
@@ -510,7 +514,6 @@ class CardFragmentCardData : Fragment() {
             0,
             "",
             "SDK",
-            ip
         )
 
         viewModel.check3ds(checkDSecureRequest,token)

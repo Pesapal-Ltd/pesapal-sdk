@@ -20,9 +20,7 @@ data class CheckDSecureRequest(@SerializedName("card_details")
                                @SerializedName("mcc_code")
                                val mccCode: String = "",
                                @SerializedName("device_channel")
-                               val deviceChannel: String = "",
-                               @SerializedName("ip_address")
-                               val ipAddress: String = "",
+                               val deviceChannel: String = ""
 
 
 

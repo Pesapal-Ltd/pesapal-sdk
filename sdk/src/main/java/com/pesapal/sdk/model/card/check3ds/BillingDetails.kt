@@ -21,4 +21,6 @@ data class BillingDetails(@SerializedName("country")
                           @SerializedName("first_name")
                           val firstName: String? = "",
                           @SerializedName("email")
-                          var email: String? = "")
+                          var email: String? = "",
+                          @SerializedName("ip_address")
+                          val ipAddress: String = "",)
