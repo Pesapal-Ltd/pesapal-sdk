@@ -497,7 +497,8 @@ class CardFragmentCardData : Fragment() {
             firstName = "samuel",
             lastName = "nyamai",
             city = "Nairobi",
-            state = "",
+            street = "Kasarani",
+            state = "Nairobi",
             postalCode = "80300",
             ipAddress = ip
         )
