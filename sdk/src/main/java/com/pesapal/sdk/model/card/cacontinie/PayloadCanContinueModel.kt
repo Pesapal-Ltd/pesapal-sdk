@@ -11,4 +11,4 @@ data class PayloadCanContinueModel(@SerializedName("CCAExtension")
                                    @SerializedName("Payload")
                                    val payload: String = "",
                                    @SerializedName("AcsUrl")
-                                   val acsUrl: String = "")
+                                   val acsUrl: String? = "")

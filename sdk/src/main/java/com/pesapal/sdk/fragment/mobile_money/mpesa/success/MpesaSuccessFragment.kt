@@ -71,11 +71,11 @@ class MpesaSuccessFragment : Fragment() {
     }
 
     private fun handleDisplay(){
-        binding.tvTxnId.text = "TXN ID: " + transactionStatusResponse.confirmationCode
-        binding.tvTxnId.text = "Order ID: " + pesapalSdkViewModel.orderID
+//        binding.tvTxnId.text = "TXN ID: " + transactionStatusResponse.confirmationCode
+//        binding.tvTxnId.text = "Order ID: " + pesapalSdkViewModel.orderID
+        binding.tvTxnId.text = transactionStatusResponse.confirmationCode
+        binding.tvOrderId.text = pesapalSdkViewModel.orderID
         binding.tvTime.text = TimeUtils.getCurrentDateTime()
-
-
 
     }
 

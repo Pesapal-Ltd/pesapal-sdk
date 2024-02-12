@@ -45,7 +45,6 @@ import com.pesapal.sdk.setButtonEnabled
 import com.pesapal.sdk.utils.FragmentExtension.hideKeyboard
 import com.pesapal.sdk.databinding.FragmentNewCardDetailsBinding
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
-import com.pesapal.sdk.model.card.CardinalResponse
 import com.pesapal.sdk.model.card.RequestServerJwt
 import com.pesapal.sdk.model.card.ResponseServerJwt
 import com.pesapal.sdk.utils.Status
@@ -390,7 +389,21 @@ class CardFragmentCardData : Fragment() {
                     var payAcsUrlload = response?.acsUrl
                     var payload = response?.payload
 
-                    handle3dSecure(response!!.authenticationTransactionId,payload!!,payAcsUrlload!!);
+                    if(!response!!.authenticationTransactionId.isNullOrEmpty() && !payload.isNullOrEmpty() && payAcsUrlload!= null) {
+                        if (response.reasonCode == "475")
+                            handle3dSecure(
+                                response.authenticationTransactionId!!,
+                                payload,
+                                payAcsUrlload
+                            )
+                        else
+                        {
+                            Toast.makeText(requireContext(),"Go normal route without 3ds", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    else
+                        Toast.makeText(requireContext(),"Unable to complete. Err 600", Toast.LENGTH_LONG).show()
                 }
                 Status.ERROR -> {
                 }
@@ -519,7 +532,7 @@ class CardFragmentCardData : Fragment() {
     }
 
 
-    private fun handle3dSecure(transactionId: String, payload: String,acsUrl: String ){
+    private fun handle3dSecure(transactionId: String, payload: String, acsUrl: String? ){
         try {
 
             var orderDetails = OrderDetails(

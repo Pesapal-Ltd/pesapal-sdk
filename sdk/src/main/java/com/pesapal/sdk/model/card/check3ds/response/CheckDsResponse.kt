@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class CheckDsResponse(@SerializedName("authenticationResult")
                            val authenticationResult: String? = null,
                            @SerializedName("authentication_transaction_id")
-                           val authenticationTransactionId: String = "",
+                           val authenticationTransactionId: String? = "",
                            @SerializedName("directory_server_transaction_id")
                            val directoryServerTransactionId: String? = null,
                            @SerializedName("cavv_algorithm")
@@ -15,7 +15,7 @@ data class CheckDsResponse(@SerializedName("authenticationResult")
                            @SerializedName("eci")
                            val eci: String? = null,
                            @SerializedName("acs_url")
-                           val acsUrl: String = "",
+                           val acsUrl: String? = "",
                            @SerializedName("eci_raw")
                            val eciRaw: String? = null,
                            @SerializedName("reason_code")
@@ -29,7 +29,7 @@ data class CheckDsResponse(@SerializedName("authenticationResult")
                            @SerializedName("threeDS_server_transaction_id")
                            val threeDSServerTransactionId: String? = null,
                            @SerializedName("payload")
-                           val payload: String = "",
+                           val payload: String? = "",
                            @SerializedName("ucafAuthenticationData")
                            val ucafAuthenticationData: String? = null,
                            @SerializedName("pareq")
