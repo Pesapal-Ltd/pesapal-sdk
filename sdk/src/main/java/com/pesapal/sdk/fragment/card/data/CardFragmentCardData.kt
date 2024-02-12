@@ -2,7 +2,6 @@ package com.pesapal.sdk.fragment.card.data
 
 
 import android.app.ProgressDialog
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -21,7 +20,6 @@ import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
 import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
 import com.cardinalcommerce.cardinalmobilesdk.models.ValidateResponse
 import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
-import com.cardinalcommerce.cardinalmobilesdk.services.CardinalValidateReceiver
 import com.cardinalcommerce.shared.models.Warning
 import com.cardinalcommerce.shared.userinterfaces.UiCustomization
 import com.google.gson.Gson
@@ -47,16 +45,12 @@ import com.pesapal.sdk.setButtonEnabled
 import com.pesapal.sdk.utils.FragmentExtension.hideKeyboard
 import com.pesapal.sdk.databinding.FragmentNewCardDetailsBinding
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
-import com.pesapal.sdk.model.card.CardDetailsX
-import com.pesapal.sdk.model.card.CardinalRequest
 import com.pesapal.sdk.model.card.CardinalResponse
 import com.pesapal.sdk.model.card.RequestServerJwt
 import com.pesapal.sdk.model.card.ResponseServerJwt
 import com.pesapal.sdk.utils.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -202,13 +196,9 @@ class CardFragmentCardData : Fragment() {
 
 
 //        viewModel.generateCardOrderTrackingId(cardOrderTrackingIdRequest, " Processing request ...")
-        var requestServerJwt = RequestServerJwt(
-            BigDecimal("1500"),paymentDetails.currency!!, billingAddress = billingAddress, cardDetails = cardDetails
-        )
-
 //        initSdk();
 
-
+        val requestServerJwt = RequestServerJwt(BigDecimal("1500"),paymentDetails.currency!!, billingAddress = billingAddress, cardDetails = cardDetails)
         viewModel.serverJwt(requestServerJwt)
     }
 
@@ -282,9 +272,6 @@ class CardFragmentCardData : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun handleCardinalToken(result: CardinalResponse) {
-
-    }
 
     private fun handleViewModel() {
         viewModel.cardOrderTrackingIdResponse.observe(requireActivity()) {
@@ -390,7 +377,6 @@ class CardFragmentCardData : Fragment() {
         }
 
         viewModel.dsResponse.observe(requireActivity()){
-
             when (it.status) {
                 Status.LOADING -> {
                 }
@@ -413,29 +399,6 @@ class CardFragmentCardData : Fragment() {
                 }
             }
         }
-
-
-//        viewModel.cardinalToken.observe(requireActivity()) {
-//            when (it.status) {
-//                com.pesapal.sdk.utils.Status.LOADING -> {
-//
-//                }
-//                com.pesapal.sdk.utils.Status.SUCCESS -> {
-//                    pDialog.dismiss()
-//                    val result = it.data!!
-//                    handleCardinalToken(result)
-//                }
-//                com.pesapal.sdk.utils.Status.ERROR -> {
-//                    showMessage(it.message!!)
-//                    pDialog.dismiss()
-//                }
-//
-//                else -> {
-//                    pDialog.dismiss()
-//                }
-//            }
-//        }
-
     }
 
     private fun get3dToken(){
@@ -444,8 +407,6 @@ class CardFragmentCardData : Fragment() {
     }
 
     private fun initSdk(serverJwt: String){
-
-
         cardinal?.init(serverJwt, object: CardinalInitService {
             /**
              * You may have your Submit button disabled on page load. Once you are set up
@@ -476,10 +437,6 @@ class CardFragmentCardData : Fragment() {
 
 
     private fun get3dsPayload(token: String){
-
-
-
-
         var cardDetails = CardDetails3Ds(
             cardDetails.cvv,
             cardDetails.cardNumber,
@@ -488,26 +445,37 @@ class CardFragmentCardData : Fragment() {
             "001"
         )
 
+//        val billingAddress = BillingDetails(
+//            phoneNumber = "0703318241",
+//            email = "samuel@pesapal.com",
+//            country = "KE",
+//            currency = paymentDetails.currency,
+//            firstName = "samuel",
+//            lastName = "nyamai",
+//            city = "Nairobi",
+//            street = "Kasarani",
+//            state = "Nairobi",
+//            postalCode = "80300",
+//            ipAddress = ip
+//        )
 
-        val billingAddress = BillingDetails(
-            phoneNumber = "0703318241",
-            email = "samuel@pesapal.com",
-            country = "KE",
+        val billingDetails = BillingDetails(
+            phoneNumber = billingAddress.phoneNumber!!,
+            email = billingAddress.emailAddress ,
+            country = billingAddress.countryCode!!,
             currency = paymentDetails.currency,
-            firstName = "samuel",
-            lastName = "nyamai",
-            city = "Nairobi",
-            street = "Kasarani",
-            state = "Nairobi",
-            postalCode = "80300",
+            firstName = billingAddress.firstName,
+            lastName = billingAddress.lastName!!,
+            city = billingAddress.city!!,
+            street = billingAddress.line,
+            state = billingAddress.city!!,
+            postalCode = billingAddress.postalCode,
             ipAddress = ip
         )
 
-//        cardinal!!.ap
-
         val checkDSecureRequest = CheckDSecureRequest(
             cardDetails,
-            billingAddress,
+            billingDetails,
             paymentDetails.amount,
             "",
             consumerSessionId!!,
@@ -520,52 +488,8 @@ class CardFragmentCardData : Fragment() {
         viewModel.check3ds(checkDSecureRequest,token)
     }
 
-    fun otherIp(){
-//        https://medium.com/@ISKFaisal/android-get-public-ip-address-with-java-kotlin-4d0575d2847
-        flow {
-            //do long work
-            try {
-                val url = URL("https://api.ipify.org")
-                val connection =
-                    url.openConnection() as HttpURLConnection
-                connection.setRequestProperty(
-                    "User-Agent",
-                    "Mozilla/5.0"
-                ) // Set a User-Agent to avoid HTTP 403 Forbidden error
-                Scanner(connection.inputStream, "UTF-8").useDelimiter("\\A").use { s ->
-                    ip = s.next()
-                    Log.e("Main","Ip ap is ${ip}")
-                }
-                connection.disconnect()
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
-            }
-            emit(ip)
-        }.flowOn(Dispatchers.Default)
 
-//        val thread = Thread {
-//            try {
-//                val url = URL("https://api.ipify.org")
-//                val connection =
-//                    url.openConnection() as HttpURLConnection
-//                connection.setRequestProperty(
-//                    "User-Agent",
-//                    "Mozilla/5.0"
-//                ) // Set a User-Agent to avoid HTTP 403 Forbidden error
-//                Scanner(connection.inputStream, "UTF-8").useDelimiter("\\A").use { s ->
-//                    ip = s.next()
-//                    Log.e("Main","Ip ap is ${ip}")
-//                }
-//                connection.disconnect()
-//            } catch (e: java.lang.Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//
-//        thread.start()
-    }
-
-    suspend fun getIp(): String = withContext(Dispatchers.Default){
+    private suspend fun getIp(): String = withContext(Dispatchers.Default){
         var ip = ""
         try {
             val url = URL("https://api.ipify.org")
@@ -596,7 +520,6 @@ class CardFragmentCardData : Fragment() {
 
 
     private fun handle3dSecure(transactionId: String, payload: String,acsUrl: String ){
-
         try {
 
             var orderDetails = OrderDetails(
@@ -608,7 +531,7 @@ class CardFragmentCardData : Fragment() {
             )
 
             var account = Account(
-                nameOnAccount = "samuel"+""+"nyamai",
+                nameOnAccount = billingAddress.firstName + "" + billingAddress.lastName,
                 cardCode = cardDetails.cvv,
                 expirationMonth = cardDetails.month.toString(),
                 expirationYear = "20" + cardDetails.year,
@@ -632,14 +555,12 @@ class CardFragmentCardData : Fragment() {
             )
 
             val gson = Gson()
-            var stringPayload = gson.toJson(payloadCanContinueModel)
-            var stringPayloadv1 = stringPayload.replace("\\u0026", "&");
-            var stringPayloadv2 = stringPayloadv1.replace("\\u003d", "=");
+            val stringPayload = gson.toJson(payloadCanContinueModel)
+            val stringPayloadv1 = stringPayload.replace("\\u0026", "&");
+            val stringPayloadv2 = stringPayloadv1.replace("\\u003d", "=");
 
             Log.e(" payload ",stringPayloadv2)
             Log.e(" transactionId ",transactionId)
-
-
 
 
             cardinal?.cca_continue(transactionId,stringPayloadv2,requireActivity()) { p0, validateResponse, serverJWT ->
@@ -666,7 +587,7 @@ class CardFragmentCardData : Fragment() {
                  * @param serverJWT
                  */
 
-                //                    handleValidation(validateResponse!!)
+//                    handleValidation(validateResponse!!)
                 Log.e(" cca_continue ", " ===> " + validateResponse!!.errorDescription)
             };
 
@@ -679,11 +600,10 @@ class CardFragmentCardData : Fragment() {
     }
 
 
-
-
     private fun showMessage(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
 
     private fun setVisaLogoVisible() {
         binding.cardLogoVisaImg.visibility = View.VISIBLE
