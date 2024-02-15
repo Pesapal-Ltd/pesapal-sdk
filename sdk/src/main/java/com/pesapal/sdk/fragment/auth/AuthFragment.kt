@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentAuthorizingBinding
+import com.pesapal.sdk.model.accountinfo.AccountInfoRequest
 import com.pesapal.sdk.model.auth.AuthRequestModel
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
@@ -80,7 +81,6 @@ class AuthFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     binding.loader.visibility = View.GONE
-
                     showMessage(it.message!!)
                 }
 
@@ -92,16 +92,36 @@ class AuthFragment : Fragment() {
                 Status.SUCCESS -> {
                     val ipnId = it.data?.ipn_id
                     PrefManager.setIpnId(ipnId)
-                    proceed()
+                    viewModel.retrieveAccountInfo(AccountInfoRequest(paymentDetails.consumer_key,paymentDetails.consumer_secret))
                 }
 
                 Status.ERROR -> {
+                    binding.loader.visibility = View.GONE
+                    returnIntent(PesapalPayActivity.STATUS_CANCELLED, it.message?:"")
                 }
                 else -> {
+
                 }
             }
         }
 
+        viewModel.accountResp.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    paymentDetails.merchant_name = it.data?.merchantName?:"Pesapal"
+                    proceed()
+                }
+
+                Status.ERROR -> {
+                    binding.loader.visibility = View.GONE
+                    returnIntent(PesapalPayActivity.STATUS_CANCELLED, it.message?:"")
+
+                }
+                else -> {
+
+                }
+            }
+        }
     }
 
     private fun proceed(){

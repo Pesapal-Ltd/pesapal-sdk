@@ -3,6 +3,8 @@ package com.pesapal.sdk.data.services
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
+import com.pesapal.sdk.model.accountinfo.AccountInfoRequest
+import com.pesapal.sdk.model.accountinfo.AccountInfoResponse
 import com.pesapal.sdk.model.auth.AuthRequestModel
 import com.pesapal.sdk.model.auth.AuthResponseModel
 import com.pesapal.sdk.model.card.CardinalRequest
@@ -59,6 +61,8 @@ internal interface ApiServices {
     @POST("https://cybqa.pesapal.com/pesapalcharging/api/Transaction/CheckEnrollMent")
     suspend fun check3ds(@Header("Authorization") token: String, @Body checkDSecureRequest: CheckDSecureRequest) : CheckDsResponse
 
+    @POST("api/Transactions/AccountInfo")
+    suspend fun getAccountInfo(@Body accountInfoRequest: AccountInfoRequest) : AccountInfoResponse
 
 
 }

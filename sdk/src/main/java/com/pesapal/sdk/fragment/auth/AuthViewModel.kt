@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pesapal.sdk.model.accountinfo.AccountInfoRequest
+import com.pesapal.sdk.model.accountinfo.AccountInfoResponse
 import com.pesapal.sdk.model.auth.AuthRequestModel
 import com.pesapal.sdk.model.auth.AuthResponseModel
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
@@ -24,6 +26,11 @@ internal class AuthViewModel : ViewModel() {
     private var _registerIpnResponse = MutableLiveData<Resource<RegisterIpnResponse>>()
     val registerIpnResponse: LiveData<Resource<RegisterIpnResponse>>
         get() = _registerIpnResponse
+
+
+    private var _accountResp = MutableLiveData<Resource<AccountInfoResponse>>()
+    val accountResp: LiveData<Resource<AccountInfoResponse>>
+        get() = _accountResp
 
     private var _handleError = MutableLiveData<Resource<TransactionError>>()
     val handleError: LiveData<Resource<TransactionError>>
@@ -59,6 +66,26 @@ internal class AuthViewModel : ViewModel() {
                 }
                 Status.SUCCESS -> {
                     _registerIpnResponse.postValue(Resource.success(result.data))
+                }
+                else -> {
+                    _handleError.postValue(Resource.error(result.message!!))
+                }
+            }
+
+        }
+    }
+
+    fun retrieveAccountInfo(accountInfoRequest: AccountInfoRequest){
+        _accountResp.postValue(Resource.loading("Setting up ... "))
+        viewModelScope.launch {
+            val result = authRepository.getAccountInfo(accountInfoRequest)
+            when(result.status){
+                Status.ERROR -> {
+                    _accountResp.postValue(Resource.error(result.message!!))
+                    _handleError.postValue(Resource.error(result.message))
+                }
+                Status.SUCCESS -> {
+                    _accountResp.postValue(Resource.success(result.data))
                 }
                 else -> {
                     _handleError.postValue(Resource.error(result.message!!))

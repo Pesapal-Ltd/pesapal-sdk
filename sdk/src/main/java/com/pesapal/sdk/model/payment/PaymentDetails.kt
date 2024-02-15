@@ -18,4 +18,6 @@ internal class PaymentDetails(
     var ipn_notification_type: String? = "GET",
     var country: PESAPALAPI3SDK.COUNTRIES_ENUM? = null,
     var mobile_provider:BigDecimal? = BigDecimal.ONE,
-): Serializable
+    var merchant_name: String? = "",
+
+    ): Serializable

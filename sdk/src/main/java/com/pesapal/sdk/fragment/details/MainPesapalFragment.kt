@@ -72,7 +72,6 @@ class MainPesapalFragment: Fragment() {
     }
 
     private fun evaluateRegionProvider(): List<Int> {
-        Log.e("Mainpf", "Country is ${paymentDetails.country}" )
          return when(paymentDetails.country){
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE ->{
                  CountryCodeEval.kenyaProvider
