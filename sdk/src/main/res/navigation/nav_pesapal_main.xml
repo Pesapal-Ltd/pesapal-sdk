@@ -24,9 +24,9 @@
 
     <fragment
         android:id="@+id/pesapalMainFragment"
-        android:name="com.pesapal.sdk.fragment.details.MainPesapalFragment"
+        android:name="com.pesapal.sdk.fragment.details.PaymentMethodsFragment"
         android:label="Payment Methods"
-        tools:layout="@layout/fragment_pesapal_main">
+        tools:layout="@layout/fragment_payment_methods">
         <action
             android:id="@+id/action_pesapalMainFragment_to_pesapalCardFragment"
             app:destination="@id/nav_graph_card">

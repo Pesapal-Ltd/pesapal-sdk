@@ -4,6 +4,7 @@
 
     <!-- The main / master app color overrides the app hence this becomes purple -->
     <color name="blue_pesapal">#1751AD</color>
+    <color name="blue_pesapal_light">#16659E</color>
 
     <color name="purple_500">#1751AD</color>
     <color name="purple_700">#0A3A86</color>
@@ -14,8 +15,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+
+
+    <color name="black_faded">#333</color>
     <color name="dark_faded_bg">#F6F8FB</color>
+
+    <color name="blue_faded">#F8FAFC</color>
+
     <color name="colorGreyText">#666666</color>
+    <color name="grey_alt">#F5F5F5</color>
+
     <color name="faded_blue">#E1EAFA</color>
     <color name="light_gray_color">#efefef</color>
     <color name="colorPrimaryAltLight">#1E61A7</color>
@@ -24,6 +33,9 @@
     <color name="txn_success">#2cc38a</color>
 
     <color name="un_selected_color_primary">#76A0E2</color>
+    
+    
+    <color name="grey_light">#F6F9FB</color>
 
 
 </resources>

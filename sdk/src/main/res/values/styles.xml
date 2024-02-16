@@ -19,4 +19,21 @@
 <!--        <item name="chipBackgroundColor">@color/background_color_chip_state_list</item>-->
         <item name="rippleColor">@color/blue_pesapal</item>
     </style>
+
+    <style name="button_proceed">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">13dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/rounded_blue</item>
+        <item name="android:paddingVertical">12dp</item>
+    </style>
+
+    <style name="linear_payment_footer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginHorizontal">8dp</item>
+    </style>
 </resources>

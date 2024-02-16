@@ -43,13 +43,19 @@
 
     <string name="provide_mobile_money">1. Provide your %s mobile number</string>
     <string name="provide_mobile_pin">3. Confirm the transaction by providing your \n %s PIN</string>
-    <string name="enter_mobile_number">Enter %s Number</string>
+    <string name="enter_mobile_number">%s PHONE NUMBER</string>
     <!--    <string name="enter_mobile_number">Enter mobile Number</string>-->
 
     <string name="prompt_1">1. Payment prompt sent to phone %s</string>
     <string name="prompt_2">2. Confirm the transaction by entering your %s PIN</string>
     <string name="prompt3">3. If you didn\'t get a prompt, press resend prompt</string>
     <string name="prompt4">4. Click Lipa na Mpesa for manual instructions</string>
+    <string name="pay">Pay \u0020</string>
+    <string name="amount">Amount</string>
+    <string name="label_select_payment">Click to select Your Preferred Payment Method</string>
+    <string name="proceed">PROCEED</string>
+    <string name="pesapal_is_regulated_by_the_central_bank_of_kenya">Pesapal is regulated by the Central Bank of Kenya</string>
+    <string name="billing_instruction">In order to process your credit card successfully, please ensure the billing information you provide below matches the billing address of your credit card.</string>
 
 
 </resources>
