@@ -67,8 +67,8 @@ class PaymentMethodsFragment: Fragment() {
         handleCustomBackPress()
         demoViewInform()
         mobileProviders = evaluateRegionProvider()
-        addDynamicChipGroupViews(mobileProviders)
-        handlePaymentOptions()
+//        addDynamicChipGroupViews(mobileProviders)
+//        handlePaymentOptions()
 
     }
 
@@ -108,64 +108,39 @@ class PaymentMethodsFragment: Fragment() {
             })
     }
 
-    /**
-     * Add mobile money dynamically depending on regions
-     */
-    private fun addDynamicChipGroupViews(mobileProviders: List<Int>) {
 
-        val newContext = ContextThemeWrapper(requireContext(), R.style.chip_style_custom)
-        val chip = Chip(newContext)
-        chip.id = CARD
-        chip.text = "Card"
-        chip.isCheckable = true
-        chip.setChipBackgroundColorResource(R.color.background_color_chip_state_list_changer)
-        binding.paymentOptionGroup.addView(chip)
-
-        mobileProviders.forEach{ providerInt ->
-            val newContext = ContextThemeWrapper(requireContext(), R.style.chip_style_custom)
-            val chip = Chip(newContext)
-            val provider = CountryCodeEval.mappingAllCountries[providerInt]
-            chip.id = provider!!.paymentMethodId
-            chip.text = provider.mobileProvider
-            chip.isCheckable = true
-            chip.setChipBackgroundColorResource(R.color.background_color_chip_state_list_changer)
-
-            binding.paymentOptionGroup.addView(chip)
-        }
-    }
 
 
     private fun initData(){
         binding.tvAmount.text = "${paymentDetails.currency} ${paymentDetails.amount}"
 //        binding.tvOrderNumber.text = paymentDetails.order_id
-        binding.tvOrderNumber.text = pesapalSdkViewModel.orderID
-        binding.tvDateTime.text = TimeUtils.getCurrentDateTime()
+        binding.tvMerchantName.text = paymentDetails.merchant_name
     }
 
-    private fun handlePaymentOptions(){
-        binding.paymentOptionGroup.setOnCheckedChangeListener { chipGroup: ChipGroup, i: Int ->
-            val chip = chipGroup.findViewById<Chip>(i)
-            if (chip != null && chip.isChecked) {
-                configureSelectedChip(chip)
-                if(selectedChip != null && selectedChip>0) {
-                    Log.e("MainPF"," Selected chip is $selectedChip")
-
-                    configureUnselectedChip(chipGroup.findViewById(selectedChip!!))
-                }
-            }
-            selectedChip = i
-        }
-
-        binding.btnProceedPayment.setOnClickListener{
-            if(selectedChip >0)
-                proceedSelected(selectedChip!!)
-            else{
-                Toast.makeText(requireContext(),"Please select a method", Toast.LENGTH_SHORT).show()
-            }
-
-        }
-
-    }
+//    private fun handlePaymentOptions(){
+//        binding.paymentOptionGroup.setOnCheckedChangeListener { chipGroup: ChipGroup, i: Int ->
+//            val chip = chipGroup.findViewById<Chip>(i)
+//            if (chip != null && chip.isChecked) {
+//                configureSelectedChip(chip)
+//                if(selectedChip != null && selectedChip>0) {
+//                    Log.e("MainPF"," Selected chip is $selectedChip")
+//
+//                    configureUnselectedChip(chipGroup.findViewById(selectedChip!!))
+//                }
+//            }
+//            selectedChip = i
+//        }
+//
+//        binding.btnProceedPayment.setOnClickListener{
+//            if(selectedChip >0)
+//                proceedSelected(selectedChip!!)
+//            else{
+//                Toast.makeText(requireContext(),"Please select a method", Toast.LENGTH_SHORT).show()
+//            }
+//
+//        }
+//
+//    }
 
     private fun proceedSelected(i : Int){
         when (i) {
@@ -191,7 +166,7 @@ class PaymentMethodsFragment: Fragment() {
         val canProceedMinMeet = paymentDetails.amount >= min.toBigDecimal()
         if(canProceedMinMeet) {
             paymentDetails.mobile_provider = BigDecimal(i)
-            val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToNavGraphMpesa(
+            val action = PaymentMethodsFragmentDirections.actionPesapalMainFragmentToNavGraphMpesa(
                 paymentDetails,
                 billingAddress
             )
@@ -206,7 +181,7 @@ class PaymentMethodsFragment: Fragment() {
     }
 
     private fun proceedToCard(){
-        val action = MainPesapalFragmentDirections.actionPesapalMainFragmentToPesapalCardFragment(paymentDetails, billingAddress)
+        val action = PaymentMethodsFragmentDirections.actionPesapalMainFragmentToPesapalCardFragment(paymentDetails, billingAddress)
         clearSelectionAndProceed(action)
     }
 
@@ -223,20 +198,14 @@ class PaymentMethodsFragment: Fragment() {
      * todo delete. modifications to the style affect the color scheme
      */
     private fun configureUnselectedChip(chip: Chip) {
-//        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.un_selected_color_primary))
-////        chip.setChipBackgroundColorResource(R.color.colorBackgroundInactive)
-//        chip.setTextColor(resources.getColor(R.color.black))
-//        chip.chipStrokeWidth = 0.0f
+
     }
 
     /**
      * todo delete. modifications to the style affect the color scheme
      */
     private fun configureSelectedChip(chip: Chip) {
-//        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-////        chip.setChipBackgroundColorResource(R.color.background_color_chip_state_list)
-//        chip.setRippleColorResource(R.color.blue_pesapal)
-//        chip.chipStrokeWidth = 0.0f
+//
     }
 
     

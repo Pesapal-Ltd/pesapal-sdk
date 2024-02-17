@@ -3,13 +3,15 @@
     <string name="add_card_invalidEmail">Invalid Email</string>
     <string name="add_card_headerStepText">Step 1 of 3: Billing Address</string>
     <string name="add_card_firstName">First Name</string>
-    <string name="add_card_surname">Surname</string>
-    <string name="add_card_email">Email</string>
-    <string name="add_card_country">Country/Region</string>
-    <string name="add_card_phone">Phone number</string>
+    <string name="add_card_surname">Last Name</string>
+    <string name="add_card_email">Email Address</string>
+    <string name="add_card_country">Country</string>
+    <string name="add_card_phone">Phone Number</string>
     <string name="add_card_address">Address</string>
-    <string name="add_card_postalCode">Postal Code</string>
-    <string name="add_card_city">City</string>
+    <string name="add_card_postalCode">POSTAL/ZIP</string>
+    <string name="add_card_postalCodelower">Postal / Zip Code</string>
+
+    <string name="add_card_city">CITY</string>
     <string name="uri_is_null">Uri is NULL</string>
     <string name="user_not_registered">User Not Registered</string>
     <string name="add_a_friend">Add a Friend</string>
@@ -21,7 +23,7 @@
 
     <string name="current_card_nameOnCard">Name on Card</string>
     <string name="current_card_stepTwoHeader">Step 2 of 3: Card Details</string>
-    <string name="current_card_cardNumber">Card Number</string>
+    <string name="current_card_cardNumber">CARD NUMBER</string>
     <string name="current_card_expiry">Expiry (MM/YY)</string>
     <string name="current_card_cvv">CVV</string>
     <string name="current_card_title">Add Card</string>
@@ -50,12 +52,17 @@
     <string name="prompt_2">2. Confirm the transaction by entering your %s PIN</string>
     <string name="prompt3">3. If you didn\'t get a prompt, press resend prompt</string>
     <string name="prompt4">4. Click Lipa na Mpesa for manual instructions</string>
+
+    <string name="mpesa_combo">1\. Go to M-PESA on your phone \n2. Select Pay Bill option. \n3. Enter Business number 22022 \n4. Enter Account Number 56379467 \n5. Enter the amount KES 1.00 \n6. Enter your M-PESA PIN and Send \n7. You will receive a confirmation SMS from M-PESA with confirmation code \n8. Click proceed to finalise payment </string>
+
     <string name="pay">Pay \u0020</string>
     <string name="amount">Amount</string>
     <string name="label_select_payment">Click to select Your Preferred Payment Method</string>
     <string name="proceed">PROCEED</string>
     <string name="pesapal_is_regulated_by_the_central_bank_of_kenya">Pesapal is regulated by the Central Bank of Kenya</string>
     <string name="billing_instruction">In order to process your credit card successfully, please ensure the billing information you provide below matches the billing address of your credit card.</string>
+    <string name="demo">DEMO</string>
+    <string name="resend_instructions">It seems you’ve closed the payment prompt sent to your phone  %s Kindly follow the payment instructions below or use the resend button to try send the prompt again.</string>
 
 
 </resources>

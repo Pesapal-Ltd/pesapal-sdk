@@ -36,6 +36,9 @@
     
     
     <color name="grey_light">#F6F9FB</color>
+    <color name="grey_hint">#D9D9D9</color>
+
+    <color name="pesapal_red">#A81414</color>
 
 
 </resources>

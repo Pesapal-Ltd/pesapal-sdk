@@ -225,44 +225,8 @@
         app:layout_constraintTop_toBottomOf="@id/cardPaymentMethods"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvDemoVersion"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:text="DEMO"
-        android:visibility="gone"
-        tools:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="12dp"
-        />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-<!--<com.google.android.material.chip.Chip-->
-<!--android:id="@+id/cardaaaaaaa"-->
-<!--style="@style/chip_style_custom"-->
-<!--android:text="Test"-->
-<!--    />-->
-
-<!--<com.google.android.material.chip.Chip-->
-<!--android:id="@+id/mpesa"-->
-<!--style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--android:layout_width="wrap_content"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:text="Mpesa"-->
-<!--android:textAllCaps="false"-->
-<!--android:textColor="@color/black"-->
-<!--android:visibility="visible"-->
-<!--app:checkedIconEnabled="false"-->
-<!--app:chipBackgroundColor="@color/colorBackgroundInactive"-->
-<!--app:chipCornerRadius="5dp"-->
-<!--app:chipStrokeWidth="0dp"-->
-<!--android:textSize="12sp"-->
-<!--app:textEndPadding="16dp"-->
-<!--app:textStartPadding="16dp"-->
-<!--tools:visibility="visible" />-->

@@ -26,14 +26,42 @@
         <item name="android:layout_marginTop">13dp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/rounded_blue</item>
+        <item name="android:background">@drawable/rounded_blue_sharper</item>
         <item name="android:paddingVertical">12dp</item>
     </style>
+
+    <style name="button_proceed.clearer">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:background">@drawable/rounded_blue_sharper</item>
+    </style>
+
 
     <style name="linear_payment_footer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
         <item name="android:layout_marginHorizontal">8dp</item>
+    </style>
+
+    <style name="label_card">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/blue_pesapal_light</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="et_card">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/grey_hint</item>
+        <item name="android:fontFamily">@font/arial</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textFontWeight">300</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">30</item>
+        <item name="android:inputType">text</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
     </style>
 </resources>

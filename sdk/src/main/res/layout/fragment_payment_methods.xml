@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
@@ -12,6 +11,20 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvDemoVersion"
+            android:textSize="16sp"
+            android:textColor="@color/pesapal_red"
+            android:text="@string/demo"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -24,7 +37,7 @@
             android:paddingHorizontal="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDemoVersion"
             >
 
             <TextView
@@ -41,9 +54,9 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_merchant_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/tv_merchant_name"
 
                 android:fontFamily="@font/arial"
                 tools:text="Farmsyde Organics"
@@ -143,7 +156,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/rv_payment_methods"
 
-            tools:itemCount="1"
+            tools:itemCount="0"
             tools:listitem="@layout/item_pay_method"
             android:layout_marginTop="12dp"
             android:layout_marginHorizontal="26dp"
