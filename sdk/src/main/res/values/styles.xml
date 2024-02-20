@@ -64,4 +64,20 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">4dp</item>
     </style>
+
+    <style name="layout_payment_outer">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@drawable/rounded_grey</item>
+        <item name="android:paddingVertical">8dp</item>
+        <item name="android:paddingHorizontal">17dp</item>
+    </style>
+
+    <style name="payment_card">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+    </style>
 </resources>

@@ -14,14 +14,8 @@
        android:layout_height="wrap_content"
        >
        <androidx.constraintlayout.widget.ConstraintLayout
-           android:layout_width="0dp"
-           android:layout_height="wrap_content"
            android:id="@+id/linear_card_pay"
-           android:orientation="horizontal"
-           android:layout_marginTop="10dp"
-           android:background="@drawable/rounded_grey"
-           android:paddingVertical="8dp"
-           android:paddingHorizontal="17dp"
+           style="@style/layout_payment_outer"
 
            app:layout_constraintTop_toTopOf="parent"
            app:layout_constraintStart_toStartOf="parent"
@@ -29,10 +23,10 @@
            >
 
            <ImageView
-               android:layout_width="29dp"
-               android:layout_height="29dp"
+               android:layout_width="40dp"
+               android:layout_height="40dp"
                android:id="@+id/icon_visa"
-               android:src="@drawable/ic_card_type_visa"
+               android:src="@drawable/ic_visa"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintTop_toTopOf="parent"
                app:layout_constraintBottom_toBottomOf="parent"
@@ -42,7 +36,7 @@
                android:layout_width="29dp"
                android:layout_height="29dp"
                android:id="@+id/icon_amex"
-               android:src="@drawable/ic_amex"
+               android:src="@drawable/amex"
                android:layout_marginStart="10dp"
                app:layout_constraintStart_toEndOf="@+id/icon_visa"
                app:layout_constraintTop_toTopOf="@id/icon_visa"
@@ -50,10 +44,10 @@
                />
 
            <ImageView
-               android:layout_width="29dp"
-               android:layout_height="29dp"
+               android:layout_width="35dp"
+               android:layout_height="35dp"
                android:layout_marginStart="10dp"
-               android:src="@drawable/ic_card_type_mastercard"
+               android:src="@drawable/ic_mastercard"
                app:layout_constraintStart_toEndOf="@+id/icon_amex"
                app:layout_constraintTop_toTopOf="@id/icon_visa"
                app:layout_constraintBottom_toBottomOf="@id/icon_visa"
@@ -71,10 +65,10 @@
        </androidx.constraintlayout.widget.ConstraintLayout>
 
        <androidx.cardview.widget.CardView
-           android:layout_width="0dp"
-           android:layout_height="wrap_content"
-
-           android:layout_marginTop="12dp"
+           style="@style/payment_card"
+           android:id="@+id/card_outer"
+           android:visibility="gone"
+           tools:visibility="visible"
            app:layout_constraintTop_toBottomOf="@id/linear_card_pay"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintEnd_toEndOf="parent"
@@ -86,8 +80,7 @@
                android:orientation="vertical"
                android:paddingVertical="21dp"
                style="@style/linear_payment_footer"
-               android:visibility="gone"
-               tools:visibility="visible"
+
                >
 
 
@@ -141,43 +134,43 @@
                    style="@style/et_card"
                    />
 
-               <TextView
-                   android:text="@string/add_card_email"
-                   style="@style/label_card"
-                   />
+<!--               <TextView-->
+<!--                   android:text="@string/add_card_email"-->
+<!--                   style="@style/label_card"-->
+<!--                   />-->
 
-               <EditText
-                   android:id="@id/add_card_email"
-                   android:hint="@string/add_card_email"
-                   android:nextFocusDown="@id/et_phone_number"
-                   android:inputType="textEmailAddress"
+<!--               <EditText-->
+<!--                   android:id="@id/add_card_email"-->
+<!--                   android:hint="@string/add_card_email"-->
+<!--                   android:nextFocusDown="@id/et_phone_number"-->
+<!--                   android:inputType="textEmailAddress"-->
 
-                   style="@style/et_card"
-                   />
+<!--                   style="@style/et_card"-->
+<!--                   />-->
 
-               <TextView
-                   android:text="@string/add_card_country"
-                   style="@style/label_card"
-                   />
+<!--               <TextView-->
+<!--                   android:text="@string/add_card_country"-->
+<!--                   style="@style/label_card"-->
+<!--                   />-->
 
-               <EditText
-                   android:id="@id/lll"
-                   android:hint="@string/add_card_email"
+<!--               <EditText-->
+<!--                   android:id="@id/add_card_country"-->
+<!--                   android:hint="@string/add_card_country"-->
 
-                   style="@style/et_card"
-                   />
+<!--                   style="@style/et_card"-->
+<!--                   />-->
 
 
-               <TextView
-                   android:text="@string/add_card_country"
-                   style="@style/label_card"
-                   />
+<!--               <TextView-->
+<!--                   android:text="@string/add_card_country"-->
+<!--                   style="@style/label_card"-->
+<!--                   />-->
 
-               <EditText
-                   android:id="@id/lll"
-                   android:hint="@string/add_card_country"
-                   style="@style/et_card"
-                   />
+<!--               <EditText-->
+<!--                   android:id="@id/lll"-->
+<!--                   android:hint="@string/add_card_country"-->
+<!--                   style="@style/et_card"-->
+<!--                   />-->
 
                <TextView
                    android:text="@string/add_card_phone"
@@ -186,18 +179,18 @@
 
 
 
-               <com.santalu.maskedittext.MaskEditText
-                   android:id="@+id/et_phone_number"
-                   style="@style/et_card"
+<!--               <com.santalu.maskedittext.MaskEditText-->
+<!--                   android:id="@+id/et_phone_number"-->
+<!--                   style="@style/et_card"-->
 
-                   android:digits="@string/allow_phone_symbols"
-                   android:hint="@string/add_card_phone"
-                   android:imeOptions="actionNext"
-                   android:inputType="phone"
-                   android:maxLength="15"
-                   android:maxLines="1"
-                   android:paddingStart="15dp"
-                   />
+<!--                   android:digits="@string/allow_phone_symbols"-->
+<!--                   android:hint="@string/add_card_phone"-->
+<!--                   android:imeOptions="actionNext"-->
+<!--                   android:inputType="phone"-->
+<!--                   android:maxLength="15"-->
+<!--                   android:maxLines="1"-->
+<!--                   android:paddingStart="15dp"-->
+<!--                   />-->
 
                <TextView
                    android:text="@string/add_card_address"
@@ -234,7 +227,7 @@
                    style="@style/label_card"
                    />
 
-               <com.google.android.material.textfield.TextInputEditText
+               <EditText
                    android:id="@+id/et_city"
                    style="@style/et_card"
                    android:hint="@string/add_card_city"

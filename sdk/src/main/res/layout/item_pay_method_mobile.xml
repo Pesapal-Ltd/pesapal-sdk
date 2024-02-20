@@ -9,13 +9,8 @@
     android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:id="@+id/linear_card_pay"
-        android:orientation="horizontal"
-        android:background="@drawable/rounded_grey"
-        android:paddingVertical="8dp"
-        android:paddingHorizontal="17dp"
+        style="@style/layout_payment_outer"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,10 +18,10 @@
         >
 
         <ImageView
-            android:layout_width="29dp"
+            android:layout_width="49dp"
             android:layout_height="29dp"
-            android:id="@+id/icon_visa"
-            tools:src="@drawable/ic_card_type_visa"
+            android:id="@+id/icon_payment_method"
+            tools:src="@drawable/airtel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -39,17 +34,17 @@
             android:src="@drawable/ic_checked"
 
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/icon_visa"
-            app:layout_constraintBottom_toBottomOf="@id/icon_visa"
+            app:layout_constraintTop_toTopOf="@id/icon_payment_method"
+            app:layout_constraintBottom_toBottomOf="@id/icon_payment_method"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="12dp"
+        style="@style/payment_card"
+        android:id="@+id/card_outer"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintTop_toBottomOf="@id/linear_card_pay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +62,7 @@
              >
              <TextView
                  android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
+                 android:layout_height="0dp"
                  android:id="@+id/label_phone"
                  android:text="@string/enter_mobile_number"
                  tools:text="AIRTEL PHONE NUMBER"
@@ -96,6 +91,8 @@
                 android:background="@drawable/rounded_blue_billing"
                 android:paddingVertical="11dp"
                 android:paddingHorizontal="9dp"
+                android:visibility="gone"
+                tools:visibility="visible"
                 >
 
                 <View
@@ -119,6 +116,8 @@
                     android:fontFamily="@font/arial"
                     android:textSize="12sp"
                     android:textFontWeight="400"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/view_left"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -150,6 +149,8 @@
                 android:letterSpacing="0.2"
                 android:layout_marginTop="17dp"
 
+                android:visibility="gone"
+                tools:visibility="visible"
                 />
 
             <androidx.appcompat.widget.AppCompatButton

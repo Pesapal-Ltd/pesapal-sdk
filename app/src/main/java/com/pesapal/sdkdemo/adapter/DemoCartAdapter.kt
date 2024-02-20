@@ -22,7 +22,7 @@ class DemoCartAdapter(val clickListener: clickedListener) : RecyclerView.Adapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BucketListAdapterVh {
-        context=parent.context
+        context = parent.context
 
         return BucketListAdapterVh(
             LayoutInflater.from(context).inflate(R.layout.row_catalogue,parent,false)

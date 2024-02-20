@@ -21,6 +21,34 @@
         </action>
     </fragment>
 
+    <fragment
+        android:id="@+id/pesapalMainFragmentOld"
+        android:name="com.pesapal.sdk.fragment.details.MainPesapalFragment"
+        android:label="Payment Methods"
+        tools:layout="@layout/fragment_pesapal_main">
+        <action
+            android:id="@+id/action_pesapalMainFragment_to_pesapalCardFragment"
+            app:destination="@id/nav_graph_card">
+            <argument
+                android:name="paymentDetails"
+                app:argType="com.pesapal.sdk.model.payment.PaymentDetails" />
+            <argument
+                android:name="billingAddress"
+                app:argType="com.pesapal.sdk.model.card.BillingAddress" />
+
+        </action>
+        <action
+            android:id="@+id/action_pesapalMainFragment_to_nav_graph_mpesa"
+            app:destination="@id/nav_graph_mpesa" >
+            <argument
+                android:name="paymentDetails"
+                app:argType="com.pesapal.sdk.model.payment.PaymentDetails" />
+            <argument
+                android:name="billingAddress"
+                app:argType="com.pesapal.sdk.model.card.BillingAddress" />
+        </action>
+    </fragment>
+
 
     <fragment
         android:id="@+id/pesapalMainFragment"

@@ -11,7 +11,7 @@
     <string name="add_card_postalCode">POSTAL/ZIP</string>
     <string name="add_card_postalCodelower">Postal / Zip Code</string>
 
-    <string name="add_card_city">CITY</string>
+    <string name="add_card_city">City</string>
     <string name="uri_is_null">Uri is NULL</string>
     <string name="user_not_registered">User Not Registered</string>
     <string name="add_a_friend">Add a Friend</string>
@@ -45,7 +45,7 @@
 
     <string name="provide_mobile_money">1. Provide your %s mobile number</string>
     <string name="provide_mobile_pin">3. Confirm the transaction by providing your \n %s PIN</string>
-    <string name="enter_mobile_number">%s PHONE NUMBER</string>
+    <string name="enter_mobile_number">%s Phone Number</string>
     <!--    <string name="enter_mobile_number">Enter mobile Number</string>-->
 
     <string name="prompt_1">1. Payment prompt sent to phone %s</string>
