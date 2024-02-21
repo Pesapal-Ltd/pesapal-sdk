@@ -82,7 +82,12 @@
             app:destination="@id/paymentStatusFragment">
             <argument
                 android:name="transactionStatusResponse"
-                app:argType="com.pesapal.sdk.model.txn_status.TransactionStatusResponse" />
+                app:argType="com.pesapal.sdk.model.txn_status.TransactionStatusResponse"
+                />
+            <argument
+                android:name="isTxnSuccessful"
+                app:argType="isTxnSuccessful"
+                />
         </action>
     </fragment>
 

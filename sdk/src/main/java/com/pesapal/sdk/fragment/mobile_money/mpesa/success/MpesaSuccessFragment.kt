@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
@@ -22,6 +24,7 @@ class MpesaSuccessFragment : Fragment() {
     private lateinit var transactionStatusResponse: TransactionStatusResponse
 
     private val pesapalSdkViewModel: PesapalSdkViewModel by activityViewModels()
+    private var isTxnSuccessful: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,12 +32,14 @@ class MpesaSuccessFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMpesaPaymentSuccessBinding.inflate(layoutInflater)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         transactionStatusResponse = requireArguments().getSerializable("transactionStatusResponse") as TransactionStatusResponse
+        isTxnSuccessful = requireArguments().getSerializable("isTxnSuccessful") as Boolean
         initData()
         handleCustomBackPress()
     }
@@ -55,9 +60,11 @@ class MpesaSuccessFragment : Fragment() {
     }
 
     private fun handleClicks(){
+
         binding.btnDone.setOnClickListener {
             returnPaymentStatus()
         }
+
         binding.imageViewCopy.setOnClickListener {
             setClipboard(requireContext(),transactionStatusResponse.confirmationCode!!)
         }
@@ -71,6 +78,19 @@ class MpesaSuccessFragment : Fragment() {
     }
 
     private fun handleDisplay(){
+        if(isTxnSuccessful){
+            binding.imgTxnStatus.setImageResource(R.drawable.ic_checked)
+            binding.layoutHeader.background = resources.getDrawable(R.color.txn_success)
+
+            binding.btnDone.background = resources.getDrawable(R.color.blue_pesapal_light)
+            binding.btnDone.text = getString(R.string.proceed)
+        }
+        else{
+
+            binding.linearFurtherAssistance.visibility = View.VISIBLE
+            binding.btnTryAgain.visibility = View.VISIBLE
+
+        }
         binding.tvTxnId.text = transactionStatusResponse.confirmationCode
         binding.tvOrderId.text = pesapalSdkViewModel.orderID
         binding.tvTime.text = TimeUtils.getCurrentDateTime()

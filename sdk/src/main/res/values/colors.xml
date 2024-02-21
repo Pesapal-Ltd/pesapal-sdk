@@ -24,13 +24,16 @@
 
     <color name="colorGreyText">#666666</color>
     <color name="grey_alt">#F5F5F5</color>
+    <color name="grey_bg">#F8F8F8</color>
+    <color name="grey_div">#C7C7C7</color>
+    <color name="grey_more_faded">#EFEFEF</color>
 
     <color name="faded_blue">#E1EAFA</color>
     <color name="light_gray_color">#efefef</color>
     <color name="colorPrimaryAltLight">#1E61A7</color>
     <color name="colorBackgroundInactive">#E0E0E0</color>
     <color name="colorGreyOutline">#949494</color>
-    <color name="txn_success">#2cc38a</color>
+    <color name="txn_success">#2F9A2B</color>
 
     <color name="un_selected_color_primary">#76A0E2</color>
     

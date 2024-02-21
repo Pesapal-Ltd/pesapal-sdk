@@ -80,4 +80,30 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">12dp</item>
     </style>
+
+    <style name="tv_txn_result">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorGreyText</item>
+        <item name="android:fontFamily">@font/arial</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+
+    <style name="tv_txn_result.inner">
+        <item name="android:layout_width">0dp</item>
+
+    </style>
+
+    <style name="button_result">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:paddingVertical">10dp</item>
+    </style>
+
+
 </resources>

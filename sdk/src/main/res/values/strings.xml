@@ -72,6 +72,8 @@
     <string name="help_url">For further assistance, kindly contact us via our ticketing portal on </string>
     <string name="open_ticket">Click Here to open a ticket.</string>
     <string name="exit">EXIT</string>
+    <string name="merchant_reference">MERCHANT REFERENCE</string>
+    <string name="try_again">TRY AGAIN</string>
 
 
 </resources>
