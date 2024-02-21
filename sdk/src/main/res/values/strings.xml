@@ -66,5 +66,12 @@
     <string name="resned_instructions">Incase you’ve not received a payment prompt, please Click Here to view payment instructions</string>
     <string name="resend_payment_prompt">Resend Payment Prompt</string>
 
+    <string name="payment_succesful">PAYMENT SUCCESFUL</string>
+    <string name="payment_failed">PAYMENT FAILED</string>
+
+    <string name="help_url">For further assistance, kindly contact us via our ticketing portal on </string>
+    <string name="open_ticket">Click Here to open a ticket.</string>
+    <string name="exit">EXIT</string>
+
 
 </resources>

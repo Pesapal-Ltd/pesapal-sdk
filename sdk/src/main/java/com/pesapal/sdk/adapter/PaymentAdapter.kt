@@ -33,7 +33,6 @@ class PaymentAdapter(val context: Context,
 
     var mobileStep = 0
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when(viewType){
             0 -> {
@@ -119,22 +118,20 @@ class PaymentAdapter(val context: Context,
             cardOuter.visibility = View.GONE
             selected = OUT_OF_RANGE
             previous = OUT_OF_RANGE
-
         }
         notifyDataSetChanged()
     }
 
 
+    /**
+     * Hides the view that was previously selected and has the card layout visible
+     */
     private fun hideExpandedView(cardOuter: CardView, absoluteAdapterPosition: Int) {
-        Log.e("adapt","Hide called  ------->")
-
         if(previous != selected && previous == absoluteAdapterPosition){
             cardOuter.visibility = View.GONE
             previous = selected
             paymentMethodInterface.refreshRv()
-
         }
-
     }
 
     private fun mobileMoneyRequest(
@@ -168,7 +165,7 @@ class PaymentAdapter(val context: Context,
      * 1 = mobile send request
      */
     interface PaymentMethodInterface{
-        fun mobileMoneyRequest(action : Int, phoneNumber: String, mobileProvider: Int)    //        todo put this as enum
+        fun mobileMoneyRequest(action : Int, phoneNumber: String, mobileProvider: Int)    // todo put this as enum
         fun showMessage(message: String)
         fun refreshRv()
     }
@@ -182,9 +179,6 @@ class PaymentAdapter(val context: Context,
         val mainCard = itemView.findViewById<ConstraintLayout>(R.id.linear_card_pay)
         val cardOuter = itemView.findViewById<CardView>(R.id.card_outer)
         val btnSend = itemView.findViewById<TextView>(R.id.btn_proceed)
-//        val plusBtn = itemView.findViewById<ImageView>(R.id.iv_detail_plus)
-//        val minusBtn = itemView.findViewById<ImageView>(R.id.iv_detail_minus)
-//        val qtyNumber = itemView.findViewById<TextView>(R.id.tv_detail_qty)
     }
 
 
@@ -207,9 +201,5 @@ class PaymentAdapter(val context: Context,
         val resendlayout = itemView.findViewById<ConstraintLayout>(R.id.layout_resend_prompt)
         val resendButton = itemView.findViewById<AppCompatButton>(R.id.btn_resend)
 
-
-//        var tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)
-//        val minusBtn = itemView.findViewById<ImageView>(R.id.iv_detail_minus)
-//        val qtyNumber = itemView.findViewById<TextView>(R.id.tv_detail_qty)
     }
 }
