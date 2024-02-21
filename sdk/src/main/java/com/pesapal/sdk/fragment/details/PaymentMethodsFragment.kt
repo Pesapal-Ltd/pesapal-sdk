@@ -263,6 +263,19 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
         );
     }
 
+    override fun refreshRv() {
+        Log.e("Pa","Refresh")
+        if(!rvPayment.isComputingLayout){
+            paymentAdapter.notifyDataSetChanged()
+        }
+        else{
+            Handler()
+                .postDelayed({
+                              refreshRv()
+
+            }, 500)
+        }
+    }
 
     /**
      * Mobile money view model
