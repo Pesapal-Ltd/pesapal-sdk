@@ -76,7 +76,22 @@
                 android:name="billingAddress"
                 app:argType="com.pesapal.sdk.model.card.BillingAddress" />
         </action>
+
+        <action
+            android:id="@+id/action_paymentFragment_to_paymentStatusFragment"
+            app:destination="@id/paymentStatusFragment">
+            <argument
+                android:name="transactionStatusResponse"
+                app:argType="com.pesapal.sdk.model.txn_status.TransactionStatusResponse" />
+        </action>
     </fragment>
+
+
+    <fragment
+        android:id="@+id/paymentStatusFragment"
+        android:name="com.pesapal.sdk.fragment.mobile_money.mpesa.success.MpesaSuccessFragment"
+        android:label="Mobile Money"
+        tools:layout="@layout/fragment_mpesa_payment_success"/>
 
     <include app:graph="@navigation/nav_graph_card" />
 

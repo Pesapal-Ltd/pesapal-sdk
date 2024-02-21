@@ -63,6 +63,8 @@
     <string name="billing_instruction">In order to process your credit card successfully, please ensure the billing information you provide below matches the billing address of your credit card.</string>
     <string name="demo">DEMO</string>
     <string name="resend_instructions">It seems you’ve closed the payment prompt sent to your phone  %s Kindly follow the payment instructions below or use the resend button to try send the prompt again.</string>
+    <string name="resned_instructions">Incase you’ve not received a payment prompt, please Click Here to view payment instructions</string>
+    <string name="resend_payment_prompt">Resend Payment Prompt</string>
 
 
 </resources>

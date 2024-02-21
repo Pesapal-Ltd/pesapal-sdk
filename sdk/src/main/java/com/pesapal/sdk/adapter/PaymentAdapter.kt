@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -80,8 +81,32 @@ class PaymentAdapter(val context: Context,
                     paymentMethodInterface.showMessage("All inputs required ...")
                 }
             }
+
+            when(mobileStep){
+                0 -> {
+
+                }
+                1 -> {
+                    holder.phonelayout.visibility = View.GONE
+                    holder.resendlayout.visibility = View.VISIBLE
+                }
+            }
         }
 
+    }
+
+    fun resetOnPaymentMethodCollapsed(){
+        mobileStep = 0
+    }
+
+    var mobileStep = 0
+
+    /**
+     * To
+     */
+    fun mobileMoneyUpdate() {
+        mobileStep = 1
+        notifyDataSetChanged()
     }
 
     /**
@@ -117,6 +142,8 @@ class PaymentAdapter(val context: Context,
 
 
         val btnSend = itemView.findViewById<TextView>(R.id.btn_proceed)
+        val resendlayout = itemView.findViewById<ConstraintLayout>(R.id.layout_resend_prompt)
+        val phonelayout = itemView.findViewById<LinearLayout>(R.id.layout_phone)
 
 //        var tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)
 //        val minusBtn = itemView.findViewById<ImageView>(R.id.iv_detail_minus)

@@ -3,6 +3,9 @@ package com.pesapal.sdk.fragment.details
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +24,9 @@ import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.adapter.PaymentAdapter
 import com.pesapal.sdk.databinding.FragmentPaymentMethodsBinding
+import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingFragment
+import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingFragmentDirections
+import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingViewModel
 import com.pesapal.sdk.fragment.mobile_money.mpesa.stk.MpesaPesapalFragmentDirections
 import com.pesapal.sdk.fragment.mobile_money.mpesa.stk.MpesaPesapalViewModel
 import com.pesapal.sdk.model.card.BillingAddress
@@ -73,6 +79,8 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
         mobileProviders = evaluateRegionProvider()
         initRecycler()
 
+        handleViewModel()
+
     }
 
     private fun evaluateRegionProvider(): List<Int> {
@@ -120,8 +128,10 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
         }
 
         rvPayment = binding.rvPaymentMethods
-        rvPayment.adapter = PaymentAdapter(requireContext(), this, payList)
+        paymentAdapter = PaymentAdapter(requireContext(), this, payList)
+        rvPayment.adapter = paymentAdapter
     }
+
 
     private fun initData(){
         binding.tvAmount.text = "${paymentDetails.currency} ${paymentDetails.amount}"
@@ -217,14 +227,16 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
                 this.mobileProvider = mobileProvider
 
                 val request = prepareMobileMoney()
-                viewModel.sendMobileMoneyCheckOut(request, "Sending payment prompt ...")
+                mobilePendingvViewModel.sendMobileMoneyCheckOut(request, "Sending payment prompt ...")
             }
         }
     }
+
     var phoneNumber =  ""
-    var mobileProvider =  0
-
-
+    var mobileProvider = 0
+    private lateinit var pDialog: ProgressDialog
+    private var mobileMoneyResponse: MobileMoneyResponse? = null
+    lateinit var paymentAdapter: PaymentAdapter
 
 
     private fun prepareMobileMoney(): MobileMoneyRequest {
@@ -251,16 +263,17 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
         );
     }
 
-    private lateinit var pDialog: ProgressDialog
-    private var mobileMoneyResponse: MobileMoneyResponse? = null
 
-
+    /**
+     * Mobile money view model
+     */
     private fun handleViewModel(){
-        viewModel.mobileMoneyResponse.observe(requireActivity()){
+        mobilePendingvViewModel.mobileMoneyResponse.observe(requireActivity()){
             when (it.status) {
                 Status.LOADING -> {
                     pDialog = ProgressDialog(requireContext())
                     pDialog.setMessage(it.message)
+                    pDialog.setCancelable(false)
                     pDialog.show()
                 }
                 Status.SUCCESS -> {
@@ -277,28 +290,161 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
                 }
             }
         }
+
+        mobilePendingvViewModel.transactionStatus.observe(requireActivity()){
+            when (it.status) {
+                Status.LOADING -> {
+                    pDialog = ProgressDialog(requireContext())
+                    pDialog.setMessage(it.message)
+                    pDialog.show()
+                }
+                Status.SUCCESS -> {
+                    if(::pDialog.isInitialized) {
+                        pDialog.dismiss()
+                        proceedToSuccessScreen(it.data!!)
+                    }
+                }
+                Status.ERROR -> {
+                    if(::pDialog.isInitialized) {
+                        pDialog.dismiss()
+                        showMessage(it.message!!)
+                    }
+                }
+            }
+        }
+
+        mobilePendingvViewModel.transactionStatusBg.observe(requireActivity()){
+            when (it.status) {
+                Status.LOADING -> {
+                    if(!timerStated) {
+                        timerStated = true
+//                        handleBackgroundCheck()
+                        Log.e("Meth","Started")
+                    }
+                }
+                Status.SUCCESS -> {
+//                    handleTimeStop()
+                    proceedToSuccessScreen(it.data!!)
+                }
+                Status.ERROR -> {
+                    if(delayTime != 30000L){
+                        delayTime += 1000
+                        handleBackgroundConfirmation(delayTime)
+                    }
+
+                }
+                else -> {
+                }
+            }
+        }
+
+    }
+
+//    private fun hideDialog() {
+//        timerStated = false
+//        if(mobileProvider.contains(CountryCodeEval.MPESA_PROV_NAME)) {
+//            showLipaNaMpesa()
+//        }
+//        else{
+//            binding.btnSendLipab.visibility = View.VISIBLE
+//
+//        }
+//    }
+
+
+//    private fun handleBackgroundCheck(){
+//        startStop()
+//    }
+
+
+//    private fun startStop() {
+//        if (timerStatus == MpesaPendingFragment.TimerStatus.STOPPED) {
+//            // call to initialize the progress bar values
+//            setProgressBarValues(binding.progressBarCircle)
+//            // showing the reset icon
+//            timerStatus = MpesaPendingFragment.TimerStatus.STARTED
+//            // call to start the count down timer
+//            startCountDownTimer()
+//        } else {
+//
+//            // changing the timer status to stopped
+//            timerStatus = MpesaPendingFragment.TimerStatus.STOPPED
+//            stopCountDownTimer()
+//        }
+//
+//    }
+
+//    private fun startCountDownTimer() {
+//        countDownTimer = object : CountDownTimer(timeCountInMilliSeconds, 1000L) {
+//            override fun onTick(millisUntilFinished: Long) {
+//                val milis = hmsTimeFormatter(millisUntilFinished)
+//                binding.tvTime.text = "00:$milis"
+//                val progress = millisUntilFinished / 1000
+//                binding.progressBarCircle.progress = progress.toInt()
+//                //                checkMpesa();
+//            }
+//
+//            override fun onFinish() {
+//                binding.tvTime.text = hmsTimeFormatter(timeCountInMilliSeconds)
+//                // call to initialize the progress bar values
+//                setProgressBarValues(binding.progressBarCircle)
+//                timerStatus = MpesaPendingFragment.TimerStatus.STOPPED
+//                stopCountDownTimer()
+//            }
+//        }.start()
+//    }
+
+    private var timerStated = false
+    private var timerStatus = MpesaPendingFragment.TimerStatus.STOPPED
+
+
+
+    private fun proceedToSuccessScreen(transactionStatusResponse: TransactionStatusResponse){
+        var action = PaymentMethodsFragmentDirections.actionPaymentFragmentToPaymentStatusFragment(transactionStatusResponse)
+        findNavController().navigate(action)
+
+        // todo change the mpesa success page
     }
 
     private fun showPendingMpesaPayment(){
-        viewModel.resetMobileResponse()
+//        mobilePendingvViewModel.resetMobileResponse()   todo transfer logic to other viewmode
 
-        val mobileMoneyRequest = prepareMobileMoney()
+        mobileMoneyRequest = prepareMobileMoney()
         mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
         paymentDetails.order_tracking_id = mobileMoneyResponse!!.orderTrackingId
 
         if(mobileMoneyResponse != null) {
             mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
         }
+        Log.e("Meth","Done")
         showMessage("Done")
+        paymentAdapter.mobileMoneyUpdate()
+        handleBackgroundConfirmation(delayTime)
+
 //        val action = MpesaPesapalFragmentDirections.actionMpesaPesapalFragmentToMpesaPendingFragment(mobileMoneyRequest)
 //        findNavController().navigate(action)
     }
+
+    private lateinit var mobileMoneyRequest: MobileMoneyRequest
+
+    private var delayTime = 1000L
+    private val timeCountInMilliSeconds = 30000L
+
+    private val mobilePendingvViewModel: MpesaPendingViewModel by viewModels()
 
 
     override  fun showMessage(message: String){
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
+
+
+    private fun handleBackgroundConfirmation(delayTime: Long){
+        Handler().postDelayed({
+            // todo store the mobile request in the view model
+            mobilePendingvViewModel.mobileMoneyTransactionStatusBackground(mobileMoneyRequest.trackingId)
+        },delayTime)
+    }
 
 
 }

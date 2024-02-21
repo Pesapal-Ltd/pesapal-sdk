@@ -47,4 +47,11 @@ internal class MpesaPesapalViewModel : ViewModel() {
     }
 
 
+    /**
+     * Copied from MpesaPendingvm
+     */
+    private var _transactionStatus = MutableLiveData<Resource<TransactionStatusResponse>>()
+    val transactionStatus: LiveData<Resource<TransactionStatusResponse>>
+        get() = _transactionStatus
+
 }
