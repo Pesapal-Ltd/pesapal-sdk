@@ -80,7 +80,7 @@ internal class MpesaPendingViewModel : ViewModel(){
                     if(result.data!!.paymentStatusDescription == "Completed") {
                         _transactionStatusBg.postValue(Resource.success(result.data))
                     }else{
-                        _transactionStatusBg.postValue(Resource.error("Awaiting payment .."))
+                        _transactionStatusBg.postValue(Resource.error("Awaiting payment ..", result.data))
                     }
                 }
                 else -> {

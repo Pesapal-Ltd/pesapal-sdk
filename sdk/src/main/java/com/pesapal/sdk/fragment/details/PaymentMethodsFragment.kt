@@ -423,6 +423,8 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
 
 
     private fun proceedToSuccessScreen(transactionStatusResponse: TransactionStatusResponse, isTxnSuccess: Boolean){
+        pesapalSdkViewModel.merchantName = paymentDetails.merchant_name
+        pesapalSdkViewModel.trackingId = "HARDCODEDFROMMOBILE&CARD"
         var action = PaymentMethodsFragmentDirections.actionPaymentFragmentToPaymentStatusFragment(transactionStatusResponse,isTxnSuccess)
         findNavController().navigate(action)
 
