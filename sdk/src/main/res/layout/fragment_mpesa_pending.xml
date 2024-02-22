@@ -174,6 +174,7 @@
                                         android:text="CHECKING PAYMENT STATUS"
                                         android:textColor="@color/black"
                                         android:textSize="14sp"
+                                        tools:visibility="visible"
                                         android:visibility="gone"
                                         app:layout_constraintBottom_toBottomOf="parent"
                                         app:layout_constraintEnd_toStartOf="@+id/tvTime"
@@ -278,6 +279,7 @@
                        android:layout_marginStart="10dp"
                        android:layout_marginTop="30dp"
                        android:layout_marginEnd="10dp"
+                       tools:visibility="gone"
                        app:layout_constraintEnd_toStartOf="@+id/btnLipab"
                        app:layout_constraintStart_toStartOf="parent"
                        app:layout_constraintTop_toBottomOf="@+id/tvInstb"
@@ -313,7 +315,7 @@
                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatButton
-                        tools:visibility="gone"
+                        tools:visibility="visible"
                         android:id="@+id/btnLipab"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
@@ -334,7 +336,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    tools:visibility="gone"
+                    tools:visibility="visible"
+                    tools:layout_marginTop="200dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -411,7 +414,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="5dp"
-                            android:text=""
+                            tools:text="4. Enter Account No as 5637777"
                             android:textColor="@color/black"
                             android:textSize="12sp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -423,7 +426,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="5dp"
-                            android:text=""
+                            tools:text="5. Enter the Amount KES 2.00"
                             android:textColor="@color/black"
                             android:textSize="12sp"
                             app:layout_constraintStart_toStartOf="parent"

@@ -314,13 +314,15 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
                 Status.SUCCESS -> {
                     if(::pDialog.isInitialized) {
                         pDialog.dismiss()
-                        proceedToSuccessScreen(it.data!!)
+                        proceedToSuccessScreen(it.data!!, true)
                     }
                 }
                 Status.ERROR -> {
                     if(::pDialog.isInitialized) {
                         pDialog.dismiss()
                         showMessage(it.message!!)
+                        proceedToSuccessScreen(it.data!!, false)
+
                     }
                 }
             }
@@ -337,12 +339,12 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
                 }
                 Status.SUCCESS -> {
 //                    handleTimeStop()
-                    proceedToSuccessScreen(it.data!!)
+                    proceedToSuccessScreen(it.data!!, true)
                 }
                 Status.ERROR -> {
                     if(delayTime != 30000L){
                         delayTime += 1000
-                        handleBackgroundConfirmation(delayTime)
+                        handleBackgroundConfirmation()
                     }
 
                 }
@@ -352,6 +354,14 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
         }
 
     }
+
+    override fun handleResend(){
+        delayTime = 1000L
+        var mobileMoneyRequest: MobileMoneyRequest = mobileMoneyRequest
+        mobileMoneyRequest.trackingId =  mobileMoneyRequest.trackingId
+        viewModel.sendMobileMoneyCheckOut(mobileMoneyRequest,"Resending OTP ...")
+    }
+
 
 //    private fun hideDialog() {
 //        timerStated = false
@@ -412,8 +422,8 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
 
 
 
-    private fun proceedToSuccessScreen(transactionStatusResponse: TransactionStatusResponse){
-        var action = PaymentMethodsFragmentDirections.actionPaymentFragmentToPaymentStatusFragment(transactionStatusResponse)
+    private fun proceedToSuccessScreen(transactionStatusResponse: TransactionStatusResponse, isTxnSuccess: Boolean){
+        var action = PaymentMethodsFragmentDirections.actionPaymentFragmentToPaymentStatusFragment(transactionStatusResponse,isTxnSuccess)
         findNavController().navigate(action)
 
         // todo change the mpesa success page
@@ -429,13 +439,10 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
         if(mobileMoneyResponse != null) {
             mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
         }
-        Log.e("Meth","Done")
-        showMessage("Done")
-        paymentAdapter.mobileMoneyUpdate()
-        handleBackgroundConfirmation(delayTime)
 
-//        val action = MpesaPesapalFragmentDirections.actionMpesaPesapalFragmentToMpesaPendingFragment(mobileMoneyRequest)
-//        findNavController().navigate(action)
+        paymentAdapter.mobileMoneyUpdate()
+        handleBackgroundConfirmation()
+
     }
 
     private lateinit var mobileMoneyRequest: MobileMoneyRequest
@@ -452,11 +459,15 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
 
 
 
-    private fun handleBackgroundConfirmation(delayTime: Long){
+    private fun handleBackgroundConfirmation(){
         Handler().postDelayed({
             // todo store the mobile request in the view model
             mobilePendingvViewModel.mobileMoneyTransactionStatusBackground(mobileMoneyRequest.trackingId)
         },delayTime)
+    }
+
+    override fun handleConfirmation(){
+        mobilePendingvViewModel.mobileMoneyTransactionStatus(mobileMoneyRequest.trackingId)
     }
 
 

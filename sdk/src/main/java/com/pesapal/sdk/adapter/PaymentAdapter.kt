@@ -40,10 +40,8 @@ class PaymentAdapter(val context: Context,
             }
             else -> {
                 PaymentMobileMoneyAdapterVh(LayoutInflater.from(context).inflate(R.layout.item_pay_method_mobile,parent,false))
-
             }
         }
-
     }
 
     override fun getItemCount(): Int {
@@ -84,7 +82,10 @@ class PaymentAdapter(val context: Context,
 
 
             holder.btnSend.setOnClickListener {
-                mobileMoneyRequest(position, phone, method)
+                if(mobileStep == 1)
+                    paymentMethodInterface.handleConfirmation()
+                else
+                    mobileMoneyRequest(position, phone, method)
             }
 
             holder.resendButton.setOnClickListener {
@@ -94,7 +95,8 @@ class PaymentAdapter(val context: Context,
             if(selected == position){
                 when(mobileStep){
                     0 -> {
-
+                        holder.phonelayout.visibility = View.VISIBLE
+                        holder.resendlayout.visibility = View.GONE
                     }
                     1 -> {
                         holder.phonelayout.visibility = View.GONE
@@ -102,9 +104,16 @@ class PaymentAdapter(val context: Context,
                     }
                 }
             }
+
+            holder.resendButton.setOnClickListener {
+                holder.clLipaNaMpesa.visibility = View.GONE
+                holder.clBackgroundCheck.visibility = View.VISIBLE
+                paymentMethodInterface.handleResend()
+            }
         }
 
     }
+
 
     private fun checkUncheckExpandingView(cardOuter: CardView, absoluteAdapterPosition: Int) {
         if(cardOuter.visibility == View.GONE){
@@ -113,6 +122,7 @@ class PaymentAdapter(val context: Context,
             if(previous == OUT_OF_RANGE){
                 previous = selected
             }
+            resetOnPaymentMethodCollapsed()
         }
         else{
             cardOuter.visibility = View.GONE
@@ -168,6 +178,8 @@ class PaymentAdapter(val context: Context,
         fun mobileMoneyRequest(action : Int, phoneNumber: String, mobileProvider: Int)    // todo put this as enum
         fun showMessage(message: String)
         fun refreshRv()
+        fun handleResend()
+        fun handleConfirmation()
     }
 
     /**
@@ -201,5 +213,7 @@ class PaymentAdapter(val context: Context,
         val resendlayout = itemView.findViewById<ConstraintLayout>(R.id.layout_resend_prompt)
         val resendButton = itemView.findViewById<AppCompatButton>(R.id.btn_resend)
 
+        val clLipaNaMpesa = itemView.findViewById<TextView>(R.id.tv_manual)
+        val clBackgroundCheck = itemView.findViewById<ConstraintLayout>(R.id.clWaiting)
     }
 }

@@ -156,7 +156,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/rv_payment_methods"
 
-            tools:itemCount="1"
+            tools:itemCount="0"
             tools:listitem="@layout/item_pay_method"
             android:layout_marginTop="12dp"
             android:layout_marginHorizontal="26dp"

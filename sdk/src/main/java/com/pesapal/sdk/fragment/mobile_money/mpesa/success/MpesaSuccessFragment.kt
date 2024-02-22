@@ -16,6 +16,7 @@ import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
+import com.pesapal.sdk.utils.GeneralUtil
 import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdk.utils.TimeUtils
 import com.pesapal.sdk.viewmodel.AppViewModel
@@ -78,22 +79,31 @@ class MpesaSuccessFragment : Fragment() {
     }
 
     private fun handleDisplay(){
+        var header = ""
         if(isTxnSuccessful){
             binding.imgTxnStatus.setImageResource(R.drawable.ic_checked)
             binding.layoutHeader.background = resources.getDrawable(R.color.txn_success)
+            header = getString(R.string.payment_succesful)
 
             binding.btnDone.background = resources.getDrawable(R.color.blue_pesapal_light)
             binding.btnDone.text = getString(R.string.proceed)
         }
         else{
+            header = getString(R.string.payment_failed)
 
             binding.linearFurtherAssistance.visibility = View.VISIBLE
             binding.btnTryAgain.visibility = View.VISIBLE
-
         }
-        binding.tvTxnId.text = transactionStatusResponse.confirmationCode
-        binding.tvOrderId.text = pesapalSdkViewModel.orderID
+        binding.tvPaymentStatus.text = header
+
+        // todo look at created date field
         binding.tvTime.text = TimeUtils.getCurrentDateTime()
+
+        binding.tvCurrency.text = transactionStatusResponse.currency
+        binding.tvAmount.text = GeneralUtil.formatAmountText(transactionStatusResponse.amount.toDouble())
+        binding.tvMerchantRef.text = transactionStatusResponse.confirmationCode
+        binding.tvTrackingId.text = pesapalSdkViewModel.orderID
+
 
     }
 

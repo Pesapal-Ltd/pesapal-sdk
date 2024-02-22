@@ -58,7 +58,7 @@
                 android:layout_width="72dp"
                 android:layout_height="32dp"
                 android:id="@+id/logo"
-                tools:src="@drawable/pesapal_logo_white"
+                android:src="@drawable/pesapal_logo_white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -85,6 +85,8 @@
                 android:orientation="vertical"
                 android:paddingVertical="11dp"
                 android:paddingHorizontal="18dp"
+                tools:visibility="visible"
+                android:visibility="gone"
                 android:background="@color/pesapal_red_faded"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -250,7 +252,7 @@
 
                 <TextView
                     style="@style/tv_txn_result.inner"
-                    android:id="@+id/tvTxnId"
+                    android:id="@+id/tv_merchant_Ref"
                     tools:text="RDT: 1692012478.26497"
                     app:layout_constraintTop_toTopOf="@id/label_Ref"
                     app:layout_constraintStart_toStartOf="@id/guideline"
@@ -269,18 +271,20 @@
                     style="@style/tv_txn_result"
                     android:layout_marginTop="12dp"
                     android:id="@+id/label_tracking"
-                    android:text="@string/amount"
+                    android:text="@string/tracking_id"
                     app:layout_constraintStart_toStartOf="@id/label_Ref"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTxnId"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_merchant_Ref"
                     />
 
                 <TextView
                     style="@style/tv_txn_result.inner"
-                    android:id="@+id/tvOrderId"
+                    android:id="@+id/tv_tracking_id"
                     tools:text="038450bb-af3d-45ac-bbd1-de4e66ce6bdf"
                     app:layout_constraintTop_toTopOf="@id/label_tracking"
                     app:layout_constraintStart_toStartOf="@id/guideline"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="21dp"
+                    app:layout_constraintBottom_toBottomOf="@id/div_bot"
                     />
 
 
@@ -293,9 +297,9 @@
                     android:src="@drawable/baseline_content_copy_24"
                     android:visibility="gone"
                     tools:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvTxnId"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_merchant_Ref"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toTopOf="@+id/tvTxnId"
+                    app:layout_constraintTop_toTopOf="@+id/tv_merchant_Ref"
                     />
 
 
@@ -308,9 +312,9 @@
                     android:src="@drawable/baseline_content_copy_24"
                     android:visibility="gone"
                     tools:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvOrderId"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_merchant_Ref"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toTopOf="@+id/tvOrderId"
+                    app:layout_constraintTop_toTopOf="@+id/tv_merchant_Ref"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

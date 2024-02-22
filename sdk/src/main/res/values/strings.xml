@@ -74,6 +74,7 @@
     <string name="exit">EXIT</string>
     <string name="merchant_reference">MERCHANT REFERENCE</string>
     <string name="try_again">TRY AGAIN</string>
+    <string name="tracking_id">TRACKING ID</string>
 
 
 </resources>

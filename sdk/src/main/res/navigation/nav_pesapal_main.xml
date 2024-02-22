@@ -86,7 +86,7 @@
                 />
             <argument
                 android:name="isTxnSuccessful"
-                app:argType="isTxnSuccessful"
+                app:argType="boolean"
                 />
         </action>
     </fragment>
