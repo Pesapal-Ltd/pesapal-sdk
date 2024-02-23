@@ -104,7 +104,7 @@ class MpesaSuccessFragment : Fragment() {
         binding.tvMerchantName.text = pesapalSdkViewModel.merchantName
 
         binding.tvTime.text = TimeUtils.getCurrentDateTime()
-        val paymentIcon = with(transactionStatusResponse.paymentMethod){
+        val paymentIcon = with(transactionStatusResponse.paymentMethod!!.lowercase()){
             when{
                 isNullOrEmpty() -> R.drawable.pesapal_logo
                 contains("visa")||contains("master") || contains("amer") -> R.drawable.ic_visa
@@ -117,9 +117,9 @@ class MpesaSuccessFragment : Fragment() {
 
         binding.tvCurrency.text = transactionStatusResponse.currency
         binding.tvAmount.text = GeneralUtil.formatAmountText(transactionStatusResponse.amount.toDouble())
-        binding.tvMerchantRef.text = transactionStatusResponse.confirmationCode
-//        binding.tvTrackingId.text = pesapalSdkViewModel.orderID
-        binding.tvTrackingId.text = pesapalSdkViewModel.trackingId
+        binding.tvMerchantRef.text = transactionStatusResponse.merchantReference
+        binding.tvNumberOrCard.text = transactionStatusResponse.paymentAccount
+        binding.tvTrackingId.text = transactionStatusResponse.orderTrackingId
     }
 
 

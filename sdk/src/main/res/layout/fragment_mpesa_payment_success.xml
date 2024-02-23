@@ -152,8 +152,9 @@
                 tools:text="2016 **** **** 01114"
                 android:textColor="@color/black_faded"
                 android:fontFamily="@font/arial"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textStyle="normal"
+                android:textFontWeight="400"
                 app:layout_constraintStart_toEndOf="@+id/icon_pay_method"
                 app:layout_constraintTop_toTopOf="@+id/icon_pay_method"
                 />
@@ -164,7 +165,8 @@
                 android:id="@+id/tv_time"
                 android:layout_marginTop="18dp"
                 tools:text="Mon, 14 August 2023 14:38 PM "
-                android:textSize="12sp"
+                android:textSize="13sp"
+                android:textFontWeight="400"
                 android:textStyle="normal"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -173,25 +175,24 @@
 
             <TextView
                 android:id="@+id/label_amount"
-                android:layout_marginTop="17dp"
                 android:text="@string/amount"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_time"
+                app:layout_constraintTop_toTopOf="@id/tv_amount"
                 style="@style/tv_txn_result" />
+
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/tv_currency"
-                android:layout_marginTop="17dp"
                 android:textStyle="normal"
-                android:textColor="@color/colorGreyText"
+                android:textColor="@color/black"
                 android:fontFamily="@font/arial"
                 tools:text="KES"
                 android:textSize="17sp"
                 android:textFontWeight="400"
+                android:layout_marginEnd="12dp"
 
-                app:flow_horizontalBias="1"
-                app:layout_constraintStart_toEndOf="@id/label_amount"
+
                 app:layout_constraintEnd_toStartOf="@id/tv_amount"
                 app:layout_constraintTop_toTopOf="@id/tv_amount"
                 app:layout_constraintBottom_toBottomOf="@id/tv_amount"
@@ -206,9 +207,10 @@
                 android:fontFamily="@font/arial"
                 tools:text="5,000,0000"
                 android:textSize="17sp"
+                android:layout_marginTop="17dp"
                 android:textFontWeight="400"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/label_amount"
+                app:layout_constraintTop_toBottomOf="@id/tv_time"
                 />
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
@@ -252,6 +254,7 @@
 
                 <TextView
                     style="@style/tv_txn_result.inner"
+                    android:layout_marginEnd="20dp"
                     android:id="@+id/tv_merchant_Ref"
                     tools:text="RDT: 1692012478.26497"
                     app:layout_constraintTop_toTopOf="@id/label_Ref"
@@ -279,6 +282,7 @@
                 <TextView
                     style="@style/tv_txn_result.inner"
                     android:id="@+id/tv_tracking_id"
+                    android:layout_marginEnd="20dp"
                     tools:text="038450bb-af3d-45ac-bbd1-de4e66ce6bdf"
                     app:layout_constraintTop_toTopOf="@id/label_tracking"
                     app:layout_constraintStart_toStartOf="@id/guideline"

@@ -79,9 +79,8 @@
                  android:layout_height="wrap_content"
                  android:id="@+id/phone"
                  android:textSize="12sp"
-                 android:inputType="phone"
+                 android:inputType="number"
                  android:drawablePadding="10dp"
-
                  android:hint="@string/enter_mobile_number"
                  />
          </LinearLayout>

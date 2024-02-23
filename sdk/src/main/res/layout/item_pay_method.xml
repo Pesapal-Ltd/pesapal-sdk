@@ -302,7 +302,7 @@
                            android:layout_height="wrap_content"
                            android:gravity="center"
                            android:text="I accept to Pesapal\'s "
-                           android:textSize="14sp" />
+                           android:textSize="11sp" />
 
                        <TextView
                            android:id="@+id/privacy_policy"
@@ -310,21 +310,21 @@
                            android:layout_height="wrap_content"
                            android:text="Privacy"
                            android:textColor="@color/blue_pesapal"
-                           android:textSize="14sp" />
+                           android:textSize="11sp" />
 
                        <TextView
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:text=" &amp; "
-                           android:textSize="14sp" />
+                           android:textSize="11sp" />
 
                        <TextView
                            android:id="@+id/terms_of_service"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Terms and conditions"
+                           android:text="Terms and conditionskcngkllkbkncbncv"
                            android:textColor="@color/blue_pesapal"
-                           android:textSize="14sp" />
+                           android:textSize="11sp" />
 
                    </LinearLayout>
                </androidx.constraintlayout.widget.ConstraintLayout>
