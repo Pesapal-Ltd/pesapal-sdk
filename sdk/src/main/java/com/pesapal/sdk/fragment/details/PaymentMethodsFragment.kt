@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
+import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.adapter.PaymentAdapter
@@ -45,7 +47,7 @@ import com.pesapal.sdk.utils.CountryCodeEval.MTN_UG
 import com.pesapal.sdk.utils.CountryCodeEval.TIGO_TANZANIA
 import java.math.BigDecimal
 
-class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface {
+internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface {
     private lateinit var binding: FragmentPaymentMethodsBinding
 
     private lateinit var paymentDetails: PaymentDetails
@@ -58,6 +60,31 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
     private var selectedChip: Int = -1
 
     lateinit var rvPayment: RecyclerView
+
+    // Mobile Money
+    var phoneNumber =  ""
+    var mobileProvider = 0
+    private lateinit var pDialog: ProgressDialog
+    private var mobileMoneyResponse: MobileMoneyResponse? = null
+    lateinit var paymentAdapter: PaymentAdapter
+
+    private var timerStated = false
+    private var timerStatus = MpesaPendingFragment.TimerStatus.STOPPED
+
+    private lateinit var mobileMoneyRequest: MobileMoneyRequest
+
+    private var delayTime = 1000L
+    private val timeCountInMilliSeconds = 30000L
+
+    private val mobilePendingvViewModel: MpesaPendingViewModel by viewModels()
+    // Mobile Money
+
+
+    //Card
+
+
+
+    //Card
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -128,7 +155,7 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
         }
 
         rvPayment = binding.rvPaymentMethods
-        paymentAdapter = PaymentAdapter(requireContext(), this, payList)
+        paymentAdapter = PaymentAdapter(billingAddress, requireContext(), this, payList)
         rvPayment.adapter = paymentAdapter
     }
 
@@ -231,12 +258,6 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
             }
         }
     }
-
-    var phoneNumber =  ""
-    var mobileProvider = 0
-    private lateinit var pDialog: ProgressDialog
-    private var mobileMoneyResponse: MobileMoneyResponse? = null
-    lateinit var paymentAdapter: PaymentAdapter
 
 
     private fun prepareMobileMoney(): MobileMoneyRequest {
@@ -417,13 +438,10 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
 //        }.start()
 //    }
 
-    private var timerStated = false
-    private var timerStatus = MpesaPendingFragment.TimerStatus.STOPPED
-
 
 
     private fun proceedToSuccessScreen(transactionStatusResponse: TransactionStatusResponse, isTxnSuccess: Boolean){
-        pesapalSdkViewModel.merchantName = paymentDetails.merchant_name
+        pesapalSdkViewModel.merchantName = paymentDetails.merchant_name             //todo move to authFragment
         var action = PaymentMethodsFragmentDirections.actionPaymentFragmentToPaymentStatusFragment(transactionStatusResponse,isTxnSuccess)
         findNavController().navigate(action)
 
@@ -443,21 +461,16 @@ class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface 
 
         paymentAdapter.mobileMoneyUpdate()
         handleBackgroundConfirmation()
-
     }
 
-    private lateinit var mobileMoneyRequest: MobileMoneyRequest
 
-    private var delayTime = 1000L
-    private val timeCountInMilliSeconds = 30000L
 
-    private val mobilePendingvViewModel: MpesaPendingViewModel by viewModels()
+
 
 
     override  fun showMessage(message: String){
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
-
 
 
     private fun handleBackgroundConfirmation(){

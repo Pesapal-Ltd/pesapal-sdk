@@ -41,8 +41,8 @@
                android:src="@drawable/amex"
                android:layout_marginStart="10dp"
                app:layout_constraintStart_toEndOf="@+id/icon_visa"
-               app:layout_constraintTop_toTopOf="@id/icon_visa"
-               app:layout_constraintBottom_toBottomOf="@id/icon_visa"
+               app:layout_constraintTop_toTopOf="@+id/icon_visa"
+               app:layout_constraintBottom_toBottomOf="@+id/icon_visa"
                />
 
            <ImageView
@@ -51,8 +51,8 @@
                android:layout_marginStart="10dp"
                android:src="@drawable/ic_mastercard"
                app:layout_constraintStart_toEndOf="@+id/icon_amex"
-               app:layout_constraintTop_toTopOf="@id/icon_visa"
-               app:layout_constraintBottom_toBottomOf="@id/icon_visa"
+               app:layout_constraintTop_toTopOf="@+id/icon_visa"
+               app:layout_constraintBottom_toBottomOf="@+id/icon_visa"
                />
 
            <ImageView
@@ -61,8 +61,8 @@
                android:src="@drawable/ic_checked"
 
                app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintTop_toTopOf="@id/icon_visa"
-               app:layout_constraintBottom_toBottomOf="@id/icon_visa"
+               app:layout_constraintTop_toTopOf="@+id/icon_visa"
+               app:layout_constraintBottom_toBottomOf="@+id/icon_visa"
                />
        </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -71,7 +71,7 @@
            android:id="@+id/card_outer"
            android:visibility="gone"
            tools:visibility="visible"
-           app:layout_constraintTop_toBottomOf="@id/linear_card_pay"
+           app:layout_constraintTop_toBottomOf="@+id/linear_card_pay"
            app:layout_constraintBottom_toBottomOf="parent"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +116,7 @@
                    />
 
                <EditText
-                   android:id="@id/et_first_name"
+                   android:id="@+id/et_first_name"
                    android:hint="@string/add_card_firstName"
                    style="@style/et_card"
                    />
@@ -127,24 +127,24 @@
                    />
 
                <EditText
-                   android:id="@id/et_surname"
+                   android:id="@+id/et_surname"
                    android:hint="@string/add_card_surname"
                    style="@style/et_card"
                    />
 
-<!--               <TextView-->
-<!--                   android:text="@string/add_card_email"-->
-<!--                   style="@style/label_card"-->
-<!--                   />-->
+               <TextView
+                   android:text="@string/add_card_email"
+                   style="@style/label_card"
+                   />
 
-<!--               <EditText-->
-<!--                   android:id="@id/add_card_email"-->
-<!--                   android:hint="@string/add_card_email"-->
-<!--                   android:nextFocusDown="@id/et_phone_number"-->
-<!--                   android:inputType="textEmailAddress"-->
+               <EditText
+                   android:id="@+id/et_email"
+                   android:hint="@string/add_card_email"
+                   android:nextFocusDown="@+id/et_phone_number"
+                   android:inputType="textEmailAddress"
 
-<!--                   style="@style/et_card"-->
-<!--                   />-->
+                   style="@style/et_card"
+                   />
 
 <!--               <TextView-->
 <!--                   android:text="@string/add_card_country"-->
@@ -152,7 +152,7 @@
 <!--                   />-->
 
 <!--               <EditText-->
-<!--                   android:id="@id/add_card_country"-->
+<!--                   android:id="@+id/add_card_country"-->
 <!--                   android:hint="@string/add_card_country"-->
 
 <!--                   style="@style/et_card"-->
@@ -165,7 +165,7 @@
 <!--                   />-->
 
 <!--               <EditText-->
-<!--                   android:id="@id/lll"-->
+<!--                   android:id="@+id/lll"-->
 <!--                   android:hint="@string/add_card_country"-->
 <!--                   style="@style/et_card"-->
 <!--                   />-->
@@ -177,18 +177,18 @@
 
 
 
-<!--               <com.santalu.maskedittext.MaskEditText-->
-<!--                   android:id="@+id/et_phone_number"-->
-<!--                   style="@style/et_card"-->
+               <com.santalu.maskedittext.MaskEditText
+                   android:id="@+id/et_phone_number"
+                   style="@style/et_card"
 
-<!--                   android:digits="@string/allow_phone_symbols"-->
-<!--                   android:hint="@string/add_card_phone"-->
-<!--                   android:imeOptions="actionNext"-->
-<!--                   android:inputType="phone"-->
-<!--                   android:maxLength="15"-->
-<!--                   android:maxLines="1"-->
-<!--                   android:paddingStart="15dp"-->
-<!--                   />-->
+                   android:digits="@string/allow_phone_symbols"
+                   android:hint="@string/add_card_phone"
+                   android:imeOptions="actionNext"
+                   android:inputType="phone"
+                   android:maxLength="15"
+                   android:maxLines="1"
+                   android:paddingStart="15dp"
+                   />
 
                <TextView
                    android:text="@string/add_card_address"
@@ -215,13 +215,13 @@
                    android:hint="@string/add_card_postalCodelower"
                    android:inputType="textPostalAddress"
                    android:maxLength="6"
-                   android:nextFocusDown="@id/et_city"
+                   android:nextFocusDown="@+id/et_city"
                    style="@style/et_card"
                    />
 
 
                <TextView
-                   android:text="@string/add_card_postalCode"
+                   android:text="@string/add_card_city"
                    style="@style/label_card"
                    />
 

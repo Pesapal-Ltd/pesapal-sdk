@@ -194,11 +194,10 @@ class CardFragmentCardData : Fragment() {
         );
 
 
-//        viewModel.generateCardOrderTrackingId(cardOrderTrackingIdRequest, " Processing request ...")
-//        initSdk();
+        viewModel.generateCardOrderTrackingId(cardOrderTrackingIdRequest, " Processing request ...")
 
-        val requestServerJwt = RequestServerJwt(BigDecimal("1500"),paymentDetails.currency!!, billingAddress = billingAddress, cardDetails = cardDetails)
-        viewModel.serverJwt(requestServerJwt)
+//        val requestServerJwt = RequestServerJwt(BigDecimal("1500"),paymentDetails.currency!!, billingAddress = billingAddress, cardDetails = cardDetails)
+//        viewModel.serverJwt(requestServerJwt)
     }
 
 
@@ -246,7 +245,7 @@ class CardFragmentCardData : Fragment() {
             cardNumber = cardDetails.cardNumber
         )
 
-//        viewModel.submitCardRequest(submitCardRequest)
+        viewModel.submitCardRequest(submitCardRequest)
 
 //        val cardinalRequest = CardinalRequest(
 //            paymentDetails.order_id!!, CardDetailsX(
@@ -267,7 +266,7 @@ class CardFragmentCardData : Fragment() {
     }
 
     private fun handleCompletePayment(transactionStatusResponse: TransactionStatusResponse){
-        val action = CardFragmentCardDataDirections.actionPesapalCardFragmentCardDataToPesapalCardFragmentSuccess(transactionStatusResponse)
+        val action = CardFragmentCardDataDirections.actionPesapalCardFragmentCardDataToPesapalCardFragmentSuccess(transactionStatusResponse, true)
         findNavController().navigate(action)
     }
 

@@ -1,6 +1,7 @@
 package com.pesapal.sdk.adapter
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +13,15 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.hbb20.CountryCodePicker
+import com.pesapal.paygateway.activities.payment.model.check3ds.BillingDetails
 import com.pesapal.sdk.R
+import com.pesapal.sdk.fragment.card.address.CardFragmentAddressDataDirections
 import com.pesapal.sdk.fragment.details.PaymentInterModel
+import com.pesapal.sdk.model.card.BillingAddress
+import com.pesapal.sdk.setButtonEnabled
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_KE
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_TZ
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_UG
@@ -22,7 +29,8 @@ import com.pesapal.sdk.utils.CountryCodeEval.CARD
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
 
-class PaymentAdapter(val context: Context,
+internal class PaymentAdapter(val billingAddress: BillingAddress,
+                     val context: Context,
                      private val paymentMethodInterface: PaymentMethodInterface,
                      private val payList: MutableList<PaymentInterModel>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -60,8 +68,12 @@ class PaymentAdapter(val context: Context,
 
         if(holder is PaymentCardAdapterVh){
             hideExpandedView(holder.cardOuter, method.paymentMethodId)
-            holder.mainCard.setOnClickListener{
-                checkUncheckExpandingView(holder.cardOuter, method.paymentMethodId)
+            
+            if(selected == method.paymentMethodId) {
+                holder.initData(billingAddress)
+                holder.mainCard.setOnClickListener {
+                    checkUncheckExpandingView(holder.cardOuter, method.paymentMethodId)
+                }
             }
         }
         else if(holder is PaymentMobileMoneyAdapterVh){
@@ -170,6 +182,22 @@ class PaymentAdapter(val context: Context,
         notifyDataSetChanged()
     }
 
+
+    private fun isValidEmail(email: CharSequence): Boolean {
+        val isEmpty = TextUtils.isEmpty(email)
+        val isCorrectly = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        return !isEmpty && isCorrectly
+    }
+
+//    private fun checkValidEmail(email: String, etmail: EditText):Boolean {
+//        val isValidEmail = isValidEmail(email)
+//        if (!isValidEmail) {
+//            etEmail.error = context.getString(R.string.new_card_invalidEmail)
+//        }
+//        return isValidEmail
+//    }
+
+
     /**
      * 1 = mobile send request
      */
@@ -190,6 +218,54 @@ class PaymentAdapter(val context: Context,
         val mainCard = itemView.findViewById<ConstraintLayout>(R.id.linear_card_pay)
         val cardOuter = itemView.findViewById<CardView>(R.id.card_outer)
         val btnSend = itemView.findViewById<TextView>(R.id.btn_proceed)
+
+        val etFirstName = itemView.findViewById<EditText>(R.id.et_first_name)
+        val etSurname = itemView.findViewById<EditText>(R.id.et_surname)
+        val etEmail = itemView.findViewById<EditText>(R.id.et_email)
+        val etPhoneNumber = itemView.findViewById<EditText>(R.id.et_phone_number)
+        val etAddress = itemView.findViewById<EditText>(R.id.et_address)
+        val etPostal = itemView.findViewById<EditText>(R.id.et_postal)
+        val etCity = itemView.findViewById<EditText>(R.id.et_city)
+
+        val countryCodePicker = itemView.findViewById<CountryCodePicker>(R.id.countryCode_picker)
+
+
+
+        // todo transfer over logic
+
+        fun initData(billingAddress: BillingAddress){
+            etFirstName.setText(billingAddress.firstName)
+            etSurname.setText(billingAddress.lastName)
+            etEmail.setText(billingAddress.emailAddress)
+            etPhoneNumber.setText(billingAddress.phoneNumber)
+            etAddress.setText(billingAddress.zipCode)
+            etPostal.setText(billingAddress.postalCode)
+            etCity.setText(billingAddress.city)
+        }
+
+        private fun handleClickListener(paymentMethodInterface: PaymentMethodInterface){
+            btnSend.setOnClickListener {
+                val billingAddress = BillingAddress(
+                    phoneNumber = etPhoneNumber.text.toString(),
+                    emailAddress = etEmail.text.toString(),
+                    countryCode = countryCodePicker.selectedCountryNameCode,
+                    firstName = etFirstName.text.toString(),
+                    middleName = etSurname.text.toString(),
+                    lastName = etSurname.text.toString(),
+                    line = etAddress.text.toString(),
+                    line2 = etAddress.text.toString(),
+                    city = etCity.text.toString(),
+                    state = " ",
+                    postalCode = etPostal.text.toString(),
+                    zipCode = etAddress.text.toString(),
+                )
+
+//                val action = CardFragmentAddressDataDirections.actionPesapalCardFragmentAddressToPesapalCardFragmentCardData(paymentDetails,billingAddress)
+//                findNavController().navigate(action)
+            }
+        }
+
+
     }
 
 
@@ -214,5 +290,7 @@ class PaymentAdapter(val context: Context,
 
         val clLipaNaMpesa = itemView.findViewById<TextView>(R.id.tv_manual)
         val clBackgroundCheck = itemView.findViewById<ConstraintLayout>(R.id.clWaiting)
+        
+        
     }
 }
