@@ -26,7 +26,7 @@ class PaymentAdapter(val context: Context,
                      private val paymentMethodInterface: PaymentMethodInterface,
                      private val payList: MutableList<PaymentInterModel>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val OUT_OF_RANGE = 100
+    private val OUT_OF_RANGE = 1010
 
     private var selected: Int = OUT_OF_RANGE
     private var previous: Int = OUT_OF_RANGE
@@ -51,28 +51,31 @@ class PaymentAdapter(val context: Context,
     override fun getItemViewType(position: Int): Int {
         return when (payList[position].paymentMethodId) {
             CARD -> 0
-            else -> 1
+            else -> position
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val method  = payList[position]
-
+        Log.e("Ad","Pos $position")
+        Log.e("Ad","Abs ${holder.absoluteAdapterPosition}")
+        Log.e("Ad","Payment id ${method.paymentMethodId}")
+        
         if(holder is PaymentCardAdapterVh){
-            hideExpandedView(holder.cardOuter, position)
+            hideExpandedView(holder.cardOuter, method.paymentMethodId)
             holder.mainCard.setOnClickListener{
-                checkUncheckExpandingView(holder.cardOuter, position)
+                checkUncheckExpandingView(holder.cardOuter, method.paymentMethodId)
             }
         }
         else if(holder is PaymentMobileMoneyAdapterVh){
-            hideExpandedView(holder.cardOuter, position)
+            hideExpandedView(holder.cardOuter, method.paymentMethodId)
 
             val phone = holder.etPhone
             holder.labelPhone.text = context.getString(R.string.enter_mobile_number , method.mobileProvider).uppercase()
             phone.hint = context.getString(R.string.enter_mobile_number , method.mobileProvider)
 
             holder.mainCard.setOnClickListener{
-                checkUncheckExpandingView(holder.cardOuter, position)
+                checkUncheckExpandingView(holder.cardOuter, method.paymentMethodId)
             }
             holder.methodIcon.setImageResource(when(method.paymentMethodId){
                 MPESA, MPESA_TZ -> R.drawable.mpesa
@@ -85,14 +88,14 @@ class PaymentAdapter(val context: Context,
                 if(mobileStep == 1)
                     paymentMethodInterface.handleConfirmation()
                 else
-                    mobileMoneyRequest(position, phone, method)
+                    mobileMoneyRequest(phone, method)
             }
 
             holder.resendButton.setOnClickListener {
-                mobileMoneyRequest(position, phone, method)
+                mobileMoneyRequest(phone, method)
             }
 
-            if(selected == position){
+            if(selected == method.paymentMethodId){
                 when(mobileStep){
                     0 -> {
                         holder.phonelayout.visibility = View.VISIBLE
@@ -145,11 +148,10 @@ class PaymentAdapter(val context: Context,
     }
 
     private fun mobileMoneyRequest(
-        position: Int,
         phone: EditText,
         method: PaymentInterModel
     ) {
-        selected = position
+        selected = method.paymentMethodId
         if (phone.text.toString().isNotEmpty() && phone.text.toString().length == 10) {
             val mobileProvider = method.paymentMethodId
             paymentMethodInterface.mobileMoneyRequest(1, phone.text.toString(), mobileProvider)
