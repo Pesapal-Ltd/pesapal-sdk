@@ -21,6 +21,8 @@ import com.pesapal.sdk.R
 import com.pesapal.sdk.fragment.card.address.CardFragmentAddressDataDirections
 import com.pesapal.sdk.fragment.details.PaymentInterModel
 import com.pesapal.sdk.model.card.BillingAddress
+import com.pesapal.sdk.model.card.CardDetails
+import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.sdk.setButtonEnabled
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_KE
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_TZ
@@ -28,6 +30,9 @@ import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_UG
 import com.pesapal.sdk.utils.CountryCodeEval.CARD
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
+import com.pesapal.sdk.utils.FragmentExtension.hideKeyboard
+import com.pesapal.sdk.utils.PrefManager
+import com.santalu.maskedittext.MaskEditText
 
 internal class PaymentAdapter(val billingAddress: BillingAddress,
                      val context: Context,
@@ -68,12 +73,9 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
 
         if(holder is PaymentCardAdapterVh){
             hideExpandedView(holder.cardOuter, method.paymentMethodId)
-            
-            if(selected == method.paymentMethodId) {
-                holder.initData(billingAddress)
-                holder.mainCard.setOnClickListener {
-                    checkUncheckExpandingView(holder.cardOuter, method.paymentMethodId)
-                }
+            holder.initData(billingAddress)
+            holder.mainCard.setOnClickListener {
+                checkUncheckExpandingView(holder.cardOuter, method.paymentMethodId)
             }
         }
         else if(holder is PaymentMobileMoneyAdapterVh){
@@ -207,6 +209,8 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         fun refreshRv()
         fun handleResend()
         fun handleConfirmation()
+        fun generateCardOrderTrackingId(billingAddress: BillingAddress, cardNumber: String, year:Int, month: Int,cvv:String)
+
     }
 
     /**
@@ -228,10 +232,18 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         val etCity = itemView.findViewById<EditText>(R.id.et_city)
 
         val countryCodePicker = itemView.findViewById<CountryCodePicker>(R.id.countryCode_picker)
+        val etNumberCard = itemView.findViewById<MaskEditText>(R.id.et_number_card)
+        val yearField = itemView.findViewById<EditText>(R.id.year_field)
+        val monthField = itemView.findViewById<EditText>(R.id.month_field)
+        val etCvv = itemView.findViewById<EditText>(R.id.et_cvv)
+
+        init {
+            handleClickListener()
+        }
 
 
+        // todo transfer over all the other logic
 
-        // todo transfer over logic
 
         fun initData(billingAddress: BillingAddress){
             etFirstName.setText(billingAddress.firstName)
@@ -243,7 +255,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
             etCity.setText(billingAddress.city)
         }
 
-        private fun handleClickListener(paymentMethodInterface: PaymentMethodInterface){
+        private fun handleClickListener(){
             btnSend.setOnClickListener {
                 val billingAddress = BillingAddress(
                     phoneNumber = etPhoneNumber.text.toString(),
@@ -260,8 +272,9 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
                     zipCode = etAddress.text.toString(),
                 )
 
-//                val action = CardFragmentAddressDataDirections.actionPesapalCardFragmentAddressToPesapalCardFragmentCardData(paymentDetails,billingAddress)
-//                findNavController().navigate(action)
+                paymentMethodInterface.generateCardOrderTrackingId(billingAddress,etNumberCard.rawText.toString(), Integer.parseInt(yearField.text.toString()),Integer.parseInt(monthField.text.toString()),etCvv.text.toString())
+
+
             }
         }
 

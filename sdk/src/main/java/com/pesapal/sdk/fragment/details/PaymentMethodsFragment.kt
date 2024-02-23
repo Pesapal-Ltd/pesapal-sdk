@@ -3,9 +3,7 @@ package com.pesapal.sdk.fragment.details
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.Handler
-import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,17 +19,20 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.adapter.PaymentAdapter
 import com.pesapal.sdk.databinding.FragmentPaymentMethodsBinding
+import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingFragment
-import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingFragmentDirections
 import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingViewModel
-import com.pesapal.sdk.fragment.mobile_money.mpesa.stk.MpesaPesapalFragmentDirections
 import com.pesapal.sdk.fragment.mobile_money.mpesa.stk.MpesaPesapalViewModel
 import com.pesapal.sdk.model.card.BillingAddress
+import com.pesapal.sdk.model.card.CardDetails
+import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
+import com.pesapal.sdk.model.card.submit.request.EnrollmentCheckResult
+import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
+import com.pesapal.sdk.model.card.submit.request.SubscriptionDetails
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.mobile_money.MobileMoneyResponse
 import com.pesapal.sdk.model.payment.PaymentDetails
@@ -81,6 +82,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
 
     //Card
+    private val cardViewModel: CardViewModel by viewModels()
 
 
 
@@ -335,14 +337,14 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 Status.SUCCESS -> {
                     if(::pDialog.isInitialized) {
                         pDialog.dismiss()
-                        proceedToSuccessScreen(it.data!!, true)
+                        proceedToTransactionResultScreen(it.data!!, true)
                     }
                 }
                 Status.ERROR -> {
                     if(::pDialog.isInitialized) {
                         pDialog.dismiss()
                         showMessage(it.message!!)
-                        proceedToSuccessScreen(it.data!!, false)
+                        proceedToTransactionResultScreen(it.data!!, false)
 
                     }
                 }
@@ -360,7 +362,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 }
                 Status.SUCCESS -> {
 //                    handleTimeStop()
-                    proceedToSuccessScreen(it.data!!, true)
+                    proceedToTransactionResultScreen(it.data!!, true)
                 }
                 Status.ERROR -> {
                     if(delayTime != 30000L){
@@ -374,6 +376,211 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             }
         }
 
+        cardViewModel.cardOrderTrackingIdResponse.observe(requireActivity()) {
+            when (it.status) {
+                Status.LOADING -> {
+                    pDialog = ProgressDialog(requireContext())
+                    pDialog.setMessage(it.message)
+                    pDialog.show()
+                }
+                Status.SUCCESS -> {
+                    val result = it.data
+                    paymentDetails.order_tracking_id = result!!.orderTrackingId
+                    submitCardRequest()
+                }
+                Status.ERROR -> {
+                    showMessage(it.message!!)
+                    pDialog.dismiss()
+                }
+
+                else -> {
+                    pDialog.dismiss()
+                }
+            }
+        }
+
+        cardViewModel.submitCardResponse.observe(requireActivity()){
+            when (it.status) {
+                Status.LOADING -> {
+
+                }
+                Status.SUCCESS -> {
+                    checkCardPaymentStatus()
+                }
+                Status.ERROR -> {
+                    showMessage(it.message!!)
+                    pDialog.dismiss()
+                }
+
+                else -> {
+                    pDialog.dismiss()
+                }
+            }
+        }
+
+        cardViewModel.cardPaymentStatus.observe(requireActivity()) {
+            when (it.status) {
+                Status.LOADING -> {
+
+                }
+                Status.SUCCESS -> {
+                    pDialog.dismiss()
+                    val result = it.data!!
+                    proceedToTransactionResultScreen(it.data!!, true)
+                }
+                Status.ERROR -> {
+                    showMessage(it.message!!)
+                    pDialog.dismiss()
+
+                    proceedToTransactionResultScreen(it.data!!, false)
+                }
+
+                else -> {
+                    pDialog.dismiss()
+                }
+            }
+        }
+
+//        cardViewModel.serverJwt.observe(requireActivity()){
+//            when (it.status) {
+//                Status.LOADING -> {
+//                    pDialog = ProgressDialog(requireContext())
+//                    pDialog.setMessage(it.message)
+//                    pDialog.show()
+//                }
+//                Status.SUCCESS -> {
+//                    responseServerJwt = it.data
+//                    initSdk(responseServerJwt!!.orderJwt)
+//                }
+//                Status.ERROR -> {
+//                    showMessage(it.message!!)
+//                    pDialog.dismiss()
+//                }
+//                else -> {
+//                    Log.e(" else ", " ====> auth")
+//                }
+//            }
+//        }
+//
+//        cardViewModel.dsToken.observe(requireActivity()){
+//            when (it.status) {
+//                Status.LOADING -> {
+//
+//                }
+//                Status.SUCCESS -> {
+//                    val token = it.data!!.token
+//                    get3dsPayload(token);
+//                }
+//                Status.ERROR -> {
+//
+//                }
+//                else -> {
+//
+//                }
+//            }
+//        }
+//
+//        cardViewModel.dsResponse.observe(requireActivity()){
+//            when (it.status) {
+//                Status.LOADING -> {
+//                }
+//                Status.SUCCESS -> {
+//                    var response = it.data
+//                    val gson = Gson()
+//
+//                    var responseString = gson.toJson(response)
+//                    Log.e(" responseString ", responseString)
+//
+//                    var payAcsUrlload = response?.acsUrl
+//                    var payload = response?.payload
+//
+//                    if(!response!!.authenticationTransactionId.isNullOrEmpty() && !payload.isNullOrEmpty() && payAcsUrlload!= null) {
+//                        if (response.reasonCode == "475")
+//                            handle3dSecure(
+//                                response.authenticationTransactionId!!,
+//                                payload,
+//                                payAcsUrlload
+//                            )
+//                        else
+//                        {
+//                            Toast.makeText(requireContext(),"Go normal route without 3ds", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+//
+//                    else
+//                        Toast.makeText(requireContext(),"Unable to complete. Err 600", Toast.LENGTH_LONG).show()
+//                }
+//                Status.ERROR -> {
+//                }
+//                else -> {
+//                    Log.e(" else ", " ====> auth")
+//                }
+//            }
+//        }
+    }
+
+    private fun checkCardPaymentStatus(){
+        cardViewModel.checkCardPaymentStatus(paymentDetails.order_tracking_id!!)
+    }
+
+    private fun submitCardRequest() {
+        val enrollmentCheckResult = EnrollmentCheckResult(
+            authenticationResult = "",
+            authenticationAttempted = false,
+            directoryServerTransactionId = "",
+            cavvAlgorithm = "",
+            eci = "",
+            eciRaw = "",
+            cavv = "",
+            reasonCode = "",
+            processorTransactionId = "",
+            xid = "",
+            ucafCollectionIndicator = "",
+            threeDSServerTransactionId = "",
+            pareq = "",
+            ucafAuthenticationData = "",
+            veresEnrolled = "",
+            aav = "",
+            specificationVersion = "",
+            commerceIndicator = "",
+            paresStatus = "",
+            checkoutSessionId = "",
+        )
+
+        val subscriptionDetails = SubscriptionDetails(
+            endDate = "0001-01-01T00:00:00",
+            startDate = "0001-01-01T00:00:00",
+            amount = 0,
+            accountReference = null,
+            frequency = 0
+        )
+
+        val submitCardRequest = SubmitCardRequest(
+            cvv = cardDetails.cvv,
+            enrollmentCheckResult = enrollmentCheckResult,
+            subscriptionDetails = subscriptionDetails,
+            orderTrackingId = paymentDetails.order_tracking_id,
+            expiryMonth = cardDetails.month.toString(),
+            billingAddress = billingAddress,
+            expiryYear = cardDetails.year.toString(),
+            ipAddress = "1",
+            cardNumber = cardDetails.cardNumber
+        )
+
+        cardViewModel.submitCardRequest(submitCardRequest)
+
+//        val cardinalRequest = CardinalRequest(
+//            paymentDetails.order_id!!, CardDetailsX(
+//                cardDetails.cardNumber ,
+//                cardDetails.cvv,
+//                cardDetails.month,
+//                cardDetails.year),
+//            paymentDetails.order_tracking_id!!,
+//            cardinal.sdkVersion,
+//            ""
+//        )
+//        billingAddress
+//        viewModel.getCardinalToken(cardinalRequest)
     }
 
     override fun handleResend(){
@@ -440,7 +647,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
 
 
-    private fun proceedToSuccessScreen(transactionStatusResponse: TransactionStatusResponse, isTxnSuccess: Boolean){
+    private fun proceedToTransactionResultScreen(transactionStatusResponse: TransactionStatusResponse, isTxnSuccess: Boolean){
         pesapalSdkViewModel.merchantName = paymentDetails.merchant_name             //todo move to authFragment
         var action = PaymentMethodsFragmentDirections.actionPaymentFragmentToPaymentStatusFragment(transactionStatusResponse,isTxnSuccess)
         findNavController().navigate(action)
@@ -484,5 +691,41 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
         mobilePendingvViewModel.mobileMoneyTransactionStatus(mobileMoneyRequest.trackingId)
     }
 
+
+    private lateinit var cardDetails: CardDetails
+    private lateinit var cardOrderTrackingIdRequest: CardOrderTrackingIdRequest
+
+    override fun generateCardOrderTrackingId(billingAddress: BillingAddress,cardNumber: String, year:Int, month: Int,cvv:String) {
+        this.billingAddress = billingAddress
+        hideKeyboard()
+        cardDetails = CardDetails(
+           cardNumber,
+            year,
+            month,
+            cvv,
+        )
+
+        cardOrderTrackingIdRequest = CardOrderTrackingIdRequest(
+            id = paymentDetails.order_id!!,
+            sourceChannel = 2,
+            msisdn = billingAddress.phoneNumber,
+            paymentMethodId = 1,
+            accountNumber = paymentDetails.accountNumber!!,
+            currency = paymentDetails.currency!!,
+            allowedCurrencies = "",
+            amount = paymentDetails.amount,
+            description = "Express Order",
+            callbackUrl = paymentDetails.callbackUrl!!,
+            cancellationUrl = "",
+            notificationId = PrefManager.getIpnId(),
+            language = "",
+            termsAndConditionsId = "",
+            billingAddress = billingAddress,
+            trackingId = "",
+            chargeRequest = false
+        )
+        cardViewModel.generateCardOrderTrackingId(cardOrderTrackingIdRequest, " Processing request ...")
+
+    }
 
 }
