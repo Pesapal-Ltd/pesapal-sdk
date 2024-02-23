@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:fillViewport="true"
     >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -156,7 +157,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/rv_payment_methods"
 
-            tools:itemCount="0"
+            tools:itemCount="1"
             tools:listitem="@layout/item_pay_method"
             android:layout_marginTop="12dp"
             android:layout_marginHorizontal="26dp"
@@ -171,7 +172,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/rv_payment_methods_mobile_money_tobedeleted"
 
-            tools:itemCount="1"
+            tools:itemCount="0"
             tools:listitem="@layout/item_pay_method_mobile"
             android:layout_marginTop="12dp"
             android:layout_marginHorizontal="26dp"
@@ -206,4 +207,4 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

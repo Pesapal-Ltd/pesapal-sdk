@@ -57,10 +57,7 @@ class PaymentAdapter(val context: Context,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val method  = payList[position]
-        Log.e("Ad","Pos $position")
-        Log.e("Ad","Abs ${holder.absoluteAdapterPosition}")
-        Log.e("Ad","Payment id ${method.paymentMethodId}")
-        
+
         if(holder is PaymentCardAdapterVh){
             hideExpandedView(holder.cardOuter, method.paymentMethodId)
             holder.mainCard.setOnClickListener{

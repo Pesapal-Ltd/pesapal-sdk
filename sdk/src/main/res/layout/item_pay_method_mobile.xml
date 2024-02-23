@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="4dp"
-    android:background="@color/white">
+    android:paddingBottom="12dp"
+    android:background="@color/white"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linear_card_pay"
@@ -46,13 +48,13 @@
         android:visibility="gone"
         tools:visibility="visible"
         app:layout_constraintTop_toBottomOf="@id/linear_card_pay"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         >
 
         <LinearLayout
             style="@style/linear_payment_footer"
-            android:paddingTop="21dp"
             >
 
          <LinearLayout
@@ -137,6 +139,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
+                tools:visibility="gone"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/tvInst"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -214,7 +218,7 @@
                 android:paddingVertical="11dp"
                 android:paddingHorizontal="9dp"
                 android:visibility="gone"
-                tools:visibility="visible"
+                tools:visibility="gone"
                 >
 
                 <View
