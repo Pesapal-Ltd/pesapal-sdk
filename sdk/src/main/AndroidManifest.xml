@@ -13,7 +13,8 @@
         <activity
             android:name="com.pesapal.sdk.activity.PesapalSdkActivity"
             android:exported="false"
-            android:theme="@style/Theme.PayGateway" />
+            android:theme="@style/Theme.PayGateway"
+            />
     </application>
 
 </manifest>

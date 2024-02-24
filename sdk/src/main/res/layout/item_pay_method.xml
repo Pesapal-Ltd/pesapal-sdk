@@ -18,7 +18,7 @@
        <androidx.constraintlayout.widget.ConstraintLayout
            android:id="@+id/linear_card_pay"
            style="@style/layout_payment_outer"
-
+           tools:visibility="gone"
            app:layout_constraintTop_toTopOf="parent"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintEnd_toEndOf="parent"
@@ -81,12 +81,12 @@
                style="@style/linear_payment_footer"
                >
 
-
-
                <LinearLayout
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:background="@drawable/rounded_blue_billing"
+                   tools:visibility="gone"
+
                    android:paddingVertical="11dp"
                    android:paddingHorizontal="9dp"
                    >
@@ -445,13 +445,14 @@
 
 
 
-                   <LinearLayout
+                   <com.google.android.flexbox.FlexboxLayout
                        android:layout_width="0dp"
                        android:layout_height="wrap_content"
                        android:id="@+id/linear_terms"
                        android:layout_marginBottom="43dp"
                        android:gravity="center"
                        android:orientation="horizontal"
+                       app:flexWrap="wrap"
                        app:layout_constraintStart_toEndOf="@+id/switch_accept"
                        app:layout_constraintTop_toTopOf="@+id/switch_accept"
                        app:layout_constraintEnd_toEndOf="parent"
@@ -481,11 +482,11 @@
                            android:id="@+id/terms_of_service"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="Terms and conditionskcngkllkbkncbncv"
+                           android:text="Terms and conditions"
                            android:textColor="@color/blue_pesapal"
                            android:textSize="11sp" />
 
-                   </LinearLayout>
+                   </com.google.android.flexbox.FlexboxLayout>
                </androidx.constraintlayout.widget.ConstraintLayout>
 
 

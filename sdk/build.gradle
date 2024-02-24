@@ -212,6 +212,8 @@ dependencies {
 //    api "org.koin:koin-androidx-fragment:$koin_version"
 //    api "org.koin:koin-android:$koin_version"
 
+    api 'com.google.android.flexbox:flexbox:3.0.0'
+
 
 }
 

@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -237,6 +238,10 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         val monthField = itemView.findViewById<EditText>(R.id.month_field)
         val etCvv = itemView.findViewById<EditText>(R.id.et_cvv)
 
+        val tvPrivacy = itemView.findViewById<TextView>(R.id.privacy_policy)
+        val tvTerms = itemView.findViewById<TextView>(R.id.terms_of_service)
+
+
         init {
             handleClickListener()
         }
@@ -273,8 +278,14 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
                 )
 
                 paymentMethodInterface.generateCardOrderTrackingId(billingAddress,etNumberCard.rawText.toString(), Integer.parseInt(yearField.text.toString()),Integer.parseInt(monthField.text.toString()),etCvv.text.toString())
+            }
 
+            tvTerms.setOnClickListener {
+                Toast.makeText(context,"Terms clicked", Toast.LENGTH_SHORT).show()
+            }
 
+            tvPrivacy.setOnClickListener {
+                Toast.makeText(context,"Privacy clicked", Toast.LENGTH_SHORT).show()
             }
         }
 

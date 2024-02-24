@@ -425,7 +425,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 }
                 Status.SUCCESS -> {
                     pDialog.dismiss()
-                    val result = it.data!!
                     proceedToTransactionResultScreen(it.data!!, true)
                 }
                 Status.ERROR -> {
@@ -566,7 +565,17 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             ipAddress = "1",
             cardNumber = cardDetails.cardNumber
         )
-
+//{
+//  "order_tracking_id": "33578938-582a-4044-a199-dd8c23567740",
+//  "merchant_reference": "43A885C5",
+//  "error": {
+//    "error_type": "channel_error",
+//    "code": "transaction_declined",
+//    "message": ""
+//  },
+//  "status": "500",
+//  "call_back_url": "http://localhost:56522"
+//}
         cardViewModel.submitCardRequest(submitCardRequest)
 
 //        val cardinalRequest = CardinalRequest(
