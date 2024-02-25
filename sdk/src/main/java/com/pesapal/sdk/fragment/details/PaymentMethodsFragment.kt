@@ -578,18 +578,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 //}
         cardViewModel.submitCardRequest(submitCardRequest)
 
-//        val cardinalRequest = CardinalRequest(
-//            paymentDetails.order_id!!, CardDetailsX(
-//                cardDetails.cardNumber ,
-//                cardDetails.cvv,
-//                cardDetails.month,
-//                cardDetails.year),
-//            paymentDetails.order_tracking_id!!,
-//            cardinal.sdkVersion,
-//            ""
-//        )
-//        billingAddress
-//        viewModel.getCardinalToken(cardinalRequest)
     }
 
     override fun handleResend(){

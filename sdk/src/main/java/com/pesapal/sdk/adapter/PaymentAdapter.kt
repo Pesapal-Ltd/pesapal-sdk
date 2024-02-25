@@ -1,6 +1,7 @@
 package com.pesapal.sdk.adapter
 
 import android.content.Context
+import android.text.Editable
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,14 +13,17 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.hbb20.CountryCodePicker
 import com.pesapal.paygateway.activities.payment.model.check3ds.BillingDetails
 import com.pesapal.sdk.R
 import com.pesapal.sdk.fragment.card.address.CardFragmentAddressDataDirections
+import com.pesapal.sdk.fragment.card.data.CardFragmentCardData
 import com.pesapal.sdk.fragment.details.PaymentInterModel
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.card.CardDetails
@@ -240,10 +244,27 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
 
         val tvPrivacy = itemView.findViewById<TextView>(R.id.privacy_policy)
         val tvTerms = itemView.findViewById<TextView>(R.id.terms_of_service)
+        val cardLogo = itemView.findViewById<AppCompatImageView>(R.id.card_logo)
 
+        private var isFirstNameFilled = false
+        private var isSurnameFilled = false
+        private var isEmailFilled = false
+        private var isPhoneFilled = false
+        private var isAddressFilled = false
+        private var isPostalCodeFilled = false
+        private var isCityFilled = false
+
+        private var isCardNumberFilled = false
+        private var isExpiryFilled = false
+        private var isCvvFilled = false
+        private var expiryMonth = false
+        private var expiryYear = false
+        private var enable = false
 
         init {
             handleClickListener()
+            handleChangeListener()
+            handleCardChangeListener()
         }
 
 
@@ -259,6 +280,216 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
             etPostal.setText(billingAddress.postalCode)
             etCity.setText(billingAddress.city)
         }
+
+        private fun checkFilled(){
+            enable = isFirstNameFilled && isSurnameFilled && isEmailFilled  && isPhoneFilled && isAddressFilled && isPostalCodeFilled && isCityFilled
+                    && isCardNumberFilled && isExpiryFilled && isCvvFilled
+            btnSend.isEnabled = enable
+        }
+
+
+        private fun checkValidEmail(email: String):Boolean {
+            val isValidEmail = isValidEmail(email)
+            if (!isValidEmail) {
+                etEmail.error = context.resources.getString(R.string.new_card_invalidEmail)
+            }
+            return isValidEmail
+        }
+
+        private fun handleChangeListener(){
+            etFirstName.addTextChangedListener {
+                isFirstNameFilled = it.toString().isNotEmpty()
+                checkFilled()
+
+            }
+
+            etSurname.addTextChangedListener {
+                isSurnameFilled = it.toString().isNotEmpty()
+                checkFilled()
+
+            }
+
+            etEmail.addTextChangedListener {
+                if(!it.isNullOrEmpty()) {
+                    isEmailFilled = checkValidEmail(it.toString())
+                    checkFilled()
+                }else{
+                    isEmailFilled = false
+                }
+            }
+
+
+            etPhoneNumber.addTextChangedListener {
+                if(!it.isNullOrEmpty()){
+                    val minLength = 10
+                    val phoneText = it.toString()
+                    isPhoneFilled = phoneText.length == minLength
+                    checkFilled()
+                }else{
+                    isPhoneFilled = false
+                }
+            }
+            etAddress.addTextChangedListener {
+                isAddressFilled = it.toString().isNotEmpty()
+                checkFilled()
+
+            }
+            etPostal.addTextChangedListener {
+                if(!it.isNullOrEmpty()){
+                    val minPostalCodeLength = 2
+                    val postalCodeText = it.toString()
+                    isPostalCodeFilled = postalCodeText.length > minPostalCodeLength
+
+                    var postalCodeError = ""
+                    if (!isPostalCodeFilled) {
+                        postalCodeError = "Postal Code Too Short"
+                    }
+                    etPostal.error = postalCodeError.ifEmpty { null }
+                    isPostalCodeFilled = it.toString().isNotEmpty()
+                    checkFilled()
+                }else{
+                    isPostalCodeFilled = false
+                }
+
+
+            }
+            etCity.addTextChangedListener {
+                isCityFilled = it.toString().isNotEmpty()
+                checkFilled()
+
+            }
+        }
+
+        private fun setCardLogoByType(cardName: Editable) {
+            val typeVisa = '4'
+            val mastercard = '5'
+            val isEmpty = cardName.isBlank()
+
+            val image = if (isEmpty) {
+                R.drawable.ic_card_type_unknown
+            }
+            else {
+                when (cardName.first()) {
+                    typeVisa -> R.drawable.ic_card_type_visa
+                    mastercard -> R.drawable.ic_card_type_mastercard
+                    else -> R.drawable.ic_card_type_unknown
+                }
+            }
+            cardLogo.setImageResource(image)
+
+        }
+
+
+        private fun handleCardChangeListener() {
+            etNumberCard.addTextChangedListener {
+                isCardNumberFilled = if (it != null && it.isNotEmpty()) {
+                    setCardLogoByType(it)
+                    val isFilled = it.toString().length == CardFragmentCardData.cardNumberLength
+                    isFilled
+                } else {
+                    false
+                }
+                checkFilled()
+            }
+
+            etCvv.addTextChangedListener {
+                isCvvFilled = if (!it.isNullOrEmpty()) {
+                    it.toString().length >= CardFragmentCardData.MAX_LENGTH_CVV_CODE
+                } else {
+                    false
+                }
+                checkFilled()
+            }
+
+            monthField.addTextChangedListener { it ->
+                if (!it.isNullOrEmpty()) {
+                    var formattedMonth: String
+
+                    it.toString().let {
+                        formattedMonth = formatCardExpiryMonth(it)
+                        if (formattedMonth != it) {
+                            monthField.setText(formattedMonth)
+                            monthField.setSelection(formattedMonth.length)
+                        }
+                    }
+
+                    expiryMonth = formattedMonth.isNotEmpty()
+
+                    if (formattedMonth.length == 2) {
+                        yearField.requestFocus()
+                    }
+                    setExpiryDateFilled()
+                } else {
+                    expiryMonth = false
+                }
+                checkFilled()
+            }
+            yearField.addTextChangedListener { it ->
+                if (!it.isNullOrEmpty()) {
+                    var formattedYear = ""
+                    it.toString().let {
+                        formattedYear = formatCardExpiryYear(it)
+                        if (formattedYear != it) {
+                            yearField.setText(formattedYear)
+                            yearField.setSelection(formattedYear.length)
+                        }
+                    }
+                    expiryYear = formattedYear.isNotEmpty()
+                    if (expiryYear && it.toString().length >= 2) {
+                        etCvv.requestFocus()
+                    }
+                    setExpiryDateFilled()
+                } else {
+                    expiryYear = false
+                }
+                checkFilled()
+            }
+
+        }
+
+
+        private fun formatCardExpiryMonth(month: String): String {
+            var formattedString = month
+
+            if (formattedString.isEmpty()) {
+                return ""
+            }
+
+            if (formattedString.take(1).toInt() > 1) {
+                formattedString = ("0$month").take(2)
+            }
+
+            if (formattedString.toInt() > 12) {
+                formattedString = "1"
+            }
+
+            return formattedString
+        }
+
+
+        private fun formatCardExpiryYear(year: String): String {
+            var formattedYear = year
+            if (formattedYear.isEmpty()) {
+                return ""
+            }
+
+            if (formattedYear.take(1).toInt() < 2) {
+                formattedYear = if (formattedYear.length > 1) {
+                    formattedYear[1].toString()
+                } else {
+                    ""
+                }
+            }
+            return formattedYear
+        }
+
+
+        private fun setExpiryDateFilled() {
+            isExpiryFilled = expiryMonth && expiryYear
+            checkFilled()
+        }
+
+
 
         private fun handleClickListener(){
             btnSend.setOnClickListener {

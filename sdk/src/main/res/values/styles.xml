@@ -113,5 +113,15 @@
         <item name="android:paddingVertical">10dp</item>
     </style>
 
+    <style name="tv_card_bottom">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/arial</item>
+        <item name="android:textFontWeight">300</item>
+        <item name="android:textColor">@color/black</item>
+
+    </style>
+
 
 </resources>

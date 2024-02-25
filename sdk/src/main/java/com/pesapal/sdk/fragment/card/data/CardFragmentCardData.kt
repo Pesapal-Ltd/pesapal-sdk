@@ -82,8 +82,8 @@ class CardFragmentCardData : Fragment() {
 
 
     companion object {
-        private const val MAX_LENGTH_CVV_CODE = 3
-        private const val cardNumberLength = 19
+        const val MAX_LENGTH_CVV_CODE = 3
+        const val cardNumberLength = 19
         internal fun newInstance(
             paymentDetails: PaymentDetails,
             billingAddress: BillingAddress
