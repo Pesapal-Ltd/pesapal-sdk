@@ -18,7 +18,7 @@
        <androidx.constraintlayout.widget.ConstraintLayout
            android:id="@+id/linear_card_pay"
            style="@style/layout_payment_outer"
-           tools:visibility="gone"
+           tools:visibility="visible"
            app:layout_constraintTop_toTopOf="parent"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintEnd_toEndOf="parent"
@@ -58,8 +58,8 @@
            <ImageView
                android:layout_width="29dp"
                android:layout_height="29dp"
-               android:src="@drawable/ic_checked"
-
+               android:id="@+id/icon_selected"
+               android:src="@drawable/selector_checked"
                app:layout_constraintEnd_toEndOf="parent"
                app:layout_constraintTop_toTopOf="@+id/icon_visa"
                app:layout_constraintBottom_toBottomOf="@+id/icon_visa"
@@ -70,7 +70,7 @@
            style="@style/payment_card"
            android:id="@+id/card_outer"
            android:visibility="gone"
-           tools:visibility="visible"
+           tools:visibility="gone"
            app:layout_constraintTop_toBottomOf="@+id/linear_card_pay"
            app:layout_constraintBottom_toBottomOf="parent"
            app:layout_constraintStart_toStartOf="parent"

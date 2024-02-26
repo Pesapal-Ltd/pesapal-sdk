@@ -78,22 +78,32 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         val method  = payList[position]
 
         if(holder is PaymentCardAdapterVh){
-            hideExpandedView(holder.cardOuter, method.paymentMethodId)
+            hideExpandedView(holder.endIcon, holder.cardOuter, method.paymentMethodId)
             holder.initData(billingAddress)
+
+            holder.endIcon.setOnClickListener {
+                checkUncheckExpandingView(holder.endIcon, holder.cardOuter, method.paymentMethodId)
+            }
             holder.mainCard.setOnClickListener {
-                checkUncheckExpandingView(holder.cardOuter, method.paymentMethodId)
+                checkUncheckExpandingView(holder.endIcon, holder.cardOuter, method.paymentMethodId)
             }
         }
         else if(holder is PaymentMobileMoneyAdapterVh){
-            hideExpandedView(holder.cardOuter, method.paymentMethodId)
+            hideExpandedView(holder.endIcon, holder.cardOuter, method.paymentMethodId)
 
             val phone = holder.etPhone
             holder.labelPhone.text = context.getString(R.string.enter_mobile_number , method.mobileProvider).uppercase()
             phone.hint = context.getString(R.string.enter_mobile_number , method.mobileProvider)
 
-            holder.mainCard.setOnClickListener{
-                checkUncheckExpandingView(holder.cardOuter, method.paymentMethodId)
+
+            holder.endIcon.setOnClickListener {
+                checkUncheckExpandingView(holder.endIcon, holder.cardOuter, method.paymentMethodId)
             }
+            holder.mainCard.setOnClickListener{
+                checkUncheckExpandingView(holder.endIcon,holder.cardOuter, method.paymentMethodId)
+            }
+
+
             holder.methodIcon.setImageResource(when(method.paymentMethodId){
                 MPESA, MPESA_TZ -> R.drawable.mpesa
                 AIRTEL_KE, AIRTEL_TZ, AIRTEL_UG -> R.drawable.airtel
@@ -135,17 +145,20 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
     }
 
 
-    private fun checkUncheckExpandingView(cardOuter: CardView, absoluteAdapterPosition: Int) {
+    private fun checkUncheckExpandingView(endIcon:ImageView,cardOuter: CardView, absoluteAdapterPosition: Int) {
         if(cardOuter.visibility == View.GONE){
             cardOuter.visibility = View.VISIBLE
             selected = absoluteAdapterPosition
             if(previous == OUT_OF_RANGE){
                 previous = selected
             }
+            endIcon.setImageResource(R.drawable.ic_checked)
             resetOnPaymentMethodCollapsed()
         }
         else{
             cardOuter.visibility = View.GONE
+            endIcon.setImageResource(R.drawable.ic_unchecked)
+
             selected = OUT_OF_RANGE
             previous = OUT_OF_RANGE
         }
@@ -156,10 +169,11 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
     /**
      * Hides the view that was previously selected and has the card layout visible
      */
-    private fun hideExpandedView(cardOuter: CardView, absoluteAdapterPosition: Int) {
+    private fun hideExpandedView(endIcon:ImageView, cardOuter: CardView, absoluteAdapterPosition: Int) {
         if(previous != selected && previous == absoluteAdapterPosition){
             cardOuter.visibility = View.GONE
             previous = selected
+            endIcon.setImageResource(R.drawable.ic_unchecked)
             paymentMethodInterface.refreshRv()
         }
     }
@@ -197,14 +211,6 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         return !isEmpty && isCorrectly
     }
 
-//    private fun checkValidEmail(email: String, etmail: EditText):Boolean {
-//        val isValidEmail = isValidEmail(email)
-//        if (!isValidEmail) {
-//            etEmail.error = context.getString(R.string.new_card_invalidEmail)
-//        }
-//        return isValidEmail
-//    }
-
 
     /**
      * 1 = mobile send request
@@ -227,6 +233,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         val mainCard = itemView.findViewById<ConstraintLayout>(R.id.linear_card_pay)
         val cardOuter = itemView.findViewById<CardView>(R.id.card_outer)
         val btnSend = itemView.findViewById<TextView>(R.id.btn_proceed)
+        val endIcon = itemView.findViewById<ImageView>(R.id.icon_selected)
 
         val etFirstName = itemView.findViewById<EditText>(R.id.et_first_name)
         val etSurname = itemView.findViewById<EditText>(R.id.et_surname)
@@ -553,6 +560,8 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
     inner class PaymentMobileMoneyAdapterVh(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var mainCard = itemView.findViewById<ConstraintLayout>(R.id.linear_card_pay)
         val cardOuter = itemView.findViewById<CardView>(R.id.card_outer)
+        val endIcon = itemView.findViewById<ImageView>(R.id.icon_selected)
+
 
         val methodIcon = itemView.findViewById<ImageView>(R.id.icon_payment_method)
 

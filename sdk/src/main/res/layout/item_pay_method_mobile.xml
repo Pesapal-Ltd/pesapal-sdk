@@ -33,8 +33,9 @@
         <ImageView
             android:layout_width="29dp"
             android:layout_height="29dp"
-            android:src="@drawable/ic_checked"
-
+            android:id="@+id/icon_selected"
+            android:src="@drawable/selector_checked"
+            android:clickable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/icon_payment_method"
             app:layout_constraintBottom_toBottomOf="@id/icon_payment_method"
