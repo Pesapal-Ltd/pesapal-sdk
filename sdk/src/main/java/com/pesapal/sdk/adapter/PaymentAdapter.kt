@@ -384,7 +384,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
                 when (cardName.first()) {
                     typeVisa -> R.drawable.ic_card_type_visa
                     mastercard -> R.drawable.ic_card_type_mastercard
-                    else -> R.drawable.ic_card_type_unknown
+                    else -> R.drawable.icon_error
                 }
             }
             cardLogo.setImageResource(image)
@@ -393,7 +393,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
 
         private fun handleCardChangeListener() {
             etNumberCard.addTextChangedListener {
-                isCardNumberFilled = if (it != null && it.isNotEmpty()) {
+                isCardNumberFilled = if (it != null) {
                     setCardLogoByType(it)
                     val isFilled = it.toString().length == CardFragmentCardData.cardNumberLength
                     isFilled

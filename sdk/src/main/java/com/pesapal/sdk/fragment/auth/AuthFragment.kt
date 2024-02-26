@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,11 +36,8 @@ class AuthFragment : Fragment() {
     private lateinit var paymentDetails: PaymentDetails
     private lateinit var billingAddress: BillingAddress
 
-
     var dataRequiredAvailable = true
     var errorMessage = ""
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +50,6 @@ class AuthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("Auth", "onViewCreated called")
         handleViewModel()
         paymentData()
     }
@@ -100,6 +95,7 @@ class AuthFragment : Fragment() {
                     returnIntent(PesapalPayActivity.STATUS_CANCELLED, it.message?:"")
                 }
                 else -> {
+                    binding.loader.visibility = View.VISIBLE
 
                 }
             }
@@ -115,9 +111,9 @@ class AuthFragment : Fragment() {
                 Status.ERROR -> {
                     binding.loader.visibility = View.GONE
                     returnIntent(PesapalPayActivity.STATUS_CANCELLED, it.message?:"")
-
                 }
                 else -> {
+                    binding.loader.visibility = View.VISIBLE
 
                 }
             }
@@ -164,7 +160,6 @@ class AuthFragment : Fragment() {
             var country : PESAPALAPI3SDK.COUNTRIES_ENUM? = null
 
             pesapalSdkViewModel.orderID = orderId
-
 
             try {
                  country = intent.getSerializableExtra(PESAPALAPI3SDK.COUNTRY) as PESAPALAPI3SDK.COUNTRIES_ENUM
@@ -217,7 +212,6 @@ class AuthFragment : Fragment() {
             }
 
 
-
             if(dataRequiredAvailable) {
                 paymentDetails = PaymentDetails(
                     amount = BigDecimal(amount),
@@ -230,8 +224,6 @@ class AuthFragment : Fragment() {
                     ipn_url = ipnUrl,
                     country = country
                 )
-
-
 
                 val firstName = intent.getStringExtra(PESAPALAPI3SDK.FIRST_NAME )
                 val lastName = intent.getStringExtra(PESAPALAPI3SDK.LAST_NAME)
@@ -250,8 +242,6 @@ class AuthFragment : Fragment() {
                     postalCode = postalCode,
                     city = city
                 )
-                Log.i(TAG, "ConKey: $consumerKey")
-                Log.i(TAG, "ConSec: $consumerSecret")
 
                 initData()
             }
@@ -266,12 +256,21 @@ class AuthFragment : Fragment() {
             returnIntent(PesapalPayActivity.STATUS_CANCELLED, errorMessage)
 
         }
-
     }
 
     private fun setErrorElements(message: String){
         dataRequiredAvailable = false
         errorMessage = message
+    }
+
+
+    private fun registerIpn() {
+        if(paymentDetails.ipn_url != null && paymentDetails.ipn_notification_type !=null) {
+            val registerIpnRequest = RegisterIpnRequest(paymentDetails.ipn_url!!, paymentDetails.ipn_notification_type!!)
+            viewModel.registerIpn(registerIpnRequest)
+        }else{
+            showMessage("Ipn Data Required")
+        }
     }
 
 
@@ -291,18 +290,8 @@ class AuthFragment : Fragment() {
     }
 
 
-    private fun registerIpn() {
-        if(paymentDetails.ipn_url != null && paymentDetails.ipn_notification_type !=null) {
-            val registerIpnRequest = RegisterIpnRequest(paymentDetails.ipn_url!!, paymentDetails.ipn_notification_type!!)
-            viewModel.registerIpn(registerIpnRequest)
-        }else{
-            showMessage("Ipn Data Required")
-        }
-    }
-
     private fun showMessage(message: String){
         Toast.makeText(requireContext(),message,Toast.LENGTH_LONG).show()
     }
-
 
 }

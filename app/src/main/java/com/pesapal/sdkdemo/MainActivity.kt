@@ -222,7 +222,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun hardCodedInfo(){
-        //                val displayName = "Job"
+//                val displayName = "Job"
 //                val firstName = "Job"
 //                val lastName = "Masai"
 //                val email = "jmasai@pesapal.com"
@@ -232,6 +232,11 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         val firstName = "Samuel"
         val lastName = "Nyamai"
         val email = "samuel@pesapal.com"
+
+//        val displayName = ""
+//        val firstName = ""
+//        val lastName = ""
+//        val email = ""
 
 
         val photoUrl: String? = null
