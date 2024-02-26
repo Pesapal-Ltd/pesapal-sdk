@@ -563,7 +563,8 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             billingAddress = billingAddress,
             expiryYear = cardDetails.year.toString(),
             ipAddress = "1",
-            cardNumber = cardDetails.cardNumber
+            cardNumber = cardDetails.cardNumber,
+            tokenizeCard = tokenize
         )
 //{
 //  "order_tracking_id": "33578938-582a-4044-a199-dd8c23567740",
@@ -668,10 +669,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     }
 
 
-
-
-
-
     override  fun showMessage(message: String){
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
@@ -692,8 +689,9 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     private lateinit var cardDetails: CardDetails
     private lateinit var cardOrderTrackingIdRequest: CardOrderTrackingIdRequest
 
-    override fun generateCardOrderTrackingId(billingAddress: BillingAddress,cardNumber: String, year:Int, month: Int,cvv:String) {
+    override fun generateCardOrderTrackingId(billingAddress: BillingAddress,tokenize:Boolean, cardNumber: String, year:Int, month: Int,cvv:String) {
         this.billingAddress = billingAddress
+        this.tokenize = tokenize
         hideKeyboard()
         cardDetails = CardDetails(
            cardNumber,
@@ -721,8 +719,10 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             trackingId = "",
             chargeRequest = false
         )
+
         cardViewModel.generateCardOrderTrackingId(cardOrderTrackingIdRequest, " Processing request ...")
 
     }
+    var tokenize = false
 
 }

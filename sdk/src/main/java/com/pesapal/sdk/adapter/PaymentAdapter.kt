@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
@@ -214,8 +215,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         fun refreshRv()
         fun handleResend()
         fun handleConfirmation()
-        fun generateCardOrderTrackingId(billingAddress: BillingAddress, cardNumber: String, year:Int, month: Int,cvv:String)
-
+        fun generateCardOrderTrackingId(billingAddress: BillingAddress, tokenize: Boolean, cardNumber: String, year:Int, month: Int,cvv:String)
     }
 
     /**
@@ -245,6 +245,9 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         val tvPrivacy = itemView.findViewById<TextView>(R.id.privacy_policy)
         val tvTerms = itemView.findViewById<TextView>(R.id.terms_of_service)
         val cardLogo = itemView.findViewById<AppCompatImageView>(R.id.card_logo)
+
+        val switchAccept = itemView.findViewById<Switch>(R.id.switch_accept)
+        val switchRemember = itemView.findViewById<Switch>(R.id.switch_remember)
 
         private var isFirstNameFilled = false
         private var isSurnameFilled = false
@@ -284,6 +287,16 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         private fun checkFilled(){
             enable = isFirstNameFilled && isSurnameFilled && isEmailFilled  && isPhoneFilled && isAddressFilled && isPostalCodeFilled && isCityFilled
                     && isCardNumberFilled && isExpiryFilled && isCvvFilled
+//            Log.e("Adapt", "isFirstNameFilled $isFirstNameFilled")
+//            Log.e("Adapt", "surnma $isSurnameFilled")
+//            Log.e("Adapt", "isEmailFilled $isEmailFilled")
+//            Log.e("Adapt", "isPhoneFilled $isPhoneFilled")
+//            Log.e("Adapt", "isAddressFilled $isAddressFilled")
+//            Log.e("Adapt", "isPostalCodeFilled $isPostalCodeFilled")
+//            Log.e("Adapt", "isCityFilled $isCityFilled")
+//            Log.e("Adapt", "isCardNumberFilled $isCardNumberFilled")
+//            Log.e("Adapt", "isExpiryFilled $isExpiryFilled")
+//            Log.e("Adapt", "isCvvFilled $isCvvFilled")
             btnSend.isEnabled = enable
         }
 
@@ -300,7 +313,6 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
             etFirstName.addTextChangedListener {
                 isFirstNameFilled = it.toString().isNotEmpty()
                 checkFilled()
-
             }
 
             etSurname.addTextChangedListener {
@@ -376,7 +388,6 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
                 }
             }
             cardLogo.setImageResource(image)
-
         }
 
 
@@ -424,6 +435,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
                 }
                 checkFilled()
             }
+
             yearField.addTextChangedListener { it ->
                 if (!it.isNullOrEmpty()) {
                     var formattedYear = ""
@@ -490,25 +502,36 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         }
 
 
-
         private fun handleClickListener(){
             btnSend.setOnClickListener {
-                val billingAddress = BillingAddress(
-                    phoneNumber = etPhoneNumber.text.toString(),
-                    emailAddress = etEmail.text.toString(),
-                    countryCode = countryCodePicker.selectedCountryNameCode,
-                    firstName = etFirstName.text.toString(),
-                    middleName = etSurname.text.toString(),
-                    lastName = etSurname.text.toString(),
-                    line = etAddress.text.toString(),
-                    line2 = etAddress.text.toString(),
-                    city = etCity.text.toString(),
-                    state = " ",
-                    postalCode = etPostal.text.toString(),
-                    zipCode = etAddress.text.toString(),
-                )
+                if(switchAccept.isChecked) {
+                    val billingAddress = BillingAddress(
+                        phoneNumber = etPhoneNumber.text.toString(),
+                        emailAddress = etEmail.text.toString(),
+                        countryCode = countryCodePicker.selectedCountryNameCode,
+                        firstName = etFirstName.text.toString(),
+                        middleName = etSurname.text.toString(),
+                        lastName = etSurname.text.toString(),
+                        line = etAddress.text.toString(),
+                        line2 = etAddress.text.toString(),
+                        city = etCity.text.toString(),
+                        state = " ",
+                        postalCode = etPostal.text.toString(),
+                        zipCode = etAddress.text.toString(),
+                    )
 
-                paymentMethodInterface.generateCardOrderTrackingId(billingAddress,etNumberCard.rawText.toString(), Integer.parseInt(yearField.text.toString()),Integer.parseInt(monthField.text.toString()),etCvv.text.toString())
+                    paymentMethodInterface.generateCardOrderTrackingId(
+                        billingAddress,
+                        switchRemember.isChecked,
+                        etNumberCard.rawText.toString(),
+                        Integer.parseInt(yearField.text.toString()),
+                        Integer.parseInt(monthField.text.toString()),
+                        etCvv.text.toString()
+                    )
+                }
+                else{
+                    Toast.makeText(context, "Accept terms to continue", Toast.LENGTH_SHORT).show()
+                }
             }
 
             tvTerms.setOnClickListener {
@@ -519,8 +542,6 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
                 Toast.makeText(context,"Privacy clicked", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
 
 

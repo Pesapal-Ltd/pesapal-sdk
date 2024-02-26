@@ -20,4 +20,6 @@ internal data class SubmitCardRequest(@SerializedName("cvv")
                              @SerializedName("ip_address")
                                val ipAddress: String = "",
                              @SerializedName("cardNumber")
-                               val cardNumber: String = "")
+                               val cardNumber: String = "",
+                             @SerializedName("tokenize_card")
+                               val tokenizeCard: Boolean = false)
