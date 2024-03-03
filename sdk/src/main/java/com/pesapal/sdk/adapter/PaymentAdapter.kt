@@ -252,6 +252,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         val tvPrivacy = itemView.findViewById<TextView>(R.id.privacy_policy)
         val tvTerms = itemView.findViewById<TextView>(R.id.terms_of_service)
         val cardLogo = itemView.findViewById<AppCompatImageView>(R.id.card_logo)
+        val iconDesc = itemView.findViewById<AppCompatImageView>(R.id.ic_desc)
 
         val switchAccept = itemView.findViewById<Switch>(R.id.switch_accept)
         val switchRemember = itemView.findViewById<Switch>(R.id.switch_remember)
@@ -547,6 +548,9 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
 
             tvPrivacy.setOnClickListener {
                 Toast.makeText(context,"Privacy clicked", Toast.LENGTH_SHORT).show()
+            }
+            iconDesc.setOnClickListener{
+
             }
         }
     }

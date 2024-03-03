@@ -70,7 +70,7 @@
            style="@style/payment_card"
            android:id="@+id/card_outer"
            android:visibility="gone"
-           tools:visibility="gone"
+           tools:visibility="visible"
            app:layout_constraintTop_toBottomOf="@+id/linear_card_pay"
            app:layout_constraintBottom_toBottomOf="parent"
            app:layout_constraintStart_toStartOf="parent"
@@ -492,12 +492,13 @@
 
                    <ImageView
                        android:id="@+id/ic_desc"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
+                       android:layout_width="24dp"
+                       android:layout_height="24dp"
                        android:src="@drawable/icon_description"
                        android:layout_marginEnd="10dp"
                        app:layout_constraintTop_toTopOf="@id/switch_remember"
                        app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintBottom_toBottomOf="@id/switch_remember"
                        />
 
                </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
+import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.adapter.PaymentAdapter
@@ -113,17 +114,22 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     }
 
     private fun evaluateRegionProvider(): List<Int> {
+        val label_regulated = binding.labelRegulated
+
          return when(paymentDetails.country){
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE ->{
                  CountryCodeEval.kenyaProvider
             }
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_TZ -> {
-                 CountryCodeEval.tanzaniaProvider
+                label_regulated.visibility = View.INVISIBLE
+                CountryCodeEval.tanzaniaProvider
             }
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_UG -> {
+                label_regulated.text = getString(R.string.pesapal_is_regulated_by_the_uganda)
                  CountryCodeEval.ugandaProvider
             }
             else -> {
+                label_regulated.visibility = View.INVISIBLE
                 listOf()
             }
         }
