@@ -79,8 +79,10 @@
     <string name="i_accept_to_pesapal_s">I accept to Pesapal\'s \u0020</string>
     <string name="remember_me">REMEMBER ME</string>
     <string name="terms_and_conditions">Terms and conditions</string>
-    <string name="terms_and_conditions_amp">Terms &amp; conditions</string>
+    <string name="terms_and_conditions_amp">TERMS &amp; CONDITIONS</string>
     <string name="save_my_card_for_faster_checkout_next_time">Save my card for faster checkout next time</string>
+    <string name="card_saved">CARD SAVED</string>
+    <string name="card_desc">Opt to save your card and enjoy a seamless checkout experience without the hassle of re-entering details again. Your card information shall be securely encrypted, ensuring a safe and convenient checkout process for your future purchases.</string>
 
 
 </resources>

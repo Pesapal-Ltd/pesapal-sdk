@@ -1,0 +1,36 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="800dp"
+    android:height="800dp"
+    android:viewportWidth="800"
+    android:viewportHeight="800">
+  <path
+      android:pathData="M18.76,409L18.76,44.04L401.58,44.04L784.4,44.04L784.4,409L784.4,773.95L401.58,773.95L18.76,773.95L18.76,409z"
+      android:fillColor="#fdca03"/>
+  <path
+      android:pathData="M266.86,544.55C162.61,527.64 86.21,497.18 50.27,458.2C31.42,437.75 29.01,432.32 29.01,410.41C29.01,375.49 51.8,349.89 107.17,322.6C240.7,256.79 490.91,248.12 650.93,303.78C737.47,333.87 783.98,380.64 772.41,425.93C766.98,447.22 739.29,474.05 703.19,493.03C662.78,514.26 638.64,522.5 572.61,537.62C511.35,551.64 335.22,555.63 266.86,544.55z"
+      android:fillColor="#006c92"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="M-399.01,600.82h110.11v52.53h-110.11z"/>
+  <path
+      android:pathData="M192.17,337.99L249.9,337.99L242.82,424.4L294.36,337.99L351.9,337.99L303.64,480L267.8,480L304.6,371.7L240,480L207.55,480L216.65,371.7L179.85,480L143.91,480L192.17,337.99zM523.45,337.99L564.42,337.99L591.2,416.55L617.89,337.99L659.26,337.99L611,480L569.64,480L542.96,402.02L516.46,480L475.19,480L523.45,337.99z"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="1"
+      android:fillColor="#ffffff"
+      android:strokeColor="#00000000"
+      android:strokeLineCap="butt"/>
+  <path
+      android:pathData="M369.82,337.99L503.28,337.99L491.36,373.08L446.58,373.08L418.18,456.39L374.28,456.39L402.67,373.08L357.9,373.08L369.82,337.99z"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="1"
+      android:fillColor="#fdca03"
+      android:strokeColor="#00000000"
+      android:strokeLineCap="butt"/>
+  <path
+      android:pathData="M373.02,461.54L415.89,461.54L410.02,479.46L367.15,479.46L373.02,461.54z"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="1.08122122"
+      android:fillColor="#ff0000"
+      android:strokeColor="#ff0000"
+      android:strokeLineCap="butt"/>
+</vector>

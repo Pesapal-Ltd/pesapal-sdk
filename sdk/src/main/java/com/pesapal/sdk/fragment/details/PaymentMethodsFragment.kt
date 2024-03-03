@@ -24,6 +24,7 @@ import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.adapter.PaymentAdapter
 import com.pesapal.sdk.databinding.FragmentPaymentMethodsBinding
+import com.pesapal.sdk.fragment.DialogCard
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingFragment
 import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingViewModel
@@ -114,22 +115,22 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     }
 
     private fun evaluateRegionProvider(): List<Int> {
-        val label_regulated = binding.labelRegulated
+        val labelRegulated = binding.labelRegulated
 
          return when(paymentDetails.country){
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE ->{
                  CountryCodeEval.kenyaProvider
             }
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_TZ -> {
-                label_regulated.visibility = View.INVISIBLE
+                labelRegulated.visibility = View.INVISIBLE
                 CountryCodeEval.tanzaniaProvider
             }
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_UG -> {
-                label_regulated.text = getString(R.string.pesapal_is_regulated_by_the_uganda)
+                labelRegulated.text = getString(R.string.pesapal_is_regulated_by_the_uganda)
                  CountryCodeEval.ugandaProvider
             }
             else -> {
-                label_regulated.visibility = View.INVISIBLE
+                labelRegulated.visibility = View.INVISIBLE
                 listOf()
             }
         }
@@ -730,5 +731,9 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
     }
     var tokenize = false
+
+    override fun showDialogFrag(dialogType: Int) {
+        DialogCard(dialogType).show(parentFragmentManager, dialogType.toString())
+    }
 
 }

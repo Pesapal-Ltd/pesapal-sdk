@@ -21,23 +21,17 @@ import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.hbb20.CountryCodePicker
-import com.pesapal.paygateway.activities.payment.model.check3ds.BillingDetails
 import com.pesapal.sdk.R
-import com.pesapal.sdk.fragment.card.address.CardFragmentAddressDataDirections
 import com.pesapal.sdk.fragment.card.data.CardFragmentCardData
 import com.pesapal.sdk.fragment.details.PaymentInterModel
 import com.pesapal.sdk.model.card.BillingAddress
-import com.pesapal.sdk.model.card.CardDetails
-import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
-import com.pesapal.sdk.setButtonEnabled
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_KE
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_TZ
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_UG
 import com.pesapal.sdk.utils.CountryCodeEval.CARD
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
-import com.pesapal.sdk.utils.FragmentExtension.hideKeyboard
-import com.pesapal.sdk.utils.PrefManager
+import com.pesapal.sdk.utils.CountryCodeEval.MTN_UG
 import com.santalu.maskedittext.MaskEditText
 
 internal class PaymentAdapter(val billingAddress: BillingAddress,
@@ -107,6 +101,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
             holder.methodIcon.setImageResource(when(method.paymentMethodId){
                 MPESA, MPESA_TZ -> R.drawable.mpesa
                 AIRTEL_KE, AIRTEL_TZ, AIRTEL_UG -> R.drawable.airtel
+                MTN_UG -> R.drawable.ic_mtn
                 else -> R.drawable.airtel
             })
 
@@ -222,6 +217,13 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         fun handleResend()
         fun handleConfirmation()
         fun generateCardOrderTrackingId(billingAddress: BillingAddress, tokenize: Boolean, cardNumber: String, year:Int, month: Int,cvv:String)
+
+        /**
+         * 1 -> Show card desc
+         * 2 -> Show Webview
+         */
+        fun showDialogFrag(dialogType: Int)
+
     }
 
     /**
@@ -543,14 +545,14 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
             }
 
             tvTerms.setOnClickListener {
-                Toast.makeText(context,"Terms clicked", Toast.LENGTH_SHORT).show()
+                paymentMethodInterface.showDialogFrag(2)
             }
 
             tvPrivacy.setOnClickListener {
-                Toast.makeText(context,"Privacy clicked", Toast.LENGTH_SHORT).show()
+                paymentMethodInterface.showDialogFrag(2)
             }
             iconDesc.setOnClickListener{
-
+                paymentMethodInterface.showDialogFrag(1)
             }
         }
     }
