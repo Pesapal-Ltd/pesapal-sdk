@@ -76,7 +76,8 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
     private lateinit var mobileMoneyRequest: MobileMoneyRequest
 
-    private var delayTime = 1000L
+//    private var delayTime = 1000L
+    private var delayTime = 15000L
     private val timeCountInMilliSeconds = 30000L
 
     private val mobilePendingvViewModel: MpesaPendingViewModel by viewModels()
@@ -325,11 +326,17 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     showPendingMpesaPayment()
                 }
                 Status.ERROR -> {
-                    showMessage(it.message!!)
+//                    {"error":{"error_type":"api_error","code":"payment_already_received","message":"A successful payment has already been received. Update your request with a new unique merchant_id."},"status":null}
+                    var message = it.message
+                    if(message!!.contains("payment has already been received")){
+                        message = "Confirming payment status"
+                        handleConfirmation()
+                    }
+                    else{
+                        it.message
+                    }
+                    showMessage(message)
                     pDialog.dismiss()
-                }
-                else -> {
-
                 }
             }
         }
@@ -369,13 +376,29 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 }
                 Status.SUCCESS -> {
 //                    handleTimeStop()
-                    proceedToTransactionResultScreen(it.data!!, true)
+                    val data = it.data
+                    if(data == null){
+                        // todo stop timer
+                    }
+                    else {
+                        when(data.statusCode){
+                            0 -> {
+                                handleBackgroundConfirmation()
+                            }
+                            else ->{
+                                proceedToTransactionResultScreen(it.data, true)
+
+                            }
+
+                        }
+                    }
                 }
                 Status.ERROR -> {
-                    if(delayTime != 30000L){
-                        delayTime += 1000
-                        handleBackgroundConfirmation()
-                    }
+                    // todo try and get all the info neccessary for displaying failed page
+//                    if(delayTime != 30000L){
+//                        delayTime += 1000
+//                        handleBackgroundConfirmation()
+//                    }
 
                 }
                 else -> {

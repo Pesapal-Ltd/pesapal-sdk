@@ -152,7 +152,7 @@
                 tools:text="2016 **** **** 01114"
                 android:textColor="@color/black_faded"
                 android:fontFamily="@font/arial"
-                android:textSize="13sp"
+                android:textSize="10sp"
                 android:textStyle="normal"
                 android:textFontWeight="400"
                 app:layout_constraintStart_toEndOf="@+id/icon_pay_method"
@@ -166,7 +166,7 @@
                 android:id="@+id/tv_time"
                 android:layout_marginTop="18dp"
                 tools:text="Mon, 14 August 2023 14:38 PM "
-                android:textSize="13sp"
+                android:textSize="10sp"
                 android:textFontWeight="400"
                 android:textStyle="normal"
                 android:textColor="@color/black"
@@ -255,6 +255,7 @@
 
                 <TextView
                     style="@style/tv_txn_result.inner"
+                    android:textColor="@color/black"
                     android:layout_marginEnd="20dp"
                     android:id="@+id/tv_merchant_Ref"
                     tools:text="RDT: 1692012478.26497"
@@ -282,6 +283,8 @@
 
                 <TextView
                     style="@style/tv_txn_result.inner"
+                    android:textColor="@color/black_faded"
+
                     android:id="@+id/tv_tracking_id"
                     android:layout_marginEnd="20dp"
                     tools:text="038450bb-af3d-45ac-bbd1-de4e66ce6bdf"

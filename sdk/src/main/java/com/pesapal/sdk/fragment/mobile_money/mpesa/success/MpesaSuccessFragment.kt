@@ -103,13 +103,17 @@ class MpesaSuccessFragment : Fragment() {
         binding.tvPaymentStatus.text = header
         binding.tvMerchantName.text = pesapalSdkViewModel.merchantName
 
-        binding.tvTime.text = TimeUtils.getCurrentDateTime()
+//        binding.tvTime.text = TimeUtils.getCurrentDateTime()
+        binding.tvTime.text = transactionStatusResponse.createdDate
+
         val paymentIcon = with(transactionStatusResponse.paymentMethod!!.lowercase()){
             when{
                 isNullOrEmpty() -> R.drawable.pesapal_logo
-                contains("visa")||contains("master") || contains("amer") -> R.drawable.ic_visa
+                contains("visa")  -> R.drawable.ic_visa
                 contains("mpesa") -> R.drawable.mpesa
-                contains("mpesa") -> R.drawable.airtel
+                contains("master") -> R.drawable.ic_mastercard
+                contains("ame") -> R.drawable.amex
+                contains("airtel") -> R.drawable.airtel
                 else -> R.drawable.pesapal_logo
             }
         }

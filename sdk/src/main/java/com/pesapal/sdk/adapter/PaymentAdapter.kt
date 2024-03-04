@@ -76,10 +76,10 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
             holder.initData(billingAddress)
 
             holder.endIcon.setOnClickListener {
-                checkUncheckExpandingView(holder.endIcon, holder.cardOuter, method.paymentMethodId)
+                checkUncheckExpandingView(holder.mainCard, holder.endIcon, holder.cardOuter, method.paymentMethodId)
             }
             holder.mainCard.setOnClickListener {
-                checkUncheckExpandingView(holder.endIcon, holder.cardOuter, method.paymentMethodId)
+                checkUncheckExpandingView(holder.mainCard, holder.endIcon, holder.cardOuter, method.paymentMethodId)
             }
         }
         else if(holder is PaymentMobileMoneyAdapterVh){
@@ -91,10 +91,10 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
 
 
             holder.endIcon.setOnClickListener {
-                checkUncheckExpandingView(holder.endIcon, holder.cardOuter, method.paymentMethodId)
+                checkUncheckExpandingView(holder.mainCard, holder.endIcon, holder.cardOuter, method.paymentMethodId)
             }
             holder.mainCard.setOnClickListener{
-                checkUncheckExpandingView(holder.endIcon,holder.cardOuter, method.paymentMethodId)
+                checkUncheckExpandingView(holder.mainCard, holder.endIcon,holder.cardOuter, method.paymentMethodId)
             }
 
 
@@ -107,52 +107,67 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
 
 
             holder.btnSend.setOnClickListener {
-                if(mobileStep == 1)
-                    paymentMethodInterface.handleConfirmation()
-                else
+//                if(mobileStep == 1)
+//                    paymentMethodInterface.handleConfirmation()
+//                else
+//                    mobileMoneyRequest(phone, method)
                     mobileMoneyRequest(phone, method)
             }
 
-            holder.resendButton.setOnClickListener {
-                mobileMoneyRequest(phone, method)
-            }
+//            holder.resendButton.setOnClickListener {
+//                mobileMoneyRequest(phone, method)
+//            }
 
             if(selected == method.paymentMethodId){
                 when(mobileStep){
                     0 -> {
                         holder.phonelayout.visibility = View.VISIBLE
                         holder.resendlayout.visibility = View.GONE
+                        holder.btnSend.isEnabled = true
+                        holder.clLipaNaMpesa.visibility = View.GONE
+
+
                     }
                     1 -> {
                         holder.phonelayout.visibility = View.GONE
                         holder.resendlayout.visibility = View.VISIBLE
+                        holder.btnSend.isEnabled = false
+                        holder.clLipaNaMpesa.visibility = View.VISIBLE
+
                     }
                 }
             }
 
             holder.resendButton.setOnClickListener {
-                holder.clLipaNaMpesa.visibility = View.GONE
-                holder.clBackgroundCheck.visibility = View.VISIBLE
-                paymentMethodInterface.handleResend()
+                mobileStep = 0
+                notifyDataSetChanged()
+//                holder.phonelayout.visibility = View.VISIBLE
+//                holder.resendlayout.visibility = View.GONE
+//
+//                holder.clLipaNaMpesa.visibility = View.VISIBLE
+////                holder.clBackgroundCheck.visibility = View.VISIBLE
+//                paymentMethodInterface.handleResend()
             }
         }
 
     }
 
 
-    private fun checkUncheckExpandingView(endIcon:ImageView,cardOuter: CardView, absoluteAdapterPosition: Int) {
+    private fun checkUncheckExpandingView(mainOuter: ConstraintLayout, endIcon:ImageView,cardOuter: CardView, absoluteAdapterPosition: Int) {
         if(cardOuter.visibility == View.GONE){
             cardOuter.visibility = View.VISIBLE
             selected = absoluteAdapterPosition
             if(previous == OUT_OF_RANGE){
                 previous = selected
             }
+            mainOuter.background = context.resources.getDrawable(R.drawable.rounded_grey_selected)
             endIcon.setImageResource(R.drawable.ic_checked)
             resetOnPaymentMethodCollapsed()
         }
         else{
             cardOuter.visibility = View.GONE
             endIcon.setImageResource(R.drawable.ic_unchecked)
+            mainOuter.background = context.resources.getDrawable(R.drawable.rounded_grey)
 
             selected = OUT_OF_RANGE
             previous = OUT_OF_RANGE
@@ -177,6 +192,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         phone: EditText,
         method: PaymentInterModel
     ) {
+//        2024-03-04 00:55:01.220 24183-24573 okhttp.OkHttpClient     com.pesapal.paymentgateway           I  {"business_number":"220222","payment_message":"Awaiting Payment","account_number":"61193136","order_tracking_id":"7cdcbde0-a2eb-4339-946a-dd833f257c24","merchant_reference":null,"redirect_url":null,"error":null,"status":"500"}
         selected = method.paymentMethodId
         if (phone.text.toString().isNotEmpty() && phone.text.toString().length == 10) {
             val mobileProvider = method.paymentMethodId

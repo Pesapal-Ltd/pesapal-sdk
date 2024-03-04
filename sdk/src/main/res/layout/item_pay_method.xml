@@ -26,7 +26,7 @@
 
            <ImageView
                android:layout_width="40dp"
-               android:layout_height="40dp"
+               android:layout_height="20dp"
                android:id="@+id/icon_visa"
                android:src="@drawable/ic_visa"
                app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
 
            <ImageView
                android:layout_width="35dp"
-               android:layout_height="35dp"
+               android:layout_height="29dp"
                android:layout_marginStart="10dp"
                android:src="@drawable/ic_mastercard"
                app:layout_constraintStart_toEndOf="@+id/icon_amex"
@@ -56,10 +56,8 @@
                />
 
            <ImageView
-               android:layout_width="29dp"
-               android:layout_height="29dp"
                android:id="@+id/icon_selected"
-               android:src="@drawable/selector_checked"
+               style="@style/icon_payment_method"
                app:layout_constraintEnd_toEndOf="parent"
                app:layout_constraintTop_toTopOf="@+id/icon_visa"
                app:layout_constraintBottom_toBottomOf="@+id/icon_visa"

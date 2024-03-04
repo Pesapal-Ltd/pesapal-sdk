@@ -31,11 +31,9 @@
 
 
         <ImageView
-            android:layout_width="29dp"
-            android:layout_height="29dp"
             android:id="@+id/icon_selected"
-            android:src="@drawable/selector_checked"
-            android:clickable="true"
+            style="@style/icon_payment_method"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/icon_payment_method"
             app:layout_constraintBottom_toBottomOf="@id/icon_payment_method"
@@ -125,13 +123,24 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     />
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:id="@+id/guideline_middle"
+                    app:layout_constraintGuide_percent="0.65"
+                    android:orientation="vertical"
+                    />
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_resend"
                     android:text="@string/resend_payment_prompt"
                     style="@style/button_proceed.clearer"
+                    android:textAllCaps="false"
+                    android:textFontWeight="400"
                     app:layout_constraintStart_toStartOf="@+id/tv_resend"
                     app:layout_constraintTop_toBottomOf="@id/tv_resend"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/guideline_middle"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -280,6 +289,7 @@
                 android:id="@+id/btn_proceed"
                 android:text="@string/proceed"
                 style="@style/button_proceed"
+
                 />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
