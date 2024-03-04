@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
+import com.pesapal.sdk.fragment.auth.AuthFragmentDirections
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.GeneralUtil
@@ -98,6 +100,10 @@ class MpesaSuccessFragment : Fragment() {
 
             binding.linearFurtherAssistance.visibility = View.VISIBLE
             binding.btnTryAgain.visibility = View.VISIBLE
+            binding.btnTryAgain.setOnClickListener{
+                val action = MpesaSuccessFragmentDirections.actionTxnresultToPesapalMainFragment()
+                findNavController().navigate(action)
+            }
         }
 
         binding.tvPaymentStatus.text = header

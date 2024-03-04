@@ -228,15 +228,17 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 //                val email = "jmasai@pesapal.com"
 
 
-        val displayName = "Samuel"
-        val firstName = "Samuel"
-        val lastName = "Nyamai"
-        val email = "samuel@pesapal.com"
+//        val displayName = "Samuel"
+//        val firstName = "Samuel"
+//        val lastName = "Nyamai"
+//        val email = "samuel@pesapal.com"
+//        showMessage("HardCoded user info ")
 
-//        val displayName = ""
-//        val firstName = ""
-//        val lastName = ""
-//        val email = ""
+
+        val displayName = ""
+        val firstName = ""
+        val lastName = ""
+        val email = ""
 
 
         val photoUrl: String? = null
@@ -244,7 +246,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
 
         initPayment()
-        showMessage("HardCoded user info ")
 
     }
 

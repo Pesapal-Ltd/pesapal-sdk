@@ -121,7 +121,9 @@ class AuthFragment : Fragment() {
     }
 
     private fun proceed(){
-        val action = AuthFragmentDirections.actionAuthFragmentToPesapalMainFragment(paymentDetails, billingAddress)
+        val action = AuthFragmentDirections.actionAuthFragmentToPesapalMainFragment()
+        pesapalSdkViewModel.paymentDetails = paymentDetails
+        pesapalSdkViewModel.billingAddress = billingAddress
        findNavController().navigate(action)
     }
 

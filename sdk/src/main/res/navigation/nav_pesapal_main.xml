@@ -12,12 +12,12 @@
         <action
             android:id="@+id/action_authFragment_to_pesapalMainFragment"
             app:destination="@id/pesapalMainFragment">
-            <argument
-                android:name="paymentDetails"
-                app:argType="com.pesapal.sdk.model.payment.PaymentDetails" />
-            <argument
-                android:name="billingAddress"
-                app:argType="com.pesapal.sdk.model.card.BillingAddress" />
+<!--            <argument-->
+<!--                android:name="paymentDetails"-->
+<!--                app:argType="com.pesapal.sdk.model.payment.PaymentDetails" />-->
+<!--            <argument-->
+<!--                android:name="billingAddress"-->
+<!--                app:argType="com.pesapal.sdk.model.card.BillingAddress" />-->
         </action>
     </fragment>
 
@@ -96,7 +96,18 @@
         android:id="@+id/paymentStatusFragment"
         android:name="com.pesapal.sdk.fragment.mobile_money.mpesa.success.MpesaSuccessFragment"
         android:label="Mobile Money"
-        tools:layout="@layout/fragment_mpesa_payment_success"/>
+        tools:layout="@layout/fragment_mpesa_payment_success">
+        <action
+            android:id="@+id/action_txnresult_to_pesapalMainFragment"
+            app:destination="@id/pesapalMainFragment">
+<!--            <argument-->
+<!--                android:name="paymentDetails"-->
+<!--                app:argType="com.pesapal.sdk.model.payment.PaymentDetails" />-->
+<!--            <argument-->
+<!--                android:name="billingAddress"-->
+<!--                app:argType="com.pesapal.sdk.model.card.BillingAddress" />-->
+        </action>
+    </fragment>
 
     <include app:graph="@navigation/nav_graph_card" />
 

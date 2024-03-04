@@ -102,8 +102,10 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
-        billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
+//        paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
+//        billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
+        paymentDetails = pesapalSdkViewModel.paymentDetails!!
+        billingAddress = pesapalSdkViewModel.billingAddress!!
 
         initData()
         handleCustomBackPress()
@@ -295,7 +297,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     }
 
     override fun refreshRv() {
-        Log.e("Pa","Refresh")
         if(!rvPayment.isComputingLayout){
             paymentAdapter.notifyDataSetChanged()
         }
@@ -326,7 +327,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     showPendingMpesaPayment()
                 }
                 Status.ERROR -> {
-//                    {"error":{"error_type":"api_error","code":"payment_already_received","message":"A successful payment has already been received. Update your request with a new unique merchant_id."},"status":null}
                     var message = it.message
                     if(message!!.contains("payment has already been received")){
                         message = "Confirming payment status"
@@ -351,14 +351,19 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 Status.SUCCESS -> {
                     if(::pDialog.isInitialized) {
                         pDialog.dismiss()
-                        proceedToTransactionResultScreen(it.data!!, true)
                     }
+                    val checkStatus = it.data!!
+//                    proceedToTransactionResultScreen(checkStatus, true)
+                    val success = (checkStatus.status == "1")
+
+//                    val transactionStatusResponse = TransactionStatusResponse(confirmationCode = mobileMoneyResponse.status)
+                    proceedToTransactionResultScreen(checkStatus, success)
                 }
                 Status.ERROR -> {
                     if(::pDialog.isInitialized) {
                         pDialog.dismiss()
                         showMessage(it.message!!)
-                        proceedToTransactionResultScreen(it.data!!, false)
+//                        proceedToTransactionResultScreen(it.data!!, false)
 
                     }
                 }
@@ -368,30 +373,20 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
         mobilePendingvViewModel.transactionStatusBg.observe(requireActivity()){
             when (it.status) {
                 Status.LOADING -> {
-                    if(!timerStated) {
-                        timerStated = true
-//                        handleBackgroundCheck()
-                        Log.e("Meth","Started")
-                    }
+                    pDialog = ProgressDialog(requireContext())
+                    pDialog.setMessage(it.message)
+                    pDialog.show()
+
+//                    if(!timerStated) {
+//                        timerStated = true
+//                        Log.e("Meth","Started")
+//                    }
                 }
                 Status.SUCCESS -> {
 //                    handleTimeStop()
-                    val data = it.data
-                    if(data == null){
-                        // todo stop timer
-                    }
-                    else {
-                        when(data.statusCode){
-                            0 -> {
-                                handleBackgroundConfirmation()
-                            }
-                            else ->{
-                                proceedToTransactionResultScreen(it.data, true)
+                    proceedToTransactionResultScreen(it.data!!, true)
 
-                            }
 
-                        }
-                    }
                 }
                 Status.ERROR -> {
                     // todo try and get all the info neccessary for displaying failed page
@@ -399,9 +394,26 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 //                        delayTime += 1000
 //                        handleBackgroundConfirmation()
 //                    }
+                    if(::pDialog.isInitialized) {
+                        pDialog.dismiss()
+                    }
+                    val data = it.data
+                    if(data == null){
+                        // todo stop timer
+                    }
+                    else {
+                        // todo for status code 0 maybe track a max of 4 calls to check status then display the error
+                        when(data.statusCode){
+                            1 -> {
+                                proceedToTransactionResultScreen(it.data, true)
+                            }
+                            2,3 ->{
+                                proceedToTransactionResultScreen(it.data, false)
 
-                }
-                else -> {
+                            }
+
+                        }
+                    }
                 }
             }
         }
