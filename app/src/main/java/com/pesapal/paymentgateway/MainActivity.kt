@@ -100,11 +100,14 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     private fun handleClicks(){
         binding.btnCheckOut.setOnClickListener {
-            if(auth.currentUser != null){
-                startPayment()
-            }else {
-                handleGoogleSignIn()
-            }
+//            if(auth.currentUser != null){
+//                startPayment()
+//            }else {
+//                handleGoogleSignIn()
+//            }
+            userModel = UserModel("Samuel","Samuel","Nyamai","samuel@pesapal.com","","time")
+            initPayment()
+
         }
         binding.civProfile.setOnClickListener {
             startProfile()

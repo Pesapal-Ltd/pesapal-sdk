@@ -53,6 +53,7 @@ class CardFragmentNewBilling : Fragment() {
     private lateinit var callbackUrl: String
     var cardinal : Cardinal? = null
     var consumerSessionId : String? = null
+    var merchantRef : String? = null
     private lateinit var cardDetails: CardDetails
     private lateinit var billingAddress: BillingAddress
     private lateinit var mobileMoneyRequest: MobileMoneyRequest
@@ -408,6 +409,7 @@ class CardFragmentNewBilling : Fragment() {
                 }
                 Status.SUCCESS -> {
                     responseServerJwt = it.data
+                    merchantRef = responseServerJwt!!.merchantReference
                     initSdk(responseServerJwt!!.orderJwt)
                 }
                 Status.ERROR -> {
@@ -534,8 +536,8 @@ class CardFragmentNewBilling : Fragment() {
             cardDetails,
             billingAddress,
             amount,
-            "",
-            consumerSessionId!!,
+            merchantRef!!,
+            merchantRef!!,
             currency,
             0,
             "",
@@ -592,7 +594,7 @@ class CardFragmentNewBilling : Fragment() {
 
 
 
-            cardinal?.cca_continue(transactionId,stringPayloadv2,requireActivity(),object: CardinalValidateReceiver{
+            cardinal?.cca_continue(transactionId,payload,requireActivity(),object: CardinalValidateReceiver{
                 override fun onValidated(p0: Context?, validateResponse: ValidateResponse?, serverJWT: String?) {
                     /**
                      * This method is triggered when the transaction has been terminated. This is how SDK hands back
