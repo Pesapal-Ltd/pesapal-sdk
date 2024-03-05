@@ -3,6 +3,7 @@ package com.pesapal.sdk.adapter
 import android.content.Context
 import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -194,7 +195,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
     ) {
 //        2024-03-04 00:55:01.220 24183-24573 okhttp.OkHttpClient     com.pesapal.paymentgateway           I  {"business_number":"220222","payment_message":"Awaiting Payment","account_number":"61193136","order_tracking_id":"7cdcbde0-a2eb-4339-946a-dd833f257c24","merchant_reference":null,"redirect_url":null,"error":null,"status":"500"}
         selected = method.paymentMethodId
-        if (phone.text.toString().isNotEmpty() && phone.text.toString().length == 10) {
+        if (phone.text.toString().isNotEmpty() && phone.text.toString().length > 8) {
             val mobileProvider = method.paymentMethodId
             paymentMethodInterface.mobileMoneyRequest(1, phone.text.toString(), mobileProvider)
         } else {
@@ -270,6 +271,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         val tvPrivacy = itemView.findViewById<TextView>(R.id.privacy_policy)
         val tvTerms = itemView.findViewById<TextView>(R.id.terms_of_service)
         val cardLogo = itemView.findViewById<AppCompatImageView>(R.id.card_logo)
+        val cvvInfoIcon = itemView.findViewById<AppCompatImageView>(R.id.cvv_info_icon)
         val iconDesc = itemView.findViewById<AppCompatImageView>(R.id.ic_desc)
 
         val switchAccept = itemView.findViewById<Switch>(R.id.switch_accept)
@@ -289,6 +291,7 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         private var expiryMonth = false
         private var expiryYear = false
         private var enable = false
+        private var canCheckContinuesly = false
 
         init {
             handleClickListener()
@@ -313,17 +316,10 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
         private fun checkFilled(){
             enable = isFirstNameFilled && isSurnameFilled && isEmailFilled  && isPhoneFilled && isAddressFilled && isPostalCodeFilled && isCityFilled
                     && isCardNumberFilled && isExpiryFilled && isCvvFilled
-//            Log.e("Adapt", "isFirstNameFilled $isFirstNameFilled")
-//            Log.e("Adapt", "surnma $isSurnameFilled")
-//            Log.e("Adapt", "isEmailFilled $isEmailFilled")
-//            Log.e("Adapt", "isPhoneFilled $isPhoneFilled")
-//            Log.e("Adapt", "isAddressFilled $isAddressFilled")
-//            Log.e("Adapt", "isPostalCodeFilled $isPostalCodeFilled")
-//            Log.e("Adapt", "isCityFilled $isCityFilled")
-//            Log.e("Adapt", "isCardNumberFilled $isCardNumberFilled")
-//            Log.e("Adapt", "isExpiryFilled $isExpiryFilled")
-//            Log.e("Adapt", "isCvvFilled $isCvvFilled")
-            btnSend.isEnabled = enable
+            if(canCheckContinuesly) {
+                checkAllFields()
+                btnSend.isEnabled = enable
+            }
         }
 
 
@@ -344,7 +340,6 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
             etSurname.addTextChangedListener {
                 isSurnameFilled = it.toString().isNotEmpty()
                 checkFilled()
-
             }
 
             etEmail.addTextChangedListener {
@@ -358,20 +353,21 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
 
 
             etPhoneNumber.addTextChangedListener {
-                if(!it.isNullOrEmpty()){
-                    val minLength = 10
+                isPhoneFilled = if(!it.isNullOrEmpty()){
+                    val minLength = 9
                     val phoneText = it.toString()
-                    isPhoneFilled = phoneText.length == minLength
-                    checkFilled()
+                    phoneText.length >= minLength
                 }else{
-                    isPhoneFilled = false
+                    false
                 }
+                checkFilled()
             }
+
             etAddress.addTextChangedListener {
                 isAddressFilled = it.toString().isNotEmpty()
                 checkFilled()
-
             }
+
             etPostal.addTextChangedListener {
                 if(!it.isNullOrEmpty()){
                     val minPostalCodeLength = 2
@@ -384,17 +380,15 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
                     }
                     etPostal.error = postalCodeError.ifEmpty { null }
                     isPostalCodeFilled = it.toString().isNotEmpty()
-                    checkFilled()
                 }else{
                     isPostalCodeFilled = false
                 }
-
-
+                checkFilled()
             }
+
             etCity.addTextChangedListener {
                 isCityFilled = it.toString().isNotEmpty()
                 checkFilled()
-
             }
         }
 
@@ -426,6 +420,17 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
                 } else {
                     false
                 }
+                if(canCheckContinuesly){
+                    if(isCardNumberFilled){
+                        etNumberCard.error = null
+                        cardLogo.visibility = View.VISIBLE
+                    }
+                    else{
+                        cardLogo.visibility = View.INVISIBLE
+
+                        etNumberCard.error = "Full input required"
+                    }
+                }
                 checkFilled()
             }
 
@@ -436,55 +441,84 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
                     false
                 }
                 checkFilled()
+                if(canCheckContinuesly){
+                    if(it.toString().length >= CardFragmentCardData.MAX_LENGTH_CVV_CODE){
+                        cvvInfoIcon.visibility = View.VISIBLE
+                        etNumberCard.error = null
+                    }
+                    else{
+                        cvvInfoIcon.visibility = View.INVISIBLE
+                        etNumberCard.error = "Full input required"
+                    }
+                }
             }
 
             monthField.addTextChangedListener { it ->
-                if (!it.isNullOrEmpty()) {
-                    var formattedMonth: String
+                checkMonth(it)
+                checkFilled()  //todo uncommenting causes a loop and crash
 
-                    it.toString().let {
-                        formattedMonth = formatCardExpiryMonth(it)
-                        if (formattedMonth != it) {
-                            monthField.setText(formattedMonth)
-                            monthField.setSelection(formattedMonth.length)
-                        }
-                    }
-
-                    expiryMonth = formattedMonth.isNotEmpty()
-
-                    if (formattedMonth.length == 2) {
-                        yearField.requestFocus()
-                    }
-                    setExpiryDateFilled()
-                } else {
-                    expiryMonth = false
-                }
-                checkFilled()
             }
 
             yearField.addTextChangedListener { it ->
-                if (!it.isNullOrEmpty()) {
-                    var formattedYear = ""
-                    it.toString().let {
-                        formattedYear = formatCardExpiryYear(it)
-                        if (formattedYear != it) {
-                            yearField.setText(formattedYear)
-                            yearField.setSelection(formattedYear.length)
-                        }
-                    }
-                    expiryYear = formattedYear.isNotEmpty()
-                    if (expiryYear && it.toString().length >= 2) {
-                        etCvv.requestFocus()
-                    }
-                    setExpiryDateFilled()
-                } else {
-                    expiryYear = false
-                }
-                checkFilled()
+                checkYear(it)
+                checkFilled() //todo uncommenting causes a loop and crash
+
             }
 
         }
 
+        private fun checkMonth(it: Editable?){
+            // todo there is a loop hole in this checking logic but too tired to patch it
+
+            if (!it.isNullOrEmpty()) {
+                var formattedMonth: String
+
+                it.toString().let {
+                    formattedMonth = formatCardExpiryMonth(it)
+                    if (formattedMonth != it) {
+                        monthField.setText(formattedMonth)
+                        monthField.setSelection(formattedMonth.length)
+                    }
+                }
+
+                expiryMonth = formattedMonth.isNotEmpty()
+
+                if (formattedMonth.length == 2) {
+                    yearField.requestFocus()
+                }
+                setExpiryDateFilled()
+            } else {
+                expiryMonth = false
+            }
+            monthField.error = if(expiryMonth) null
+            else
+                "Input required"
+        }
+
+        private fun checkYear(it: Editable?){
+            // todo there is a loop hole in this checking logic but too tired to patch it
+            if (!it.isNullOrEmpty()) {
+                var formattedYear = ""
+                it.toString().let {
+                    formattedYear = formatCardExpiryYear(it)
+                    if (formattedYear != it) {
+                        yearField.setText(formattedYear)
+                        yearField.setSelection(formattedYear.length)
+                    }
+                }
+                expiryYear = formattedYear.isNotEmpty()
+                if (expiryYear && it.toString().length >= 2) {
+                    etCvv.requestFocus()
+                }
+                setExpiryDateFilled()
+            } else {
+                expiryYear = false
+            }
+            yearField.error = if(expiryYear)
+                null
+            else
+                "Input required"
+        }
 
         private fun formatCardExpiryMonth(month: String): String {
             var formattedString = month
@@ -530,33 +564,40 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
 
         private fun handleClickListener(){
             btnSend.setOnClickListener {
-                if(switchAccept.isChecked) {
-                    val billingAddress = BillingAddress(
-                        phoneNumber = etPhoneNumber.text.toString(),
-                        emailAddress = etEmail.text.toString(),
-                        countryCode = countryCodePicker.selectedCountryNameCode,
-                        firstName = etFirstName.text.toString(),
-                        middleName = etSurname.text.toString(),
-                        lastName = etSurname.text.toString(),
-                        line = etAddress.text.toString(),
-                        line2 = etAddress.text.toString(),
-                        city = etCity.text.toString(),
-                        state = " ",
-                        postalCode = etPostal.text.toString(),
-                        zipCode = etAddress.text.toString(),
-                    )
+                canCheckContinuesly = true
+                if(enable){
+                    if(switchAccept.isChecked) {
+                        val billingAddress = BillingAddress(
+                            phoneNumber = etPhoneNumber.text.toString(),
+                            emailAddress = etEmail.text.toString(),
+                            countryCode = countryCodePicker.selectedCountryNameCode,
+                            firstName = etFirstName.text.toString(),
+                            middleName = etSurname.text.toString(),
+                            lastName = etSurname.text.toString(),
+                            line = etAddress.text.toString(),
+                            line2 = etAddress.text.toString(),
+                            city = etCity.text.toString(),
+                            state = " ",
+                            postalCode = etPostal.text.toString(),
+                            zipCode = etAddress.text.toString(),
+                        )
 
-                    paymentMethodInterface.generateCardOrderTrackingId(
-                        billingAddress,
-                        switchRemember.isChecked,
-                        etNumberCard.rawText.toString(),
-                        Integer.parseInt(yearField.text.toString()),
-                        Integer.parseInt(monthField.text.toString()),
-                        etCvv.text.toString()
-                    )
+                        paymentMethodInterface.generateCardOrderTrackingId(
+                            billingAddress,
+                            switchRemember.isChecked,
+                            etNumberCard.rawText.toString(),
+                            Integer.parseInt(yearField.text.toString()),
+                            Integer.parseInt(monthField.text.toString()),
+                            etCvv.text.toString()
+                        )
+                    }
+                    else{
+                        Toast.makeText(context, "Accept terms to continue", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 else{
-                    Toast.makeText(context, "Accept terms to continue", Toast.LENGTH_SHORT).show()
+                    btnSend.isEnabled = false
+                    checkAllFields()
                 }
             }
 
@@ -569,6 +610,52 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
             }
             iconDesc.setOnClickListener{
                 paymentMethodInterface.showDialogFrag(1)
+            }
+        }
+
+        private fun checkAllFields(){
+            checkInput(isFirstNameFilled ,etFirstName)
+            checkInput(isSurnameFilled,etSurname)
+            checkInput(isPostalCodeFilled,etPostal, "Postal Code Too Short")
+            checkInput(isPhoneFilled,etPhoneNumber)
+            checkInput(isCityFilled,etCity)
+            checkInput(isAddressFilled, etAddress)
+            if(isCardNumberFilled){
+                cardLogo.visibility = View.VISIBLE
+                etNumberCard.error = null
+            }
+            else{
+                cardLogo.visibility = View.INVISIBLE
+                etNumberCard.error = "Full input required"
+            }
+
+            if(isCvvFilled){
+                cvvInfoIcon.visibility = View.VISIBLE
+                etCvv.error = null
+            }
+            else{
+                cvvInfoIcon.visibility = View.INVISIBLE
+                etCvv.error = "Full input required"
+            }
+
+//                    if(isAddressFilled){
+//                        checkInput(etAddress)
+//                    }
+//            checkMonth(monthField.text)
+//            checkYear(yearField.text)
+            checkInput(monthField.text.isNotEmpty(), monthField)
+            checkInput(yearField.text.isNotEmpty() , yearField)
+
+
+
+
+        }
+        private fun checkInput(correctEditTextState: Boolean, editText: EditText, errorMsg:String = "Input required") {
+            if(!correctEditTextState){
+                editText.error = errorMsg
+            }
+            else{
+                editText.error = null
             }
         }
     }

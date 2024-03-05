@@ -384,6 +384,9 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 }
                 Status.SUCCESS -> {
 //                    handleTimeStop()
+                    if(::pDialog.isInitialized) {
+                        pDialog.dismiss()
+                    }
                     proceedToTransactionResultScreen(it.data!!, true)
 
 

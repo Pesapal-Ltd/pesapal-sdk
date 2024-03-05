@@ -93,9 +93,11 @@
                 app:layout_constraintTop_toTopOf="parent"
                 >
 
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/tv_help_url"
                     android:layout_marginStart="9dp"
 
                     android:text="@string/help_url"
@@ -181,6 +183,7 @@
                 app:layout_constraintTop_toTopOf="@id/tv_amount"
                 style="@style/tv_txn_result" />
 
+
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -213,6 +216,27 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_time"
                 />
+
+            <TextView
+                android:id="@+id/label_confirmation"
+                android:text="@string/confirmation_code"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_amount"
+                android:layout_marginTop="12dp"
+                style="@style/tv_txn_result" />
+
+            <TextView
+                style="@style/tv_txn_result.inner"
+                android:textColor="@color/black"
+                android:id="@+id/tv_confirmation_code"
+                tools:text="RDT: 1692012478.26497"
+                app:layout_constraintTop_toTopOf="@id/label_confirmation"
+                app:layout_constraintStart_toStartOf="@id/tv_currency"
+                app:layout_constraintEnd_toEndOf="@id/tv_amount"
+                />
+
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -221,7 +245,7 @@
                 android:background="@color/grey_bg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_amount"
+                app:layout_constraintTop_toBottomOf="@id/tv_confirmation_code"
                 >
                 <View
                     android:layout_width="0dp"

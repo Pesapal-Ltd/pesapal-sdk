@@ -2,7 +2,11 @@ package com.pesapal.sdk.fragment.mobile_money.mpesa.success
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
+import com.pesapal.sdk.fragment.DialogCard
 import com.pesapal.sdk.fragment.auth.AuthFragmentDirections
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
@@ -95,10 +100,23 @@ class MpesaSuccessFragment : Fragment() {
         }
         else{
             header = getString(R.string.payment_failed)
+
             binding.imgTxnStatus.setImageResource(R.drawable.icon_error)
             binding.layoutHeader.background = resources.getDrawable(R.color.pesapal_red)
 
+            val helpUrl = "https://www.pesapal.com/support-ticket"
+            val helpFullString = getString(R.string.help_url , helpUrl)
+            val helpIndex = helpFullString.indexOf(helpFullString)
+            val helpIndexLength = helpIndex + helpUrl.length
+            val spannableStringBuilder = SpannableStringBuilder(helpFullString)
+            spannableStringBuilder.setSpan(ForegroundColorSpan(Color.BLUE), helpIndex, helpIndexLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            binding.tvHelpUrl.text = helpFullString
+            binding.tvHelpUrl.setOnClickListener {
+                DialogCard(3).show(parentFragmentManager, 3.toString())
+            }
+
             binding.linearFurtherAssistance.visibility = View.VISIBLE
+
             binding.btnTryAgain.visibility = View.VISIBLE
             binding.btnTryAgain.setOnClickListener{
                 val action = MpesaSuccessFragmentDirections.actionTxnresultToPesapalMainFragment()
@@ -127,6 +145,7 @@ class MpesaSuccessFragment : Fragment() {
 
         binding.tvCurrency.text = transactionStatusResponse.currency
         binding.tvAmount.text = GeneralUtil.formatAmountText(transactionStatusResponse.amount.toDouble())
+        binding.tvConfirmationCode.text = transactionStatusResponse.confirmationCode
         binding.tvMerchantRef.text = transactionStatusResponse.merchantReference
         binding.tvNumberOrCard.text = transactionStatusResponse.paymentAccount
         binding.tvTrackingId.text = transactionStatusResponse.orderTrackingId

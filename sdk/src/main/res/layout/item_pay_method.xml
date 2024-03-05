@@ -228,7 +228,7 @@
                <EditText
                    android:id="@+id/et_postal"
                    android:hint="@string/add_card_postalCodelower"
-                   android:inputType="textPostalAddress"
+                   android:inputType="number"
                    android:maxLength="6"
                    android:nextFocusDown="@+id/et_city"
                    style="@style/et_card"

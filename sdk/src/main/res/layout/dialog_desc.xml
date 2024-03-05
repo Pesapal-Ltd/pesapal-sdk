@@ -28,7 +28,7 @@
             android:layout_weight="1"
             android:id="@+id/title"
 
-            android:text="@string/card_saved"
+            android:text="@string/info"
             android:textColor="@color/white"
             android:fontFamily="@font/arial"
             android:textSize="15sp"
