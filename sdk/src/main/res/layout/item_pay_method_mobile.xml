@@ -81,6 +81,7 @@
                  android:id="@+id/phone"
                  android:textSize="12sp"
                  android:inputType="number"
+                 android:maxLength="13"
                  android:drawablePadding="10dp"
                  android:hint="@string/enter_mobile_number"
                  />
@@ -269,17 +270,18 @@
 
 
             <TextView
+                android:id="@+id/tv_manual"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_manual"
 
-                android:text="@string/mpesa_combo"
-                android:textColor="@color/black_faded"
-                android:fontFamily="@font/arial"
-                android:textSize="12sp"
-                android:textFontWeight="400"
-                android:letterSpacing="0.2"
                 android:layout_marginTop="17dp"
+                android:fontFamily="@font/arial"
+                android:letterSpacing="0.05"
+                android:text="@string/mpesa_combo"
+                tools:text="@string/mtn_combo"
+                android:textColor="@color/black_faded"
+                android:textFontWeight="400"
+                android:textSize="12sp"
 
                 android:visibility="gone"
                 tools:visibility="visible"

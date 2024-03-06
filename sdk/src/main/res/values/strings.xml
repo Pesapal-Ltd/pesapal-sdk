@@ -53,7 +53,8 @@
     <string name="prompt3">3. If you didn\'t get a prompt, press resend prompt</string>
     <string name="prompt4">4. Click Lipa na Mpesa for manual instructions</string>
 
-    <string name="mpesa_combo">1\. Go to M-PESA on your phone \n2. Select Pay Bill option. \n3. Enter Business number 22022 \n4. Enter Account Number 56379467 \n5. Enter the amount KES 1.00 \n6. Enter your M-PESA PIN and Send \n7. You will receive a confirmation SMS from M-PESA with confirmation code \n8. Click proceed to finalise payment </string>
+    <string name="mpesa_combo">1\. Go to M-PESA on your phone \n2. Select Pay Bill option. \n3. Enter Business number %1$s \n4. Enter Account Number %2$s \n5. Enter the amount %3$s %4$s \n6. Enter your M-PESA PIN and Send \n7. You will receive a confirmation SMS from M-PESA with confirmation code \n8. Click proceed to finalise payment </string>
+    <string name="mtn_combo">1\. A payment prompt has been sent to %1$s \n2. In case you haven’t received a prompt, dial *165# to trigger the prompt again. Or tap resend payment prompt.  </string>
 
     <string name="pay">Pay\u0020</string>
     <string name="amount">Amount</string>

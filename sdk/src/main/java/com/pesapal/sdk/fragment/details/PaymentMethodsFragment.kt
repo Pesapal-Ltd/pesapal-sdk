@@ -4,7 +4,6 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +14,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
 import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.activity.PesapalSdkViewModel
@@ -40,15 +37,7 @@ import com.pesapal.sdk.model.mobile_money.MobileMoneyResponse
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.*
-import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_KE
-import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_TZ
-import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_UG
 import com.pesapal.sdk.utils.CountryCodeEval.CARD
-import com.pesapal.sdk.utils.CountryCodeEval.MPESA
-import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
-import com.pesapal.sdk.utils.CountryCodeEval.MTN_UG
-import com.pesapal.sdk.utils.CountryCodeEval.TIGO_TANZANIA
-import java.math.BigDecimal
 
 internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface {
     private lateinit var binding: FragmentPaymentMethodsBinding
@@ -60,8 +49,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     private val viewModel: MpesaPesapalViewModel by viewModels()
 
     private var mobileProviders = listOf<Int>()
-    private var selectedChip: Int = -1
-
     lateinit var rvPayment: RecyclerView
 
     // Mobile Money
@@ -102,8 +89,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        paymentDetails = requireArguments().getSerializable("paymentDetails") as PaymentDetails
-//        billingAddress = requireArguments().getSerializable("billingAddress") as BillingAddress
         paymentDetails = pesapalSdkViewModel.paymentDetails!!
         billingAddress = pesapalSdkViewModel.billingAddress!!
 
@@ -159,15 +144,15 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     }
 
     private fun initRecycler(){
-        val payList = mutableListOf<PaymentInterModel>()
-        payList.add(PaymentInterModel(CARD, "Card"))
+        val payList = mutableListOf<CountryCode>()
+        payList.add(CountryCode("Card",CARD,0) )
         mobileProviders.forEach{ providerInt ->
             val provider = CountryCodeEval.mappingAllCountries[providerInt]
-            payList.add(PaymentInterModel(provider!!.paymentMethodId, provider.mobileProvider))
+            payList.add(provider!!)
         }
 
         rvPayment = binding.rvPaymentMethods
-        paymentAdapter = PaymentAdapter(billingAddress, requireContext(), this, payList)
+        paymentAdapter = PaymentAdapter( requireContext(),paymentDetails.currency, paymentDetails.amount, billingAddress, this, payList)
         rvPayment.adapter = paymentAdapter
     }
 
@@ -178,72 +163,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     }
 
 
-    private fun proceedSelected(i : Int){
-        when (i) {
-            CARD -> {
-                // todo work on unselecting all other chips
-                //    configureUnselectedChip(chipGroup.findViewById(R.id.mpesa))
-                proceedToCard()
-            }
-            MPESA,AIRTEL_KE, MTN_UG, AIRTEL_UG, TIGO_TANZANIA, MPESA_TZ, AIRTEL_TZ -> {
-//                    configureUnselectedChip(chipGroup.findViewById(R.id.card))
-                proceedMpesa(i)
-            }
-
-        }
-    }
-
-    private fun proceedMpesa(i: Int) {
-        val mobileProvider = CountryCodeEval.mappingAllCountries[i]
-        val min = mobileProvider!!.minimumAmount
-        val canProceedMinMeet = paymentDetails.amount >= min.toBigDecimal()
-        if(canProceedMinMeet) {
-            paymentDetails.mobile_provider = BigDecimal(i)
-            val action = PaymentMethodsFragmentDirections.actionPesapalMainFragmentToNavGraphMpesa(
-                paymentDetails,
-                billingAddress
-            )
-            clearSelectionAndProceed(action)
-        }
-        else{
-            Toast.makeText(requireContext(), "Minimum amount for ${mobileProvider.mobileProvider} is $min/=", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun checkMinMaxAmount(mobileProvider: Int){
-    }
-
-    private fun proceedToCard(){
-        val action = PaymentMethodsFragmentDirections.actionPesapalMainFragmentToPesapalCardFragment(paymentDetails, billingAddress)
-        clearSelectionAndProceed(action)
-    }
-
-    /**
-     * The chip group selection needs to cleared or it causes a loop and return to the selected chip navigating to the fragment
-     */
-    private fun clearSelectionAndProceed(action: NavDirections) {
-//        binding.paymentOptionGroup.clearCheck()
-        findNavController().navigate(action)
-    }
-
-
-    /**
-     * todo delete. modifications to the style affect the color scheme
-     *  Use this for payment method un selected. UI and data
-     */
-    private fun configureUnselectedChip(chip: Chip) {
-
-    }
-
-    /**
-     * todo delete. modifications to the style affect the color scheme
-     *  Use this for payment method selected. UI and data
-     */
-    private fun configureSelectedChip(chip: Chip) {
-//
-    }
-
-    
     private fun returnIntent(status: String, obj : Any){
         val returnIntent = Intent()
         returnIntent.putExtra("status", status)
@@ -456,17 +375,12 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     showMessage(it.message!!)
                     pDialog.dismiss()
                 }
-
-                else -> {
-                    pDialog.dismiss()
-                }
             }
         }
 
         cardViewModel.cardPaymentStatus.observe(requireActivity()) {
             when (it.status) {
                 Status.LOADING -> {
-
                 }
                 Status.SUCCESS -> {
                     pDialog.dismiss()
@@ -479,9 +393,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     proceedToTransactionResultScreen(it.data!!, false)
                 }
 
-                else -> {
-                    pDialog.dismiss()
-                }
             }
         }
 
@@ -623,7 +534,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 //  "call_back_url": "http://localhost:56522"
 //}
         cardViewModel.submitCardRequest(submitCardRequest)
-
     }
 
     override fun handleResend(){
@@ -709,7 +619,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
         }
 
-        paymentAdapter.mobileMoneyUpdate()
+        paymentAdapter.mobileMoneyUpdate(mobileMoneyResponse)
         handleBackgroundConfirmation()
     }
 

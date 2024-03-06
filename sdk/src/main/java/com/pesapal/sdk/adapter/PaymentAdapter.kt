@@ -3,8 +3,6 @@ package com.pesapal.sdk.adapter
 import android.content.Context
 import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +17,14 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.hbb20.CountryCodePicker
 import com.pesapal.sdk.R
 import com.pesapal.sdk.fragment.card.data.CardFragmentCardData
-import com.pesapal.sdk.fragment.details.PaymentInterModel
 import com.pesapal.sdk.model.card.BillingAddress
+import com.pesapal.sdk.model.mobile_money.MobileMoneyResponse
+import com.pesapal.sdk.utils.CountryCode
+import com.pesapal.sdk.utils.CountryCodeEval
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_KE
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_TZ
 import com.pesapal.sdk.utils.CountryCodeEval.AIRTEL_UG
@@ -34,11 +33,16 @@ import com.pesapal.sdk.utils.CountryCodeEval.MPESA
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
 import com.pesapal.sdk.utils.CountryCodeEval.MTN_UG
 import com.santalu.maskedittext.MaskEditText
+import java.math.BigDecimal
 
-internal class PaymentAdapter(val billingAddress: BillingAddress,
-                     val context: Context,
-                     private val paymentMethodInterface: PaymentMethodInterface,
-                     private val payList: MutableList<PaymentInterModel>)
+internal class PaymentAdapter(
+    val context: Context,
+    val currency: String?,
+    val amount: BigDecimal,
+    val billingAddress: BillingAddress,
+    private val paymentMethodInterface: PaymentMethodInterface,
+    private val payList: MutableList<CountryCode>
+)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val OUT_OF_RANGE = 1010
 
@@ -46,6 +50,8 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
     private var previous: Int = OUT_OF_RANGE
 
     var mobileStep = 0
+    private var mobileResponse: MobileMoneyResponse? = null
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when(viewType){
@@ -108,11 +114,11 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
 
 
             holder.btnSend.setOnClickListener {
-//                if(mobileStep == 1)
-//                    paymentMethodInterface.handleConfirmation()
-//                else
-//                    mobileMoneyRequest(phone, method)
+                if(mobileStep == 1)
+                    paymentMethodInterface.handleConfirmation()
+                else
                     mobileMoneyRequest(phone, method)
+//                    mobileMoneyRequest(phone, method)
             }
 
 //            holder.resendButton.setOnClickListener {
@@ -124,16 +130,24 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
                     0 -> {
                         holder.phonelayout.visibility = View.VISIBLE
                         holder.resendlayout.visibility = View.GONE
-                        holder.btnSend.isEnabled = true
+//                        holder.btnSend.isEnabled = true
                         holder.clLipaNaMpesa.visibility = View.GONE
-
-
                     }
                     1 -> {
                         holder.phonelayout.visibility = View.GONE
                         holder.resendlayout.visibility = View.VISIBLE
-                        holder.btnSend.isEnabled = false
-                        holder.clLipaNaMpesa.visibility = View.VISIBLE
+//                        holder.btnSend.isEnabled = false
+                        if(method.mobileProvider.contains(CountryCodeEval.MPESA_PROV_NAME) ) {
+                            holder.clLipaNaMpesa.visibility = View.VISIBLE
+                            holder.clLipaNaMpesa.text = context.getString(R.string.mpesa_combo, mobileResponse!!.accountNumber, mobileResponse!!.businessNumber , currency!!, amount)
+                        }
+                        else if(method.mobileProvider.contains(CountryCodeEval.MTN_PROV_NAME)){
+                            holder.clLipaNaMpesa.visibility = View.VISIBLE
+                            holder.clLipaNaMpesa.text = context.getString(R.string.mtn_combo)
+                        }
+                        else{
+                            // Airtel and TIGO don't have backup options yet
+                        }
 
                     }
                 }
@@ -191,13 +205,20 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
 
     private fun mobileMoneyRequest(
         phone: EditText,
-        method: PaymentInterModel
+        method: CountryCode
     ) {
 //        2024-03-04 00:55:01.220 24183-24573 okhttp.OkHttpClient     com.pesapal.paymentgateway           I  {"business_number":"220222","payment_message":"Awaiting Payment","account_number":"61193136","order_tracking_id":"7cdcbde0-a2eb-4339-946a-dd833f257c24","merchant_reference":null,"redirect_url":null,"error":null,"status":"500"}
         selected = method.paymentMethodId
         if (phone.text.toString().isNotEmpty() && phone.text.toString().length > 8) {
             val mobileProvider = method.paymentMethodId
-            paymentMethodInterface.mobileMoneyRequest(1, phone.text.toString(), mobileProvider)
+            val min = method.minimumAmount
+            val canProceedMinMeet = amount >= min.toBigDecimal()
+            if(canProceedMinMeet) {
+                paymentMethodInterface.mobileMoneyRequest(1, phone.text.toString(), mobileProvider)
+            }
+            else{
+                Toast.makeText(context, "Minimum amount for ${method.mobileProvider} is $min/=", Toast.LENGTH_SHORT).show()
+            }
         } else {
             paymentMethodInterface.showMessage("All inputs required ...")
         }
@@ -211,7 +232,8 @@ internal class PaymentAdapter(val billingAddress: BillingAddress,
     /**
      * To
      */
-    fun mobileMoneyUpdate() {
+    fun mobileMoneyUpdate(mobileMoneyResponse: MobileMoneyResponse?) {
+        mobileResponse = mobileMoneyResponse
         mobileStep = 1
         notifyDataSetChanged()
     }

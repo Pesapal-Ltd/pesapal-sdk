@@ -10,7 +10,6 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -18,16 +17,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.R
+import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
 import com.pesapal.sdk.fragment.DialogCard
-import com.pesapal.sdk.fragment.auth.AuthFragmentDirections
-import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.GeneralUtil
-import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdk.utils.TimeUtils
-import com.pesapal.sdk.viewmodel.AppViewModel
+
 class MpesaSuccessFragment : Fragment() {
     private lateinit var binding: FragmentMpesaPaymentSuccessBinding
     private lateinit var transactionStatusResponse: TransactionStatusResponse
@@ -59,7 +56,10 @@ class MpesaSuccessFragment : Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    returnPaymentStatus()
+                    if(isTxnSuccessful)
+                        returnPaymentStatus()
+                    else
+                        tryAgain()
                 }
             })
     }
@@ -70,7 +70,6 @@ class MpesaSuccessFragment : Fragment() {
     }
 
     private fun handleClicks(){
-
         btnDone.setOnClickListener {
             returnPaymentStatus()
         }
@@ -105,13 +104,15 @@ class MpesaSuccessFragment : Fragment() {
             binding.layoutHeader.background = resources.getDrawable(R.color.pesapal_red)
 
             val helpUrl = "https://www.pesapal.com/support-ticket"
-            val helpFullString = getString(R.string.help_url , helpUrl)
-            val helpIndex = helpFullString.indexOf(helpFullString)
-            val helpIndexLength = helpIndex + helpUrl.length
-            val spannableStringBuilder = SpannableStringBuilder(helpFullString)
-            spannableStringBuilder.setSpan(ForegroundColorSpan(Color.BLUE), helpIndex, helpIndexLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            binding.tvHelpUrl.text = helpFullString
+            binding.tvHelpUrl.text = highlightextTextBlue(getString(R.string.help_url , helpUrl),helpUrl)
+
+            binding.tvOpenTicket.text = highlightextTextBlue(getString(R.string.open_ticket),"Here")
+
             binding.tvHelpUrl.setOnClickListener {
+                setClipboard(requireContext(), helpUrl)
+            }
+
+            binding.tvOpenTicket.setOnClickListener {
                 DialogCard(3).show(parentFragmentManager, 3.toString())
             }
 
@@ -119,16 +120,16 @@ class MpesaSuccessFragment : Fragment() {
 
             binding.btnTryAgain.visibility = View.VISIBLE
             binding.btnTryAgain.setOnClickListener{
-                val action = MpesaSuccessFragmentDirections.actionTxnresultToPesapalMainFragment()
-                findNavController().navigate(action)
+                tryAgain()
             }
+
         }
 
         binding.tvPaymentStatus.text = header
         binding.tvMerchantName.text = pesapalSdkViewModel.merchantName
 
-//        binding.tvTime.text = TimeUtils.getCurrentDateTime()
-        binding.tvTime.text = transactionStatusResponse.createdDate
+        binding.tvTime.text = TimeUtils.getCurrentDateTime(transactionStatusResponse.createdDate)
+//        binding.tvTime.text = transactionStatusResponse.createdDate
 
         val paymentIcon = with(transactionStatusResponse.paymentMethod!!.lowercase()){
             when{
@@ -151,15 +152,49 @@ class MpesaSuccessFragment : Fragment() {
         binding.tvTrackingId.text = transactionStatusResponse.orderTrackingId
     }
 
+    private fun highlightextTextBlue(originalString: String, toBeHighLighted: String): SpannableStringBuilder {
+        val openFullString = originalString
+        val hereIndex = openFullString.indexOf(originalString)
+        val hereIndexLength = hereIndex + toBeHighLighted.length
+        val hereSpannableStringBuilder = SpannableStringBuilder(openFullString)
+        hereSpannableStringBuilder.setSpan(
+            ForegroundColorSpan(Color.BLUE),
+            hereIndex,
+            hereIndexLength,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        return hereSpannableStringBuilder
+    }
+
+    private fun tryAgain(){
+        val action = MpesaSuccessFragmentDirections.actionTxnresultToPesapalMainFragment()
+        findNavController().navigate(action)
+    }
+
 
     private fun returnPaymentStatus() {
+        if(isTxnSuccessful){
+            returnIntent(PesapalPayActivity.STATUS_COMPLETED, transactionStatusResponse)
+        }
+        else
+            returnIntent(PesapalPayActivity.STATUS_CANCELLED, "Payment cancelled")
+
+    }
+
+    private fun returnIntent(status: String, obj : Any){
         val returnIntent = Intent()
-        returnIntent.putExtra("status", "COMPLETED")
-        returnIntent.putExtra("data", transactionStatusResponse)
+        returnIntent.putExtra("status", status)
+        val data = if(obj is String){
+            obj
+        }
+        else{
+            obj as TransactionStatusResponse
+        }
+        returnIntent.putExtra("data", data)
+
         requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
         requireActivity().finish()
     }
-
     companion object{
         fun newInstance(transactionStatusResponse: TransactionStatusResponse): MpesaSuccessFragment {
             val fragment = MpesaSuccessFragment()
