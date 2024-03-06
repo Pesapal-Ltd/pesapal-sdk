@@ -273,7 +273,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     }
                     val checkStatus = it.data!!
 //                    proceedToTransactionResultScreen(checkStatus, true)
-                    val success = (checkStatus.status == "1")
+                    val success = (checkStatus.statusCode == 1)
 
 //                    val transactionStatusResponse = TransactionStatusResponse(confirmationCode = mobileMoneyResponse.status)
                     proceedToTransactionResultScreen(checkStatus, success)

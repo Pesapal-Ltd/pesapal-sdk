@@ -154,7 +154,7 @@ class MpesaSuccessFragment : Fragment() {
 
     private fun highlightextTextBlue(originalString: String, toBeHighLighted: String): SpannableStringBuilder {
         val openFullString = originalString
-        val hereIndex = openFullString.indexOf(originalString)
+        val hereIndex = openFullString.indexOf(toBeHighLighted)
         val hereIndexLength = hereIndex + toBeHighLighted.length
         val hereSpannableStringBuilder = SpannableStringBuilder(openFullString)
         hereSpannableStringBuilder.setSpan(
