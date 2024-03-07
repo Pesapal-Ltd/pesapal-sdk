@@ -77,7 +77,7 @@
     <string name="merchant_reference">MERCHANT REFERENCE</string>
     <string name="try_again">TRY AGAIN</string>
     <string name="tracking_id">TRACKING ID</string>
-    <string name="i_accept_to_pesapal_s">I accept to Pesapal\'s \u0020</string>
+    <string name="i_accept_to_pesapal_s">I accept to Pesapal\'s\u0020</string>
     <string name="remember_me">REMEMBER ME</string>
     <string name="terms_and_conditions">Terms and conditions</string>
     <string name="terms_and_conditions_amp">TERMS &amp; CONDITIONS</string>

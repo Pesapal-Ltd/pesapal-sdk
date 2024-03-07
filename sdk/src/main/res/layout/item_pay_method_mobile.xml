@@ -63,28 +63,25 @@
              android:orientation="vertical"
              >
              <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="0dp"
+
                  android:id="@+id/label_phone"
                  android:text="@string/enter_mobile_number"
                  tools:text="AIRTEL PHONE NUMBER"
 
-                 android:textColor="@color/blue_pesapal_light"
-                 android:fontFamily="@font/arial"
-                 android:textSize="12sp"
-                 android:layout_weight="400"
+                 style="@style/label_card"
+                 android:layout_marginTop="0dp"
+                 android:textSize="10sp"
                  />
 
              <EditText
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
                  android:id="@+id/phone"
-                 android:textSize="12sp"
+                 style="@style/et_card"
+                 android:hint="@string/enter_mobile_number"
                  android:inputType="number"
                  android:maxLength="13"
-                 android:drawablePadding="10dp"
-                 android:hint="@string/enter_mobile_number"
+                 android:textSize="10sp"
                  />
+
          </LinearLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -116,8 +113,8 @@
                     android:textColor="@color/black_faded"
                     android:layout_marginStart="9dp"
                     android:fontFamily="@font/arial"
-                    android:textSize="12sp"
-                    android:textFontWeight="400"
+                    android:textSize="11sp"
+                    android:textFontWeight="300"
 
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/view_left_resend"

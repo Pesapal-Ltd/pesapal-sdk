@@ -4,16 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="40dp"
         android:paddingBottom="16dp"
+        android:background="@color/white"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,8 +29,8 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="22dp"
+                android:layout_height="24dp"
                 android:id="@+id/img_txn_status"
                 tools:src="@drawable/ic_checked_transparent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,9 +45,10 @@
                 android:layout_marginStart="20sp"
                 android:text="@string/payment_failed"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:fontFamily="@font/arial"
                 android:textFontWeight="700"
+                android:letterSpacing="0.07"
                 app:layout_constraintStart_toEndOf="@id/img_txn_status"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -103,7 +103,7 @@
                     android:text="@string/help_url"
                     android:textColor="@color/black_faded"
                     android:fontFamily="@font/arial"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textFontWeight="400"
                     />
 
@@ -116,7 +116,7 @@
                     android:text="@string/open_ticket"
                     android:textColor="@color/black_faded"
                     android:fontFamily="@font/arial"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textFontWeight="400"
                     />
             </LinearLayout>
@@ -130,7 +130,7 @@
                 android:textColor="@color/colorGreyText"
                 android:fontFamily="@font/arial"
                 tools:text="Development Work KE"
-                android:textSize="17sp"
+                android:textSize="16sp"
                 android:textFontWeight="400"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linear_further_assistance"
@@ -157,6 +157,7 @@
                 android:textSize="10sp"
                 android:textStyle="normal"
                 android:textFontWeight="400"
+                android:letterSpacing="0.03"
                 app:layout_constraintStart_toEndOf="@+id/icon_pay_method"
                 app:layout_constraintTop_toTopOf="@+id/icon_pay_method"
                 app:layout_constraintBottom_toBottomOf="@id/icon_pay_method"
@@ -170,6 +171,7 @@
                 tools:text="Mon, 14 August 2023 14:38 PM "
                 android:textSize="10sp"
                 android:textFontWeight="400"
+                android:letterSpacing="0.03"
                 android:textStyle="normal"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -181,20 +183,16 @@
                 android:text="@string/amount"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_amount"
-                style="@style/tv_txn_result" />
+                style="@style/tv_txn_result"
+                />
 
 
             <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
                 android:id="@+id/tv_currency"
-                android:textStyle="normal"
                 android:textColor="@color/black"
-                android:fontFamily="@font/arial"
                 tools:text="KES"
-                android:textSize="17sp"
-                android:textFontWeight="400"
                 android:layout_marginEnd="12dp"
+                style="@style/tv_txn_result"
 
                 app:layout_constraintEnd_toStartOf="@id/tv_amount"
                 app:layout_constraintTop_toTopOf="@id/tv_amount"
@@ -205,14 +203,16 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/tv_amount"
-                android:layout_marginEnd="18dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="26dp"
+
                 android:textStyle="normal"
                 android:textColor="@color/blue_pesapal_light"
                 android:fontFamily="@font/arial"
                 tools:text="5,000,0000"
-                android:textSize="17sp"
-                android:layout_marginTop="26dp"
+                android:textSize="22sp"
                 android:textFontWeight="400"
+                android:letterSpacing="0.06"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_time"
                 />
@@ -270,9 +270,9 @@
                 <TextView
                     style="@style/tv_txn_result"
                     android:layout_marginTop="17dp"
+                    android:layout_marginStart="16dp"
                     android:id="@+id/label_Ref"
                     android:text="@string/merchant_reference"
-                    android:layout_marginStart="16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/div_top"
                     />

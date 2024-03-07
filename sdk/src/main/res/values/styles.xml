@@ -27,7 +27,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/selector_button_active</item>
-        <item name="android:paddingVertical">8dp</item>
+        <item name="android:paddingVertical">4dp</item>
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:fontFamily">@font/arial</item>
         <item name="android:letterSpacing">0.1</item>
@@ -47,7 +47,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:layout_marginHorizontal">8dp</item>
+        <item name="android:layout_marginHorizontal">17dp</item>
         <item name="android:paddingVertical">21dp</item>
     </style>
 
@@ -55,10 +55,13 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/blue_pesapal_light</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:textFontWeight">400</item>
+        <item name="android:fontFamily">@font/arial</item>
+
         <item name="android:layout_marginTop">12dp</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.05</item>
 
     </style>
 
@@ -68,13 +71,17 @@
         <item name="android:textColorHint">@color/grey_hint</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/arial</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:textFontWeight">300</item>
         <item name="android:maxLines">1</item>
         <item name="android:maxLength">30</item>
         <item name="android:inputType">text</item>
-        <item name="android:layout_marginTop">10dp</item>
+<!--        <item name="android:layout_marginTop">4dp</item>-->
         <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:letterSpacing">0.05</item>
+<!--        <item name="android:background">@null</item>-->
+        <item name="android:backgroundTint">@color/blue_pesapal_light</item>
 
     </style>
 
@@ -86,6 +93,7 @@
         <item name="android:background">@drawable/rounded_grey</item>
         <item name="android:paddingVertical">8dp</item>
         <item name="android:paddingHorizontal">17dp</item>
+        <item name="android:layout_marginHorizontal">4dp</item>
     </style>
 
     <style name="payment_card">
@@ -105,6 +113,8 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">10sp</item>
         <item name="android:textFontWeight">700</item>
+        <item name="android:letterSpacing">0.03</item>
+
     </style>
 
     <style name="tv_txn_result.inner">
@@ -117,7 +127,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:paddingVertical">10dp</item>
+        <item name="android:paddingVertical">4dp</item>
         <item name="android:letterSpacing">0.15</item>
 
     </style>
@@ -125,10 +135,11 @@
     <style name="tv_card_bottom">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:fontFamily">@font/arial</item>
         <item name="android:textFontWeight">300</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0.05</item>
 
     </style>
 
