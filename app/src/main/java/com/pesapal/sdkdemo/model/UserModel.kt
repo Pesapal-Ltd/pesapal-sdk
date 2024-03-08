@@ -6,4 +6,5 @@ data class UserModel(
     var email: String? = "",
     var photoUrl: String? = "",
     var time: String? = "",
+    var phone: String? = "",
 )

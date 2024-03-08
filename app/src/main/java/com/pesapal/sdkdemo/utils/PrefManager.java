@@ -14,6 +14,11 @@ public class PrefManager {
     private static final String ACCOUNT = "ACCOUNT";
     private static final String IS_PRODUCTION = "IS_PRODUCTION";
     private static final String COUNTRY ="COUNTRY";
+    public static final String PREF_FIRST_NAME ="PREF_FIRST_NAME";
+    public static final String PREF_LAST_NAME ="PREF_LAST_NAME";
+    public static final String PREF_EMAIL ="PREF_EMAIL";
+    public static final String PREF_PHONE ="PREF_PHONE";
+
 
     public static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.getInstance()

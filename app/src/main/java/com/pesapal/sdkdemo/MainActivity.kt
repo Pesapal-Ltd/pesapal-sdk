@@ -70,16 +70,12 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun initData(){
-        setToolBar()
         getToken()
         initRecyclerData()
         handleClicks()
     }
 
-    private fun setToolBar(){
-        this.setSupportActionBar(binding.toolbar);
-        this.supportActionBar!!.title = getString(R.string.app_name)
-    }
+
 
     private fun getToken(){
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -153,7 +149,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             total += catelog.price
         }
         binding.totalPrice.text = currency+" ${total.setScale(2)}"
-        binding.tvOrderId.text = "Order ID $orderId"
+        binding.tvOrderId.text = orderId
     }
 
     private fun showMessage(message: String){

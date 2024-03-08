@@ -8,59 +8,33 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        app:titleTextColor="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civProfile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_height="?attr/actionBarSize"
-        >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_gravity="end"
-            android:layout_height="wrap_content">
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/user"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/blue_pesapal"/>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/civProfile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:src="@drawable/user"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/blue_pesapal"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.appcompat.widget.Toolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/header"
         android:background="@color/faded_blue"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="13dp"
         android:paddingVertical="16dp"
         android:paddingHorizontal="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/civProfile"
         >
 
 
-        <TextView
-            android:id="@+id/tvOrderId"
-            android:layout_width="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/totalPrice"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/black"
-            android:layout_height="wrap_content"
-            />
 
         <TextView
             android:id="@+id/label_pay"
@@ -68,7 +42,7 @@
             android:layout_height="wrap_content"
 
             android:fontFamily="@font/montserrat_light"
-            android:text="Order ID"
+            android:text="Order ID "
             android:textColor="@color/blue_pesapal_light"
             android:textSize="15sp"
             android:textFontWeight="400"
@@ -78,10 +52,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_merchant_name"
+            android:id="@+id/tvOrderId"
 
             android:fontFamily="@font/arial"
-            tools:text=" AC4E584E"
+            tools:text="AC4E584E"
 
             android:textColor="@color/blue_pesapal_light"
             android:textSize="15sp"

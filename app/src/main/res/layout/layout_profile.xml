@@ -105,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:hint="User Email"
+                android:hint="Phone number"
                 app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout.V3">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -124,6 +124,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif"
                     android:text="Test Currency"
                     android:layout_height="wrap_content"/>
 
@@ -137,7 +139,8 @@
             <View
                 android:layout_width="match_parent"
                 android:background="@color/faded_blue"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"/>
 
             <LinearLayout
                 android:layout_marginTop="10dp"
@@ -149,6 +152,8 @@
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:text="Test Country"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif"
                     android:layout_height="wrap_content"/>
 
                 <androidx.appcompat.widget.AppCompatSpinner
