@@ -83,7 +83,7 @@ internal class CardViewModel : ViewModel() {
             val result = cardRepository.submitCardRequest(submitCardRequest)
             when(result.status){
                 Status.ERROR -> {
-                    _submitCardResponse.postValue(Resource.error(result.message!!))
+                    _submitCardResponse.postValue(Resource.error(result.message!!, result.data))
                 }
                 Status.SUCCESS -> {
                     _submitCardResponse.postValue(Resource.success(result.data))

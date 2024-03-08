@@ -1,5 +1,6 @@
 package com.pesapal.sdk.fragment.card.repo
 
+import android.util.Log
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
@@ -35,7 +36,7 @@ internal class CardRepository {
                     if(error == ""){
                         error =  cardExpressCheckoutResponse.error?.code
                     }
-                    Resource.error(error!!)
+                    Resource.error(error!!, cardExpressCheckoutResponse)
                 }
             }catch (e: Exception){
                 Resource.error(RetrofitErrorUtil.serverException(e))
@@ -50,16 +51,17 @@ internal class CardRepository {
         return withContext(Dispatchers.IO){
             try{
                 val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(),processCardRequestV)
-                if(cardExpressCheckoutResponse.status == "200" && cardExpressCheckoutResponse.error == null) {
+                if(cardExpressCheckoutResponse.status == "200") {
                     Resource.success(cardExpressCheckoutResponse)
                 }else{
                     var error = cardExpressCheckoutResponse.error?.message
                     if(error == ""){
                         error =  cardExpressCheckoutResponse.error?.code
                     }
-                    Resource.error(error!!)
+                    Resource.error(error!!, cardExpressCheckoutResponse)
                 }
             }catch (e: Exception){
+                Log.e("Card" ,"Actual error " + e.localizedMessage)
                 Resource.error(RetrofitErrorUtil.serverException(e))
             }
         }

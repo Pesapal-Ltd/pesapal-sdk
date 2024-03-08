@@ -97,11 +97,12 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
         binding.layoutProfile.spinnerCountry.setSelection(countrySelected)
 
 
-        if(auth.currentUser != null){
-            fetchUserDetails()
-        }else{
-            binding.layoutProfile.btnSignout.visibility = View.GONE
-        }
+        // todo for internal app make it use fire auth
+//        if(auth.currentUser != null){
+//            fetchUserDetails()
+//        }else{
+//            binding.layoutProfile.btnSignout.visibility = View.GONE
+//        }
 
         binding.layoutProfile.toggle.isChecked = PrefManager.getIsProduction()
 
@@ -115,7 +116,7 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
     }
 
     private fun handleClick(){
-        binding.layoutProfile.btnSignout.setOnClickListener {
+        binding.layoutProfile.btnSubmit.setOnClickListener {
             if(auth.currentUser != null) {
                 googleSignInClient.signOut()
                 auth.signOut()
@@ -155,9 +156,9 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
         if(userModel.photoUrl != null) {
             Picasso.get().load(userModel.photoUrl).into(binding.layoutProfile.civProfile);
         }
-        binding.layoutProfile.tvUserName.text = ": "+userModel.firstName
-        binding.layoutProfile.tvLastName.text = ": "+userModel.lastName
-        binding.layoutProfile.tvEmail.text = ": "+userModel.email
+        binding.layoutProfile.tvUserName.setText(": "+userModel.firstName)
+        binding.layoutProfile.tvLastName.setText(": "+userModel.lastName)
+        binding.layoutProfile.tvEmail.setText(": "+userModel.email)
 
     }
 

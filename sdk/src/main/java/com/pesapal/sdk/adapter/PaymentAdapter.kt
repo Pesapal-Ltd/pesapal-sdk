@@ -333,6 +333,14 @@ internal class PaymentAdapter(
             etAddress.setText(billingAddress.zipCode)
             etPostal.setText(billingAddress.postalCode)
             etCity.setText(billingAddress.city)
+
+//            etFirstName.setText("Sam")
+//            etSurname.setText("nyam")
+//            etEmail.setText("samuel@pesapal.com")
+//            etPhoneNumber.setText("0703318241")
+//            etAddress.setText("nairobi")
+//            etPostal.setText("00100")
+//            etCity.setText("nairobi")
         }
 
         private fun checkFilled(){

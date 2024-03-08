@@ -346,19 +346,27 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     pDialog.show()
                 }
                 Status.SUCCESS -> {
-                    val result = it.data
-                    paymentDetails.order_tracking_id = result!!.orderTrackingId
-                    Log.e("Pm", "Order tracking network ${result.orderTrackingId}")
-                    Log.e("Pm", "Order tracking card ${paymentDetails.order_tracking_id}")
-                    submitCardRequest()
+                    val result = it.data!!
+                    when (result.statusCode) {
+                        2 -> {
+                            proceedToTransactionResultScreen(TransactionStatusResponse(createdDate = result.createdDate,
+                                paymentMethod = result.paymentMethod, currency = result.currency, amount = result.amount,
+                                confirmationCode = result.confirmationCode, merchantReference = result.merchantReference,
+                                paymentAccount = result.paymentAccount, orderTrackingId = result.orderTrackingId,status = result.status ), false)
+
+                        }
+                        else -> {
+                            paymentDetails.order_tracking_id = result.orderTrackingId
+                            Log.e("Pm", "Order tracking network ${result.orderTrackingId}")
+                            Log.e("Pm", "Order tracking card ${paymentDetails.order_tracking_id}")
+                            submitCardRequest()
+                        }
+                    }
                 }
                 Status.ERROR -> {
                     showMessage(it.message!!)
                     pDialog.dismiss()
-
-
-                    // TODO WAITING FOR JOB ERROR ENDPOINT CHANGES
-//                    proceedToTransactionResultScreen(TransactionStatusResponse())
+//                    handleBackgroundConfirmation()
 
 
                 }
@@ -377,6 +385,13 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 Status.ERROR -> {
                     showMessage(it.message!!)
                     pDialog.dismiss()
+                    checkCardPaymentStatus()
+
+//                    if(it.data != null)
+//                        proceedToTransactionResultScreen(it.data, false)
+//                    else
+//                        showMessage("Custom hard")
+
                 }
             }
         }
@@ -387,7 +402,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 }
                 Status.SUCCESS -> {
                     pDialog.dismiss()
-                    proceedToTransactionResultScreen(it.data!!, true)
+                    proceedToTransactionResultScreen(it.data!!, it.data.statusCode == 1)
                 }
                 Status.ERROR -> {
 //                    showMessage(it.message!!)
@@ -398,8 +413,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
             }
         }
-        // {"payment_method":"Visa","amount":0.0069,"created_date":"2024-03-07T13:51:47.26","confirmation_code":"7098087053346429504012","order_tracking_id":"bad60ecd-8e0f-4ba0-9fe0-dd80cf650847","payment_status_description":"Completed","description":"Transaction successfully processed.","message":"Request processed successfully","payment_account":"400000XXXXXX1091","call_back_url":"http://localhost:56522?OrderTrackingId=bad60ecd-8e0f-4ba0-9fe0-dd80cf650847&OrderMerchantReference=D9AED4CD","status_code":1,"merchant_reference":"D9AED4CD","payment_status_code":"","currency":"USD","error":{"error_type":null,"code":null,"message":null},"status":"200"}
-
     }
 
     private fun checkCardPaymentStatus(){

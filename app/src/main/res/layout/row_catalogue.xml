@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -10,12 +11,16 @@
     android:layout_marginBottom="5dp"
     app:cardCornerRadius="7dp"
     app:cardElevation="0dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        android:background="@color/white"
+        >
 
         <ImageView
             android:id="@+id/ivCatalogue"

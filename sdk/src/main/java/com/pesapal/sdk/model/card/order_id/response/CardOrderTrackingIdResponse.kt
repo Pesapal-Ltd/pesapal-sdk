@@ -18,4 +18,19 @@ internal data class CardOrderTrackingIdResponse(@SerializedName("payment_message
                                        @SerializedName("redirect_url")
                                val redirectUrl: String = "",
                                        @SerializedName("status")
-                               val status: String?)
+                               val status: String = "",
+                                                @SerializedName("payment_method")
+                                                val paymentMethod: String? = null,
+                                                @SerializedName("currency")
+                                                val currency: String? = null,
+                                                @SerializedName("created_date")
+                                                val createdDate: String = "",
+                                                @SerializedName("confirmation_code")
+                                                val confirmationCode: String? = null,
+                                                @SerializedName("amount")
+                                                val amount: Int = 0,
+                                                @SerializedName("status_code")
+                                                val statusCode: Int = 0,
+                                                @SerializedName("payment_account")
+                                                val paymentAccount: String? = null,
+)
