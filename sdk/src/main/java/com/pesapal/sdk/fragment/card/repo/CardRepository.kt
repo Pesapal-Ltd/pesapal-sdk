@@ -72,11 +72,12 @@ internal class CardRepository {
         return withContext(Dispatchers.IO){
             try{
                 val transactionStatus = apiService.checkCardPaymentStatus("Bearer "+ PrefManager.getToken(),orderTrackingId)
+                Log.e("Card", "Status ${transactionStatus.status} method ${transactionStatus.paymentMethod}")
                 if(transactionStatus.status != null && transactionStatus.status == "200") {
                     Resource.success(transactionStatus)
                 }else{
                     val error = transactionStatus.error?.message!!
-                    Resource.error(error)
+                    Resource.error(error, transactionStatus)
                 }
             }catch (e: Exception){
                 Resource.error(RetrofitErrorUtil.serverException(e))

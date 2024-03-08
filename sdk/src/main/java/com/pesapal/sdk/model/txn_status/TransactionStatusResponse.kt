@@ -3,7 +3,7 @@ package com.pesapal.sdk.model.txn_status
 import com.google.gson.annotations.SerializedName
 
 data class TransactionStatusResponse(@SerializedName("amount")
-                                     val amount: Int = 0,
+                                     val amount: Double = 0.0000,
                                      @SerializedName("status_code")
                                      val statusCode: Int = 0,
                                      @SerializedName("confirmation_code")

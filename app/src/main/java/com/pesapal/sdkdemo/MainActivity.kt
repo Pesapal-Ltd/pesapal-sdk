@@ -232,14 +232,15 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
 
         val displayName = ""
-        val firstName = ""
-        val lastName = ""
-        val email = ""
+        val firstName   = PrefManager.getString(PrefManager.PREF_FIRST_NAME, "")
+        val lastName    = PrefManager.getString(PrefManager.PREF_LAST_NAME, "")
+        val email       = PrefManager.getString(PrefManager.PREF_EMAIL, "")
+        val phone       = PrefManager.getString(PrefManager.PREF_PHONE, "")
 
 
         val photoUrl: String? = null
         val time: String? = null
-        userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
+        userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time,phone)
 
         initPayment()
 

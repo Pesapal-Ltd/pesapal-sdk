@@ -102,7 +102,7 @@ internal class CardViewModel : ViewModel() {
             val result = cardRepository.getCardTransactionStatus(trackingId)
             when(result.status){
                 Status.ERROR -> {
-                    _cardPaymentStatus.postValue(Resource.error(result.message!!, result.data!!))
+                    _cardPaymentStatus.postValue(Resource.error(result.message!!, result.data))
                 }
                 Status.SUCCESS -> {
                     _cardPaymentStatus.postValue(Resource.success(result.data))

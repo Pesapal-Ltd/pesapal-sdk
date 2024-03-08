@@ -350,7 +350,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     when (result.statusCode) {
                         2 -> {
                             proceedToTransactionResultScreen(TransactionStatusResponse(createdDate = result.createdDate,
-                                paymentMethod = result.paymentMethod, currency = result.currency, amount = result.amount,
+                                paymentMethod = result.paymentMethod, currency = result.currency, amount = result.amount.toDouble(),
                                 confirmationCode = result.confirmationCode, merchantReference = result.merchantReference,
                                 paymentAccount = result.paymentAccount, orderTrackingId = result.orderTrackingId,status = result.status ), false)
 
@@ -407,6 +407,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 Status.ERROR -> {
 //                    showMessage(it.message!!)
                     pDialog.dismiss()
+                    Log.e("Pm" ,"Data " + (it.data == null))
 
                     proceedToTransactionResultScreen(it.data!!, false)
                 }

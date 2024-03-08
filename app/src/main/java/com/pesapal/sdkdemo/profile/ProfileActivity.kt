@@ -23,6 +23,7 @@ import com.pesapal.sdkdemo.utils.PrefManager.PREF_EMAIL
 import com.pesapal.sdkdemo.utils.PrefManager.PREF_FIRST_NAME
 import com.pesapal.sdkdemo.utils.PrefManager.PREF_LAST_NAME
 import com.pesapal.sdkdemo.utils.PrefManager.PREF_PHONE
+import com.pesapal.sdkdemo.utils.PrefUtil
 import com.pesapal.sdkdemo.utils.PrefUtil.countriesList
 import com.pesapal.sdkdemo.utils.PrefUtil.keotherCurrency
 import com.pesapal.sdkdemo.utils.PrefUtil.tzotherCurrency
@@ -94,7 +95,7 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
         val currencySelected: Int = currencyAdapter.getPosition(PrefManager.getCurrency())
         val countrySelected: Int = adCountry.getPosition(default)
 
-        Log.e("Prof", "Country selected is $countrySelected")
+        Log.e("Prof", "Setting selected is $countrySelected")
         spinnerCurrency.setSelection(currencySelected)
         spinnerCountry.setSelection(countrySelected)
 
@@ -117,7 +118,11 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
             PrefManager.putString(PREF_LAST_NAME, lastNameEt.text.toString())
             PrefManager.putString(PREF_EMAIL, emailEt.text.toString())
             PrefManager.putString(PREF_PHONE, phoneEt.text.toString())
-            PrefManager.setCountry(countriesList[spinnerCountry.selectedItemPosition])
+            Log.e("PROF","Setting Select pos " + spinnerCountry.selectedItemPosition)
+            Log.e("PROF","Setting country " + countriesList[spinnerCountry.selectedItemPosition])
+            PrefUtil.setData(spinnerCountry.selectedItemPosition)
+
+//            PrefManager.setCountry(countriesList[spinnerCountry.selectedItemPosition])
 
             restart()
         }
