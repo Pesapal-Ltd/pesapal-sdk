@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -272,10 +273,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                         pDialog.dismiss()
                     }
                     val checkStatus = it.data!!
-//                    proceedToTransactionResultScreen(checkStatus, true)
                     val success = (checkStatus.statusCode == 1)
-
-//                    val transactionStatusResponse = TransactionStatusResponse(confirmationCode = mobileMoneyResponse.status)
                     proceedToTransactionResultScreen(checkStatus, success)
                 }
                 Status.ERROR -> {
@@ -350,16 +348,21 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 Status.SUCCESS -> {
                     val result = it.data
                     paymentDetails.order_tracking_id = result!!.orderTrackingId
+                    Log.e("Pm", "Order tracking network ${result.orderTrackingId}")
+                    Log.e("Pm", "Order tracking card ${paymentDetails.order_tracking_id}")
                     submitCardRequest()
                 }
                 Status.ERROR -> {
                     showMessage(it.message!!)
                     pDialog.dismiss()
+
+
+                    // TODO WAITING FOR JOB ERROR ENDPOINT CHANGES
+//                    proceedToTransactionResultScreen(TransactionStatusResponse())
+
+
                 }
 
-                else -> {
-                    pDialog.dismiss()
-                }
             }
         }
 
@@ -387,7 +390,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     proceedToTransactionResultScreen(it.data!!, true)
                 }
                 Status.ERROR -> {
-                    showMessage(it.message!!)
+//                    showMessage(it.message!!)
                     pDialog.dismiss()
 
                     proceedToTransactionResultScreen(it.data!!, false)
@@ -395,83 +398,8 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
             }
         }
+        // {"payment_method":"Visa","amount":0.0069,"created_date":"2024-03-07T13:51:47.26","confirmation_code":"7098087053346429504012","order_tracking_id":"bad60ecd-8e0f-4ba0-9fe0-dd80cf650847","payment_status_description":"Completed","description":"Transaction successfully processed.","message":"Request processed successfully","payment_account":"400000XXXXXX1091","call_back_url":"http://localhost:56522?OrderTrackingId=bad60ecd-8e0f-4ba0-9fe0-dd80cf650847&OrderMerchantReference=D9AED4CD","status_code":1,"merchant_reference":"D9AED4CD","payment_status_code":"","currency":"USD","error":{"error_type":null,"code":null,"message":null},"status":"200"}
 
-//        cardViewModel.serverJwt.observe(requireActivity()){
-//            when (it.status) {
-//                Status.LOADING -> {
-//                    pDialog = ProgressDialog(requireContext())
-//                    pDialog.setMessage(it.message)
-//                    pDialog.show()
-//                }
-//                Status.SUCCESS -> {
-//                    responseServerJwt = it.data
-//                    initSdk(responseServerJwt!!.orderJwt)
-//                }
-//                Status.ERROR -> {
-//                    showMessage(it.message!!)
-//                    pDialog.dismiss()
-//                }
-//                else -> {
-//                    Log.e(" else ", " ====> auth")
-//                }
-//            }
-//        }
-//
-//        cardViewModel.dsToken.observe(requireActivity()){
-//            when (it.status) {
-//                Status.LOADING -> {
-//
-//                }
-//                Status.SUCCESS -> {
-//                    val token = it.data!!.token
-//                    get3dsPayload(token);
-//                }
-//                Status.ERROR -> {
-//
-//                }
-//                else -> {
-//
-//                }
-//            }
-//        }
-//
-//        cardViewModel.dsResponse.observe(requireActivity()){
-//            when (it.status) {
-//                Status.LOADING -> {
-//                }
-//                Status.SUCCESS -> {
-//                    var response = it.data
-//                    val gson = Gson()
-//
-//                    var responseString = gson.toJson(response)
-//                    Log.e(" responseString ", responseString)
-//
-//                    var payAcsUrlload = response?.acsUrl
-//                    var payload = response?.payload
-//
-//                    if(!response!!.authenticationTransactionId.isNullOrEmpty() && !payload.isNullOrEmpty() && payAcsUrlload!= null) {
-//                        if (response.reasonCode == "475")
-//                            handle3dSecure(
-//                                response.authenticationTransactionId!!,
-//                                payload,
-//                                payAcsUrlload
-//                            )
-//                        else
-//                        {
-//                            Toast.makeText(requireContext(),"Go normal route without 3ds", Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//
-//                    else
-//                        Toast.makeText(requireContext(),"Unable to complete. Err 600", Toast.LENGTH_LONG).show()
-//                }
-//                Status.ERROR -> {
-//                }
-//                else -> {
-//                    Log.e(" else ", " ====> auth")
-//                }
-//            }
-//        }
     }
 
     private fun checkCardPaymentStatus(){

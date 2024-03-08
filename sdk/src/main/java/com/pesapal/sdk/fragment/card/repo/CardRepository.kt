@@ -27,7 +27,8 @@ internal class CardRepository {
         return withContext(Dispatchers.IO){
             try{
                 val cardExpressCheckoutResponse = apiService.generateCardOrderTrackingId("Bearer "+ PrefManager.getToken(),cardOrderTrackingIdRequest)
-                if(cardExpressCheckoutResponse.status != null && (cardExpressCheckoutResponse.status == "200" || cardExpressCheckoutResponse.status =="500")) {
+//                if(cardExpressCheckoutResponse.status != null && (cardExpressCheckoutResponse.status == "200" || cardExpressCheckoutResponse.status =="500")) {
+                if(cardExpressCheckoutResponse.status != null && (cardExpressCheckoutResponse.status == "200" )) {
                     Resource.success(cardExpressCheckoutResponse)
                 }else{
                     var error = cardExpressCheckoutResponse.error?.message

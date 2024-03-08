@@ -74,9 +74,9 @@ class MpesaSuccessFragment : Fragment() {
             returnPaymentStatus()
         }
 
-        binding.imageViewCopy.setOnClickListener {
-            setClipboard(requireContext(),transactionStatusResponse.confirmationCode!!)
-        }
+//        binding.imageViewCopy.setOnClickListener {
+//            setClipboard(requireContext(),transactionStatusResponse.confirmationCode!!)
+//        }
 
     }
 
