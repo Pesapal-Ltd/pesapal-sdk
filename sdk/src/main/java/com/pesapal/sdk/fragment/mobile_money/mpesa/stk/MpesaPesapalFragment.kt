@@ -125,7 +125,7 @@ class MpesaPesapalFragment : Fragment() {
             description = "Express Order",
             callbackUrl = paymentDetails.callbackUrl!!,
             cancellationUrl = "",
-            notificationId = PrefManager.getIpnId(),
+            notificationId = PrefManager.getIpnId(requireContext()),
             language = "",
             termsAndConditionsId = "",
             billingAddress = billingAddress,

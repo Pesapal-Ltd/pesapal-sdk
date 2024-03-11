@@ -55,7 +55,7 @@ class AuthFragment : Fragment() {
     }
 
     private fun initData(){
-        PrefManager.setToken(null)
+        PrefManager.setToken(requireContext(), null)
         val authRequestModel = AuthRequestModel(paymentDetails.consumer_key,paymentDetails.consumer_secret)
         Handler(Looper.getMainLooper()).postDelayed({
             viewModel.authPayment(authRequestModel)
@@ -71,7 +71,7 @@ class AuthFragment : Fragment() {
                 Status.SUCCESS -> {
                     binding.loader.visibility = View.GONE
                     val token = it.data?.token
-                    PrefManager.setToken(token)
+                    PrefManager.setToken(requireContext(),token)
                     registerIpn()
                 }
                 Status.ERROR -> {
@@ -86,7 +86,7 @@ class AuthFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     val ipnId = it.data?.ipn_id
-                    PrefManager.setIpnId(ipnId)
+                    PrefManager.setIpnId(requireContext(),ipnId)
                     viewModel.retrieveAccountInfo(AccountInfoRequest(paymentDetails.consumer_key,paymentDetails.consumer_secret))
                 }
 
@@ -135,24 +135,24 @@ class AuthFragment : Fragment() {
             var ipnUrl: String? = null
             var accountNumber: String? = null
             var callbackUrl: String? = null
-            if (PrefManager.getString(PrefManager.con_key) != null) {
-                consumerKey = PrefManager.getString(PrefManager.con_key)!!
+            if (PrefManager.getString(requireContext(), PrefManager.con_key) != null) {
+                consumerKey = PrefManager.getString(requireContext(), PrefManager.con_key)!!
             }
 
-            if (PrefManager.getString(PrefManager.con_sec) != null) {
-                consumerSecret = PrefManager.getString(PrefManager.con_sec)!!
+            if (PrefManager.getString(requireContext(), PrefManager.con_sec) != null) {
+                consumerSecret = PrefManager.getString(requireContext(), PrefManager.con_sec)!!
             }
 
-            if (PrefManager.getString(PrefManager.acc_num) != null) {
-                accountNumber = PrefManager.getString(PrefManager.acc_num)!!
+            if (PrefManager.getString(requireContext(), PrefManager.acc_num) != null) {
+                accountNumber = PrefManager.getString(requireContext(), PrefManager.acc_num)!!
             }
 
-            if (PrefManager.getString(PrefManager.call_url) != null) {
-                callbackUrl = PrefManager.getString(PrefManager.call_url)!!
+            if (PrefManager.getString(requireContext(), PrefManager.call_url) != null) {
+                callbackUrl = PrefManager.getString(requireContext(), PrefManager.call_url)!!
             }
 
-            if (PrefManager.getString(PrefManager.ipn_url) != null) {
-                ipnUrl = PrefManager.getString(PrefManager.ipn_url)!!
+            if (PrefManager.getString(requireContext(), PrefManager.ipn_url) != null) {
+                ipnUrl = PrefManager.getString(requireContext(), PrefManager.ipn_url)!!
             }
 
 

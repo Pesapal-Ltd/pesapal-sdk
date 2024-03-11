@@ -22,4 +22,7 @@ internal data class SubmitCardRequest(@SerializedName("cvv")
                              @SerializedName("cardNumber")
                                val cardNumber: String = "",
                              @SerializedName("tokenize_card")
-                               val tokenizeCard: Boolean = false)
+                               val tokenizeCard: Boolean = false,
+                              @SerializedName("device_id")
+                              val deviceId: String,
+    )

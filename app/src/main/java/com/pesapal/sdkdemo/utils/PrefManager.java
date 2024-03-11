@@ -21,8 +21,7 @@ public class PrefManager {
 
 
     public static SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(Sdkapp.getInstance()
-                .getApplicationContext());
+        return PreferenceManager.getDefaultSharedPreferences(Sdkapp.getInstance());
     }
 
     public static int getInt(String preferenceKey, int preferenceDefaultValue) {

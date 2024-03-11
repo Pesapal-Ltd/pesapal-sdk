@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.pesapal.sdk.R
+import com.pesapal.sdk.Sdkapp
 import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
@@ -92,7 +93,7 @@ class MainPesapalFragment: Fragment() {
      * If the application is in demo show text view indicating so
      */
     private fun demoViewInform(){
-        val isLive = PrefManager.getBoolean(PrefManager.PREF_IS_URL_LIVE, true)
+        val isLive = PrefManager.getBoolean(Sdkapp.getInstance(), PrefManager.PREF_IS_URL_LIVE, true)
         binding.tvDemoVersion.isVisible =  !isLive
     }
 

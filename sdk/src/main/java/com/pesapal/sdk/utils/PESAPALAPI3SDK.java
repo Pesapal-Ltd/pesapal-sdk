@@ -1,5 +1,7 @@
 package com.pesapal.sdk.utils;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,13 +28,13 @@ public class PESAPALAPI3SDK {
     }
 
 
-    public void init(String consumerkey, String consumersecret,String accountNumber, String callbackUrl, String ipnUrl, boolean isLive){
-        PrefManager.putStringEncrypted(PrefManager.con_key, consumerkey);
-        PrefManager.putStringEncrypted(PrefManager.con_sec, consumersecret);
-        PrefManager.putStringEncrypted(PrefManager.acc_num, accountNumber);
-        PrefManager.putStringEncrypted(PrefManager.call_url, callbackUrl);
-        PrefManager.putStringEncrypted(PrefManager.ipn_url, ipnUrl);
-        PrefManager.putBoolean(PrefManager.PREF_IS_URL_LIVE, isLive);
+    public void init(Context context, String consumerkey, String consumersecret, String accountNumber, String callbackUrl, String ipnUrl, boolean isLive){
+        PrefManager.putStringEncrypted(context, PrefManager.con_key, consumerkey);
+        PrefManager.putStringEncrypted(context, PrefManager.con_sec, consumersecret);
+        PrefManager.putStringEncrypted(context, PrefManager.acc_num, accountNumber);
+        PrefManager.putStringEncrypted(context, PrefManager.call_url, callbackUrl);
+        PrefManager.putStringEncrypted(context, PrefManager.ipn_url, ipnUrl);
+        PrefManager.putBoolean(context, PrefManager.PREF_IS_URL_LIVE, isLive);
     }
 }
 

@@ -1,5 +1,6 @@
 package com.pesapal.sdk.utils;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.security.keystore.KeyGenParameterSpec;
@@ -27,52 +28,44 @@ public class PrefManager {
     public static String PREF_IS_URL_LIVE = "021b44e3-33c3-4781-a29a-6637c4ccb10e";
 
 
-    public static SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(Sdkapp.getInstance()
-                .getApplicationContext());
+    public static SharedPreferences getPreferences(Context context) {
+//        return PreferenceManager.getDefaultSharedPreferences(Sdkapp.getInstance()
+//                .getApplicationContext());
+        return getEncryptedPref(context);
     }
 
-    public static int getInt(String preferenceKey, int preferenceDefaultValue) {
-        return getPreferences().getInt(preferenceKey, preferenceDefaultValue);
+    public static boolean getBoolean(Context context, String preferenceKey, boolean preferenceDefaultValue) {
+        return getPreferences(context).getBoolean(preferenceKey, preferenceDefaultValue);
     }
 
-
-    public static void putInt(String preferenceKey, int preferenceValue) {
-        getPreferences().edit().putInt(preferenceKey, preferenceValue).apply();
+    public static void putBoolean(Context context, String preferenceKey, boolean preferenceValue) {
+        getPreferences(context).edit().putBoolean(preferenceKey, preferenceValue).apply();
     }
 
-    public static boolean getBoolean(String preferenceKey, boolean preferenceDefaultValue) {
-        return getPreferences().getBoolean(preferenceKey, preferenceDefaultValue);
+    public static String getString(Context context, String preferenceKey, String preferenceDefaultValue) {
+        return getPreferences(context).getString(preferenceKey, preferenceDefaultValue);
     }
 
-    public static void putBoolean(String preferenceKey, boolean preferenceValue) {
-        getPreferences().edit().putBoolean(preferenceKey, preferenceValue).apply();
-    }
-
-    public static String getString(String preferenceKey, String preferenceDefaultValue) {
-        return getPreferences().getString(preferenceKey, preferenceDefaultValue);
-    }
-
-    public static void putString(String preferenceKey, String preferenceValue) {
-        getPreferences().edit().putString(preferenceKey, preferenceValue).apply();
+    public static void putString(Context context, String preferenceKey, String preferenceValue) {
+        getPreferences(context).edit().putString(preferenceKey, preferenceValue).apply();
     }
 
 
-    public static void setToken(String token){
-        putString(TOKEN,token);
+    public static void setToken(Context context, String token){
+        putString(context, TOKEN,token);
     }
 
-    public static String getToken(){
-        return getString(TOKEN,null);
+    public static String getToken(Context context){
+        return getString(context, TOKEN,null);
     }
 
 
-    public static void setIpnId(String ipnId){
-        putString(IPN_ID,ipnId);
+    public static void setIpnId(Context context, String ipnId){
+        putString(context, IPN_ID,ipnId);
     }
 
-    public static String getIpnId(){
-        return getString(IPN_ID,null);
+    public static String getIpnId(Context context){
+        return getString(context, IPN_ID,null);
     }
 
 
@@ -81,7 +74,7 @@ public class PrefManager {
     /**
      * Returns Encrypted shared preference
      */
-    private static SharedPreferences getEncryptedPref(){
+    private static SharedPreferences getEncryptedPref(Context context){
         SharedPreferences sharedPreferences = null;
          try {
             KeyGenParameterSpec keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC;
@@ -90,7 +83,8 @@ public class PrefManager {
             sharedPreferences = EncryptedSharedPreferences.create(
                     PrefManager.MAP_PREF,
                     masterKeyAlias,
-                    Sdkapp.getInstance(),
+//                    Sdkapp.getInstance(),
+                    context,
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );
@@ -106,18 +100,18 @@ public class PrefManager {
     /**
      * Save sensitive credentials
      */
-    public static void putStringEncrypted(String preferenceName, String prefData){
-        SharedPreferences encryptedSharedPreferences = getEncryptedPref();
+    public static void putStringEncrypted(Context context, String preferenceName, String prefData){
+        SharedPreferences encryptedSharedPreferences = getEncryptedPref(context);
         if(encryptedSharedPreferences !=  null){
-            encryptedSharedPreferences .edit().putString(preferenceName, prefData).apply();
+            encryptedSharedPreferences.edit().putString(preferenceName, prefData).apply();
         }
     }
 
     /**
      * Used to retrieve string from Encrypted Preferences
      */
-    public static String getString(String preferenceName){
-        SharedPreferences encryptedSharedPreferences = getEncryptedPref();
+    public static String getString(Context context,String preferenceName){
+        SharedPreferences encryptedSharedPreferences = getEncryptedPref(context);
         if(encryptedSharedPreferences == null)
             return null;
         String data = encryptedSharedPreferences.getString(preferenceName, null);

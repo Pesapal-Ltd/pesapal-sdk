@@ -74,24 +74,24 @@ class PesapalPayActivity : AppCompatActivity() {
             var ipnUrl: String? = null
             var accountNumber: String? = null
             var callbackUrl: String? = null
-            if (PrefManager.getString(PrefManager.con_key) != null) {
-                consumerKey = PrefManager.getString(PrefManager.con_key)!!
+            if (PrefManager.getString(this, PrefManager.con_key) != null) {
+                consumerKey = PrefManager.getString(this, PrefManager.con_key)!!
             }
 
-            if (PrefManager.getString(PrefManager.con_sec) != null) {
-                consumerSecret = PrefManager.getString(PrefManager.con_sec)!!
+            if (PrefManager.getString(this, PrefManager.con_sec) != null) {
+                consumerSecret = PrefManager.getString(this, PrefManager.con_sec)!!
             }
 
-            if (PrefManager.getString(PrefManager.acc_num) != null) {
-                accountNumber = PrefManager.getString(PrefManager.acc_num)!!
+            if (PrefManager.getString(this, PrefManager.acc_num) != null) {
+                accountNumber = PrefManager.getString(this, PrefManager.acc_num)!!
             }
 
-            if (PrefManager.getString(PrefManager.call_url) != null) {
-                callbackUrl = PrefManager.getString(PrefManager.call_url)!!
+            if (PrefManager.getString(this, PrefManager.call_url) != null) {
+                callbackUrl = PrefManager.getString(this, PrefManager.call_url)!!
             }
 
-            if (PrefManager.getString(PrefManager.ipn_url) != null) {
-                ipnUrl = PrefManager.getString(PrefManager.ipn_url)!!
+            if (PrefManager.getString(this, PrefManager.ipn_url) != null) {
+                ipnUrl = PrefManager.getString(this, PrefManager.ipn_url)!!
             }
 
 
@@ -197,7 +197,7 @@ class PesapalPayActivity : AppCompatActivity() {
             when (it.status) {
                 com.pesapal.sdk.utils.Status.SUCCESS -> {
                     val token = it.data?.token
-                    com.pesapal.sdk.utils.PrefManager.setToken(token)
+                    PrefManager.setToken(this, token)
                     registerIpn()
                 }
                 com.pesapal.sdk.utils.Status.ERROR -> {
@@ -213,7 +213,7 @@ class PesapalPayActivity : AppCompatActivity() {
             when (it.status) {
                 com.pesapal.sdk.utils.Status.SUCCESS -> {
                     val ipnId = it.data?.ipn_id
-                    PrefManager.setIpnId(ipnId)
+                    PrefManager.setIpnId(this, ipnId)
                     Log.e(" ipnId "," ==> " +ipnId);
                     viewModel.loadFragment("choose")
                 }

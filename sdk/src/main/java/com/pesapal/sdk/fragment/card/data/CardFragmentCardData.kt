@@ -185,7 +185,7 @@ class CardFragmentCardData : Fragment() {
             description = "Express Order",
             callbackUrl = paymentDetails.callbackUrl!!,
             cancellationUrl = "",
-            notificationId = com.pesapal.sdk.utils.PrefManager.getIpnId(),
+            notificationId = com.pesapal.sdk.utils.PrefManager.getIpnId(requireContext()),
             language = "",
             termsAndConditionsId = "",
             billingAddress = billingAddress,
@@ -242,7 +242,8 @@ class CardFragmentCardData : Fragment() {
             billingAddress = billingAddress,
             expiryYear = cardDetails.year.toString(),
             ipAddress = "1",
-            cardNumber = cardDetails.cardNumber
+            cardNumber = cardDetails.cardNumber,
+            deviceId = "TODO"
         )
 
         viewModel.submitCardRequest(submitCardRequest)

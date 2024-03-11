@@ -1,7 +1,9 @@
 package com.pesapal.sdk.data.api
 
+import android.content.Context
 import com.pesapal.sdk.BuildConfig
 import com.pesapal.sdk.Configs
+import com.pesapal.sdk.Sdkapp
 import com.pesapal.sdk.data.services.ApiServices
 import com.pesapal.sdk.utils.PrefManager
 import okhttp3.OkHttpClient
@@ -14,7 +16,7 @@ object ApiClient {
     private val retrofit: Retrofit
         get() {
             return Retrofit.Builder()
-                .baseUrl(getBaseUrl())
+                .baseUrl(getBaseUrl(Sdkapp.getInstance()))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(getOkHttpClient())
                 .build()
@@ -38,8 +40,8 @@ object ApiClient {
         return builder.build()
     }
 
-    private fun getBaseUrl(): String{
-        val isLive = PrefManager.getBoolean(PrefManager.PREF_IS_URL_LIVE, true)
+    private fun getBaseUrl(context: Context): String{
+        val isLive = PrefManager.getBoolean(context, PrefManager.PREF_IS_URL_LIVE, true)
         return if(isLive)
             Configs.BASE_URL_LIVE
         else

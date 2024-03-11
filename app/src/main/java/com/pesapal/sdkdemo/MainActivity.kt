@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             PrefUtil.setData(0)
         }
         com.pesapal.sdk.utils.PESAPALAPI3SDK().init(
+            this,
             PrefManager.getConsumerKey(),
             PrefManager.getConsumerSecret(),
             PrefManager.getAccount(),

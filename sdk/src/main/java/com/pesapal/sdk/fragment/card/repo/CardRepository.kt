@@ -4,6 +4,7 @@ import android.util.Log
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
+import com.pesapal.sdk.Sdkapp
 import com.pesapal.sdk.data.api.ApiClient
 import com.pesapal.sdk.model.auth.AuthResponseModel
 import com.pesapal.sdk.model.card.CardinalRequest
@@ -27,7 +28,8 @@ internal class CardRepository {
     suspend fun generateCardOrderTrackingId(cardOrderTrackingIdRequest: CardOrderTrackingIdRequest): Resource<CardOrderTrackingIdResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val cardExpressCheckoutResponse = apiService.generateCardOrderTrackingId("Bearer "+ PrefManager.getToken(),cardOrderTrackingIdRequest)
+                val cardExpressCheckoutResponse = apiService.generateCardOrderTrackingId("Bearer "+ PrefManager.getToken(
+                    Sdkapp.getInstance()),cardOrderTrackingIdRequest)
 //                if(cardExpressCheckoutResponse.status != null && (cardExpressCheckoutResponse.status == "200" || cardExpressCheckoutResponse.status =="500")) {
                 if(cardExpressCheckoutResponse.status != null && (cardExpressCheckoutResponse.status == "200" )) {
                     Resource.success(cardExpressCheckoutResponse)
@@ -50,7 +52,7 @@ internal class CardRepository {
     suspend fun submitCardRequest(processCardRequestV: SubmitCardRequest): Resource<SubmitCardResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(),processCardRequestV)
+                val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(Sdkapp.getInstance()),processCardRequestV)
                 if(cardExpressCheckoutResponse.status == "200") {
                     Resource.success(cardExpressCheckoutResponse)
                 }else{
@@ -71,7 +73,7 @@ internal class CardRepository {
     suspend fun getCardTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val transactionStatus = apiService.checkCardPaymentStatus("Bearer "+ PrefManager.getToken(),orderTrackingId)
+                val transactionStatus = apiService.checkCardPaymentStatus("Bearer "+ PrefManager.getToken(Sdkapp.getInstance()),orderTrackingId)
                 Log.e("Card", "Status ${transactionStatus.status} method ${transactionStatus.paymentMethod}")
                 if(transactionStatus.status != null && transactionStatus.status == "200") {
                     Resource.success(transactionStatus)
@@ -89,7 +91,7 @@ internal class CardRepository {
     suspend fun getCardinalToken(cardRequest: CardinalRequest): Resource<CardinalResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val transactionStatus = apiService.signCardinal("Bearer "+ PrefManager.getToken(),cardRequest)
+                val transactionStatus = apiService.signCardinal("Bearer "+ PrefManager.getToken(Sdkapp.getInstance()),cardRequest)
                 if(transactionStatus.status != null && transactionStatus.status == "200") {
                     Resource.success(transactionStatus)
                 }else{
@@ -108,7 +110,7 @@ internal class CardRepository {
 
         return withContext(Dispatchers.IO){
             try{
-                val serverJwt = apiService.getServerJwt("Bearer "+ PrefManager.getToken(),requestServerJwt)
+                val serverJwt = apiService.getServerJwt("Bearer "+ PrefManager.getToken(Sdkapp.getInstance()),requestServerJwt)
                 if(serverJwt.status == "200"){
                     Resource.success(serverJwt)
                 }else{

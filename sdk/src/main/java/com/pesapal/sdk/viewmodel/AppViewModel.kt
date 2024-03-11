@@ -6,13 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnResponse
-import com.pesapal.sdk.model.auth.AuthRequestModel
 import com.pesapal.sdk.model.auth.AuthResponseModel
-import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
 import com.pesapal.sdk.model.card.BillingAddress
-import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
-import com.pesapal.sdk.model.card.order_id.response.CardOrderTrackingIdResponse
-import com.pesapal.sdk.model.card.submit.response.SubmitCardResponse
 import com.pesapal.sdk.model.txn_status.TransactionError
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.mobile_money.MobileMoneyResponse

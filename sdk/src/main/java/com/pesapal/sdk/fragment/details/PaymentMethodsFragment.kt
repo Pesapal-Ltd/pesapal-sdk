@@ -129,7 +129,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
      * If the application is in demo show text view indicating so
      */
     private fun demoViewInform(){
-        val isLive = PrefManager.getBoolean(PrefManager.PREF_IS_URL_LIVE, true)
+        val isLive = PrefManager.getBoolean(requireContext(), PrefManager.PREF_IS_URL_LIVE, true)
         binding.tvDemoVersion.isVisible =  !isLive
     }
 
@@ -207,7 +207,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             description = "Express Order",
             callbackUrl = paymentDetails.callbackUrl!!,
             cancellationUrl = "",
-            notificationId = PrefManager.getIpnId(),
+            notificationId = PrefManager.getIpnId(requireContext()),
             language = "",
             termsAndConditionsId = "",
             billingAddress = billingAddress,
@@ -462,7 +462,8 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             expiryYear = cardDetails.year.toString(),
             ipAddress = "1",
             cardNumber = cardDetails.cardNumber,
-            tokenizeCard = tokenize
+            tokenizeCard = tokenize,
+            deviceId = "TODO"
         )
 //{
 //  "order_tracking_id": "33578938-582a-4044-a199-dd8c23567740",
@@ -609,7 +610,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             description = "Express Order",
             callbackUrl = paymentDetails.callbackUrl!!,
             cancellationUrl = "",
-            notificationId = PrefManager.getIpnId(),
+            notificationId = PrefManager.getIpnId(requireContext()),
             language = "",
             termsAndConditionsId = "",
             billingAddress = billingAddress,

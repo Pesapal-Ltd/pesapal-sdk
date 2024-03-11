@@ -1,5 +1,6 @@
 package com.pesapal.sdk.fragment.auth
 
+import com.pesapal.sdk.Sdkapp
 import com.pesapal.sdk.data.api.ApiClient
 import com.pesapal.sdk.model.accountinfo.AccountInfoRequest
 import com.pesapal.sdk.model.accountinfo.AccountInfoResponse
@@ -42,7 +43,8 @@ internal class AuthRepository {
     suspend fun registerApi(registerIpnRequest: RegisterIpnRequest): Resource<RegisterIpnResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val registerIpn = apiService.registerIpn("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(),registerIpnRequest)
+                val registerIpn = apiService.registerIpn("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(
+                    Sdkapp.getInstance()),registerIpnRequest)
                 if(registerIpn.status != null && registerIpn.status == "200") {
                     Resource.success(registerIpn)
                 }else{
