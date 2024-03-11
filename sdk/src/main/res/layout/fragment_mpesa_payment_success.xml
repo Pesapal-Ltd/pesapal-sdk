@@ -386,7 +386,7 @@
                 android:layout_marginTop="17dp"
                 android:background="@color/grey_more_faded"
                 android:text="@string/exit"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline3"
                 app:layout_constraintTop_toBottomOf="@id/constraint_merchant_info"

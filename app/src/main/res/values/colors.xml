@@ -1,15 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blue_pesapal">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+<!--    <color name="blue_pesapal">#FFBB86FC</color>-->
+<!--    <color name="purple_500">#FF6200EE</color>-->
+<!--    <color name="purple_700">#FF3700B3</color>-->
+<!--    <color name="teal_200">#FF03DAC5</color>-->
+<!--    <color name="teal_700">#FF018786</color>-->
+<!--    <color name="black">#FF000000</color>-->
+<!--    <color name="white">#FFFFFFFF</color>-->
     <color name="gray">#C7C4C4</color>
     <color name="light_gray">#FAFAFA</color>
     <color name="accentColor">#FFF44336</color>
     <color name="rvBg">#EDF4EE</color>
+    <color name="colorPrimary">#121415</color>
+    <color name="colorPrimaryDark">#3c5866</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorAccent">#eadfcc</color>
+
+
+    <color name="black">#FF000000</color>
+    <color name="black_faded">#333</color>
+    <color name="blue_faded">#F8FAFC</color>
+    <color name="blue_pesapal">#1751AD</color>
+    <color name="blue_pesapal_light">#16659E</color>
+    <color name="colorBackgroundInactive">#E0E0E0</color>
+    <color name="colorGreyOutline">#949494</color>
+    <color name="colorGreyText">#666666</color>
+    <color name="colorPrimaryAltLight">#1E61A7</color>
+    <color name="dark_faded_bg">#F6F8FB</color>
+    <color name="faded_blue">#E1EAFA</color>
+    <color name="grey_alt">#F5F5F5</color>
+    <color name="grey_bg">#F8F8F8</color>
+    <color name="grey_div">#C7C7C7</color>
+    <color name="grey_hint">#D9D9D9</color>
+    <color name="grey_light">#F6F9FB</color>
+    <color name="grey_more_faded">#EFEFEF</color>
+    <color name="light_gray_color">#efefef</color>
+    <color name="pesapal_red">#A81414</color>
+    <color name="pesapal_red_faded">#FFF1F1</color>
+    <color name="purple_100">#3A7BE1</color>
+    <color name="purple_500">#1751AD</color>
+    <color name="purple_700">#0A3A86</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="txn_success">#2F9A2B</color>
+    <color name="un_selected_color_primary">#76A0E2</color>
+    <color name="white">#FFFFFFFF</color>
 
 </resources>

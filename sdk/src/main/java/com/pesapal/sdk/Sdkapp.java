@@ -3,8 +3,8 @@ package com.pesapal.sdk;
 import android.app.Application;
 
 import androidx.appcompat.app.AppCompatDelegate;
-public class App extends Application {
-    private static App mInstance;
+public class Sdkapp extends Application {
+    private static Sdkapp mInstance;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -12,9 +12,9 @@ public class App extends Application {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }
 
-    public static synchronized App getInstance() {
+    public static synchronized Sdkapp getInstance() {
         if (mInstance == null) {
-            mInstance = new App();
+            mInstance = new Sdkapp();
         }
         return mInstance;
     }

@@ -11,7 +11,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        minSdk 21
+        minSdk 24           // Changed from 21 -> 24 because of Flexlayout
         targetSdk 33
         versionCode 1
         versionName "1.2.0"
@@ -19,14 +19,13 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
-
     buildTypes {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -80,6 +79,12 @@ task libReleasePub (type: GradleBuild) {
      * 5. If error above can be caught try and bump version automatically
      *
      */
+
+    /**
+     * todo Testing
+     * For local aar usage publishDebugPublicationToMavenLocal or publishReleasePublicationToMavenLocal
+     * Import it to gradle eg for Windows  implementation files('C:\\Users\\"YOUR USERNAME"\\.m2\\repository\\com\\pesapal\\sdk\\pesapal_sdk\\2.0.01\\pesapal_sdk-2.0.01.aar')
+     */
 }
 
 //def githubProperties = new Properties()
@@ -89,7 +94,7 @@ task libReleasePub (type: GradleBuild) {
 def LIB_GROUP_ID = 'com.pesapal.sdk'
 def LIB_ARTIFACT_ID = 'pesapal_sdk'          // DEV
 //def LIB_ARTIFACT_ID = 'payment_gateway'           // For PRODUCTION Public use
-def LIB_VERSION = '2.0.01'
+def LIB_VERSION = '2.0.014'
 
 //todo Remember Debug has interceptor on. All public versions should be release variants
 
@@ -171,7 +176,7 @@ dependencies {
     def nav_version = "2.5.1"
     api 'androidx.core:core-ktx:1.8.0'
     api 'androidx.appcompat:appcompat:1.5.0'
-    api 'com.google.android.material:material:1.6.1'
+    api 'com.google.android.material:material:1.11.0'
     api 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -204,7 +209,7 @@ dependencies {
 
 
     // sec
-    api("androidx.security:security-crypto:1.1.0-alpha01")
+    api("androidx.security:security-crypto:1.1.0-alpha06")
 
     // Koin
     def koin_version = '2.2.0-alpha-1'

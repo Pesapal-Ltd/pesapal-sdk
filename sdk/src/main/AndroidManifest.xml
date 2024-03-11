@@ -3,7 +3,7 @@
     package="com.pesapal.sdk">
 
     <application
-        android:name="com.pesapal.sdk.App"
+        android:name="com.pesapal.sdk.Sdkapp"
         android:label="@string/app_name">
 
         <activity

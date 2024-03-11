@@ -1,11 +1,9 @@
 package com.pesapal.sdk.utils.sec
 
-import android.app.Application
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import com.pesapal.sdk.App
+import com.pesapal.sdk.Sdkapp
 import com.pesapal.sdk.utils.PrefManager
 
 object SafetyChecker {
@@ -28,7 +26,7 @@ object SafetyChecker {
             EncryptedSharedPreferences.create(
                 PrefManager.MAP_PREF,
                 masterKeyAlias,
-                App.getInstance(),
+                Sdkapp.getInstance(),
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )

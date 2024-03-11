@@ -3,12 +3,11 @@ package com.pesapal.sdk.utils;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.security.keystore.KeyGenParameterSpec;
-import android.util.Log;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
-import com.pesapal.sdk.App;
+import com.pesapal.sdk.Sdkapp;
 import com.pesapal.sdk.BuildConfig;
 
 
@@ -29,7 +28,7 @@ public class PrefManager {
 
 
     public static SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(App.getInstance()
+        return PreferenceManager.getDefaultSharedPreferences(Sdkapp.getInstance()
                 .getApplicationContext());
     }
 
@@ -91,7 +90,7 @@ public class PrefManager {
             sharedPreferences = EncryptedSharedPreferences.create(
                     PrefManager.MAP_PREF,
                     masterKeyAlias,
-                    App.getInstance(),
+                    Sdkapp.getInstance(),
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );

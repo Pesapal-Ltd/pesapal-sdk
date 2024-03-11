@@ -326,21 +326,21 @@ internal class PaymentAdapter(
 
 
         fun initData(billingAddress: BillingAddress){
-//            etFirstName.setText(billingAddress.firstName)
-//            etSurname.setText(billingAddress.lastName)
-//            etEmail.setText(billingAddress.emailAddress)
-//            etPhoneNumber.setText(billingAddress.phoneNumber)
-//            etAddress.setText(billingAddress.zipCode)
-//            etPostal.setText(billingAddress.postalCode)
-//            etCity.setText(billingAddress.city)
+            etFirstName.setText(billingAddress.firstName)
+            etSurname.setText(billingAddress.lastName)
+            etEmail.setText(billingAddress.emailAddress)
+            etPhoneNumber.setText(billingAddress.phoneNumber)
+            etAddress.setText(billingAddress.zipCode)
+            etPostal.setText(billingAddress.postalCode)
+            etCity.setText(billingAddress.city)
 
-            etFirstName.setText("Sam")
-            etSurname.setText("nyam")
-            etEmail.setText("samuel@pesapal.com")
-            etPhoneNumber.setText("0703318241")
-            etAddress.setText("nairobi")
-            etPostal.setText("00100")
-            etCity.setText("nairobi")
+//            etFirstName.setText("Sam")
+//            etSurname.setText("nyam")
+//            etEmail.setText("samuel@pesapal.com")
+//            etPhoneNumber.setText("0703318241")
+//            etAddress.setText("nairobi")
+//            etPostal.setText("00100")
+//            etCity.setText("nairobi")
         }
 
         private fun checkFilled(){

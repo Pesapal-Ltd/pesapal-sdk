@@ -3,7 +3,7 @@ package com.pesapal.sdkdemo.utils;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.pesapal.sdk.App;
+import com.pesapal.sdk.Sdkapp;
 
 public class PrefManager {
 
@@ -21,7 +21,7 @@ public class PrefManager {
 
 
     public static SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(App.getInstance()
+        return PreferenceManager.getDefaultSharedPreferences(Sdkapp.getInstance()
                 .getApplicationContext());
     }
 
@@ -63,11 +63,7 @@ public class PrefManager {
     }
 
     public static String getConsumerKey(){
-//        return getString(CONSUMER_KEY, "qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW");
-//        return getString(CONSUMER_KEY, "TDpigBOOhs+zAl8cwH2Fl82jJGyD8xev");
         return getString(CONSUMER_KEY, "");
-
-
     }
 
     public static void setConsumerSecret(String consumerSecret){
@@ -75,8 +71,6 @@ public class PrefManager {
     }
 
     public static String getConsumerSecret(){
-//        return getString(CONSUMER_SECRET,"osGQ364R49cXKeOYSpaOnT++rHs=");
-//        return getString(CONSUMER_SECRET,"1KpqkfsMaihIcOlhnBo/gBZ5smw=");
         return getString(CONSUMER_SECRET,"");
     }
 

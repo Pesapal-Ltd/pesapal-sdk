@@ -410,7 +410,6 @@
 
                        android:gravity="center"
                        android:orientation="horizontal"
-                       app:flexWrap="wrap"
                        app:layout_constraintStart_toEndOf="@+id/switch_accept"
                        app:layout_constraintTop_toTopOf="@+id/switch_accept"
                        app:layout_constraintEnd_toEndOf="parent"
