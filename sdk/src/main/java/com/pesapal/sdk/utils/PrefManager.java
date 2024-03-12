@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.security.keystore.KeyGenParameterSpec;
+import android.util.Log;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
@@ -35,7 +36,12 @@ public class PrefManager {
     }
 
     public static boolean getBoolean(Context context, String preferenceKey, boolean preferenceDefaultValue) {
+        if(context!= null) {
+            Log.e("pM","c ISSA NOT");
+        }
+
         return getPreferences(context).getBoolean(preferenceKey, preferenceDefaultValue);
+
     }
 
     public static void putBoolean(Context context, String preferenceKey, boolean preferenceValue) {

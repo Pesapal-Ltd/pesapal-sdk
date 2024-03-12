@@ -2,9 +2,7 @@ package com.pesapal.sdk.utils;
 
 import android.content.Context;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import com.pesapal.sdk.Sdkapp;
 
 public class PESAPALAPI3SDK {
 
@@ -29,6 +27,7 @@ public class PESAPALAPI3SDK {
 
 
     public void init(Context context, String consumerkey, String consumersecret, String accountNumber, String callbackUrl, String ipnUrl, boolean isLive){
+        Sdkapp.INSTANCE.setContextInstance(context);
         PrefManager.putStringEncrypted(context, PrefManager.con_key, consumerkey);
         PrefManager.putStringEncrypted(context, PrefManager.con_sec, consumersecret);
         PrefManager.putStringEncrypted(context, PrefManager.acc_num, accountNumber);

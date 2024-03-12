@@ -21,7 +21,7 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
@@ -94,7 +94,7 @@ task libReleasePub (type: GradleBuild) {
 def LIB_GROUP_ID = 'com.pesapal.sdk'
 def LIB_ARTIFACT_ID = 'pesapal_sdk'          // DEV
 //def LIB_ARTIFACT_ID = 'payment_gateway'           // For PRODUCTION Public use
-def LIB_VERSION = '2.0.020'
+def LIB_VERSION = '2.0.025'
 
 //todo Remember Debug has interceptor on. All public versions should be release variants
 

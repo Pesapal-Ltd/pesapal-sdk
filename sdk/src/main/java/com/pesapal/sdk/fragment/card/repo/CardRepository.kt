@@ -29,7 +29,7 @@ internal class CardRepository {
         return withContext(Dispatchers.IO){
             try{
                 val cardExpressCheckoutResponse = apiService.generateCardOrderTrackingId("Bearer "+ PrefManager.getToken(
-                    Sdkapp.getInstance()),cardOrderTrackingIdRequest)
+                    Sdkapp.getContextInstance()),cardOrderTrackingIdRequest)
 //                if(cardExpressCheckoutResponse.status != null && (cardExpressCheckoutResponse.status == "200" || cardExpressCheckoutResponse.status =="500")) {
                 if(cardExpressCheckoutResponse.status != null && (cardExpressCheckoutResponse.status == "200" )) {
                     Resource.success(cardExpressCheckoutResponse)
@@ -52,7 +52,7 @@ internal class CardRepository {
     suspend fun submitCardRequest(processCardRequestV: SubmitCardRequest): Resource<SubmitCardResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(Sdkapp.getInstance()),processCardRequestV)
+                val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(Sdkapp.getContextInstance()),processCardRequestV)
                 if(cardExpressCheckoutResponse.status == "200") {
                     Resource.success(cardExpressCheckoutResponse)
                 }else{
@@ -73,7 +73,7 @@ internal class CardRepository {
     suspend fun getCardTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val transactionStatus = apiService.checkCardPaymentStatus("Bearer "+ PrefManager.getToken(Sdkapp.getInstance()),orderTrackingId)
+                val transactionStatus = apiService.checkCardPaymentStatus("Bearer "+ PrefManager.getToken(Sdkapp.getContextInstance()),orderTrackingId)
                 Log.e("Card", "Status ${transactionStatus.status} method ${transactionStatus.paymentMethod}")
                 if(transactionStatus.status != null && transactionStatus.status == "200") {
                     Resource.success(transactionStatus)
@@ -91,7 +91,7 @@ internal class CardRepository {
     suspend fun getCardinalToken(cardRequest: CardinalRequest): Resource<CardinalResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val transactionStatus = apiService.signCardinal("Bearer "+ PrefManager.getToken(Sdkapp.getInstance()),cardRequest)
+                val transactionStatus = apiService.signCardinal("Bearer "+ PrefManager.getToken(Sdkapp.getContextInstance()),cardRequest)
                 if(transactionStatus.status != null && transactionStatus.status == "200") {
                     Resource.success(transactionStatus)
                 }else{
@@ -110,7 +110,7 @@ internal class CardRepository {
 
         return withContext(Dispatchers.IO){
             try{
-                val serverJwt = apiService.getServerJwt("Bearer "+ PrefManager.getToken(Sdkapp.getInstance()),requestServerJwt)
+                val serverJwt = apiService.getServerJwt("Bearer "+ PrefManager.getToken(Sdkapp.getContextInstance()),requestServerJwt)
                 if(serverJwt.status == "200"){
                     Resource.success(serverJwt)
                 }else{

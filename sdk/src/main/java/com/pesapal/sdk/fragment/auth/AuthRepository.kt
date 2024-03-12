@@ -44,7 +44,7 @@ internal class AuthRepository {
         return withContext(Dispatchers.IO){
             try{
                 val registerIpn = apiService.registerIpn("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(
-                    Sdkapp.getInstance()),registerIpnRequest)
+                    Sdkapp.getContextInstance()),registerIpnRequest)
                 if(registerIpn.status != null && registerIpn.status == "200") {
                     Resource.success(registerIpn)
                 }else{

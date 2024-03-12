@@ -19,7 +19,7 @@ internal class MpesaRepository {
         return withContext(Dispatchers.IO){
             try{
                 val mobileMoneyCheckout = apiService.submitMobileMoneyCheckout("Bearer "+ PrefManager.getToken(
-                    Sdkapp.getInstance()),mobileMoneyRequest)
+                    Sdkapp.getContextInstance()),mobileMoneyRequest)
                 if(mobileMoneyCheckout.status != null && (mobileMoneyCheckout.status == "200" || mobileMoneyCheckout.status =="500")) {
                     Resource.success(mobileMoneyCheckout)
                 }else{
@@ -41,7 +41,7 @@ internal class MpesaRepository {
     suspend fun getTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val transactionStatus = apiService.getTransactionStatus("Bearer "+ PrefManager.getToken(Sdkapp.getInstance()),orderTrackingId)
+                val transactionStatus = apiService.getTransactionStatus("Bearer "+ PrefManager.getToken(Sdkapp.getContextInstance()),orderTrackingId)
                 if(transactionStatus.status != null && (transactionStatus.status == "200" || transactionStatus.status == "500")) {
                     Resource.success(transactionStatus)
                 }else{

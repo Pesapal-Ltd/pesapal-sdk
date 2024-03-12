@@ -16,7 +16,7 @@ object ApiClient {
     private val retrofit: Retrofit
         get() {
             return Retrofit.Builder()
-                .baseUrl(getBaseUrl(Sdkapp.getInstance()))
+                .baseUrl(getBaseUrl(Sdkapp.getContextInstance()))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(getOkHttpClient())
                 .build()
@@ -40,7 +40,7 @@ object ApiClient {
         return builder.build()
     }
 
-    private fun getBaseUrl(context: Context): String{
+    private fun getBaseUrl(context: Context?): String{
         val isLive = PrefManager.getBoolean(context, PrefManager.PREF_IS_URL_LIVE, true)
         return if(isLive)
             Configs.BASE_URL_LIVE

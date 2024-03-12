@@ -1,23 +1,31 @@
-package com.pesapal.sdk;
+package com.pesapal.sdk
 
-import android.app.Application;
-import android.content.Context;
+import android.annotation.SuppressLint
+import android.content.Context
 
-import androidx.appcompat.app.AppCompatDelegate;
-public class Sdkapp extends Application {
-    private static Context mInstance;
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mInstance = getApplicationContext();
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+@SuppressLint("StaticFieldLeak")
+object Sdkapp{
+
+
+    // TODO INVESTIGATE STATIC CONTEXT LEAK in Sdkapp. It will happen eventually
+
+
+    private var mInstance: Context? = null
+
+    fun setContextInstance(context: Context){
+        mInstance = context
     }
+    fun getContextInstance(): Context? = mInstance
 
-    public static synchronized Context getInstance() {
-        if (mInstance == null) {
-            mInstance = new Sdkapp();
-        }
-        return mInstance;
-    }
+//        @JvmStatic
+//        @get:Synchronized
+//        val instance: Context?
+//            get() {
+//                if (mInstance == null) {
+//                    mInstance = Sdkapp()
+//                }
+//                return mInstance
+//            }
+
 
 }

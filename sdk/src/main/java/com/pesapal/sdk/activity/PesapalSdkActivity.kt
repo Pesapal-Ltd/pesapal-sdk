@@ -2,6 +2,7 @@ package com.pesapal.sdk.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.pesapal.sdk.Sdkapp
 import com.pesapal.sdk.databinding.ActivityPaymentSdkBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -15,6 +16,8 @@ class PesapalSdkActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPaymentSdkBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Sdkapp.setContextInstance(this)
+
     }
 
 

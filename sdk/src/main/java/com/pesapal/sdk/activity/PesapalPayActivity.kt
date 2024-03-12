@@ -18,6 +18,7 @@ import com.cardinalcommerce.shared.models.Warning
 import com.cardinalcommerce.shared.userinterfaces.UiCustomization
 import com.pesapal.sdk.BuildConfig
 import com.pesapal.sdk.R
+import com.pesapal.sdk.Sdkapp
 import com.pesapal.sdk.fragment.card.data.CardFragmentCardData
 import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingFragment
 import com.pesapal.sdk.fragment.mobile_money.mpesa.stk.MpesaPesapalFragment
@@ -29,7 +30,6 @@ import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.sdk.viewmodel.AppViewModel
 import com.pesapal.sdk.databinding.ActivityPesapalPayBinding
-import com.pesapal.sdk.fragment.card.address.CardFragmentAddressData
 import com.pesapal.sdk.fragment.details.MainPesapalFragment
 import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdk.utils.PrefManager
@@ -55,6 +55,8 @@ class PesapalPayActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPesapalPayBinding.inflate(layoutInflater)
+        Sdkapp.setContextInstance(this)
+
         setContentView(binding.root)
         initData()
         handleViewModel()

@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -35,7 +34,6 @@ import com.pesapal.sdk.utils.CountryCodeEval.MPESA
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
 import com.pesapal.sdk.utils.CountryCodeEval.MTN_UG
 import com.pesapal.sdk.utils.CountryCodeEval.TIGO_TANZANIA
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.BigDecimal
 
 class MainPesapalFragment: Fragment() {
@@ -93,7 +91,7 @@ class MainPesapalFragment: Fragment() {
      * If the application is in demo show text view indicating so
      */
     private fun demoViewInform(){
-        val isLive = PrefManager.getBoolean(Sdkapp.getInstance(), PrefManager.PREF_IS_URL_LIVE, true)
+        val isLive = PrefManager.getBoolean(Sdkapp.getContextInstance(), PrefManager.PREF_IS_URL_LIVE, true)
         binding.tvDemoVersion.isVisible =  !isLive
     }
 

@@ -17,7 +17,7 @@ internal class PaymentRepository {
     suspend fun registerApi(registerIpnRequest: RegisterIpnRequest): Resource<RegisterIpnResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val registerIpn = apiService.registerIpn("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(Sdkapp.getInstance()),registerIpnRequest)
+                val registerIpn = apiService.registerIpn("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(Sdkapp.getContextInstance()),registerIpnRequest)
                 if(registerIpn.status != null && registerIpn.status == "200") {
                     Resource.success(registerIpn)
                 }else{
@@ -36,7 +36,7 @@ internal class PaymentRepository {
     suspend fun mobileMoneyApi(mobileMoneyRequest: MobileMoneyRequest): Resource<MobileMoneyResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val mobileMoneyCheckout = apiService.submitMobileMoneyCheckout("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(Sdkapp.getInstance()),mobileMoneyRequest)
+                val mobileMoneyCheckout = apiService.submitMobileMoneyCheckout("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(Sdkapp.getContextInstance()),mobileMoneyRequest)
                 if(mobileMoneyCheckout.status != null && (mobileMoneyCheckout.status == "200" || mobileMoneyCheckout.status =="500")) {
                     Resource.success(mobileMoneyCheckout)
                 }else{
@@ -58,7 +58,7 @@ internal class PaymentRepository {
     suspend fun getTransactionStatus(orderTrackingId: String): Resource<TransactionStatusResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val transactionStatus = apiService.getTransactionStatus("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(Sdkapp.getInstance()),orderTrackingId)
+                val transactionStatus = apiService.getTransactionStatus("Bearer "+ com.pesapal.sdk.utils.PrefManager.getToken(Sdkapp.getContextInstance()),orderTrackingId)
                 if(transactionStatus.status != null && (transactionStatus.status == "200" || transactionStatus.status == "500")) {
                         Resource.success(transactionStatus)
                 }else{

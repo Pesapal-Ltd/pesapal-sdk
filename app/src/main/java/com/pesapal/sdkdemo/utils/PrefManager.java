@@ -3,7 +3,8 @@ package com.pesapal.sdkdemo.utils;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.pesapal.sdk.Sdkapp;
+import com.pesapal.sdkdemo.AppDemo;
+
 
 public class PrefManager {
 
@@ -21,7 +22,7 @@ public class PrefManager {
 
 
     public static SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(Sdkapp.getInstance());
+        return PreferenceManager.getDefaultSharedPreferences(AppDemo.Companion.getInstance());
     }
 
     public static int getInt(String preferenceKey, int preferenceDefaultValue) {

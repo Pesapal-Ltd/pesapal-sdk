@@ -9,8 +9,11 @@ object GeneralUtil {
         val format = DecimalFormat("#,###,###.00")
         var displayText = "0.00"
         try{
-            if (amount > 1)
+            if (amount >= 1)
                 displayText = format.format(amount)
+            else
+                displayText = format.format(DecimalFormat("#,###,###.0000"))
+
         }
         catch (ex:Exception){
         }
