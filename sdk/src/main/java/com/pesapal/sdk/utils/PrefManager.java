@@ -25,6 +25,14 @@ public class PrefManager {
 
     public static String PREF_IS_URL_LIVE = "021b44e3-33c3-4781-a29a-6637c4ccb10e";
 
+    public static void firstSave(Context context, String consumerkey, String consumersecret, String accountNumber, String callbackUrl, String ipnUrl, boolean isLive){
+        putStringEncrypted(context, con_key, consumerkey);
+        putStringEncrypted(context, con_sec, consumersecret);
+        putStringEncrypted(context, acc_num, accountNumber);
+        putStringEncrypted(context, call_url, callbackUrl);
+        putStringEncrypted(context, ipn_url, ipnUrl);
+        putBoolean(context, PREF_IS_URL_LIVE, isLive);
+    }
 
     public static SharedPreferences getPreferences(Context context) {
 //        return PreferenceManager.getDefaultSharedPreferences(Sdkapp.getInstance()
@@ -79,7 +87,7 @@ public class PrefManager {
             String masterKeyAlias = MasterKeys.getOrCreate(keyGenParameterSpec);
 
             sharedPreferences = EncryptedSharedPreferences.create(
-                    PrefManager.MAP_PREF,
+                    MAP_PREF,
                     masterKeyAlias,
 //                    Sdkapp.getInstance(),
                     context,

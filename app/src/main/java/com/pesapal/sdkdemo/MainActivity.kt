@@ -51,14 +51,13 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
-
     }
 
     private fun initSdk(){
         if(PrefManager.getConsumerKey() == ""){
             PrefUtil.setData(0)
         }
-        com.pesapal.sdk.utils.PESAPALAPI3SDK().init(
+        PESAPALAPI3SDK.init(
             this,
             PrefManager.getConsumerKey(),
             PrefManager.getConsumerSecret(),

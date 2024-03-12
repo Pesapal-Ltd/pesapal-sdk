@@ -94,7 +94,7 @@ task libReleasePub (type: GradleBuild) {
 def LIB_GROUP_ID = 'com.pesapal.sdk'
 def LIB_ARTIFACT_ID = 'pesapal_sdk'          // DEV
 //def LIB_ARTIFACT_ID = 'payment_gateway'           // For PRODUCTION Public use
-def LIB_VERSION = '2.0.025'
+def LIB_VERSION = '2.0.030'
 
 //todo Remember Debug has interceptor on. All public versions should be release variants
 

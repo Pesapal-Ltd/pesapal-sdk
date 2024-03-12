@@ -21,8 +21,8 @@ class PesapalSdkActivity : AppCompatActivity() {
     }
 
     companion object {
-        val STATUS_COMPLETED = "COMPLETED"
-        val STATUS_CANCELLED = "CANCELLED"
+        const val STATUS_COMPLETED = "COMPLETED"
+        const val STATUS_CANCELLED = "CANCELLED"
     }
 
 

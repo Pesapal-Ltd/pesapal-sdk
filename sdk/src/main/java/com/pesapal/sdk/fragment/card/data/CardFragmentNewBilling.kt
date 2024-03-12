@@ -12,10 +12,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.cardinalcommerce.cardinalmobilesdk.Cardinal
-import com.cardinalcommerce.cardinalmobilesdk.models.ValidateResponse
-import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
-import com.cardinalcommerce.cardinalmobilesdk.services.CardinalValidateReceiver
+
 //import com.google.gson.Gson
 //import com.pesapal.paygateway.activities.payment.model.cacontinie.*
 //import com.pesapal.paygateway.activities.payment.model.card_request.CardDetails

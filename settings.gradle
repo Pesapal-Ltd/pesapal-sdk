@@ -27,6 +27,29 @@ dependencyResolutionManagement {
 
     }
 }
+
+//maven {
+//
+//    url = uri("https://maven.pkg.github.com/pesapalsnm/androidPaymentGatewaySDK")
+//    credentials{}
+//
+//    credentials {
+//
+//        username = "snm" // Artifactory username
+//
+//        password = ""
+//
+//    }
+//}
+//
+//maven {
+//    url  = uri("https://cardinalcommerceprod.jfrog.io/artifactory/android")
+//    credentials {
+//        username = "cybersource_pesapal_jmasai" // Artifactory username
+//        password ="AKCp8nz2Jj2iQZcRGVNCgAALhLYV97KA9aqaa43CwFu2B5fHxT3TYrYssHhw9A1GPRgxwUHpe" // Artifactory API Key
+//    }
+//}
+
 rootProject.name = "Pesapal Payment Gateway"
 include ':app'
 include ':sdk'

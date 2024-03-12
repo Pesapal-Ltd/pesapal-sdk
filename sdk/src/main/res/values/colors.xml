@@ -5,6 +5,11 @@
     <!-- The main / master app color overrides the app hence this becomes purple -->
     <color name="blue_pesapal">#1751AD</color>
     <color name="blue_pesapal_light">#16659E</color>
+    <color name="colorPrimaryDark">#3c5866</color>
+    <color name="colorPrimary">#121415</color>
+    <color name="colorAccent">#eadfcc</color>
+    <color name="colorWhite">#ffffff</color>
+
 
     <color name="purple_500">#1751AD</color>
     <color name="purple_700">#0A3A86</color>

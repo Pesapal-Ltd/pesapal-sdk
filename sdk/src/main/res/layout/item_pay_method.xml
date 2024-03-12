@@ -407,7 +407,7 @@
                    <com.google.android.flexbox.FlexboxLayout
                        android:layout_width="0dp"
                        android:layout_height="wrap_content"
-
+                       app:flexWrap="wrap"
                        android:gravity="center"
                        android:orientation="horizontal"
                        app:layout_constraintStart_toEndOf="@+id/switch_accept"

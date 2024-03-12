@@ -74,7 +74,6 @@ internal class CardRepository {
         return withContext(Dispatchers.IO){
             try{
                 val transactionStatus = apiService.checkCardPaymentStatus("Bearer "+ PrefManager.getToken(Sdkapp.getContextInstance()),orderTrackingId)
-                Log.e("Card", "Status ${transactionStatus.status} method ${transactionStatus.paymentMethod}")
                 if(transactionStatus.status != null && transactionStatus.status == "200") {
                     Resource.success(transactionStatus)
                 }else{
