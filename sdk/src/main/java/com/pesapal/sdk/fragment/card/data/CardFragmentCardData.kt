@@ -13,15 +13,15 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.cardinalcommerce.cardinalmobilesdk.Cardinal
-import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalEnvironment
-import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalRenderType
-import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
-import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
-import com.cardinalcommerce.cardinalmobilesdk.models.ValidateResponse
-import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
-import com.cardinalcommerce.shared.models.Warning
-import com.cardinalcommerce.shared.userinterfaces.UiCustomization
+//import com.cardinalcommerce.cardinalmobilesdk.Cardinal
+//import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalEnvironment
+//import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalRenderType
+//import com.cardinalcommerce.cardinalmobilesdk.enums.CardinalUiType
+//import com.cardinalcommerce.cardinalmobilesdk.models.CardinalConfigurationParameters
+//import com.cardinalcommerce.cardinalmobilesdk.models.ValidateResponse
+//import com.cardinalcommerce.cardinalmobilesdk.services.CardinalInitService
+//import com.cardinalcommerce.shared.models.Warning
+//import com.cardinalcommerce.shared.userinterfaces.UiCustomization
 import com.google.gson.Gson
 import com.pesapal.paygateway.activities.payment.model.cacontinie.Account
 import com.pesapal.paygateway.activities.payment.model.cacontinie.CCAExtension
@@ -73,7 +73,7 @@ class CardFragmentCardData : Fragment() {
     private var expiryMonth = false
     private var expiryYear = false
     private var enable = false
-    var cardinal: Cardinal? = null
+//    var cardinal: Cardinal? = null
 
     var responseServerJwt: ResponseServerJwt? = null
     var consumerSessionId : String? = null
@@ -113,55 +113,55 @@ class CardFragmentCardData : Fragment() {
     }
 
     private fun initData() {
-        cardinal = Cardinal.getInstance()
-        initCardinal()
+//        cardinal = Cardinal.getInstance()
+//        initCardinal()
 
-        launchIp()
+//        launchIp()
         handleViewModel()
         handleChangeListener()
     }
 
-    private fun initCardinal() {
-        val cardinalConfigurationParameters = CardinalConfigurationParameters()
-        cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
-        cardinalConfigurationParameters.requestTimeout = 8000
-        cardinalConfigurationParameters.challengeTimeout = 5
-        val rTYPE = JSONArray()
-        rTYPE.put(CardinalRenderType.OTP)
-        rTYPE.put(CardinalRenderType.SINGLE_SELECT)
-        rTYPE.put(CardinalRenderType.MULTI_SELECT)
-        rTYPE.put(CardinalRenderType.OOB)
-        rTYPE.put(CardinalRenderType.HTML)
-        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
-        cardinalConfigurationParameters.renderType = rTYPE
+//    private fun initCardinal() {
+//        val cardinalConfigurationParameters = CardinalConfigurationParameters()
+//        cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
+//        cardinalConfigurationParameters.requestTimeout = 8000
+//        cardinalConfigurationParameters.challengeTimeout = 5
+//        val rTYPE = JSONArray()
+//        rTYPE.put(CardinalRenderType.OTP)
+//        rTYPE.put(CardinalRenderType.SINGLE_SELECT)
+//        rTYPE.put(CardinalRenderType.MULTI_SELECT)
+//        rTYPE.put(CardinalRenderType.OOB)
+//        rTYPE.put(CardinalRenderType.HTML)
+//        cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+//        cardinalConfigurationParameters.renderType = rTYPE
+//
+//        if (BuildConfig.DEBUG) {
+//            cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
+//            cardinalConfigurationParameters.isEnableLogging = true
+//        } else {
+//            cardinalConfigurationParameters.environment = CardinalEnvironment.PRODUCTION
+//            cardinalConfigurationParameters.isEnableLogging = false
+//        }
+//
+////     cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
+////     cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
+////     cardinalConfigurationParameters.isLocationDataConsentGiven = true
+//
+//
+//        val yourUICustomizationObject = UiCustomization()
+//        cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
+//        cardinal!!.configure(requireContext(), cardinalConfigurationParameters)
+//        getAllWarnings()
+//    }
 
-        if (BuildConfig.DEBUG) {
-            cardinalConfigurationParameters.environment = CardinalEnvironment.STAGING
-            cardinalConfigurationParameters.isEnableLogging = true
-        } else {
-            cardinalConfigurationParameters.environment = CardinalEnvironment.PRODUCTION
-            cardinalConfigurationParameters.isEnableLogging = false
-        }
-
-//     cardinalConfigurationParameters.uiType = CardinalUiType.BOTH
-//     cardinalConfigurationParameters.renderType = CardinalRenderType.OTP
-//     cardinalConfigurationParameters.isLocationDataConsentGiven = true
-
-
-        val yourUICustomizationObject = UiCustomization()
-        cardinalConfigurationParameters.uiCustomization = yourUICustomizationObject
-        cardinal!!.configure(requireContext(), cardinalConfigurationParameters)
-        getAllWarnings()
-    }
-
-    private fun getAllWarnings() {
-        val warnings: List<Warning> = cardinal!!.warnings
-        for (warning in warnings) {
-            Log.e(" id ", warning.id);
-            Log.e(" severity ", warning.severity.toString());
-            Log.e(" message ", warning.message.toString());
-        }
-    }
+//    private fun getAllWarnings() {
+//        val warnings: List<Warning> = cardinal!!.warnings
+//        for (warning in warnings) {
+//            Log.e(" id ", warning.id);
+//            Log.e(" severity ", warning.severity.toString());
+//            Log.e(" message ", warning.message.toString());
+//        }
+//    }
 
 
     private fun generateCardOrderTackingId() {
@@ -336,281 +336,281 @@ class CardFragmentCardData : Fragment() {
             }
         }
 
-        viewModel.serverJwt.observe(requireActivity()){
-            when (it.status) {
-                Status.LOADING -> {
-                    pDialog = ProgressDialog(requireContext())
-                    pDialog.setMessage(it.message)
-                    pDialog.show()
-                }
-                Status.SUCCESS -> {
-                    responseServerJwt = it.data
-                    initSdk(responseServerJwt!!.orderJwt)
-                }
-                Status.ERROR -> {
-                    showMessage(it.message!!)
-                    pDialog.dismiss()
-                }
-                else -> {
-                    Log.e(" else ", " ====> auth")
-                }
-            }
-        }
-
-        viewModel.dsToken.observe(requireActivity()){
-            when (it.status) {
-                Status.LOADING -> {
-
-                }
-                Status.SUCCESS -> {
-                    val token = it.data!!.token
-                    get3dsPayload(token);
-                }
-                Status.ERROR -> {
-
-                }
-                else -> {
-
-                }
-            }
-        }
-
-        viewModel.dsResponse.observe(requireActivity()){
-            when (it.status) {
-                Status.LOADING -> {
-                }
-                Status.SUCCESS -> {
-                    var response = it.data
-                    val gson = Gson()
-
-                    var responseString = gson.toJson(response)
-                    Log.e(" responseString ", responseString)
-
-                    var payAcsUrlload = response?.acsUrl
-                    var payload = response?.payload
-
-                    if(!response!!.authenticationTransactionId.isNullOrEmpty() && !payload.isNullOrEmpty() && payAcsUrlload!= null) {
-                        if (response.reasonCode == "475")
-                            handle3dSecure(
-                                response.authenticationTransactionId!!,
-                                payload,
-                                payAcsUrlload
-                            )
-                        else
-                        {
-                            Toast.makeText(requireContext(),"Go normal route without 3ds", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    else
-                        Toast.makeText(requireContext(),"Unable to complete. Err 600", Toast.LENGTH_LONG).show()
-                }
-                Status.ERROR -> {
-                }
-                else -> {
-                    Log.e(" else ", " ====> auth")
-                }
-            }
-        }
+//        viewModel.serverJwt.observe(requireActivity()){
+//            when (it.status) {
+//                Status.LOADING -> {
+//                    pDialog = ProgressDialog(requireContext())
+//                    pDialog.setMessage(it.message)
+//                    pDialog.show()
+//                }
+//                Status.SUCCESS -> {
+//                    responseServerJwt = it.data
+//                    initSdk(responseServerJwt!!.orderJwt)
+//                }
+//                Status.ERROR -> {
+//                    showMessage(it.message!!)
+//                    pDialog.dismiss()
+//                }
+//                else -> {
+//                    Log.e(" else ", " ====> auth")
+//                }
+//            }
+//        }
+//
+//        viewModel.dsToken.observe(requireActivity()){
+//            when (it.status) {
+//                Status.LOADING -> {
+//
+//                }
+//                Status.SUCCESS -> {
+//                    val token = it.data!!.token
+//                    get3dsPayload(token);
+//                }
+//                Status.ERROR -> {
+//
+//                }
+//                else -> {
+//
+//                }
+//            }
+//        }
+//
+//        viewModel.dsResponse.observe(requireActivity()){
+//            when (it.status) {
+//                Status.LOADING -> {
+//                }
+//                Status.SUCCESS -> {
+//                    var response = it.data
+//                    val gson = Gson()
+//
+//                    var responseString = gson.toJson(response)
+//                    Log.e(" responseString ", responseString)
+//
+//                    var payAcsUrlload = response?.acsUrl
+//                    var payload = response?.payload
+//
+//                    if(!response!!.authenticationTransactionId.isNullOrEmpty() && !payload.isNullOrEmpty() && payAcsUrlload!= null) {
+//                        if (response.reasonCode == "475")
+//                            handle3dSecure(
+//                                response.authenticationTransactionId!!,
+//                                payload,
+//                                payAcsUrlload
+//                            )
+//                        else
+//                        {
+//                            Toast.makeText(requireContext(),"Go normal route without 3ds", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+//
+//                    else
+//                        Toast.makeText(requireContext(),"Unable to complete. Err 600", Toast.LENGTH_LONG).show()
+//                }
+//                Status.ERROR -> {
+//                }
+//                else -> {
+//                    Log.e(" else ", " ====> auth")
+//                }
+//            }
+//        }
     }
 
-    private fun get3dToken(){
-        val dsTokenRequest = DsTokenRequest("E71FC13D-5FD0-43EC-9E87-007586759EE0","677801C8-A971-46F8-957E-497213245E9B");
-        viewModel.getDsToken(dsTokenRequest)
-    }
-
-    private fun initSdk(serverJwt: String){
-        cardinal?.init(serverJwt, object: CardinalInitService {
-            /**
-             * You may have your Submit button disabled on page load. Once you are set up
-             * for CCA, you may then enable it. This will prevent users from submitting
-             * their order before CCA is ready.
-             */
-
-            override fun onSetupCompleted(consumerSessionIds: String) {
-                pDialog.dismiss()
-                consumerSessionId = consumerSessionIds
-                Log.e("TAG","COns $consumerSessionIds")
-                get3dToken()
-            }
-
-            /**
-             * If there was an error with setup, cardinal will call this function with
-             * validate response and empty serverJWT
-             * @param validateResponse
-             * @param serverJwt will be an empty
-             */
-            override fun onValidated(validateResponse: ValidateResponse, serverJwt: String?) {
-                pDialog.dismiss()
-
-            }
-        })
-
-    }
-
-
-    private fun get3dsPayload(token: String){
-        var cardDetails = CardDetails3Ds(
-            cardDetails.cvv,
-            cardDetails.cardNumber,
-            cardDetails.month.toString(),
-            cardDetails.year,
-            "001"
-        )
-
-//        val billingAddress = BillingDetails(
-//            phoneNumber = "0703318241",
-//            email = "samuel@pesapal.com",
-//            country = "KE",
+//    private fun get3dToken(){
+//        val dsTokenRequest = DsTokenRequest("E71FC13D-5FD0-43EC-9E87-007586759EE0","677801C8-A971-46F8-957E-497213245E9B");
+//        viewModel.getDsToken(dsTokenRequest)
+//    }
+//
+//    private fun initSdk(serverJwt: String){
+//        cardinal?.init(serverJwt, object: CardinalInitService {
+//            /**
+//             * You may have your Submit button disabled on page load. Once you are set up
+//             * for CCA, you may then enable it. This will prevent users from submitting
+//             * their order before CCA is ready.
+//             */
+//
+//            override fun onSetupCompleted(consumerSessionIds: String) {
+//                pDialog.dismiss()
+//                consumerSessionId = consumerSessionIds
+//                Log.e("TAG","COns $consumerSessionIds")
+//                get3dToken()
+//            }
+//
+//            /**
+//             * If there was an error with setup, cardinal will call this function with
+//             * validate response and empty serverJWT
+//             * @param validateResponse
+//             * @param serverJwt will be an empty
+//             */
+//            override fun onValidated(validateResponse: ValidateResponse, serverJwt: String?) {
+//                pDialog.dismiss()
+//
+//            }
+//        })
+//
+//    }
+//
+//
+//    private fun get3dsPayload(token: String){
+//        var cardDetails = CardDetails3Ds(
+//            cardDetails.cvv,
+//            cardDetails.cardNumber,
+//            cardDetails.month.toString(),
+//            cardDetails.year,
+//            "001"
+//        )
+//
+////        val billingAddress = BillingDetails(
+////            phoneNumber = "0703318241",
+////            email = "samuel@pesapal.com",
+////            country = "KE",
+////            currency = paymentDetails.currency,
+////            firstName = "samuel",
+////            lastName = "nyamai",
+////            city = "Nairobi",
+////            street = "Kasarani",
+////            state = "Nairobi",
+////            postalCode = "80300",
+////            ipAddress = ip
+////        )
+//
+//        val billingDetails = BillingDetails(
+//            phoneNumber = billingAddress.phoneNumber!!,
+//            email = billingAddress.emailAddress ,
+//            country = billingAddress.countryCode!!,
 //            currency = paymentDetails.currency,
-//            firstName = "samuel",
-//            lastName = "nyamai",
-//            city = "Nairobi",
-//            street = "Kasarani",
-//            state = "Nairobi",
-//            postalCode = "80300",
+//            firstName = billingAddress.firstName,
+//            lastName = billingAddress.lastName!!,
+//            city = billingAddress.city!!,
+//            street = billingAddress.line,
+//            state = billingAddress.city!!,
+//            postalCode = billingAddress.postalCode,
 //            ipAddress = ip
 //        )
-
-        val billingDetails = BillingDetails(
-            phoneNumber = billingAddress.phoneNumber!!,
-            email = billingAddress.emailAddress ,
-            country = billingAddress.countryCode!!,
-            currency = paymentDetails.currency,
-            firstName = billingAddress.firstName,
-            lastName = billingAddress.lastName!!,
-            city = billingAddress.city!!,
-            street = billingAddress.line,
-            state = billingAddress.city!!,
-            postalCode = billingAddress.postalCode,
-            ipAddress = ip
-        )
-
-        val checkDSecureRequest = CheckDSecureRequest(
-            cardDetails,
-            billingDetails,
-            paymentDetails.amount,
-            "",
-            consumerSessionId!!,
-            paymentDetails.currency!!,
-            0,
-            "",
-            "SDK",
-        )
-
-        viewModel.check3ds(checkDSecureRequest,token)
-    }
-
-
-    private suspend fun getIp(): String = withContext(Dispatchers.Default){
-        var ip = ""
-        try {
-            val url = URL("https://api.ipify.org")
-            val connection =
-                url.openConnection() as HttpURLConnection
-            connection.setRequestProperty(
-                "User-Agent",
-                "Mozilla/5.0"
-            ) // Set a User-Agent to avoid HTTP 403 Forbidden error
-            Scanner(connection.inputStream, "UTF-8").useDelimiter("\\A").use { s ->
-                ip = s.next()
-                Log.e("Main","Ip ap is $ip")
-            }
-            connection.disconnect()
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-        }
-        return@withContext ip
-
-    }
-
-    private fun launchIp(){
-        CoroutineScope(Dispatchers.Default).launch{
-            val ipFetched = getIp()
-            ip = ipFetched
-        }
-    }
-
-
-    private fun handle3dSecure(transactionId: String, payload: String, acsUrl: String? ){
-        try {
-
-            var orderDetails = OrderDetails(
-                "404",
-                "P",
-                amount = paymentDetails.amount.toString(),
-                orderNumber = "test_order",
-                transactionId = consumerSessionId!!
-            )
-
-            var account = Account(
-                nameOnAccount = billingAddress.firstName + "" + billingAddress.lastName,
-                cardCode = cardDetails.cvv,
-                expirationMonth = cardDetails.month.toString(),
-                expirationYear = "20" + cardDetails.year,
-                accountNumber =  cardDetails.cardNumber
-            )
-
-            var consumer = Consumer(
-                account = account
-            )
-
-            var ccaExtension = CCAExtension(
-                merchantName = "PESAPAL LTD"
-            )
-
-            var payloadCanContinueModel = PayloadCanContinueModel(
-                cCAExtension = ccaExtension,
-                consumer = consumer,
-                orderDetails = orderDetails,
-                payload = payload,
-                acsUrl = acsUrl,
-            )
-
-            val gson = Gson()
-            val stringPayload = gson.toJson(payloadCanContinueModel)
-            val stringPayloadv1 = stringPayload.replace("\\u0026", "&");
-            val stringPayloadv2 = stringPayloadv1.replace("\\u003d", "=");
-
-            Log.e(" payload ",stringPayloadv2)
-            Log.e(" transactionId ",transactionId)
-
-
-            cardinal?.cca_continue(transactionId,stringPayloadv2,requireActivity()) { p0, validateResponse, serverJWT ->
-                /**
-                 * This method is triggered when the transaction has been terminated. This is how SDK hands back
-                 * control to the merchant's application. This method will
-                 * include data on how the transaction attempt ended and
-                 * you should have your logic for reviewing the results of
-                 * the transaction and making decisions regarding next steps.
-                 * JWT will be empty if validate was not successful.
-                 *
-                 * @param validateResponse
-                 * @param serverJWT
-                 */
-                /**
-                 * This method is triggered when the transaction has been terminated. This is how SDK hands back
-                 * control to the merchant's application. This method will
-                 * include data on how the transaction attempt ended and
-                 * you should have your logic for reviewing the results of
-                 * the transaction and making decisions regarding next steps.
-                 * JWT will be empty if validate was not successful.
-                 *
-                 * @param validateResponse
-                 * @param serverJWT
-                 */
-
-//                    handleValidation(validateResponse!!)
-                Log.e(" cca_continue ", " ===> " + validateResponse!!.errorDescription)
-            };
-
-
-        } catch (e: Exception) {
-            // Handle exception
-            Log.e(" Exception ", " ===> "+e.localizedMessage)
-
-        }
-    }
+//
+//        val checkDSecureRequest = CheckDSecureRequest(
+//            cardDetails,
+//            billingDetails,
+//            paymentDetails.amount,
+//            "",
+//            consumerSessionId!!,
+//            paymentDetails.currency!!,
+//            0,
+//            "",
+//            "SDK",
+//        )
+//
+//        viewModel.check3ds(checkDSecureRequest,token)
+//    }
+//
+//
+//    private suspend fun getIp(): String = withContext(Dispatchers.Default){
+//        var ip = ""
+//        try {
+//            val url = URL("https://api.ipify.org")
+//            val connection =
+//                url.openConnection() as HttpURLConnection
+//            connection.setRequestProperty(
+//                "User-Agent",
+//                "Mozilla/5.0"
+//            ) // Set a User-Agent to avoid HTTP 403 Forbidden error
+//            Scanner(connection.inputStream, "UTF-8").useDelimiter("\\A").use { s ->
+//                ip = s.next()
+//                Log.e("Main","Ip ap is $ip")
+//            }
+//            connection.disconnect()
+//        } catch (e: java.lang.Exception) {
+//            e.printStackTrace()
+//        }
+//        return@withContext ip
+//
+//    }
+//
+//    private fun launchIp(){
+//        CoroutineScope(Dispatchers.Default).launch{
+//            val ipFetched = getIp()
+//            ip = ipFetched
+//        }
+//    }
+//
+//
+//    private fun handle3dSecure(transactionId: String, payload: String, acsUrl: String? ){
+//        try {
+//
+//            var orderDetails = OrderDetails(
+//                "404",
+//                "P",
+//                amount = paymentDetails.amount.toString(),
+//                orderNumber = "test_order",
+//                transactionId = consumerSessionId!!
+//            )
+//
+//            var account = Account(
+//                nameOnAccount = billingAddress.firstName + "" + billingAddress.lastName,
+//                cardCode = cardDetails.cvv,
+//                expirationMonth = cardDetails.month.toString(),
+//                expirationYear = "20" + cardDetails.year,
+//                accountNumber =  cardDetails.cardNumber
+//            )
+//
+//            var consumer = Consumer(
+//                account = account
+//            )
+//
+//            var ccaExtension = CCAExtension(
+//                merchantName = "PESAPAL LTD"
+//            )
+//
+//            var payloadCanContinueModel = PayloadCanContinueModel(
+//                cCAExtension = ccaExtension,
+//                consumer = consumer,
+//                orderDetails = orderDetails,
+//                payload = payload,
+//                acsUrl = acsUrl,
+//            )
+//
+//            val gson = Gson()
+//            val stringPayload = gson.toJson(payloadCanContinueModel)
+//            val stringPayloadv1 = stringPayload.replace("\\u0026", "&");
+//            val stringPayloadv2 = stringPayloadv1.replace("\\u003d", "=");
+//
+//            Log.e(" payload ",stringPayloadv2)
+//            Log.e(" transactionId ",transactionId)
+//
+//
+//            cardinal?.cca_continue(transactionId,stringPayloadv2,requireActivity()) { p0, validateResponse, serverJWT ->
+//                /**
+//                 * This method is triggered when the transaction has been terminated. This is how SDK hands back
+//                 * control to the merchant's application. This method will
+//                 * include data on how the transaction attempt ended and
+//                 * you should have your logic for reviewing the results of
+//                 * the transaction and making decisions regarding next steps.
+//                 * JWT will be empty if validate was not successful.
+//                 *
+//                 * @param validateResponse
+//                 * @param serverJWT
+//                 */
+//                /**
+//                 * This method is triggered when the transaction has been terminated. This is how SDK hands back
+//                 * control to the merchant's application. This method will
+//                 * include data on how the transaction attempt ended and
+//                 * you should have your logic for reviewing the results of
+//                 * the transaction and making decisions regarding next steps.
+//                 * JWT will be empty if validate was not successful.
+//                 *
+//                 * @param validateResponse
+//                 * @param serverJWT
+//                 */
+//
+////                    handleValidation(validateResponse!!)
+//                Log.e(" cca_continue ", " ===> " + validateResponse!!.errorDescription)
+//            };
+//
+//
+//        } catch (e: Exception) {
+//            // Handle exception
+//            Log.e(" Exception ", " ===> "+e.localizedMessage)
+//
+//        }
+//    }
 
 
     private fun showMessage(message: String) {

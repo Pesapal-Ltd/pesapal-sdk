@@ -17,7 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.R
-import com.pesapal.sdk.activity.PesapalPayActivity
+import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
+import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_COMPLETED
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
 import com.pesapal.sdk.fragment.DialogCard
@@ -174,10 +175,10 @@ class MpesaSuccessFragment : Fragment() {
 
     private fun returnPaymentStatus() {
         if(isTxnSuccessful){
-            returnIntent(PesapalPayActivity.STATUS_COMPLETED, transactionStatusResponse)
+            returnIntent(STATUS_COMPLETED, transactionStatusResponse)
         }
         else
-            returnIntent(PesapalPayActivity.STATUS_CANCELLED, "Payment cancelled")
+            returnIntent(STATUS_CANCELLED, "Payment cancelled")
 
     }
 

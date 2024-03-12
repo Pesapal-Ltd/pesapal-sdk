@@ -4,7 +4,6 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.pesapal.sdk.R
-import com.pesapal.sdk.activity.PesapalPayActivity
+import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.adapter.PaymentAdapter
 import com.pesapal.sdk.databinding.FragmentPaymentMethodsBinding
@@ -139,7 +138,10 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    returnIntent(PesapalPayActivity.STATUS_CANCELLED, "Payment cancelled")
+
+                    // todo Move this to the activity to have a common method to return data
+
+                    returnIntent(STATUS_CANCELLED, "Payment cancelled")
                 }
             })
     }
@@ -357,8 +359,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                         }
                         else -> {
                             paymentDetails.order_tracking_id = result.orderTrackingId
-                            Log.e("Pm", "Order tracking network ${result.orderTrackingId}")
-                            Log.e("Pm", "Order tracking card ${paymentDetails.order_tracking_id}")
                             submitCardRequest()
                         }
                     }
@@ -405,10 +405,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     proceedToTransactionResultScreen(it.data!!, it.data.statusCode == 1)
                 }
                 Status.ERROR -> {
-//                    showMessage(it.message!!)
                     pDialog.dismiss()
-                    Log.e("Pm" ,"Data " + (it.data == null))
-
                     proceedToTransactionResultScreen(it.data!!, false)
                 }
 

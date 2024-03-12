@@ -20,6 +20,7 @@ import com.google.android.material.chip.ChipGroup
 import com.pesapal.sdk.R
 import com.pesapal.sdk.Sdkapp
 import com.pesapal.sdk.activity.PesapalPayActivity
+import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
 import com.pesapal.sdk.model.card.BillingAddress
@@ -101,7 +102,7 @@ class MainPesapalFragment: Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    returnIntent(PesapalPayActivity.STATUS_CANCELLED, "Payment cancelled")
+                    returnIntent(STATUS_CANCELLED, "Payment cancelled")
                 }
             })
     }

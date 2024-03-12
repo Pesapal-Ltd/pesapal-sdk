@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.activity.PesapalPayActivity
+import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentAuthorizingBinding
 import com.pesapal.sdk.model.accountinfo.AccountInfoRequest
@@ -56,7 +57,7 @@ class AuthFragment : Fragment() {
 
     private fun initData(){
         PrefManager.setToken(requireContext(), null)
-        val authRequestModel = AuthRequestModel(paymentDetails.consumer_key,paymentDetails.consumer_secret)
+        val authRequestModel = AuthRequestModel(paymentDetails.consumer_key, paymentDetails.consumer_secret)
         Handler(Looper.getMainLooper()).postDelayed({
             viewModel.authPayment(authRequestModel)
         },800)
@@ -92,7 +93,7 @@ class AuthFragment : Fragment() {
 
                 Status.ERROR -> {
                     binding.loader.visibility = View.GONE
-                    returnIntent(PesapalPayActivity.STATUS_CANCELLED, it.message?:"")
+                    returnIntent(STATUS_CANCELLED, it.message?:"")
                 }
                 else -> {
                     binding.loader.visibility = View.VISIBLE
@@ -110,7 +111,7 @@ class AuthFragment : Fragment() {
 
                 Status.ERROR -> {
                     binding.loader.visibility = View.GONE
-                    returnIntent(PesapalPayActivity.STATUS_CANCELLED, it.message?:"")
+                    returnIntent(STATUS_CANCELLED, it.message?:"")
                 }
                 else -> {
                     binding.loader.visibility = View.VISIBLE
@@ -248,14 +249,14 @@ class AuthFragment : Fragment() {
                 initData()
             }
             else{
-                returnIntent(PesapalPayActivity.STATUS_CANCELLED, errorMessage)
+                returnIntent(STATUS_CANCELLED, errorMessage)
             }
 
         } else {
 //            showMessage("Consumer data required ...")
             setErrorElements("Error Code: 10400")
 
-            returnIntent(PesapalPayActivity.STATUS_CANCELLED, errorMessage)
+            returnIntent(STATUS_CANCELLED, errorMessage)
 
         }
     }
