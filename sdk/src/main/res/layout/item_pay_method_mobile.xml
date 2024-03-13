@@ -278,7 +278,8 @@
                 tools:text="@string/mtn_combo"
                 android:textColor="@color/black_faded"
                 android:textFontWeight="400"
-                android:textSize="12sp"
+                android:lineSpacingExtra="1dp"
+                android:textSize="11sp"
 
                 android:visibility="gone"
                 tools:visibility="visible"

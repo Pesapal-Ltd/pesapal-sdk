@@ -10,4 +10,6 @@ internal class PesapalSdkViewModel : ViewModel() {
     var merchantName: String? = ""
     var trackingId: String? = ""
     var orderID:String? = ""
+    var disableBgCheck = false
+
 }

@@ -111,7 +111,11 @@ publishing {
             name = "GithubPackages"
             url = uri("https://maven.pkg.github.com/pesapalsnm/pesapalgatewayLib")              // For developers
 //            url = uri("https://maven.pkg.github.com/pesapalsnm/androidPaymentGatewaySDK")         // For PRODUCTION Public use
+            credentials {
+                username = 'a'
+                password = 'b'
 
+            }
         }
 
     }

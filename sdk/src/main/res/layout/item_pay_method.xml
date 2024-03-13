@@ -488,14 +488,14 @@
 
                    <ImageView
                        android:id="@+id/ic_desc"
-                       android:layout_width="24dp"
-                       android:layout_height="24dp"
+                       android:layout_width="18dp"
+                       android:layout_height="18dp"
+                       android:layout_marginEnd="16dp"
                        android:src="@drawable/icon_description"
-                       android:layout_marginEnd="10dp"
-                       app:layout_constraintTop_toTopOf="@id/switch_remember"
-                       app:layout_constraintEnd_toEndOf="parent"
                        app:layout_constraintBottom_toBottomOf="@id/switch_remember"
-                       />
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintTop_toTopOf="@id/switch_remember"
+                       app:layout_constraintVertical_bias="1.0" />
 
                </androidx.constraintlayout.widget.ConstraintLayout>
 

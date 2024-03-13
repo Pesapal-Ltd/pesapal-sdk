@@ -123,14 +123,11 @@ class MpesaSuccessFragment : Fragment() {
             binding.btnTryAgain.setOnClickListener{
                 tryAgain()
             }
-
         }
 
         binding.tvPaymentStatus.text = header
         binding.tvMerchantName.text = pesapalSdkViewModel.merchantName
-
         binding.tvTime.text = TimeUtils.getCurrentDateTime(transactionStatusResponse.createdDate)
-//        binding.tvTime.text = transactionStatusResponse.createdDate
 
         val paymentIcon = with(transactionStatusResponse.paymentMethod!!.lowercase()){
             when{

@@ -65,8 +65,15 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
             PrefManager.getCallBackUrl(),
             "https://test.dev",
             PrefManager.getIsProduction()
-//            true
         )
+
+//        val consumerKey = "qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW"
+//        val consumerSecret = "osGQ364R49cXKeOYSpaOnT++rHs="
+//        val account = "1000101"
+//
+//        val callBack = "http://localhost:56522"
+//        val ipn = "https://test.dev"
+
     }
 
     private fun initData(){
@@ -280,12 +287,12 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         }
     }
 
-    override fun Clicked(isAdd: Boolean, story: CatalogueModel.ProductsBean) {
+    override fun Clicked(isAdd: Boolean, catalogueModel: CatalogueModel.ProductsBean) {
         if(isAdd){
-            itemModelList.add(story)
+            itemModelList.add(catalogueModel)
             updateBasketList()
         }else{
-            itemModelList.remove(story)
+            itemModelList.remove(catalogueModel)
             updateBasketList()
         }
     }

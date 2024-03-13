@@ -71,13 +71,13 @@
     <string name="payment_succesful">PAYMENT SUCCESFUL</string>
     <string name="payment_failed">PAYMENT FAILED</string>
 
-    <string name="help_url">For further assistance, kindly contact us via our ticketing portal on %s</string>
+    <string name="help_url">For further assistance , kindly contact us via our ticketing portal on %s</string>
     <string name="open_ticket">Click Here to open a ticket.</string>
     <string name="exit">EXIT</string>
     <string name="merchant_reference">MERCHANT REFERENCE</string>
     <string name="try_again">TRY AGAIN</string>
     <string name="tracking_id">TRACKING ID</string>
-    <string name="i_accept_to_pesapal_s">I accept to Pesapal\'s\u0020</string>
+    <string name="i_accept_to_pesapal_s">I accept Pesapal\'s\u0020</string>
     <string name="remember_me">REMEMBER ME</string>
     <string name="terms_and_conditions">Terms and conditions</string>
     <string name="terms_and_conditions_amp">TERMS &amp; CONDITIONS</string>

@@ -149,7 +149,7 @@
             android:text="@string/label_select_payment"
             android:textColor="@color/black_faded"
             android:fontFamily="@font/arial"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textFontWeight="400"
             android:letterSpacing="0.001"
             android:gravity="center"
@@ -184,34 +184,31 @@
             android:layout_marginHorizontal="14dp"
             android:layout_marginTop="12dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
+            tools:itemCount="0"
+            tools:listitem="@layout/item_pay_method_mobile"
 
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rv_payment_methods"
-            tools:itemCount="0"
-
-            tools:listitem="@layout/item_pay_method_mobile" />
+            />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/label_regulated"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
             android:text="@string/pesapal_is_regulated_by_the_central_bank_of_kenya"
             android:textColor="@color/blue_pesapal_light"
             android:fontFamily="@font/arial"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textFontWeight="400"
             android:letterSpacing="0.001"
-            android:gravity="center"
 
-            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rv_payment_methods_mobile_money_tobedeleted"
             />
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

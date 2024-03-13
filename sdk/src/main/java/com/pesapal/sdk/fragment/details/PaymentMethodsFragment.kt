@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,17 +65,19 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     private lateinit var mobileMoneyRequest: MobileMoneyRequest
 
 //    private var delayTime = 1000L
-    private var delayTime = 15000L
+    private var delayTime = 25000L
     private val timeCountInMilliSeconds = 30000L
 
-    private val mobilePendingvViewModel: MpesaPendingViewModel by viewModels()
+    private val mobilePendingViewModel: MpesaPendingViewModel by viewModels()
     // Mobile Money
 
 
     //Card
+
     private val cardViewModel: CardViewModel by viewModels()
-
-
+    private lateinit var cardDetails: CardDetails
+    private lateinit var cardOrderTrackingIdRequest: CardOrderTrackingIdRequest
+    var tokenize = false
 
     //Card
 
@@ -184,11 +187,12 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     override fun mobileMoneyRequest(action: Int, phoneNumber: String, mobileProvider: Int) {
         when(action){
             1 -> {
+
                 this.phoneNumber = phoneNumber
                 this.mobileProvider = mobileProvider
 
                 val request = prepareMobileMoney()
-                mobilePendingvViewModel.sendMobileMoneyCheckOut(request, "Sending payment prompt ...")
+                mobilePendingViewModel.sendMobileMoneyCheckOut(request, "Sending payment prompt ...")
             }
         }
     }
@@ -235,7 +239,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
      * Mobile money view model
      */
     private fun handleViewModel(){
-        mobilePendingvViewModel.mobileMoneyResponse.observe(requireActivity()){
+        mobilePendingViewModel.mobileMoneyResponse.observe(requireActivity()){
             when (it.status) {
                 Status.LOADING -> {
                     pDialog = ProgressDialog(requireContext())
@@ -252,7 +256,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     var message = it.message
                     if(message!!.contains("payment has already been received")){
                         message = "Confirming payment status"
-                        handleConfirmation()
+                        handleBackgroundConfirmation(0)
                     }
                     else{
                         it.message
@@ -263,7 +267,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             }
         }
 
-        mobilePendingvViewModel.transactionStatus.observe(requireActivity()){
+        mobilePendingViewModel.transactionStatus.observe(requireActivity()){
             when (it.status) {
                 Status.LOADING -> {
                     pDialog = ProgressDialog(requireContext())
@@ -289,7 +293,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             }
         }
 
-        mobilePendingvViewModel.transactionStatusBg.observe(requireActivity()){
+        mobilePendingViewModel.transactionStatusBg.observe(requireActivity()){
             when (it.status) {
                 Status.LOADING -> {
                     pDialog = ProgressDialog(requireContext())
@@ -366,9 +370,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 Status.ERROR -> {
                     showMessage(it.message!!)
                     pDialog.dismiss()
-//                    handleBackgroundConfirmation()
-
-
                 }
 
             }
@@ -386,11 +387,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     showMessage(it.message!!)
                     pDialog.dismiss()
                     checkCardPaymentStatus()
-
-//                    if(it.data != null)
-//                        proceedToTransactionResultScreen(it.data, false)
-//                    else
-//                        showMessage("Custom hard")
 
                 }
             }
@@ -476,11 +472,96 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
         cardViewModel.submitCardRequest(submitCardRequest)
     }
 
+
     override fun handleResend(){
         delayTime = 1000L
         var mobileMoneyRequest: MobileMoneyRequest = mobileMoneyRequest
         mobileMoneyRequest.trackingId =  mobileMoneyRequest.trackingId
         viewModel.sendMobileMoneyCheckOut(mobileMoneyRequest,"Resending OTP ...")
+    }
+
+
+    private fun proceedToTransactionResultScreen(transactionStatusResponse: TransactionStatusResponse, isTxnSuccess: Boolean){
+        pesapalSdkViewModel.merchantName = paymentDetails.merchant_name             //todo move to authFragment
+        pesapalSdkViewModel.disableBgCheck = true
+
+        val action = PaymentMethodsFragmentDirections.actionPaymentFragmentToPaymentStatusFragment(transactionStatusResponse,isTxnSuccess)
+        findNavController().navigate(action)
+    }
+
+    private fun showPendingMpesaPayment(){
+        mobileMoneyRequest = prepareMobileMoney()
+        mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
+        paymentDetails.order_tracking_id = mobileMoneyResponse!!.orderTrackingId
+
+        if(mobileMoneyResponse != null) {
+            mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
+        }
+
+        paymentAdapter.mobileMoneyUpdate(mobileMoneyResponse)
+        handleBackgroundConfirmation()
+    }
+
+
+    override  fun showMessage(message: String){
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+
+    private fun handleBackgroundConfirmation(autodelay:Long = delayTime){
+        if(!pesapalSdkViewModel.disableBgCheck) {
+            Handler().postDelayed({
+                // todo store the mobile request in the view model
+                mobilePendingViewModel.mobileMoneyTransactionStatusBackground(mobileMoneyRequest.trackingId)
+            }, autodelay)
+
+        }
+
+    }
+
+    override fun handleConfirmation(){
+        mobilePendingViewModel.mobileMoneyTransactionStatus(mobileMoneyRequest.trackingId)
+
+    }
+
+    override fun generateCardOrderTrackingId(billingAddress: BillingAddress,tokenize:Boolean, cardNumber: String, year:Int, month: Int,cvv:String) {
+        pesapalSdkViewModel.disableBgCheck = true
+        this.billingAddress = billingAddress
+        this.tokenize = tokenize
+        hideKeyboard()
+        cardDetails = CardDetails(
+           cardNumber,
+            year,
+            month,
+            cvv,
+        )
+
+        cardOrderTrackingIdRequest = CardOrderTrackingIdRequest(
+            id = paymentDetails.order_id!!,
+            sourceChannel = 2,
+            msisdn = billingAddress.phoneNumber,
+            paymentMethodId = 1,
+            accountNumber = paymentDetails.accountNumber!!,
+            currency = paymentDetails.currency!!,
+            allowedCurrencies = "",
+            amount = paymentDetails.amount,
+            description = "Express Order",
+            callbackUrl = paymentDetails.callbackUrl!!,
+            cancellationUrl = "",
+            notificationId = PrefManager.getIpnId(requireContext()),
+            language = "",
+            termsAndConditionsId = "",
+            billingAddress = billingAddress,
+            trackingId = "",
+            chargeRequest = false
+        )
+
+        cardViewModel.generateCardOrderTrackingId(cardOrderTrackingIdRequest, " Processing request ...")
+
+    }
+
+    override fun showDialogFrag(dialogType: Int) {
+        DialogCard(dialogType).show(parentFragmentManager, dialogType.toString())
     }
 
 
@@ -537,91 +618,5 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 //            }
 //        }.start()
 //    }
-
-
-
-    private fun proceedToTransactionResultScreen(transactionStatusResponse: TransactionStatusResponse, isTxnSuccess: Boolean){
-        pesapalSdkViewModel.merchantName = paymentDetails.merchant_name             //todo move to authFragment
-        var action = PaymentMethodsFragmentDirections.actionPaymentFragmentToPaymentStatusFragment(transactionStatusResponse,isTxnSuccess)
-        findNavController().navigate(action)
-
-        // todo change the mpesa success page
-    }
-
-    private fun showPendingMpesaPayment(){
-//        mobilePendingvViewModel.resetMobileResponse()   todo transfer logic to other viewmode
-
-        mobileMoneyRequest = prepareMobileMoney()
-        mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
-        paymentDetails.order_tracking_id = mobileMoneyResponse!!.orderTrackingId
-
-        if(mobileMoneyResponse != null) {
-            mobileMoneyRequest.trackingId = mobileMoneyResponse!!.orderTrackingId
-        }
-
-        paymentAdapter.mobileMoneyUpdate(mobileMoneyResponse)
-        handleBackgroundConfirmation()
-    }
-
-
-    override  fun showMessage(message: String){
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-
-    private fun handleBackgroundConfirmation(){
-        Handler().postDelayed({
-            // todo store the mobile request in the view model
-            mobilePendingvViewModel.mobileMoneyTransactionStatusBackground(mobileMoneyRequest.trackingId)
-        },delayTime)
-    }
-
-    override fun handleConfirmation(){
-        mobilePendingvViewModel.mobileMoneyTransactionStatus(mobileMoneyRequest.trackingId)
-    }
-
-
-    private lateinit var cardDetails: CardDetails
-    private lateinit var cardOrderTrackingIdRequest: CardOrderTrackingIdRequest
-
-    override fun generateCardOrderTrackingId(billingAddress: BillingAddress,tokenize:Boolean, cardNumber: String, year:Int, month: Int,cvv:String) {
-        this.billingAddress = billingAddress
-        this.tokenize = tokenize
-        hideKeyboard()
-        cardDetails = CardDetails(
-           cardNumber,
-            year,
-            month,
-            cvv,
-        )
-
-        cardOrderTrackingIdRequest = CardOrderTrackingIdRequest(
-            id = paymentDetails.order_id!!,
-            sourceChannel = 2,
-            msisdn = billingAddress.phoneNumber,
-            paymentMethodId = 1,
-            accountNumber = paymentDetails.accountNumber!!,
-            currency = paymentDetails.currency!!,
-            allowedCurrencies = "",
-            amount = paymentDetails.amount,
-            description = "Express Order",
-            callbackUrl = paymentDetails.callbackUrl!!,
-            cancellationUrl = "",
-            notificationId = PrefManager.getIpnId(requireContext()),
-            language = "",
-            termsAndConditionsId = "",
-            billingAddress = billingAddress,
-            trackingId = "",
-            chargeRequest = false
-        )
-
-        cardViewModel.generateCardOrderTrackingId(cardOrderTrackingIdRequest, " Processing request ...")
-
-    }
-    var tokenize = false
-
-    override fun showDialogFrag(dialogType: Int) {
-        DialogCard(dialogType).show(parentFragmentManager, dialogType.toString())
-    }
 
 }

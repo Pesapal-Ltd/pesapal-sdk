@@ -3,8 +3,6 @@ package com.pesapal.sdkdemo.utils
 import com.pesapal.sdkdemo.profile.KeysSecret
 
 object PrefUtil {
-//    var otherCurrency = listOf("KES", "UGX", "TZS", "USD")
-
     var keotherCurrency = listOf("KES", "USD")
     var ugotherCurrency = listOf("UGX", "USD")
     var tzotherCurrency = listOf("TZS", "USD")
