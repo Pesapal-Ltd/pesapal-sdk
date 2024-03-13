@@ -1,9 +1,12 @@
 package com.pesapal.sdk.fragment.auth
 
+import android.util.Base64
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pesapal.sdk.utils.sec.device.integrity.PlayIntegrityResponse
 import com.pesapal.sdk.model.accountinfo.AccountInfoRequest
 import com.pesapal.sdk.model.accountinfo.AccountInfoResponse
 import com.pesapal.sdk.model.auth.AuthRequestModel
@@ -13,7 +16,13 @@ import com.pesapal.sdk.model.registerIpn_url.RegisterIpnResponse
 import com.pesapal.sdk.model.txn_status.TransactionError
 import com.pesapal.sdk.utils.Resource
 import com.pesapal.sdk.utils.Status
+import com.pesapal.sdk.utils.sec.ParseUtil
+import com.pesapal.sdk.utils.sec.device.integrity.PlayIntegrityRequest
 import kotlinx.coroutines.launch
+import java.math.BigInteger
+import java.security.KeyFactory
+import java.security.PublicKey
+import java.security.spec.RSAPublicKeySpec
 
 internal class AuthViewModel : ViewModel() {
 
@@ -94,6 +103,57 @@ internal class AuthViewModel : ViewModel() {
 
         }
     }
+//    fun verifyToken(
+//        playIntegrityRequest: PlayIntegrityRequest
+//    ){
+//        _verifyToken.postValue(Resource.loading("Processing request ..."))
+//        viewModelScope.launch{
+//            val result = splashRepository.verifyToken(playIntegrityRequest)
+//            when (result.status) {
+//                Status.ERROR -> {
+//                    _verifyToken.postValue(Resource.error(result.message!!))
+//                }
+//                Status.SUCCESS -> {
+//                    _verifyToken.postValue(Resource.success(result.data))
+//                }
+//                else -> {
+//                }
+//            }
+//        }
+//    }
 
+    private fun checkTokenVerificationData(it: PlayIntegrityResponse?) {
+        if (it?.status == "200") {
+            extractData(it)
+        } else {
+//            handleError(it?.message!!)
+        }
+    }
+
+    private fun extractData(it: PlayIntegrityResponse?) {
+        try {
+            val publicKey = parseRSAKeyValue(it?.keyInfo?.modulus!!, it.keyInfo.exponent);
+            ParseUtil.parsePublicKey(publicKey)
+//            proceedAfterVerification()
+        } catch (e: Exception) {
+            Log.e("SecAu" ,e.localizedMessage ?: "Unable to proceed, Please try again later ..")
+            // Handle any exceptions that might occur during key extraction or parsing.
+        }
+    }
+
+    fun parseRSAKeyValue(modulus1: String, exponent1: String): PublicKey {
+
+        val modulusBytes = Base64.decode(modulus1, Base64.DEFAULT)
+        val exponentBytes = Base64.decode(exponent1, Base64.DEFAULT)
+
+        val modulus = BigInteger(1, modulusBytes)
+        val exponent = BigInteger(1, exponentBytes)
+
+        val spec = RSAPublicKeySpec(modulus, exponent)
+        val keyFactory = KeyFactory.getInstance("RSA")
+
+        val publicKey = keyFactory.generatePublic(spec)
+        return publicKey;
+    }
 
 }

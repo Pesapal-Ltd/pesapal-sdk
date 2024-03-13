@@ -20,6 +20,7 @@ import com.pesapal.sdk.model.mobile_money.MobileMoneyResponse
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnResponse
+import com.pesapal.sdk.utils.sec.model.EncModel
 import retrofit2.http.*
 
 internal interface ApiServices {
@@ -38,6 +39,9 @@ internal interface ApiServices {
 
     @POST("api/transactions/expresscardrequest")
     suspend fun submitCardRequest(@Header("Authorization") token: String, @Body submitCardRequest: SubmitCardRequest) : SubmitCardResponse
+
+    @POST("api/transactions/expresscardrequest")
+    suspend fun submitCardRequest(@Header("Authorization") token: String, @Body encModel:EncModel) : SubmitCardResponse
 
     @GET("api/Transactions/GetTransactionStatus")
     suspend fun checkCardPaymentStatus(@Header("Authorization") token: String, @Query("orderTrackingId") orderTrackingId: String) : TransactionStatusResponse

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.pesapal.paygateway.activities.payment.model.check3ds.CheckDSecureRequest
 import com.pesapal.paygateway.activities.payment.model.check3ds.response.CheckDsResponse
 import com.pesapal.paygateway.activities.payment.model.check3ds.token.DsTokenRequest
@@ -20,6 +21,8 @@ import com.pesapal.sdk.model.card.submit.response.SubmitCardResponse
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.Resource
 import com.pesapal.sdk.utils.Status
+import com.pesapal.sdk.utils.sec.EncryptRequests.encryptWithPublicKey
+import com.pesapal.sdk.utils.sec.model.EncModel
 import kotlinx.coroutines.launch
 
 internal class CardViewModel : ViewModel() {
@@ -81,6 +84,9 @@ internal class CardViewModel : ViewModel() {
         _submitCardResponse.postValue(Resource.loading("Processing request"))
         viewModelScope.launch {
             val result = cardRepository.submitCardRequest(submitCardRequest)
+            val encryptedData = encryptWithPublicKey(Gson().toJson(submitCardRequest))
+
+//            val result =EncModel(encryptedData)
             when(result.status){
                 Status.ERROR -> {
                     _submitCardResponse.postValue(Resource.error(result.message!!, result.data))
