@@ -118,12 +118,8 @@ internal class PaymentAdapter(
                     paymentMethodInterface.handleConfirmation()
                 else
                     mobileMoneyRequest(phone, method)
-//                    mobileMoneyRequest(phone, method)
             }
 
-//            holder.resendButton.setOnClickListener {
-//                mobileMoneyRequest(phone, method)
-//            }
 
             if(selected == method.paymentMethodId){
                 when(mobileStep){
@@ -156,12 +152,6 @@ internal class PaymentAdapter(
             holder.resendButton.setOnClickListener {
                 mobileStep = 0
                 notifyDataSetChanged()
-//                holder.phonelayout.visibility = View.VISIBLE
-//                holder.resendlayout.visibility = View.GONE
-//
-//                holder.clLipaNaMpesa.visibility = View.VISIBLE
-////                holder.clBackgroundCheck.visibility = View.VISIBLE
-//                paymentMethodInterface.handleResend()
             }
         }
 
@@ -207,7 +197,6 @@ internal class PaymentAdapter(
         phone: EditText,
         method: CountryCode
     ) {
-//        2024-03-04 00:55:01.220 24183-24573 okhttp.OkHttpClient     com.pesapal.paymentgateway           I  {"business_number":"220222","payment_message":"Awaiting Payment","account_number":"61193136","order_tracking_id":"7cdcbde0-a2eb-4339-946a-dd833f257c24","merchant_reference":null,"redirect_url":null,"error":null,"status":"500"}
         selected = method.paymentMethodId
         if (phone.text.toString().isNotEmpty() && phone.text.toString().length > 8) {
             val mobileProvider = method.paymentMethodId
@@ -424,6 +413,7 @@ internal class PaymentAdapter(
 
         private fun setCardLogoByType(cardName: Editable) {
             val typeVisa = '4'
+            val mastercardSecond = '2'
             val mastercard = '5'
             val isEmpty = cardName.isBlank()
 
@@ -433,7 +423,7 @@ internal class PaymentAdapter(
             else {
                 when (cardName.first()) {
                     typeVisa -> R.drawable.ic_card_type_visa
-                    mastercard -> R.drawable.ic_card_type_mastercard
+                    mastercardSecond,mastercard -> R.drawable.ic_card_type_mastercard
                     else -> R.drawable.icon_error
                 }
             }
@@ -486,13 +476,11 @@ internal class PaymentAdapter(
             monthField.addTextChangedListener { it ->
                 checkMonth(it)
                 checkFilled()  //todo uncommenting causes a loop and crash
-
             }
 
             yearField.addTextChangedListener { it ->
                 checkYear(it)
                 checkFilled() //todo uncommenting causes a loop and crash
-
             }
 
         }

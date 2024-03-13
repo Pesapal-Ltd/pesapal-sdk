@@ -71,10 +71,10 @@
     <string name="payment_succesful">PAYMENT SUCCESFUL</string>
     <string name="payment_failed">PAYMENT FAILED</string>
 
-    <string name="help_url">For further assistance , kindly contact us via our ticketing portal on %s</string>
+    <string name="help_url">For further assistance, kindly contact us via our ticketing portal on %s</string>
     <string name="open_ticket">Click Here to open a ticket.</string>
     <string name="exit">EXIT</string>
-    <string name="merchant_reference">MERCHANT REFERENCE</string>
+    <string name="merchant_reference">MERCHANT  REFERENCE</string>
     <string name="try_again">TRY AGAIN</string>
     <string name="tracking_id">TRACKING ID</string>
     <string name="i_accept_to_pesapal_s">I accept Pesapal\'s\u0020</string>
@@ -86,5 +86,7 @@
     <string name="info">Info</string>
     <string name="card_desc">Opt to save your card and enjoy a seamless checkout experience without the hassle of re-entering details again. Your card information shall be securely encrypted, ensuring a safe and convenient checkout process for your future purchases.</string>
     <string name="confirmation_code">confirmation code</string>
+    <string name="ok">OK</string>
+    <string name="dialog_okay">OK</string>
 
 </resources>

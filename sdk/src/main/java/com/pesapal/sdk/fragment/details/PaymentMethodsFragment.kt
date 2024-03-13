@@ -24,7 +24,6 @@ import com.pesapal.sdk.adapter.PaymentAdapter
 import com.pesapal.sdk.databinding.FragmentPaymentMethodsBinding
 import com.pesapal.sdk.fragment.DialogCard
 import com.pesapal.sdk.fragment.card.viewmodel.CardViewModel
-import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingFragment
 import com.pesapal.sdk.fragment.mobile_money.mpesa.pending.MpesaPendingViewModel
 import com.pesapal.sdk.fragment.mobile_money.mpesa.stk.MpesaPesapalViewModel
 import com.pesapal.sdk.model.card.BillingAddress
@@ -59,14 +58,9 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     private var mobileMoneyResponse: MobileMoneyResponse? = null
     lateinit var paymentAdapter: PaymentAdapter
 
-    private var timerStated = false
-    private var timerStatus = MpesaPendingFragment.TimerStatus.STOPPED
-
     private lateinit var mobileMoneyRequest: MobileMoneyRequest
 
-//    private var delayTime = 1000L
     private var delayTime = 25000L
-    private val timeCountInMilliSeconds = 30000L
 
     private val mobilePendingViewModel: MpesaPendingViewModel by viewModels()
     // Mobile Money
@@ -228,10 +222,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
         }
         else{
             Handler()
-                .postDelayed({
-                              refreshRv()
-
-            }, 500)
+                .postDelayed({ refreshRv() }, 500)
         }
     }
 
@@ -299,27 +290,14 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     pDialog = ProgressDialog(requireContext())
                     pDialog.setMessage(it.message)
                     pDialog.show()
-
-//                    if(!timerStated) {
-//                        timerStated = true
-//                        Log.e("Meth","Started")
-//                    }
                 }
                 Status.SUCCESS -> {
-//                    handleTimeStop()
                     if(::pDialog.isInitialized) {
                         pDialog.dismiss()
                     }
                     proceedToTransactionResultScreen(it.data!!, true)
-
-
                 }
                 Status.ERROR -> {
-                    // todo try and get all the info neccessary for displaying failed page
-//                    if(delayTime != 30000L){
-//                        delayTime += 1000
-//                        handleBackgroundConfirmation()
-//                    }
                     if(::pDialog.isInitialized) {
                         pDialog.dismiss()
                     }
@@ -335,7 +313,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                             }
                             2,3 ->{
                                 proceedToTransactionResultScreen(it.data, false)
-
                             }
 
                         }
@@ -359,7 +336,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                                 paymentMethod = result.paymentMethod, currency = result.currency, amount = result.amount.toDouble(),
                                 confirmationCode = result.confirmationCode, merchantReference = result.merchantReference,
                                 paymentAccount = result.paymentAccount, orderTrackingId = result.orderTrackingId,status = result.status ), false)
-
                         }
                         else -> {
                             paymentDetails.order_tracking_id = result.orderTrackingId
@@ -377,9 +353,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
         cardViewModel.submitCardResponse.observe(requireActivity()){
             when (it.status) {
-                Status.LOADING -> {
-
-                }
+                Status.LOADING -> {}
                 Status.SUCCESS -> {
                     checkCardPaymentStatus()
                 }
@@ -458,17 +432,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             tokenizeCard = tokenize,
             deviceId = "TODO"
         )
-//{
-//  "order_tracking_id": "33578938-582a-4044-a199-dd8c23567740",
-//  "merchant_reference": "43A885C5",
-//  "error": {
-//    "error_type": "channel_error",
-//    "code": "transaction_declined",
-//    "message": ""
-//  },
-//  "status": "500",
-//  "call_back_url": "http://localhost:56522"
-//}
+
         cardViewModel.submitCardRequest(submitCardRequest)
     }
 
@@ -514,14 +478,11 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 // todo store the mobile request in the view model
                 mobilePendingViewModel.mobileMoneyTransactionStatusBackground(mobileMoneyRequest.trackingId)
             }, autodelay)
-
         }
-
     }
 
     override fun handleConfirmation(){
         mobilePendingViewModel.mobileMoneyTransactionStatus(mobileMoneyRequest.trackingId)
-
     }
 
     override fun generateCardOrderTrackingId(billingAddress: BillingAddress,tokenize:Boolean, cardNumber: String, year:Int, month: Int,cvv:String) {
@@ -564,59 +525,5 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
         DialogCard(dialogType).show(parentFragmentManager, dialogType.toString())
     }
 
-
-//    private fun hideDialog() {
-//        timerStated = false
-//        if(mobileProvider.contains(CountryCodeEval.MPESA_PROV_NAME)) {
-//            showLipaNaMpesa()
-//        }
-//        else{
-//            binding.btnSendLipab.visibility = View.VISIBLE
-//
-//        }
-//    }
-
-
-//    private fun handleBackgroundCheck(){
-//        startStop()
-//    }
-
-
-//    private fun startStop() {
-//        if (timerStatus == MpesaPendingFragment.TimerStatus.STOPPED) {
-//            // call to initialize the progress bar values
-//            setProgressBarValues(binding.progressBarCircle)
-//            // showing the reset icon
-//            timerStatus = MpesaPendingFragment.TimerStatus.STARTED
-//            // call to start the count down timer
-//            startCountDownTimer()
-//        } else {
-//
-//            // changing the timer status to stopped
-//            timerStatus = MpesaPendingFragment.TimerStatus.STOPPED
-//            stopCountDownTimer()
-//        }
-//
-//    }
-
-//    private fun startCountDownTimer() {
-//        countDownTimer = object : CountDownTimer(timeCountInMilliSeconds, 1000L) {
-//            override fun onTick(millisUntilFinished: Long) {
-//                val milis = hmsTimeFormatter(millisUntilFinished)
-//                binding.tvTime.text = "00:$milis"
-//                val progress = millisUntilFinished / 1000
-//                binding.progressBarCircle.progress = progress.toInt()
-//                //                checkMpesa();
-//            }
-//
-//            override fun onFinish() {
-//                binding.tvTime.text = hmsTimeFormatter(timeCountInMilliSeconds)
-//                // call to initialize the progress bar values
-//                setProgressBarValues(binding.progressBarCircle)
-//                timerStatus = MpesaPendingFragment.TimerStatus.STOPPED
-//                stopCountDownTimer()
-//            }
-//        }.start()
-//    }
 
 }

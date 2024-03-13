@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pesapal.sdk.Sdkapp
 import com.pesapal.sdk.databinding.ActivityPaymentSdkBinding
+import com.pesapal.sdk.utils.sec.initializeSecurity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PesapalSdkActivity : AppCompatActivity() {
@@ -14,9 +15,11 @@ class PesapalSdkActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPaymentSdkBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        Sdkapp.setContextInstance(this)
+        if(initializeSecurity(this)) {
+            binding = ActivityPaymentSdkBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+            Sdkapp.setContextInstance(this)
+        }
 
     }
 

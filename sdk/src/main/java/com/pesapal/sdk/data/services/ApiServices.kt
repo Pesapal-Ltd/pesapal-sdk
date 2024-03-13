@@ -58,6 +58,9 @@ internal interface ApiServices {
     @POST("https://cybqa.pesapal.com/pesapalcharging/api/Token/RequestApiToken")
     suspend fun dsToken( @Body dsTokenRequest: DsTokenRequest) : AuthResponseModel
 
+
+    // TODO: https://cybqa.pesapal.com/pesapalv3 has a different base url to https://cybqa.pesapal.com/pesapalcharging
+    // todo: Base URL to change on one side
     @POST("https://cybqa.pesapal.com/pesapalcharging/api/Transaction/CheckEnrollMent")
     suspend fun check3ds(@Header("Authorization") token: String, @Body checkDSecureRequest: CheckDSecureRequest) : CheckDsResponse
 
