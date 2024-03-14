@@ -19,6 +19,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.pesapal.sdk.R
+import com.pesapal.sdk.activity.PesapalSdkActivity
 import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.adapter.PaymentAdapter
@@ -136,10 +137,10 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    PesapalSdkActivity.returnIntentBuilder(requireActivity(),
+                        STATUS_CANCELLED,"0 = General cancel", "Security", "Payment cancelled")
 
-                    // todo Move this to the activity to have a common method to return data
-
-                    returnIntent(STATUS_CANCELLED, "Payment cancelled")
+//                    PesapalSdkActivity.returnIntent(requireActivity(), STATUS_CANCELLED, )
                 }
             })
     }
@@ -164,20 +165,20 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     }
 
 
-    private fun returnIntent(status: String, obj : Any){
-        val returnIntent = Intent()
-        returnIntent.putExtra("status", status)
-        val data = if(obj is String){
-            obj
-        }
-        else{
-            obj as TransactionStatusResponse
-        }
-        returnIntent.putExtra("data", data)
-
-        requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
-        requireActivity().finish()
-    }
+//    private fun returnIntent(status: String, obj : Any){
+//        val returnIntent = Intent()
+//        returnIntent.putExtra("status", status)
+//        val data = if(obj is String){
+//            obj
+//        }
+//        else{
+//            obj as TransactionStatusResponse
+//        }
+//        returnIntent.putExtra("data", data)
+//
+//        requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
+//        requireActivity().finish()
+//    }
 
     override fun mobileMoneyRequest(action: Int, phoneNumber: String, mobileProvider: Int) {
         when(action){

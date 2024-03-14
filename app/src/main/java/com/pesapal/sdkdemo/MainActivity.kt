@@ -314,21 +314,24 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
                 val result = data?.getStringExtra("status")
                 orderId = createTransactionID()
                 binding.tvOrderId.text = "Order ID $orderId"
-                when(result){
-                    "COMPLETED" -> {
-                        val transactionStatusResponse = data?.getSerializableExtra("data") as TransactionStatusResponse
-                        handleCompletedTxn(transactionStatusResponse)
-                    }
-                    "ERROR" -> {
-                        val message = data.getStringExtra("data")
-                        handleFailedTxn(message!!)
-                    }
-                    "CANCELLED" -> {
-                        val message = data.getStringExtra("data")
-                        handleCancelledTxn(message!!)
-                    }
-                    else -> {
-                        handleDefaultError("An Error Occurred, Please try again later ...")
+                val transactionStatusResponse = data?.getSerializableExtra("data") as TransactionStatusResponse?
+
+                transactionStatusResponse?.let {
+                    when(result){
+                        "COMPLETED" -> {
+                            handleCompletedTxn(transactionStatusResponse)
+                        }
+                        "ERROR" -> {
+                            val message = transactionStatusResponse.error?.message?:"An Error Occurred, Please try again later ..."
+                            handleFailedTxn(message)
+                        }
+                        "CANCELLED" -> {
+                            val message = transactionStatusResponse.error?.message?:"An Error Occurred, Please try again later ..."
+                            handleCancelledTxn(message)
+                        }
+                        else -> {
+                            handleDefaultError("An Error Occurred, Please try again later ...")
+                        }
                     }
                 }
             }

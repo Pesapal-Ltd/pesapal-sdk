@@ -1,6 +1,7 @@
 package com.pesapal.sdk.fragment.auth
 
 import DeviceFingerprint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.pesapal.sdk.activity.PesapalSdkActivity
 import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentAuthorizingBinding
@@ -25,6 +27,7 @@ import com.pesapal.sdk.model.auth.AuthResponseModel
 import com.pesapal.sdk.model.card.BillingAddress
 import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
+import com.pesapal.sdk.model.txn_status.TransactionError
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdk.utils.PrefManager
@@ -77,6 +80,8 @@ class AuthFragment : Fragment() {
             extractData(it)
         } else {
 //            handleError(it?.message!!)
+            returnIntent(STATUS_CANCELLED,"Error during Tk Init")
+
         }
     }
 
@@ -102,7 +107,7 @@ class AuthFragment : Fragment() {
             proceedAfterVerification(it)
         } catch (e: Exception) {
             Log.e("SecAu" ,e.localizedMessage ?: "Unable to proceed, Please try again later ..")
-            // Handle any exceptions that might occur during key extraction or parsing.
+            returnIntent(STATUS_CANCELLED,"Error during Init")
         }
     }
 
@@ -308,6 +313,12 @@ class AuthFragment : Fragment() {
         dataRequiredAvailable = false
         errorMessage = message
     }
+
+    fun finishAndExit(activity: Activity, statusCode: String, message: String) {
+        val data = TransactionStatusResponse(error = TransactionError(code = statusCode, errorType = "Security", message = message))
+        PesapalSdkActivity.returnIntent(activity, PesapalSdkActivity.STATUS_CANCELLED, data)
+    }
+
 
 
     private fun registerIpn() {

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalSdkActivity
+import com.pesapal.sdk.model.txn_status.TransactionError
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.PrefManager.PREF_IS_URL_LIVE
@@ -46,7 +47,7 @@ fun initializeSecurity(activity: Activity):Boolean {
                     .setCancelable(false)
                     .setPositiveButton(activity.resources.getString(R.string.ok)) { dialog, _ ->
                         dialog.dismiss()
-                        finishAndExit(activity)
+                        finishAndExit(activity, "70","The device environment is unsecure" )
                     }.show()
             }
 
@@ -57,7 +58,7 @@ fun initializeSecurity(activity: Activity):Boolean {
                     .setCancelable(false)
                     .setPositiveButton(activity.resources.getString(R.string.exit)) { dialog, _ ->
                         dialog.dismiss()
-                        finishAndExit(activity)
+                        finishAndExit(activity, "92", "Application installed from untrusted sources")
                     }.show()
             }
 
@@ -68,7 +69,7 @@ fun initializeSecurity(activity: Activity):Boolean {
                     .setCancelable(false)
                     .setPositiveButton(activity.resources.getString(R.string.exit)) { dialog, _ ->
                         dialog.dismiss()
-                        finishAndExit(activity)
+                        finishAndExit(activity, "44", "This app cannot be used on an emulated device")
                     }.show()
             }
 
@@ -79,7 +80,7 @@ fun initializeSecurity(activity: Activity):Boolean {
                     .setCancelable(false)
                     .setPositiveButton(activity.resources.getString(R.string.dialog_okay)) { dialog, _ ->
                         dialog.dismiss()
-                        finishAndExit(activity)
+                        finishAndExit(activity, "63", "Developer options are enabled on this device")
                     }.show()
             }
 
@@ -90,7 +91,7 @@ fun initializeSecurity(activity: Activity):Boolean {
                     .setCancelable(false)
                     .setPositiveButton(activity.resources.getString(R.string.exit)) { dialog, _ ->
                         dialog.dismiss()
-                        finishAndExit(activity)
+                        finishAndExit(activity, "29", "The device environment is unsecure")
                     }.show()
             }
         }
@@ -121,23 +122,9 @@ fun initializeSecurity(activity: Activity):Boolean {
 
 }
 
-fun finishAndExit(activity: Activity) {
-    val returnIntent = Intent()
-    val obj = "Security check"
-    returnIntent.putExtra("status", PesapalSdkActivity.STATUS_CANCELLED)
-    val data = if(obj is String){
-        obj
-    }
-    else{
-        obj as TransactionStatusResponse
-    }
-    returnIntent.putExtra("data", data)
-
-    activity.setResult(AppCompatActivity.RESULT_OK, returnIntent)
-    activity.finish()
-//    activity.finishAffinity()
-
-//    exitProcess(0)
+fun finishAndExit(activity: Activity, statusCode: String, message: String) {
+//    val data = TransactionStatusResponse(error = TransactionError(code = statusCode, , message = message))
+    PesapalSdkActivity.returnIntentBuilder(activity,PesapalSdkActivity.STATUS_CANCELLED,statusCode, "Security", message)
 }
 
 enum class SecurityLevel {
