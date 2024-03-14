@@ -233,6 +233,7 @@ class CardFragmentCardData : Fragment() {
             accountReference = null,
             frequency = 0
         )
+        val fingerPrint = DeviceFingerprint(requireContext()).createFingerprint()
 
         val submitCardRequest = SubmitCardRequest(
             cvv = cardDetails.cvv,
@@ -244,7 +245,7 @@ class CardFragmentCardData : Fragment() {
             expiryYear = cardDetails.year.toString(),
             ipAddress = "1",
             cardNumber = cardDetails.cardNumber,
-            deviceId = DeviceFingerprint(requireContext()).createFingerprint().device_id
+            deviceId = fingerPrint.device_id
         )
 
         viewModel.submitCardRequest(submitCardRequest)

@@ -3,11 +3,13 @@ import android.content.Context
 import android.os.Build
 import android.provider.Settings
 import com.pesapal.sdk.BuildConfig
+import com.pesapal.sdk.Sdkapp
 import com.pesapal.sdk.utils.sec.BasicSecurity.verifyBasicSecurity
 import com.pesapal.sdk.utils.sec.SecurityLevel
-import com.pesapal.sdk.utils.sec.device.fingerprinting.DeviceFingerPrintModel
+import com.pesapal.sdk.model.fingerprinting.DeviceFingerPrintModel
+import com.pesapal.sdk.utils.PrefManager
 
-class DeviceFingerprint(private val context: Context) {
+internal class DeviceFingerprint(private val context: Context) {
     private fun getIMEI(): String? {
         // Implement your logic to get the IMEI here
         // Requires READ_PHONE_STATE permission
@@ -39,12 +41,14 @@ class DeviceFingerprint(private val context: Context) {
         val imei = getIMEI() ?: ""
         val androidId = getAndroidID() ?: ""
 
-        val deviceSecurity: String = if (BuildConfig.BUILD_TYPE.contains("release"))
+//        val deviceSecurity: String = if (BuildConfig.BUILD_TYPE.contains("release"))
+        val deviceSecurity: String = if (PrefManager.getBoolean(Sdkapp.getContextInstance(), PrefManager.PREF_IS_URL_LIVE, true))
             deviceSecurity()
         else
             SecurityLevel.ACCEPTABLE.toString()
 
         val deviceBuildInfo = getDeviceBuildInfo()
+//        Log.e("Device")
 
         return DeviceFingerPrintModel(
             manufacturer = manufacturer,

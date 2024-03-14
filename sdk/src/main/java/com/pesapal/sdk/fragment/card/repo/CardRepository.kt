@@ -21,7 +21,6 @@ import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.Resource
 import com.pesapal.sdk.utils.RetrofitErrorUtil
-import com.pesapal.sdk.utils.sec.model.EncModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

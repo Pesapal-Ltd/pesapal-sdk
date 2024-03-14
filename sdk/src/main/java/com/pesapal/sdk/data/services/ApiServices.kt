@@ -14,7 +14,6 @@ import com.pesapal.sdk.model.card.ResponseServerJwt
 import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.sdk.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
-import com.pesapal.sdk.model.card.submit.request.SubmitCardRequestRed
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequestRedRoot
 import com.pesapal.sdk.model.card.submit.response.SubmitCardResponse
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
@@ -22,7 +21,6 @@ import com.pesapal.sdk.model.mobile_money.MobileMoneyResponse
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.sdk.model.registerIpn_url.RegisterIpnResponse
-import com.pesapal.sdk.utils.sec.model.EncModel
 import retrofit2.http.*
 
 internal interface ApiServices {

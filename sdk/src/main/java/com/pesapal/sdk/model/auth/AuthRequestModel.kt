@@ -1,7 +1,7 @@
 package com.pesapal.sdk.model.auth
 
 import com.google.gson.annotations.SerializedName
-import com.pesapal.sdk.utils.sec.device.fingerprinting.DeviceFingerPrintModel
+import com.pesapal.sdk.model.fingerprinting.DeviceFingerPrintModel
 
 
 internal data class AuthRequestModel(

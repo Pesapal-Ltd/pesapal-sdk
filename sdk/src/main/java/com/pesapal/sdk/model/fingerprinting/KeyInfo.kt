@@ -1,8 +1,8 @@
-package com.pesapal.sdk.utils.sec.device.integrity
+package com.pesapal.sdk.model.fingerprinting
 
 import com.google.gson.annotations.SerializedName
 
-data class KeyInfo(@SerializedName("modulus")
+internal data class KeyInfo(@SerializedName("modulus")
                    val modulus: String = "",
                    @SerializedName("exponent")
                    val exponent: String = "")

@@ -24,10 +24,7 @@ import com.pesapal.sdk.model.card.submit.response.SubmitCardResponse
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.Resource
 import com.pesapal.sdk.utils.Status
-import com.pesapal.sdk.utils.sec.EncryptRequests
-import com.pesapal.sdk.utils.sec.EncryptRequests.encrypt
 import com.pesapal.sdk.utils.sec.EncryptRequests.encryptWithPublicKey
-import com.pesapal.sdk.utils.sec.model.EncModel
 import kotlinx.coroutines.launch
 
 internal class CardViewModel : ViewModel() {
@@ -88,12 +85,8 @@ internal class CardViewModel : ViewModel() {
     fun submitCardRequest(submitCardRequest: SubmitCardRequest){
         _submitCardResponse.postValue(Resource.loading("Processing request"))
         viewModelScope.launch {
-//            val encryptedData = encryptWithPublicKey(Gson().toJson(submitCardRequest))
-//            val encryptedData = encrypt(Gson().toJson(submitCardRequest))
-
             val payloadData = SubmitCardRequestRed(submitCardRequest.cvv, submitCardRequest.expiryMonth, submitCardRequest.expiryYear, submitCardRequest.cardNumber)
             val encryptedData = encryptWithPublicKey(Gson().toJson(payloadData))
-            Log.e("Cardview", "encryptedData data $encryptedData")
 
             val encryptedCard = SubmitCardRequestRedRoot(
                 payload = encryptedData,
@@ -104,10 +97,7 @@ internal class CardViewModel : ViewModel() {
                 ipAddress = "1",
                 tokenizeCard = submitCardRequest.tokenizeCard,
                 deviceId = submitCardRequest.deviceId
-
             )
-            Log.e("Cardview", "json data ${Gson().toJson(encryptedCard)}")
-
 
             val result = cardRepository.submitCardRequest(encryptedCard)
             when(result.status){

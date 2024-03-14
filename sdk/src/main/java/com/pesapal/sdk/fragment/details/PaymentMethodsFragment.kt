@@ -420,6 +420,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             frequency = 0
         )
 
+        val fingerPrint = DeviceFingerprint(requireContext()).createFingerprint()
         val submitCardRequest = SubmitCardRequest(
             cvv = cardDetails.cvv,
             enrollmentCheckResult = enrollmentCheckResult,
@@ -431,7 +432,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             ipAddress = "1",
             cardNumber = cardDetails.cardNumber,
             tokenizeCard = tokenize,
-            deviceId = DeviceFingerprint(requireContext()).createFingerprint().device_id
+            deviceId = fingerPrint.device_id
         )
 
         cardViewModel.submitCardRequest(submitCardRequest)

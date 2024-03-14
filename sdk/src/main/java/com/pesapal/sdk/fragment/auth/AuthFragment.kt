@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.pesapal.sdk.activity.PesapalPayActivity
 import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentAuthorizingBinding
@@ -31,7 +30,6 @@ import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.Status
 import com.pesapal.sdk.utils.sec.ParseUtil
-import com.pesapal.sdk.utils.sec.device.integrity.PlayIntegrityResponse
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.security.KeyFactory
@@ -67,7 +65,8 @@ class AuthFragment : Fragment() {
 
     private fun initData(){
         PrefManager.setToken(requireContext(), null)
-        val authRequestModel = AuthRequestModel(paymentDetails.consumer_key, paymentDetails.consumer_secret, DeviceFingerprint(requireContext()).createFingerprint())
+        val authRequestModel = AuthRequestModel(paymentDetails.consumer_key, paymentDetails.consumer_secret,
+            DeviceFingerprint(requireContext()).createFingerprint())
         Handler(Looper.getMainLooper()).postDelayed({
             viewModel.authPayment(authRequestModel)
         },800)

@@ -1,9 +1,7 @@
-package com.pesapal.sdk.utils.sec.device.fingerprinting
-
-import com.pesapal.sdk.BuildConfig
+package com.pesapal.sdk.model.fingerprinting
 
 
-class DeviceFingerPrintModel(
+ internal data class DeviceFingerPrintModel(
     var manufacturer: String = "",
     var imei: String = "",
     var device_id: String = "",
