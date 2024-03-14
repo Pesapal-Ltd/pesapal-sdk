@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     private lateinit var binding:ActivityMainBinding
     private var currency = ""
-    private lateinit var auth: FirebaseAuth
+//    private lateinit var auth: FirebaseAuth
     private var total = BigDecimal.ZERO
     private lateinit var demoCartAdapter: DemoCartAdapter
     private lateinit var catalogueModelList: MutableList<CatalogueModel.ProductsBean>
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         }
         PESAPALAPI3SDK.init(
             this,
-            PrefManager.getConsumerKey(),
+            "PrefManager.getConsumerKey()",
             PrefManager.getConsumerSecret(),
             PrefManager.getAccount(),
             PrefManager.getCallBackUrl(),
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun initData(){
-        getToken()
+//        getToken()
         initRecyclerData()
         handleClicks()
     }
@@ -166,33 +166,32 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     override fun onResume() {
         super.onResume()
-        auth = FirebaseAuth.getInstance()
-        if(auth.currentUser != null){
-            getProfile()
-
-        }
+//        auth = FirebaseAuth.getInstance()
+//        if(auth.currentUser != null){
+//            getProfile()
+//        }
         currency = PrefManager.getCurrency()
         initData()
         initSdk()
         updateBasketList()
-        configureGoogleSign()
+//        configureGoogleSign()
     }
 
-    private fun getProfile(){
-        val db = FirebaseFirestore.getInstance()
-        val documentBalance = db.collection("users").document(auth.currentUser?.email!!).get()
-        documentBalance.addOnCompleteListener {
-            if(it.isSuccessful){
-                val photoUrl: String? = it.result.get("photoUrl").toString()
-                if(photoUrl != null) {
-                    setImage(photoUrl)
-                }
-            }else{
-//                showMessage("Unable to get your account ")
-            }
-        }
-
-    }
+//    private fun getProfile(){
+//        val db = FirebaseFirestore.getInstance()
+//        val documentBalance = db.collection("users").document(auth.currentUser?.email!!).get()
+//        documentBalance.addOnCompleteListener {
+//            if(it.isSuccessful){
+//                val photoUrl: String? = it.result.get("photoUrl").toString()
+//                if(photoUrl != null) {
+//                    setImage(photoUrl)
+//                }
+//            }else{
+////                showMessage("Unable to get your account ")
+//            }
+//        }
+//
+//    }
 
     private fun setImage(photoUrl: String){
         Picasso.get().load(photoUrl).into(binding.civProfile);
@@ -303,13 +302,13 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account)
-            } catch (e: Exception) {
-                showMessage("An error occurred " + e.localizedMessage)
-            }
+//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//            try {
+//                val account = task.getResult(ApiException::class.java)!!
+//                firebaseAuthWithGoogle(account)
+//            } catch (e: Exception) {
+//                showMessage("An error occurred " + e.localizedMessage)
+//            }
         }else if (requestCode == PAYMENT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 val result = data?.getStringExtra("status")
@@ -358,23 +357,23 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         showMessage(message)
     }
 
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    showMessage("Login Success ...")
-                    val isNew: Boolean = it.result?.additionalUserInfo!!.isNewUser
-                    if(isNew) {
-                        loginSuccess(account)
-                    }else{
-                        startPayment()
-                    }
-                } else {
-                    showMessage("Unable to login ..")
-                }
-            }
-    }
+//    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
+//        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+//        auth.signInWithCredential(credential)
+//            .addOnCompleteListener {
+//                if (it.isSuccessful) {
+//                    showMessage("Login Success ...")
+//                    val isNew: Boolean = it.result?.additionalUserInfo!!.isNewUser
+//                    if(isNew) {
+//                        loginSuccess(account)
+//                    }else{
+//                        startPayment()
+//                    }
+//                } else {
+//                    showMessage("Unable to login ..")
+//                }
+//            }
+//    }
 
     private fun loginSuccess(credential: GoogleSignInAccount){
         val dateTime = TimeUtils.getCurrentDateTime()

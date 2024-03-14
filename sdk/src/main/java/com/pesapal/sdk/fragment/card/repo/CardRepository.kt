@@ -19,6 +19,7 @@ import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.Resource
 import com.pesapal.sdk.utils.RetrofitErrorUtil
+import com.pesapal.sdk.utils.sec.model.EncModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -53,6 +54,26 @@ internal class CardRepository {
         return withContext(Dispatchers.IO){
             try{
                 val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(Sdkapp.getContextInstance()),processCardRequestV)
+                if(cardExpressCheckoutResponse.status == "200") {
+                    Resource.success(cardExpressCheckoutResponse)
+                }else{
+                    var error = cardExpressCheckoutResponse.error?.message
+                    if(error == ""){
+                        error =  cardExpressCheckoutResponse.error?.code
+                    }
+                    Resource.error(error!!, cardExpressCheckoutResponse)
+                }
+            }catch (e: Exception){
+                Log.e("Card" ,"Actual error " + e.localizedMessage)
+                Resource.error(RetrofitErrorUtil.serverException(e))
+            }
+        }
+
+    }
+    suspend fun submitCardRequest(encModel: EncModel): Resource<SubmitCardResponse> {
+        return withContext(Dispatchers.IO){
+            try{
+                val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(Sdkapp.getContextInstance()),encModel)
                 if(cardExpressCheckoutResponse.status == "200") {
                     Resource.success(cardExpressCheckoutResponse)
                 }else{

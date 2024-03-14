@@ -25,7 +25,8 @@ import retrofit2.http.*
 
 internal interface ApiServices {
 
-    @POST("api/Auth/RequestToken")
+//    @POST("api/Auth/RequestToken")
+    @POST("api/Auth/SDKTokenRequest")
     suspend fun authPayment(@Body authRequestModel: AuthRequestModel) : AuthResponseModel
 
     @POST("api/URLSetup/RegisterIPN")
@@ -40,7 +41,7 @@ internal interface ApiServices {
     @POST("api/transactions/expresscardrequest")
     suspend fun submitCardRequest(@Header("Authorization") token: String, @Body submitCardRequest: SubmitCardRequest) : SubmitCardResponse
 
-    @POST("api/transactions/expresscardrequest")
+    @POST("api/transactions/securesdkcheckout")
     suspend fun submitCardRequest(@Header("Authorization") token: String, @Body encModel:EncModel) : SubmitCardResponse
 
     @GET("api/Transactions/GetTransactionStatus")
@@ -48,7 +49,6 @@ internal interface ApiServices {
 
     @GET("api/Transactions/GetTransactionStatus")
     suspend fun getTransactionStatus(@Header("Authorization") token: String, @Query("orderTrackingId") orderTrackingId: String) : TransactionStatusResponse
-
 
 
     @Deprecated("OLDER VERSION")

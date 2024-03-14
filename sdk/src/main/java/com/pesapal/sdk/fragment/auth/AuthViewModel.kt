@@ -103,6 +103,7 @@ internal class AuthViewModel : ViewModel() {
 
         }
     }
+
 //    fun verifyToken(
 //        playIntegrityRequest: PlayIntegrityRequest
 //    ){
@@ -122,38 +123,6 @@ internal class AuthViewModel : ViewModel() {
 //        }
 //    }
 
-    private fun checkTokenVerificationData(it: PlayIntegrityResponse?) {
-        if (it?.status == "200") {
-            extractData(it)
-        } else {
-//            handleError(it?.message!!)
-        }
-    }
 
-    private fun extractData(it: PlayIntegrityResponse?) {
-        try {
-            val publicKey = parseRSAKeyValue(it?.keyInfo?.modulus!!, it.keyInfo.exponent);
-            ParseUtil.parsePublicKey(publicKey)
-//            proceedAfterVerification()
-        } catch (e: Exception) {
-            Log.e("SecAu" ,e.localizedMessage ?: "Unable to proceed, Please try again later ..")
-            // Handle any exceptions that might occur during key extraction or parsing.
-        }
-    }
-
-    fun parseRSAKeyValue(modulus1: String, exponent1: String): PublicKey {
-
-        val modulusBytes = Base64.decode(modulus1, Base64.DEFAULT)
-        val exponentBytes = Base64.decode(exponent1, Base64.DEFAULT)
-
-        val modulus = BigInteger(1, modulusBytes)
-        val exponent = BigInteger(1, exponentBytes)
-
-        val spec = RSAPublicKeySpec(modulus, exponent)
-        val keyFactory = KeyFactory.getInstance("RSA")
-
-        val publicKey = keyFactory.generatePublic(spec)
-        return publicKey;
-    }
 
 }

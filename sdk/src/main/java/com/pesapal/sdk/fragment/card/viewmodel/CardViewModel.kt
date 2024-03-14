@@ -1,5 +1,6 @@
 package com.pesapal.sdk.fragment.card.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,6 +22,8 @@ import com.pesapal.sdk.model.card.submit.response.SubmitCardResponse
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.Resource
 import com.pesapal.sdk.utils.Status
+import com.pesapal.sdk.utils.sec.EncryptRequests
+import com.pesapal.sdk.utils.sec.EncryptRequests.encrypt
 import com.pesapal.sdk.utils.sec.EncryptRequests.encryptWithPublicKey
 import com.pesapal.sdk.utils.sec.model.EncModel
 import kotlinx.coroutines.launch
@@ -83,10 +86,16 @@ internal class CardViewModel : ViewModel() {
     fun submitCardRequest(submitCardRequest: SubmitCardRequest){
         _submitCardResponse.postValue(Resource.loading("Processing request"))
         viewModelScope.launch {
-            val result = cardRepository.submitCardRequest(submitCardRequest)
-            val encryptedData = encryptWithPublicKey(Gson().toJson(submitCardRequest))
+//            val encryptedData = encryptWithPublicKey(Gson().toJson(submitCardRequest))
+//            val encryptedData = encrypt(Gson().toJson(submitCardRequest))
 
-//            val result =EncModel(encryptedData)
+
+            val encryptedData = encryptWithPublicKey(Gson().toJson(EncModel("Testing")))
+            Log.e("Cardview", "encryptedData data $encryptedData")
+            Log.e("Cardview", "json data ${Gson().toJson(submitCardRequest)}")
+
+            val result = cardRepository.submitCardRequest(EncModel(encryptedData))
+
             when(result.status){
                 Status.ERROR -> {
                     _submitCardResponse.postValue(Resource.error(result.message!!, result.data))
