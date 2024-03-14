@@ -14,6 +14,8 @@ import com.pesapal.sdk.model.card.ResponseServerJwt
 import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.sdk.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
+import com.pesapal.sdk.model.card.submit.request.SubmitCardRequestRed
+import com.pesapal.sdk.model.card.submit.request.SubmitCardRequestRedRoot
 import com.pesapal.sdk.model.card.submit.response.SubmitCardResponse
 import com.pesapal.sdk.model.mobile_money.MobileMoneyRequest
 import com.pesapal.sdk.model.mobile_money.MobileMoneyResponse
@@ -42,7 +44,7 @@ internal interface ApiServices {
     suspend fun submitCardRequest(@Header("Authorization") token: String, @Body submitCardRequest: SubmitCardRequest) : SubmitCardResponse
 
     @POST("api/transactions/securesdkcheckout")
-    suspend fun submitCardRequest(@Header("Authorization") token: String, @Body encModel:EncModel) : SubmitCardResponse
+    suspend fun submitCardRequest(@Header("Authorization") token: String, @Body submitCardRequestRedRoot: SubmitCardRequestRedRoot) : SubmitCardResponse
 
     @GET("api/Transactions/GetTransactionStatus")
     suspend fun checkCardPaymentStatus(@Header("Authorization") token: String, @Query("orderTrackingId") orderTrackingId: String) : TransactionStatusResponse

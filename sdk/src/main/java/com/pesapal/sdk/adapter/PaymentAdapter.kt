@@ -139,7 +139,7 @@ internal class PaymentAdapter(
                         }
                         else if(method.mobileProvider.contains(CountryCodeEval.MTN_PROV_NAME)){
                             holder.clLipaNaMpesa.visibility = View.VISIBLE
-                            holder.clLipaNaMpesa.text = context.getString(R.string.mtn_combo)
+                            holder.clLipaNaMpesa.text = context.getString(R.string.mtn_combo, phone.text.toString())
                         }
                         else{
                             // Airtel and TIGO don't have backup options yet

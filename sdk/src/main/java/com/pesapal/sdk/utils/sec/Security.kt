@@ -3,13 +3,17 @@ package com.pesapal.sdk.utils.sec
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
 import android.util.Base64
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pesapal.sdk.R
+import com.pesapal.sdk.activity.PesapalSdkActivity
+import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.PrefManager.PREF_IS_URL_LIVE
 import java.io.BufferedReader
@@ -23,9 +27,11 @@ fun initializeSecurity(activity: Activity):Boolean {
 
     val withSecurityChecks = PrefManager.getBoolean(activity, PREF_IS_URL_LIVE, true)
 //    val signature = BuildConfig.SIGNATURE
-    val dialog_title = "Sec Check"
+//    val dialog_title = "Sec Check"
+    val dialog_title = "Payment"
     var prop = false
 
+    var baseSecurityString = "Unable to initiate payment. Security reason:"
 
     // Device security
     val securityLevel: SecurityLevel = BasicSecurity.verifyBasicSecurity(activity as Context, withSecurityChecks)
@@ -36,11 +42,10 @@ fun initializeSecurity(activity: Activity):Boolean {
             SecurityLevel.HOOKING_APP_DETECTED -> {
                 MaterialAlertDialogBuilder(activity)
                     .setTitle(dialog_title)
-                    .setMessage("This app cannot be used. The device environment is unsecure")
+                    .setMessage("$baseSecurityString 70")               //This app cannot be used. The device environment is unsecure
                     .setCancelable(false)
                     .setPositiveButton(activity.resources.getString(R.string.ok)) { dialog, _ ->
                         dialog.dismiss()
-
                         finishAndExit(activity)
                     }.show()
             }
@@ -48,11 +53,10 @@ fun initializeSecurity(activity: Activity):Boolean {
             SecurityLevel.UNKNOWN_INSTALLER -> {
                 MaterialAlertDialogBuilder(activity)
                     .setTitle(dialog_title)
-                    .setMessage("This app cannot be used. Installed from untrusted sources")
+                    .setMessage( "$baseSecurityString 92")              // This app cannot be used. Installed from untrusted sources
                     .setCancelable(false)
                     .setPositiveButton(activity.resources.getString(R.string.exit)) { dialog, _ ->
                         dialog.dismiss()
-
                         finishAndExit(activity)
                     }.show()
             }
@@ -60,11 +64,10 @@ fun initializeSecurity(activity: Activity):Boolean {
             SecurityLevel.EMULATOR -> {
                 MaterialAlertDialogBuilder(activity)
                     .setTitle(dialog_title)
-                    .setMessage("This app cannot be used on an emulated device")
+                    .setMessage("$baseSecurityString 44")               //This app cannot be used on an emulated device
                     .setCancelable(false)
                     .setPositiveButton(activity.resources.getString(R.string.exit)) { dialog, _ ->
                         dialog.dismiss()
-
                         finishAndExit(activity)
                     }.show()
             }
@@ -72,11 +75,10 @@ fun initializeSecurity(activity: Activity):Boolean {
             SecurityLevel.ADB_ENABLED -> {
                 MaterialAlertDialogBuilder(activity)
                     .setTitle(dialog_title)
-                    .setMessage("Developer options are enabled on this device. Kindly turn the setting off for the app to open")
+                    .setMessage("$baseSecurityString 63")              //Developer options are enabled on this device. Kindly turn the setting off for the app to open
                     .setCancelable(false)
                     .setPositiveButton(activity.resources.getString(R.string.dialog_okay)) { dialog, _ ->
                         dialog.dismiss()
-
                         finishAndExit(activity)
                     }.show()
             }
@@ -84,11 +86,10 @@ fun initializeSecurity(activity: Activity):Boolean {
             else -> {
                 MaterialAlertDialogBuilder(activity)
                     .setTitle(dialog_title)
-                    .setMessage("This app cannot be used. The device environment is unsecure")
+                    .setMessage("$baseSecurityString 29")               //This app cannot be used. The device environment is unsecure
                     .setCancelable(false)
                     .setPositiveButton(activity.resources.getString(R.string.exit)) { dialog, _ ->
                         dialog.dismiss()
-
                         finishAndExit(activity)
                     }.show()
             }
@@ -102,7 +103,7 @@ fun initializeSecurity(activity: Activity):Boolean {
 //    if (verifyAppLevelSecurity(activity as Context, withSecurityChecks, signature) == DeviceSecurityLevel.INVALID_SIGNATURE) {
 //        MaterialAlertDialogBuilder(activity)
 //            .setTitle(dialog_title)
-//            .setMessage("Application signature is invalid")
+//            .setMessage("$baseSecurityString 99")                               //Application signature is invalid
 //            .setCancelable(false)
 //            .setPositiveButton(activity.resources.getString(R.string.exit)) { dialog, _ ->
 //                dialog.dismiss()
@@ -121,9 +122,22 @@ fun initializeSecurity(activity: Activity):Boolean {
 }
 
 fun finishAndExit(activity: Activity) {
-    activity.finishAffinity()
+    val returnIntent = Intent()
+    val obj = "Security check"
+    returnIntent.putExtra("status", PesapalSdkActivity.STATUS_CANCELLED)
+    val data = if(obj is String){
+        obj
+    }
+    else{
+        obj as TransactionStatusResponse
+    }
+    returnIntent.putExtra("data", data)
 
-    exitProcess(0)
+    activity.setResult(AppCompatActivity.RESULT_OK, returnIntent)
+    activity.finish()
+//    activity.finishAffinity()
+
+//    exitProcess(0)
 }
 
 enum class SecurityLevel {

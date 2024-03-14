@@ -1,6 +1,7 @@
 package com.pesapal.sdk.fragment.card.data
 
 
+import DeviceFingerprint
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.Editable
@@ -243,7 +244,7 @@ class CardFragmentCardData : Fragment() {
             expiryYear = cardDetails.year.toString(),
             ipAddress = "1",
             cardNumber = cardDetails.cardNumber,
-            deviceId = "TODO"
+            deviceId = DeviceFingerprint(requireContext()).createFingerprint().device_id
         )
 
         viewModel.submitCardRequest(submitCardRequest)

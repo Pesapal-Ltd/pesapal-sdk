@@ -18,6 +18,8 @@ import com.pesapal.sdk.model.card.ResponseServerJwt
 import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.sdk.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
+import com.pesapal.sdk.model.card.submit.request.SubmitCardRequestRed
+import com.pesapal.sdk.model.card.submit.request.SubmitCardRequestRedRoot
 import com.pesapal.sdk.model.card.submit.response.SubmitCardResponse
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.Resource
@@ -89,13 +91,25 @@ internal class CardViewModel : ViewModel() {
 //            val encryptedData = encryptWithPublicKey(Gson().toJson(submitCardRequest))
 //            val encryptedData = encrypt(Gson().toJson(submitCardRequest))
 
-
-            val encryptedData = encryptWithPublicKey(Gson().toJson(EncModel("Testing")))
+            val payloadData = SubmitCardRequestRed(submitCardRequest.cvv, submitCardRequest.expiryMonth, submitCardRequest.expiryYear, submitCardRequest.cardNumber)
+            val encryptedData = encryptWithPublicKey(Gson().toJson(payloadData))
             Log.e("Cardview", "encryptedData data $encryptedData")
-            Log.e("Cardview", "json data ${Gson().toJson(submitCardRequest)}")
 
-            val result = cardRepository.submitCardRequest(EncModel(encryptedData))
+            val encryptedCard = SubmitCardRequestRedRoot(
+                payload = encryptedData,
+                enrollmentCheckResult = submitCardRequest.enrollmentCheckResult,
+                subscriptionDetails = submitCardRequest.subscriptionDetails,
+                orderTrackingId = submitCardRequest.orderTrackingId,
+                billingAddress = submitCardRequest.billingAddress,
+                ipAddress = "1",
+                tokenizeCard = submitCardRequest.tokenizeCard,
+                deviceId = submitCardRequest.deviceId
 
+            )
+            Log.e("Cardview", "json data ${Gson().toJson(encryptedCard)}")
+
+
+            val result = cardRepository.submitCardRequest(encryptedCard)
             when(result.status){
                 Status.ERROR -> {
                     _submitCardResponse.postValue(Resource.error(result.message!!, result.data))
@@ -109,6 +123,27 @@ internal class CardViewModel : ViewModel() {
 
         }
     }
+
+    /**
+     * Older model for sending card
+     */
+//    fun submitCardRequest(submitCardRequest: SubmitCardRequest){
+//        _submitCardResponse.postValue(Resource.loading("Processing request"))
+//        viewModelScope.launch {
+//            val result = cardRepository.submitCardRequest(submitCardRequest)
+//            when(result.status){
+//                Status.ERROR -> {
+//                    _submitCardResponse.postValue(Resource.error(result.message!!, result.data))
+//                }
+//                Status.SUCCESS -> {
+//                    _submitCardResponse.postValue(Resource.success(result.data))
+//                }
+//                else -> {
+//                }
+//            }
+//
+//        }
+//    }
 
 
     fun checkCardPaymentStatus(trackingId: String){

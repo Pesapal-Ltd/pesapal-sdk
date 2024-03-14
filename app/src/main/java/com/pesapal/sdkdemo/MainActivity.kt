@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         }
         PESAPALAPI3SDK.init(
             this,
-            "PrefManager.getConsumerKey()",
+            PrefManager.getConsumerKey(),
             PrefManager.getConsumerSecret(),
             PrefManager.getAccount(),
             PrefManager.getCallBackUrl(),

@@ -14,6 +14,8 @@ import com.pesapal.sdk.model.card.ResponseServerJwt
 import com.pesapal.sdk.model.card.order_id.request.CardOrderTrackingIdRequest
 import com.pesapal.sdk.model.card.order_id.response.CardOrderTrackingIdResponse
 import com.pesapal.sdk.model.card.submit.request.SubmitCardRequest
+import com.pesapal.sdk.model.card.submit.request.SubmitCardRequestRed
+import com.pesapal.sdk.model.card.submit.request.SubmitCardRequestRedRoot
 import com.pesapal.sdk.model.card.submit.response.SubmitCardResponse
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PrefManager
@@ -70,10 +72,10 @@ internal class CardRepository {
         }
 
     }
-    suspend fun submitCardRequest(encModel: EncModel): Resource<SubmitCardResponse> {
+    suspend fun submitCardRequest(submitCardRequestRedRoot: SubmitCardRequestRedRoot): Resource<SubmitCardResponse> {
         return withContext(Dispatchers.IO){
             try{
-                val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(Sdkapp.getContextInstance()),encModel)
+                val cardExpressCheckoutResponse = apiService.submitCardRequest("Bearer "+ PrefManager.getToken(Sdkapp.getContextInstance()),submitCardRequestRedRoot)
                 if(cardExpressCheckoutResponse.status == "200") {
                     Resource.success(cardExpressCheckoutResponse)
                 }else{

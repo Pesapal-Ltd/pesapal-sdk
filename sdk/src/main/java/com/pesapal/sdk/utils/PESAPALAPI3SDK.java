@@ -16,8 +16,10 @@ public class PESAPALAPI3SDK {
     public static String LAST_NAME  = "0fc5d353-ce20-400f-86ac-3ce3ac4b88ef";
     public static String EMAIL      = "ed0d5168-0ef7-46d2-ae4b-5466cf037232";
 
-//    public static String CURRENCY_CODE_KES      = "KES";
-//    public static String CURRENCY_CODE_USD      = "USD";
+    public static String CURRENCY_CODE_KES      = "KES";
+    public static String CURRENCY_CODE_UGX      = "UGX";
+    public static String CURRENCY_CODE_TZS      = "TZS";
+    public static String CURRENCY_CODE_USD      = "USD";
 
 //    public static String COUNTRY_KE = "KE";
 //    public static String COUNTRY_TZ = "TZ";

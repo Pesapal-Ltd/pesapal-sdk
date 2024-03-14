@@ -18,11 +18,11 @@ object EncryptRequests {
         // Step 2: Convert the request data to bytes
         val requestDataBytes = requestData.toByteArray(Charsets.UTF_8)
         // Step 3: Encrypt the request data using the RSA public key
-//        val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
+        val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
 //        val cipher = Cipher.getInstance("RSA/NONE/NOPADDING")
 //        val cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding")
 //        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")// Error aes cant be used with rsa
-        val cipher = Cipher.getInstance("RSA/ECB/NOPADDING")
+//        val cipher = Cipher.getInstance("RSA/ECB/NOPADDING")
 //        val cipher = Cipher.getInstance("RSA/ECB/PKCS5Padding")
 
 

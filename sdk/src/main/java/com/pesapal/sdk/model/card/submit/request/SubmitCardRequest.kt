@@ -6,7 +6,7 @@ import com.pesapal.sdk.model.card.BillingAddress
 internal data class SubmitCardRequest(@SerializedName("cvv")
                                val cvv: String = "",
                              @SerializedName("enrollment_check_result")
-                               val enrollmentCheckResult: EnrollmentCheckResult,
+                               val enrollmentCheckResult:  EnrollmentCheckResult,
                              @SerializedName("subscription_details")
                                val subscriptionDetails: SubscriptionDetails,
                              @SerializedName("order_tracking_id")
@@ -26,3 +26,32 @@ internal data class SubmitCardRequest(@SerializedName("cvv")
                               @SerializedName("device_id")
                               val deviceId: String,
     )
+
+internal data class SubmitCardRequestRedRoot(
+    @SerializedName("payload")
+    var payload: String = "",
+      @SerializedName("enrollment_check_result")
+      val enrollmentCheckResult:  EnrollmentCheckResult,
+      @SerializedName("subscription_details")
+      val subscriptionDetails: SubscriptionDetails,
+      @SerializedName("order_tracking_id")
+      val orderTrackingId: String? = "",
+      @SerializedName("billing_address")
+      val billingAddress: BillingAddress,
+      @SerializedName("ip_address")
+      val ipAddress: String = "",
+      @SerializedName("tokenize_card")
+      val tokenizeCard: Boolean = false,
+    @SerializedName("device_id")
+    val deviceId: String,
+)
+
+internal data class SubmitCardRequestRed(@SerializedName("cvv")
+                                      val cvv: String,
+                                      @SerializedName("expiryMonth")
+                                      val expiryMonth: String,
+                                      @SerializedName("expiryYear")
+                                      val expiryYear: String,
+                                      @SerializedName("cardNumber")
+                                      val cardNumber: String ,
+)

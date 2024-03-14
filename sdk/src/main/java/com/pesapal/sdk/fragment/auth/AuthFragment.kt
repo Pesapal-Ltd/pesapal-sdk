@@ -108,8 +108,8 @@ class AuthFragment : Fragment() {
     }
 
     private fun proceedAfterVerification(it: AuthResponseModel?){
-//        val token = it?.token
-        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3VzZXJkYXRhIjoiZWQ2MTkwMGYtZGNiMy00NjM2LWIxNGUtY2U1MGQwYzk2M2I1IiwidWlkIjoicWtpbzFCR0dZQVhUdTJKT2ZtN1hTWE5ydW9ac3JxRVciLCJuYmYiOjE3MTAzNDUxOTUsImV4cCI6MTcxMDM0Njk5NSwiaWF0IjoxNzEwMzQ1MTk1LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUyMjUzLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIyNTMvIn0.6nKCEyQhuz10BXil7OG7vnXF1ZCis_u_rtMAIIi9e_8"
+        val token = it?.token
+//        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3VzZXJkYXRhIjoiZWQ2MTkwMGYtZGNiMy00NjM2LWIxNGUtY2U1MGQwYzk2M2I1IiwidWlkIjoicWtpbzFCR0dZQVhUdTJKT2ZtN1hTWE5ydW9ac3JxRVciLCJuYmYiOjE3MTAzNDUxOTUsImV4cCI6MTcxMDM0Njk5NSwiaWF0IjoxNzEwMzQ1MTk1LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUyMjUzLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIyNTMvIn0.6nKCEyQhuz10BXil7OG7vnXF1ZCis_u_rtMAIIi9e_8"
         PrefManager.setToken(requireContext(),token)
         registerIpn()
     }

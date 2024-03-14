@@ -1,11 +1,12 @@
 package com.pesapal.sdkdemo.utils
 
+import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdkdemo.profile.KeysSecret
 
 object PrefUtil {
-    var keotherCurrency = listOf("KES", "USD")
-    var ugotherCurrency = listOf("UGX", "USD")
-    var tzotherCurrency = listOf("TZS", "USD")
+    var keotherCurrency = listOf(PESAPALAPI3SDK.CURRENCY_CODE_KES, PESAPALAPI3SDK.CURRENCY_CODE_USD)
+    var ugotherCurrency = listOf(PESAPALAPI3SDK.CURRENCY_CODE_UGX, PESAPALAPI3SDK.CURRENCY_CODE_USD)
+    var tzotherCurrency = listOf(PESAPALAPI3SDK.CURRENCY_CODE_TZS, PESAPALAPI3SDK.CURRENCY_CODE_USD)
     var countriesList = listOf("Kenya", "Uganda", "Tanzania")
     val demoKeys = listOf(
         KeysSecret("Kenya","qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW","osGQ364R49cXKeOYSpaOnT++rHs="),

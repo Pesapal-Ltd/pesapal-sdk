@@ -3,12 +3,13 @@ package com.pesapal.sdkdemo.utils;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.pesapal.sdk.utils.PESAPALAPI3SDK;
 import com.pesapal.sdkdemo.AppDemo;
 
 
 public class PrefManager {
 
-    private static final String CURRENCY= "KES";
+    private static final String CURRENCY= "CURRENCY";
     private static final String CONSUMER_KEY= "CONSUMER_KEY";
     private static final String CONSUMER_SECRET= "CONSUMER_SECRET";
     private static final String CALL_BACK_URL = "CALL_BACK_URL";
@@ -55,7 +56,7 @@ public class PrefManager {
     }
 
     public static String getCurrency(){
-        return getString(CURRENCY,"KES");
+        return getString(CURRENCY, PESAPALAPI3SDK.CURRENCY_CODE_KES);
     }
 
     public static void setConsumerKey(String consumerKey){

@@ -1,5 +1,6 @@
 package com.pesapal.sdk.fragment.details
 
+import DeviceFingerprint
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
@@ -430,7 +431,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             ipAddress = "1",
             cardNumber = cardDetails.cardNumber,
             tokenizeCard = tokenize,
-            deviceId = "TODO"
+            deviceId = DeviceFingerprint(requireContext()).createFingerprint().device_id
         )
 
         cardViewModel.submitCardRequest(submitCardRequest)
