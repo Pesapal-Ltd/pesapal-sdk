@@ -17,6 +17,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.pesapal.sdk.activity.PesapalSdkActivity
+import com.pesapal.sdk.model.card.CustomerData
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PESAPALAPI3SDK
 import com.pesapal.sdkdemo.adapter.DemoCartAdapter
@@ -253,21 +254,34 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun initPayment(){
+
+        val line: String? = "a"
+        val countryCode: String? = "b"
+        val line2: String? = "c"
+        val emailAddress: String? = "d"
+        val city: String? = "e"
+        val lastName: String? = "d"
+        val phoneNumber: String? = "ddd"
+        val state: String? = "d"
+        val middleName: String? = "d"
+        val postalCode: String? = "dd"
+        val firstName: String? = "dd"
+        val zipCode: String? = "ddd"
+
+        val customerData = CustomerData(line, countryCode, line2, emailAddress, city, lastName, phoneNumber, state, middleName,postalCode, firstName, zipCode)
+
         val myIntent = Intent(this, PesapalSdkActivity::class.java)
         myIntent.putExtra(PESAPALAPI3SDK.AMOUNT     , total.toString())
         myIntent.putExtra(PESAPALAPI3SDK.ORDER_ID   ,orderId)
-
         myIntent.putExtra(PESAPALAPI3SDK.CURRENCY   ,currency)
-//        myIntent.putExtra(PESAPALAPI3SDK.CURRENCY   ,PESAPALAPI3SDK.CURRENCY_CODE_KES)
-
         myIntent.putExtra(PESAPALAPI3SDK.COUNTRY    ,translateCountryToEnum())
-//        myIntent.putExtra(PESAPALAPI3SDK.COUNTRY    ,"PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE")
-
-        myIntent.putExtra(PESAPALAPI3SDK.FIRST_NAME ,userModel.firstName)
-        myIntent.putExtra(PESAPALAPI3SDK.LAST_NAME  ,userModel.lastName)
-        myIntent.putExtra(PESAPALAPI3SDK.EMAIL      ,userModel.email)
+        myIntent.putExtra(PESAPALAPI3SDK.USER_DATA  ,customerData)
+//        myIntent.putExtra(PESAPALAPI3SDK.FIRST_NAME ,userModel.firstName)
+//        myIntent.putExtra(PESAPALAPI3SDK.LAST_NAME  ,userModel.lastName)
+//        myIntent.putExtra(PESAPALAPI3SDK.EMAIL      ,userModel.email)
         startActivityForResult(myIntent             ,PAYMENT_REQUEST)
     }
+
 
     /**
      * Converts the country chosen to an to the relevant ENUM
@@ -315,6 +329,10 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
                 orderId = createTransactionID()
                 binding.tvOrderId.text = "Order ID $orderId"
                 val transactionStatusResponse = data?.getSerializableExtra("data") as TransactionStatusResponse?
+
+                Log.e("Main" , "Error message is " + transactionStatusResponse?.error?.message)
+                Log.e("Main" , "Error code is " + transactionStatusResponse?.error?.code)
+                Log.e("Main" , "Error type is " + transactionStatusResponse?.error?.errorType)
 
                 transactionStatusResponse?.let {
                     when(result){

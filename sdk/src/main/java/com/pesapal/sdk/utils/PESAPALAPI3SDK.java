@@ -12,9 +12,7 @@ public class PESAPALAPI3SDK {
     public static String ORDER_ID   = "80887a91-9e38-4c26-982c-64e976ed1583";
     public static String CURRENCY   = "3d9f164d-977b-4fb0-9b8f-2f558f7ba587";
     public static String COUNTRY    = "c9de05ef-afd4-4070-8cbb-301223f7c515";
-    public static String FIRST_NAME = "aea1c6c5-f69f-4af9-96ef-dd463d62379d";
-    public static String LAST_NAME  = "0fc5d353-ce20-400f-86ac-3ce3ac4b88ef";
-    public static String EMAIL      = "ed0d5168-0ef7-46d2-ae4b-5466cf037232";
+    public static String USER_DATA = "aea1c6c5-f69f-4af9-96ef-dd463d62379d";
 
     public static String CURRENCY_CODE_KES      = "KES";
     public static String CURRENCY_CODE_UGX      = "UGX";

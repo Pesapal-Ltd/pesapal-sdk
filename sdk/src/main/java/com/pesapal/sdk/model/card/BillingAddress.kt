@@ -29,3 +29,18 @@ internal data class BillingAddress(@SerializedName("line_1")
                           val zipCode: String? = ""
 
 ): Serializable
+
+data class CustomerData(
+                                   val line: String? = "",
+                                   val countryCode: String? = "",
+                                   val line2: String? = "",
+                                   val emailAddress: String? = "",
+                                   val city: String? = "",
+                                   val lastName: String? = "",
+                                   val phoneNumber: String? = "",
+                                   val state: String? = "",
+                                   val middleName: String? = "",
+                                   val postalCode: String? = "",
+                                   val firstName: String? = "",
+                                   val zipCode: String? = ""
+): Serializable

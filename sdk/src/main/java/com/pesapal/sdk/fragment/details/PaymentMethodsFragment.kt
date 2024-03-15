@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -98,7 +97,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
         initRecycler()
 
         handleViewModel()
-
     }
 
     private fun evaluateRegionProvider(): List<Int> {
@@ -137,10 +135,12 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    PesapalSdkActivity.returnIntentBuilder(requireActivity(),
-                        STATUS_CANCELLED,"0 = General cancel", "Security", "Payment cancelled")
+                    PesapalSdkActivity.returnIntentBuilder(
+                        requireActivity(),
+                        STATUS_CANCELLED,"0 = General cancel",
+                        "Cancellation",
+                        "Payment cancelled")
 
-//                    PesapalSdkActivity.returnIntent(requireActivity(), STATUS_CANCELLED, )
                 }
             })
     }
