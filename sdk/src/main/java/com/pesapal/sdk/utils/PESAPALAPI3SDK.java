@@ -19,10 +19,6 @@ public class PESAPALAPI3SDK {
     public static String CURRENCY_CODE_TZS      = "TZS";
     public static String CURRENCY_CODE_USD      = "USD";
 
-//    public static String COUNTRY_KE = "KE";
-//    public static String COUNTRY_TZ = "TZ";
-//    public static String COUNTRY_UG = "UG";
-
     public enum COUNTRIES_ENUM {
         COUNTRY_KE, COUNTRY_TZ, COUNTRY_UG
     }

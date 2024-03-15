@@ -91,6 +91,7 @@ internal class PaymentAdapter(
         }
         else if(holder is PaymentMobileMoneyAdapterVh){
             hideExpandedView(holder.endIcon, holder.cardOuter, method.paymentMethodId)
+            holder.initData(billingAddress)
 
             val phone = holder.etPhone
             holder.labelPhone.text = context.getString(R.string.enter_mobile_number , method.mobileProvider).uppercase()
@@ -702,7 +703,9 @@ internal class PaymentAdapter(
 
         val clLipaNaMpesa = itemView.findViewById<TextView>(R.id.tv_manual)
         val clBackgroundCheck = itemView.findViewById<ConstraintLayout>(R.id.clWaiting)
-        
-        
+
+        fun initData(billingAddress: BillingAddress) {
+            etPhone.setText(billingAddress.phoneNumber)
+        }
     }
 }

@@ -292,15 +292,12 @@ class AuthFragment : Fragment() {
                 try{
                     val customerData = intent.getSerializableExtra(PESAPALAPI3SDK.USER_DATA) as CustomerData?
                     customerData?.let {
-
                         billingAddress = BillingAddress(it.line, it.countryCode, it.line2, it.emailAddress, it.city, it.lastName,
                             checkFormat(it.phoneNumber), it.state, it.middleName, checkFormat(it.postalCode), it.firstName, checkFormat(it.zipCode))
                     }
 
                 }
-                catch (ex: Exception){
-
-                }
+                catch (_: Exception){}
 
                 initData()
             }
@@ -311,7 +308,6 @@ class AuthFragment : Fragment() {
         } else {
             setErrorElements("10400","Error Code: 10400")               // Null intent
             returnIntent(statCode, errorMessage)
-
         }
     }
 
@@ -320,7 +316,7 @@ class AuthFragment : Fragment() {
         try{
             value?.let {
                 if(it.isNotBlank()){
-                    if(it.contains("^[0-9]")){
+                    if("^[0-9]".toRegex().containsMatchIn(value)){
                         data =value
                     }
                 }

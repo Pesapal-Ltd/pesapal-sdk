@@ -221,54 +221,38 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
 
         hardCodedInfo()
-
     }
 
     private fun hardCodedInfo(){
-//                val displayName = "Job"
-//                val firstName = "Job"
-//                val lastName = "Masai"
-//                val email = "jmasai@pesapal.com"
-
-
-//        val displayName = "Samuel"
-//        val firstName = "Samuel"
-//        val lastName = "Nyamai"
-//        val email = "samuel@pesapal.com"
-//        showMessage("HardCoded user info ")
-
-
         val displayName = ""
         val firstName   = PrefManager.getString(PrefManager.PREF_FIRST_NAME, "")
         val lastName    = PrefManager.getString(PrefManager.PREF_LAST_NAME, "")
         val email       = PrefManager.getString(PrefManager.PREF_EMAIL, "")
         val phone       = PrefManager.getString(PrefManager.PREF_PHONE, "")
 
-
         val photoUrl: String? = null
         val time: String? = null
         userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time,phone)
 
         initPayment()
-
     }
 
     private fun initPayment(){
-
-        val line: String? = "a"
-        val countryCode: String? = "b"
-        val line2: String? = "c"
-        val emailAddress: String? = "d"
-        val city: String? = "e"
-        val lastName: String? = "d"
-        val phoneNumber: String? = "ddd"
-        val state: String? = "d"
-        val middleName: String? = "d"
-        val postalCode: String? = "dd"
-        val firstName: String? = "dd"
-        val zipCode: String? = "ddd"
+        val line = "a"
+        val countryCode = "b"
+        val line2 = "c"
+        val emailAddress = "d"
+        val city= "e"
+        val lastName= "d"
+        val phoneNumber= "703318241"
+        val state= "d"
+        val middleName= "d"
+        val postalCode= "00111"
+        val firstName= "dd"
+        val zipCode= "00100"
 
         val customerData = CustomerData(line, countryCode, line2, emailAddress, city, lastName, phoneNumber, state, middleName,postalCode, firstName, zipCode)
+//        val customerData = CustomerData(phoneNumber = phoneNumber) // For mobile money
 
         val myIntent = Intent(this, PesapalSdkActivity::class.java)
         myIntent.putExtra(PESAPALAPI3SDK.AMOUNT     , total.toString())
@@ -276,11 +260,28 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         myIntent.putExtra(PESAPALAPI3SDK.CURRENCY   ,currency)
         myIntent.putExtra(PESAPALAPI3SDK.COUNTRY    ,translateCountryToEnum())
         myIntent.putExtra(PESAPALAPI3SDK.USER_DATA  ,customerData)
-//        myIntent.putExtra(PESAPALAPI3SDK.FIRST_NAME ,userModel.firstName)
-//        myIntent.putExtra(PESAPALAPI3SDK.LAST_NAME  ,userModel.lastName)
-//        myIntent.putExtra(PESAPALAPI3SDK.EMAIL      ,userModel.email)
         startActivityForResult(myIntent             ,PAYMENT_REQUEST)
     }
+
+
+//    //import com.pesapal.sdk.utils.PESAPALAPI3SDK   // TODO LOOKS OK
+//    import com.pesapal.sdk.utils.Status                 // HIDE IT
+//
+//    import com.pesapal.sdk.fragment.card.data.CardFragmentCardData
+//    import com.pesapal.sdk.fragment.DialogCard
+//    import com.pesapal.sdk.fragment.auth.AuthFragment
+//    import com.pesapal.sdk.fragment.details.MainPesapalFragment
+//import com.pesapal.sdk.activity.PesapalSdkActivity                // HIDE IT
+//    import com.pesapal.sdk.activity.PesapalPayActivity
+
+//import com.pesapal.sdk.model.txn_status.TransactionStatusResponse                     TODO TRANSFER IT
+//import com.pesapal.sdk.model.txn_status.TransactionError
+
+//import com.pesapal.sdk.model.card.       todo all of them
+//import  com.pesapal.sdk.R.layout.item_pay_method     todo layout files too
+
+//    import com.pesapal.sdk.model.card.
+
 
 
     /**
