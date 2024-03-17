@@ -10,12 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSpinner
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.pesapal.sdkdemo.MainActivity
 import com.pesapal.sdkdemo.databinding.ActivityProfileBinding
 import com.pesapal.sdkdemo.model.UserModel
@@ -34,9 +29,6 @@ import com.squareup.picasso.Picasso
 data class KeysSecret(val country:String, val key:String, val secret: String)
 class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
-
     private lateinit var binding: ActivityProfileBinding
     var testCurrency = listOf<String>()
     lateinit var currencyAdapter: ArrayAdapter<String>
@@ -50,9 +42,7 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater);
         setContentView(binding.root)
-
         initData()
-        configureGoogleSign()
     }
 
 
@@ -66,8 +56,6 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
     lateinit var spinnerCurrency: AppCompatSpinner
     lateinit var spinnerCountry: AppCompatSpinner
     private fun initData(){
-        auth = FirebaseAuth.getInstance()
-
         firstNameEt = binding.layoutProfile.tvUserName
         lastNameEt = binding.layoutProfile.tvLastName
         emailEt = binding.layoutProfile.tvEmail
@@ -122,9 +110,6 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
             Log.e("PROF","Setting Select pos " + spinnerCountry.selectedItemPosition)
             Log.e("PROF","Setting country " + countriesList[spinnerCountry.selectedItemPosition])
             PrefUtil.setData(spinnerCountry.selectedItemPosition)
-
-//            PrefManager.setCountry(countriesList[spinnerCountry.selectedItemPosition])
-
             restart()
         }
     }
@@ -175,45 +160,5 @@ class ProfileActivity: AppCompatActivity(), OnItemSelectedListener {
     override fun onNothingSelected(p0: AdapterView<*>?) {
 
     }
-
-
-    private fun configureGoogleSign() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(com.pesapal.sdkdemo.R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-    }    private fun fetchUserDetails(){
-        var db = FirebaseFirestore.getInstance()
-        val documentUser = db.collection("users").document(auth.currentUser?.email!!).get()
-        documentUser.addOnCompleteListener {
-            if(it.isSuccessful){
-                val displayName: String? = it.result.get("displayName").toString()
-                val firstName: String? = it.result.get("firstName").toString()
-                val lastName: String? = it.result.get("lastName").toString()
-                val email: String? = it.result.get("email").toString()
-                val photoUrl: String? = it.result.get("photoUrl").toString()
-                val time: String? = it.result.get("time").toString()
-                var userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
-                showUserDetails(userModel)
-            }else{
-                showMessage("Unable to get your account ")
-            }
-        }
-    }
-
-    private fun showUserDetails(userModel: UserModel){
-        if(userModel.photoUrl != null) {
-            Picasso.get().load(userModel.photoUrl).into(binding.layoutProfile.civProfile);
-        }
-        binding.layoutProfile.tvUserName.setText(": "+userModel.firstName)
-        binding.layoutProfile.tvLastName.setText(": "+userModel.lastName)
-        binding.layoutProfile.tvEmail.setText(": "+userModel.email)
-        binding.layoutProfile.tvPhone.setText(": "+userModel.phone)
-
-    }
-
-
-
 
 }

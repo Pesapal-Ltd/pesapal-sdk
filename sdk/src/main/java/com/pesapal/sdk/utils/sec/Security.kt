@@ -15,6 +15,8 @@ import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalSdkActivity
 import com.pesapal.sdk.model.txn_status.TransactionError
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.ERR_SECURITY
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.STATUS_CANCELLED
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.PrefManager.PREF_IS_URL_LIVE
 import java.io.BufferedReader
@@ -121,10 +123,13 @@ fun initializeSecurity(activity: Activity):Boolean {
     return prop
 
 }
-
 fun finishAndExit(activity: Activity, statusCode: String, message: String) {
-//    val data = TransactionStatusResponse(error = TransactionError(code = statusCode, , message = message))
-    PesapalSdkActivity.returnIntentBuilder(activity,PesapalSdkActivity.STATUS_CANCELLED,statusCode, "Security", message)
+    PesapalSdkActivity.returnIntentBuilder(
+        activity,
+        STATUS_CANCELLED,
+        statusCode,
+        ERR_SECURITY,
+        message)
 }
 
 enum class SecurityLevel {

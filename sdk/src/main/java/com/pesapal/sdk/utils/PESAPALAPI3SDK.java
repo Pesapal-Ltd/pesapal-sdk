@@ -24,10 +24,24 @@ public class PESAPALAPI3SDK {
     }
 
 
+
+
     public static void init(Context context, String consumerkey, String consumersecret, String accountNumber, String callbackUrl, String ipnUrl, boolean isLive){
         Sdkapp.INSTANCE.setContextInstance(context);
         PrefManager.firstSave(context, consumerkey, consumersecret, accountNumber, callbackUrl, ipnUrl, isLive);
     }
+
+    public static String ERR_SECURITY = "11229719-8e5b-4481-a005-9da49583bc77";
+    public static String ERR_GENERAL  = "9b0a5988-3430-4d4f-b289-3ad1e69c4dd2";
+    public static String ERR_NETWORK  = "a91f31b8-6c6b-47ff-9b85-936644f198be";
+    public static String ERR_INIT     = "838e5f5d-9482-432b-85ac-37b393bd514c";
+
+
+    public static String STATUS_PENDING   = "d9d60510-f2b5-4f1d-bb73-fe16a9b7322a";
+    public static String STATUS_COMPLETED = "ffb4aeb8-3daf-4886-96ad-cf4836f13ff5";
+    public static String STATUS_CANCELLED = "dab02b17-d9c0-4240-97ee-b8c44437d4c0";
+
+
 
 }
 

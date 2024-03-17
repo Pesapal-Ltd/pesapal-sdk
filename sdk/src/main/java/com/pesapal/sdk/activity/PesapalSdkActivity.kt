@@ -24,14 +24,11 @@ class PesapalSdkActivity : AppCompatActivity() {
             setContentView(binding.root)
             Sdkapp.setContextInstance(this)
         }
-
     }
 
     companion object {
-        const val STATUS_COMPLETED = "COMPLETED"
-        const val STATUS_CANCELLED = "CANCELLED"
 
-        fun returnIntent(activity: Activity, status: String, obj : Any){
+        fun returnIntent(activity: Activity, status: String, obj : Any,result:Int = RESULT_CANCELED,){
             val returnIntent = Intent()
             returnIntent.putExtra("status", status)
             val data = if(obj is String){
@@ -42,7 +39,7 @@ class PesapalSdkActivity : AppCompatActivity() {
             }
             returnIntent.putExtra("data", data)
 
-            activity.setResult(RESULT_OK, returnIntent)
+            activity.setResult(result, returnIntent)
             activity.finish()
         }
 

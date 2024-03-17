@@ -6,16 +6,6 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.messaging.FirebaseMessaging
 import com.pesapal.sdk.activity.PesapalSdkActivity
 import com.pesapal.sdk.model.card.CustomerData
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
@@ -27,7 +17,6 @@ import com.pesapal.sdkdemo.model.UserModel
 import com.pesapal.sdkdemo.profile.ProfileActivity
 import com.pesapal.sdkdemo.utils.PrefManager
 import com.pesapal.sdkdemo.utils.PrefUtil
-import com.pesapal.sdkdemo.utils.TimeUtils
 import com.squareup.picasso.Picasso
 import java.math.BigDecimal
 import java.util.*
@@ -36,16 +25,13 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     private lateinit var binding:ActivityMainBinding
     private var currency = ""
-//    private lateinit var auth: FirebaseAuth
     private var total = BigDecimal.ZERO
     private lateinit var demoCartAdapter: DemoCartAdapter
     private lateinit var catalogueModelList: MutableList<CatalogueModel.ProductsBean>
     private lateinit var itemModelList: MutableList<CatalogueModel.ProductsBean>
     private var orderId = ""
-    private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var userModel: UserModel
     private var PAYMENT_REQUEST = 100001
-    private var RC_SIGN_IN = 100002
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,21 +70,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
 
-
-    private fun getToken(){
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("TAG", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-            // Log and toast
-            Log.d("token", token)
-        })
-    }
-
     private fun initRecyclerData(){
         catalogueModelList = arrayListOf()
         itemModelList = arrayListOf()
@@ -117,12 +88,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     private fun handleClicks(){
         binding.btnCheckOut.setOnClickListener {
-//            if(auth.currentUser != null){
-//                startPayment()
-//            }else {
-//                handleGoogleSignIn()
-//            }
-
             startPayment()
         }
         binding.civProfile.setOnClickListener {
@@ -134,18 +99,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         startActivity(Intent(this,ProfileActivity::class.java))
     }
 
-    private fun configureGoogleSign() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-    }
-
-    private fun handleGoogleSignIn() {
-        val signInIntent: Intent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
 
     private fun createTransactionID(): String {
         return UUID.randomUUID().toString().uppercase().substring(0,8)
@@ -167,15 +120,10 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
     override fun onResume() {
         super.onResume()
-//        auth = FirebaseAuth.getInstance()
-//        if(auth.currentUser != null){
-//            getProfile()
-//        }
         currency = PrefManager.getCurrency()
         initData()
         initSdk()
         updateBasketList()
-//        configureGoogleSign()
     }
 
 //    private fun getProfile(){
@@ -199,27 +147,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     }
 
     private fun startPayment(){
-//        val db = FirebaseFirestore.getInstance()
-//        val documentBalance = db.collection("users").document(auth.currentUser?.email!!).get()
-//        documentBalance.addOnCompleteListener {
-//            if(it.isSuccessful){
-//                val displayName: String = it.result.get("displayName").toString()
-//                val firstName: String = it.result.get("firstName").toString()
-//                val lastName: String = it.result.get("lastName").toString()
-//                val email: String? = it.result.get("email").toString()
-//                val photoUrl: String? = it.result.get("photoUrl").toString()
-//                val time: String? = it.result.get("time").toString()
-//                userModel = UserModel(displayName,firstName,lastName,email,photoUrl,time)
-//
-//                initPayment()
-//            }else{
-//                hardCodedInfo()
-//
-////                showMessage("Unable to get your account ")
-//            }
-//        }
-
-
         hardCodedInfo()
     }
 
@@ -311,51 +238,84 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         }
     }
 
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-//            try {
-//                val account = task.getResult(ApiException::class.java)!!
-//                firebaseAuthWithGoogle(account)
-//            } catch (e: Exception) {
-//                showMessage("An error occurred " + e.localizedMessage)
-//            }
-        }else if (requestCode == PAYMENT_REQUEST) {
+         if (requestCode == PAYMENT_REQUEST) {
+             orderId = createTransactionID()
+             binding.tvOrderId.text = "Order ID $orderId"
             if (resultCode == RESULT_OK) {
                 val result = data?.getStringExtra("status")
-                orderId = createTransactionID()
-                binding.tvOrderId.text = "Order ID $orderId"
                 val transactionStatusResponse = data?.getSerializableExtra("data") as TransactionStatusResponse?
 
-                Log.e("Main" , "Error message is " + transactionStatusResponse?.error?.message)
+                Log.e("MainsUCCESS" , "Error message is " + transactionStatusResponse?.error?.message)
                 Log.e("Main" , "Error code is " + transactionStatusResponse?.error?.code)
                 Log.e("Main" , "Error type is " + transactionStatusResponse?.error?.errorType)
 
+
                 transactionStatusResponse?.let {
-                    when(result){
-                        "COMPLETED" -> {
+                    val statusCode = transactionStatusResponse.statusCode
+                    Log.e("Main" , "Status code type is $statusCode")
+                    when(statusCode){
+                        1 -> {
                             handleCompletedTxn(transactionStatusResponse)
                         }
-                        "ERROR" -> {
-                            val message = transactionStatusResponse.error?.message?:"An Error Occurred, Please try again later ..."
-                            handleFailedTxn(message)
-                        }
-                        "CANCELLED" -> {
-                            val message = transactionStatusResponse.error?.message?:"An Error Occurred, Please try again later ..."
-                            handleCancelledTxn(message)
+                        0,2,4-> {
+
+                            handleCompletedTxn(transactionStatusResponse)
                         }
                         else -> {
-                            handleDefaultError("An Error Occurred, Please try again later ...")
+                            //
                         }
                     }
                 }
             }
-        }
+             else {
+
+                 // A failed payment
+                val status = data?.getStringExtra("status")
+                val transactionStatusResponse = data?.getSerializableExtra("data") as TransactionStatusResponse?
+
+                Log.e("Main FAILED" , "status message is $status")
+                Log.e("Main FAILED" , "Error message is " + transactionStatusResponse?.error?.message)
+                Log.e("Main FAILED" , "Error code is " + transactionStatusResponse?.error?.code)
+                Log.e("Main FAILED" , "Error type is " + transactionStatusResponse?.error?.errorType)
+
+
+                transactionStatusResponse?.let {response ->
+                    val message = response.error?.message?:"An Error Occurred, Please try again later ..."
+                    response.error?.errorType.let {errorType ->
+
+                        // todo make them one liners  PESAPALAPI3SDK.ERR_SECURITY -> { // Handle security concerns from the sdk }
+                        // todo refer user to error page for description on the error
+
+                        when(errorType){
+                            PESAPALAPI3SDK.ERR_INIT -> {
+                                handleCancelledTxn("Init $message")
+                            }
+                            PESAPALAPI3SDK.ERR_SECURITY -> {
+                                handleCancelledTxn("Sec $message")
+                            }
+                            PESAPALAPI3SDK.ERR_NETWORK -> {
+                                handleCancelledTxn("Network $message")
+                            }
+                            PESAPALAPI3SDK.ERR_GENERAL ->{
+                                handleCancelledTxn("User cancelled the transaction.")
+                            }
+                            else -> {
+                                handleCancelledTxn(message)
+                            }
+                        }
+
+                    }
+                }
+            }
+
+         }
     }
+
+
 
     private fun handleCompletedTxn(transactionStatusResponse: TransactionStatusResponse){
         itemModelList.clear()
@@ -367,9 +327,6 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         }
     }
 
-    private fun handleFailedTxn(message: String){
-        showMessage(message)
-    }
 
     private fun handleCancelledTxn(message: String){
         showMessage(message)
@@ -378,53 +335,5 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
     private fun handleDefaultError(message: String){
         showMessage(message)
     }
-
-//    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-//        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-//        auth.signInWithCredential(credential)
-//            .addOnCompleteListener {
-//                if (it.isSuccessful) {
-//                    showMessage("Login Success ...")
-//                    val isNew: Boolean = it.result?.additionalUserInfo!!.isNewUser
-//                    if(isNew) {
-//                        loginSuccess(account)
-//                    }else{
-//                        startPayment()
-//                    }
-//                } else {
-//                    showMessage("Unable to login ..")
-//                }
-//            }
-//    }
-
-    private fun loginSuccess(credential: GoogleSignInAccount){
-        val dateTime = TimeUtils.getCurrentDateTime()
-        val db = FirebaseFirestore.getInstance()
-        val email = credential.email
-        val displayName = credential.displayName
-        val fname = credential.givenName
-        val lname = credential.familyName
-        val profileUrl = credential.photoUrl.toString()
-
-        userModel = UserModel(
-            displayName,
-            fname,
-            lname,
-            email,
-            profileUrl,
-            dateTime
-        )
-
-        db.collection("users")
-            .document(email!!)
-            .set(userModel)
-            .addOnSuccessListener {
-                startPayment()
-            }
-            .addOnFailureListener {
-                showMessage(" Unable to login "+it.localizedMessage)
-            }
-    }
-
 
 }

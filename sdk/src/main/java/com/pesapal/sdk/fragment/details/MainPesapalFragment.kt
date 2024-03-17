@@ -19,8 +19,6 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.pesapal.sdk.R
 import com.pesapal.sdk.Sdkapp
-import com.pesapal.sdk.activity.PesapalPayActivity
-import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentPesapalMainBinding
 import com.pesapal.sdk.model.card.BillingAddress
@@ -35,6 +33,7 @@ import com.pesapal.sdk.utils.CountryCodeEval.MPESA
 import com.pesapal.sdk.utils.CountryCodeEval.MPESA_TZ
 import com.pesapal.sdk.utils.CountryCodeEval.MTN_UG
 import com.pesapal.sdk.utils.CountryCodeEval.TIGO_TANZANIA
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.STATUS_CANCELLED
 import java.math.BigDecimal
 
 class MainPesapalFragment: Fragment() {

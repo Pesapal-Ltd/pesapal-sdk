@@ -15,7 +15,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.activity.PesapalSdkActivity
-import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentAuthorizingBinding
 import com.pesapal.sdk.model.accountinfo.AccountInfoRequest
@@ -28,6 +27,9 @@ import com.pesapal.sdk.model.registerIpn_url.RegisterIpnRequest
 import com.pesapal.sdk.model.txn_status.TransactionError
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PESAPALAPI3SDK
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.ERR_INIT
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.ERR_NETWORK
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.STATUS_CANCELLED
 import com.pesapal.sdk.utils.PrefManager
 import com.pesapal.sdk.utils.Status
 import com.pesapal.sdk.utils.sec.ParseUtil
@@ -83,12 +85,13 @@ class AuthFragment : Fragment() {
         if (it?.status == "200") {
             extractData(it)
         } else {
-            returnIntent(networkError,"Error during Tk Init")
+            returnIntent(networkError, ERR_NETWORK,"Error during Initialization")
         }
     }
     val networkError = "190"
     val parseError   = "191"
-    val initError    = "192"
+    val authError    = "193"
+    val ipnError    = "194"
 
 
     fun parseRSAKeyValue(modulus1: String, exponent1: String): PublicKey {
@@ -112,7 +115,7 @@ class AuthFragment : Fragment() {
             proceedAfterVerification(it)
         } catch (e: Exception) {
             Log.e("SecAu" ,e.localizedMessage ?: "Unable to proceed, Please try again later ..")
-            returnIntent(parseError,"Error during Init")
+            returnIntent(parseError,errType,"Error during Init")
         }
     }
 
@@ -134,7 +137,7 @@ class AuthFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     binding.loader.visibility = View.GONE
-                    returnIntent(networkError, it.message!!)
+                    returnIntent(authError, ERR_NETWORK, it.message!!)
                 }
             }
         }
@@ -148,7 +151,7 @@ class AuthFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     binding.loader.visibility = View.GONE
-                    returnIntent(networkError, it.message?:"")
+                    returnIntent(ipnError, ERR_NETWORK, it.message?:"")
                 }
                 else -> {
                     binding.loader.visibility = View.VISIBLE
@@ -164,7 +167,7 @@ class AuthFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     binding.loader.visibility = View.GONE
-                    returnIntent(networkError, it.message?:"Account")
+                    returnIntent(networkError, ERR_NETWORK,it.message?:"Account")
                 }
                 else -> {
                     binding.loader.visibility = View.VISIBLE
@@ -229,7 +232,7 @@ class AuthFragment : Fragment() {
              * 10100  = ErrorCode.CONSUMER_KEY
              * 10500  = ErrorCode.CONSUMER_SECRET
              * 10201  = Data -> Amount is missing
-             * 102011 = Amount is less than 1
+             * 10210 = Amount is less than 1
              * 10202  = OrderId is missing
              * 10203  = Currency format is missing
              * 10204  = Account number is missing
@@ -248,7 +251,7 @@ class AuthFragment : Fragment() {
                 setErrorElements("10201","Error Code: 10201")
             }
             else if(amount.toBigDecimal() < BigDecimal(1)){
-                setErrorElements("102011","Error Code: 102011")
+                setErrorElements("10210","Error Code: 10210")
             }
             else if(orderId.isNullOrEmpty()){
                 setErrorElements("10202","Error Code: 10202")
@@ -280,15 +283,7 @@ class AuthFragment : Fragment() {
                     country = country
                 )
 
-//                val firstName = intent.getStringExtra(PESAPALAPI3SDK.FIRST_NAME )
-//                val lastName = intent.getStringExtra(PESAPALAPI3SDK.LAST_NAME)
-//                val email = intent.getStringExtra(PESAPALAPI3SDK.EMAIL)
-//                val city = intent.getStringExtra("city")
-//                val address = intent.getStringExtra("address")
-//                val postalCode = intent.getStringExtra("postalCode")
-
                 billingAddress = BillingAddress()
-
                 try{
                     val customerData = intent.getSerializableExtra(PESAPALAPI3SDK.USER_DATA) as CustomerData?
                     customerData?.let {
@@ -302,12 +297,12 @@ class AuthFragment : Fragment() {
                 initData()
             }
             else{
-                returnIntent(statCode, errorMessage)
+                returnIntent(statCode, ERR_INIT, errorMessage)
             }
 
         } else {
             setErrorElements("10400","Error Code: 10400")               // Null intent
-            returnIntent(statCode, errorMessage)
+            returnIntent(statCode, ERR_INIT, errorMessage)
         }
     }
 
@@ -342,28 +337,15 @@ class AuthFragment : Fragment() {
             val registerIpnRequest = RegisterIpnRequest(paymentDetails.ipn_url!!, paymentDetails.ipn_notification_type!!)
             viewModel.registerIpn(registerIpnRequest)
         }else{
-            returnIntent("10206", "Ipn Data Required")
+            returnIntent("10206", ERR_INIT,"Ipn Data Required")
         }
     }
 
 
 
-    private fun returnIntent(statusCode: String, message : String){
-        val data = TransactionStatusResponse(error = TransactionError(code = statusCode, errorType = errType, message = message))
+    private fun returnIntent(statusCode: String,errTypes:String, message : String){
+        val data = TransactionStatusResponse(error = TransactionError(code = statusCode, errorType = errTypes, message = message))
         PesapalSdkActivity.returnIntent(requireActivity(), STATUS_CANCELLED, data)
-
-//        val returnIntent = Intent()
-//        returnIntent.putExtra("status", status)
-//        val data = if(obj is String){
-//            obj
-//        }
-//        else{
-//            obj as TransactionStatusResponse
-//        }
-//        returnIntent.putExtra("data", data)
-//
-//        requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
-//        requireActivity().finish()
     }
 
 

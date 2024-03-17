@@ -19,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalSdkActivity
-import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.adapter.PaymentAdapter
 import com.pesapal.sdk.databinding.FragmentPaymentMethodsBinding
@@ -39,6 +38,9 @@ import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.*
 import com.pesapal.sdk.utils.CountryCodeEval.CARD
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.ERR_GENERAL
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.ERR_SECURITY
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.STATUS_CANCELLED
 
 internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodInterface {
     private lateinit var binding: FragmentPaymentMethodsBinding
@@ -137,8 +139,9 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                 override fun handleOnBackPressed() {
                     PesapalSdkActivity.returnIntentBuilder(
                         requireActivity(),
-                        STATUS_CANCELLED,"0 = General cancel",
-                        "Cancellation",
+                        STATUS_CANCELLED,
+                        "0",
+                        ERR_GENERAL,
                         "Payment cancelled")
 
                 }

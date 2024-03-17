@@ -17,13 +17,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.pesapal.sdk.R
-import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_CANCELLED
-import com.pesapal.sdk.activity.PesapalSdkActivity.Companion.STATUS_COMPLETED
+import com.pesapal.sdk.activity.PesapalSdkActivity
 import com.pesapal.sdk.activity.PesapalSdkViewModel
 import com.pesapal.sdk.databinding.FragmentMpesaPaymentSuccessBinding
 import com.pesapal.sdk.fragment.DialogCard
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.GeneralUtil
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.STATUS_COMPLETED
+import com.pesapal.sdk.utils.PESAPALAPI3SDK.STATUS_PENDING
 import com.pesapal.sdk.utils.TimeUtils
 
 class MpesaSuccessFragment : Fragment() {
@@ -171,12 +172,9 @@ class MpesaSuccessFragment : Fragment() {
 
 
     private fun returnPaymentStatus() {
-        if(isTxnSuccessful){
-            returnIntent(STATUS_COMPLETED, transactionStatusResponse)
-        }
-        else
-            returnIntent(STATUS_CANCELLED, "Payment cancelled")
-
+        PesapalSdkActivity.returnIntent(requireActivity(),
+            if(isTxnSuccessful) STATUS_COMPLETED else STATUS_PENDING, transactionStatusResponse,
+            AppCompatActivity.RESULT_OK)
     }
 
     private fun returnIntent(status: String, obj : Any){
@@ -192,13 +190,6 @@ class MpesaSuccessFragment : Fragment() {
 
         requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
         requireActivity().finish()
-    }
-    companion object{
-        fun newInstance(transactionStatusResponse: TransactionStatusResponse): MpesaSuccessFragment {
-            val fragment = MpesaSuccessFragment()
-            fragment.transactionStatusResponse = transactionStatusResponse
-            return fragment
-        }
     }
 
 }
