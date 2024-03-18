@@ -144,7 +144,7 @@ class MpesaSuccessFragment : Fragment() {
         binding.iconPayMethod.setImageResource(paymentIcon)
 
         binding.tvCurrency.text = transactionStatusResponse.currency
-        binding.tvAmount.text = GeneralUtil.formatAmountText(transactionStatusResponse.amount.toDouble())
+        binding.tvAmount.text = GeneralUtil.formatAmountText(transactionStatusResponse.amount)
         binding.tvConfirmationCode.text = transactionStatusResponse.confirmationCode
         binding.tvMerchantRef.text = transactionStatusResponse.merchantReference
         binding.tvNumberOrCard.text = transactionStatusResponse.paymentAccount

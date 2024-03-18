@@ -3,18 +3,15 @@ package com.pesapal.sdk.utils.sec
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
 import android.util.Base64
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.pesapal.sdk.BuildConfig
 import com.pesapal.sdk.R
 import com.pesapal.sdk.activity.PesapalSdkActivity
-import com.pesapal.sdk.model.txn_status.TransactionError
-import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.PESAPALAPI3SDK.ERR_SECURITY
 import com.pesapal.sdk.utils.PESAPALAPI3SDK.STATUS_CANCELLED
 import com.pesapal.sdk.utils.PrefManager
@@ -29,8 +26,6 @@ import kotlin.system.exitProcess
 fun initializeSecurity(activity: Activity):Boolean {
 
     val withSecurityChecks = PrefManager.getBoolean(activity, PREF_IS_URL_LIVE, true)
-//    val signature = BuildConfig.SIGNATURE
-//    val dialog_title = "Sec Check"
     val dialog_title = "Payment"
     var prop = false
 

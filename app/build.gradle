@@ -14,7 +14,7 @@ android {
         applicationId "com.pesapal.paymentgateway"
         minSdk 24    // Changed from 23 -> 24 because of Flexlayout
         targetSdk 34
-        versionCode 2
+        versionCode 10
         versionName "1.2.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

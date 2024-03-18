@@ -212,7 +212,7 @@ class AuthFragment : Fragment() {
             }
 
 
-            val amount = intent.getStringExtra(PESAPALAPI3SDK.AMOUNT)
+            val amount = intent.getDoubleExtra(PESAPALAPI3SDK.AMOUNT, 0.00)
             val orderId = intent.getStringExtra( PESAPALAPI3SDK.ORDER_ID)
             val currency = intent.getStringExtra(PESAPALAPI3SDK.CURRENCY)
             var country : PESAPALAPI3SDK.COUNTRIES_ENUM? = null
@@ -246,9 +246,6 @@ class AuthFragment : Fragment() {
             }
             else if(consumerSecret.isNullOrEmpty()) {
                 setErrorElements("10500","Error Code: 10500")
-            }
-            else if(amount.isNullOrEmpty()){
-                setErrorElements("10201","Error Code: 10201")
             }
             else if(amount.toBigDecimal() < BigDecimal(1)){
                 setErrorElements("10210","Error Code: 10210")

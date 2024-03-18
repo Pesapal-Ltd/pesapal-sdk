@@ -2,10 +2,8 @@ package com.pesapal.sdk.fragment.details
 
 import DeviceFingerprint
 import android.app.ProgressDialog
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +36,9 @@ import com.pesapal.sdk.model.payment.PaymentDetails
 import com.pesapal.sdk.model.txn_status.TransactionStatusResponse
 import com.pesapal.sdk.utils.*
 import com.pesapal.sdk.utils.CountryCodeEval.CARD
+import com.pesapal.sdk.utils.CountryCodeEval.KE_COUNTRY_CODE
+import com.pesapal.sdk.utils.CountryCodeEval.TZ_COUNTRY_CODE
+import com.pesapal.sdk.utils.CountryCodeEval.UG_COUNTRY_CODE
 import com.pesapal.sdk.utils.PESAPALAPI3SDK.ERR_GENERAL
 import com.pesapal.sdk.utils.PESAPALAPI3SDK.ERR_SECURITY
 import com.pesapal.sdk.utils.PESAPALAPI3SDK.STATUS_CANCELLED
@@ -52,7 +53,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
     private val viewModel: MpesaPesapalViewModel by viewModels()
 
     private var mobileProviders = listOf<Int>()
-    lateinit var rvPayment: RecyclerView
+    private lateinit var rvPayment: RecyclerView
 
     // Mobile Money
     var phoneNumber =  ""
@@ -100,19 +101,24 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
         handleViewModel()
     }
+    var countryCode:Int = 0
 
     private fun evaluateRegionProvider(): List<Int> {
         val labelRegulated = binding.labelRegulated
 
          return when(paymentDetails.country){
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_KE ->{
+                countryCode = KE_COUNTRY_CODE
                  CountryCodeEval.kenyaProvider
             }
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_TZ -> {
+                countryCode = TZ_COUNTRY_CODE
                 labelRegulated.visibility = View.INVISIBLE
                 CountryCodeEval.tanzaniaProvider
             }
             PESAPALAPI3SDK.COUNTRIES_ENUM.COUNTRY_UG -> {
+                countryCode = UG_COUNTRY_CODE
+
                 labelRegulated.text = getString(R.string.pesapal_is_regulated_by_the_uganda)
                  CountryCodeEval.ugandaProvider
             }
@@ -122,6 +128,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
             }
         }
     }
+
 
     /**
      * If the application is in demo show text view indicating so
@@ -150,7 +157,7 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
     private fun initRecycler(){
         val payList = mutableListOf<CountryCode>()
-        payList.add(CountryCode("Card",CARD,0) )
+        payList.add(CountryCode("Card",CARD, countryCode) )
         mobileProviders.forEach{ providerInt ->
             val provider = CountryCodeEval.mappingAllCountries[providerInt]
             payList.add(provider!!)
@@ -163,30 +170,15 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
 
 
     private fun initData(){
-        binding.tvAmount.text = "${paymentDetails.currency} ${paymentDetails.amount}"
+        val amount = GeneralUtil.formatAmountText(paymentDetails.amount.toDouble())
+        binding.tvAmount.text = "${paymentDetails.currency} ${amount}"
         binding.tvMerchantName.text = paymentDetails.merchant_name
     }
 
 
-//    private fun returnIntent(status: String, obj : Any){
-//        val returnIntent = Intent()
-//        returnIntent.putExtra("status", status)
-//        val data = if(obj is String){
-//            obj
-//        }
-//        else{
-//            obj as TransactionStatusResponse
-//        }
-//        returnIntent.putExtra("data", data)
-//
-//        requireActivity().setResult(AppCompatActivity.RESULT_OK, returnIntent)
-//        requireActivity().finish()
-//    }
-
     override fun mobileMoneyRequest(action: Int, phoneNumber: String, mobileProvider: Int) {
         when(action){
             1 -> {
-
                 this.phoneNumber = phoneNumber
                 this.mobileProvider = mobileProvider
 
@@ -282,8 +274,6 @@ internal class PaymentMethodsFragment: Fragment(), PaymentAdapter.PaymentMethodI
                     if(::pDialog.isInitialized) {
                         pDialog.dismiss()
                         showMessage(it.message!!)
-//                        proceedToTransactionResultScreen(it.data!!, false)
-
                     }
                 }
             }

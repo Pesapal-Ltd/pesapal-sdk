@@ -178,11 +178,16 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
         val firstName= "dd"
         val zipCode= "00100"
 
-        val customerData = CustomerData(line, countryCode, line2, emailAddress, city, lastName, phoneNumber, state, middleName,postalCode, firstName, zipCode)
-//        val customerData = CustomerData(phoneNumber = phoneNumber) // For mobile money
+
+        val customerData = CustomerData(
+            line,
+            countryCode,
+            line2, emailAddress,
+            city, lastName, phoneNumber,
+            state, middleName,postalCode, firstName, zipCode)
 
         val myIntent = Intent(this, PesapalSdkActivity::class.java)
-        myIntent.putExtra(PESAPALAPI3SDK.AMOUNT     , total.toString())
+        myIntent.putExtra(PESAPALAPI3SDK.AMOUNT     , total.toString().toDouble())
         myIntent.putExtra(PESAPALAPI3SDK.ORDER_ID   ,orderId)
         myIntent.putExtra(PESAPALAPI3SDK.CURRENCY   ,currency)
         myIntent.putExtra(PESAPALAPI3SDK.COUNTRY    ,translateCountryToEnum())
@@ -246,17 +251,9 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
              orderId = createTransactionID()
              binding.tvOrderId.text = "Order ID $orderId"
             if (resultCode == RESULT_OK) {
-                val result = data?.getStringExtra("status")
                 val transactionStatusResponse = data?.getSerializableExtra("data") as TransactionStatusResponse?
-
-                Log.e("MainsUCCESS" , "Error message is " + transactionStatusResponse?.error?.message)
-                Log.e("Main" , "Error code is " + transactionStatusResponse?.error?.code)
-                Log.e("Main" , "Error type is " + transactionStatusResponse?.error?.errorType)
-
-
                 transactionStatusResponse?.let {
                     val statusCode = transactionStatusResponse.statusCode
-                    Log.e("Main" , "Status code type is $statusCode")
                     when(statusCode){
                         1 -> {
                             handleCompletedTxn(transactionStatusResponse)
@@ -265,23 +262,12 @@ class MainActivity : AppCompatActivity(),DemoCartAdapter.clickedListener {
 
                             handleCompletedTxn(transactionStatusResponse)
                         }
-                        else -> {
-                            //
-                        }
                     }
                 }
             }
              else {
-
                  // A failed payment
-                val status = data?.getStringExtra("status")
                 val transactionStatusResponse = data?.getSerializableExtra("data") as TransactionStatusResponse?
-
-                Log.e("Main FAILED" , "status message is $status")
-                Log.e("Main FAILED" , "Error message is " + transactionStatusResponse?.error?.message)
-                Log.e("Main FAILED" , "Error code is " + transactionStatusResponse?.error?.code)
-                Log.e("Main FAILED" , "Error type is " + transactionStatusResponse?.error?.errorType)
-
 
                 transactionStatusResponse?.let {response ->
                     val message = response.error?.message?:"An Error Occurred, Please try again later ..."

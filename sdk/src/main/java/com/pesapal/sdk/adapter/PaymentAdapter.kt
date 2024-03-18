@@ -42,8 +42,8 @@ internal class PaymentAdapter(
     val billingAddress: BillingAddress,
     private val paymentMethodInterface: PaymentMethodInterface,
     private val payList: MutableList<CountryCode>
-)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     private val OUT_OF_RANGE = 1010
 
     private var selected: Int = OUT_OF_RANGE
@@ -80,7 +80,7 @@ internal class PaymentAdapter(
 
         if(holder is PaymentCardAdapterVh){
             hideExpandedView(holder.endIcon, holder.cardOuter, method.paymentMethodId)
-            holder.initData(billingAddress)
+            holder.initData(billingAddress, method.countryCode)
 
             holder.endIcon.setOnClickListener {
                 checkUncheckExpandingView(holder.mainCard, holder.endIcon, holder.cardOuter, method.paymentMethodId)
@@ -315,7 +315,7 @@ internal class PaymentAdapter(
         // todo transfer over all the other logic
 
 
-        fun initData(billingAddress: BillingAddress){
+        fun initData(billingAddress: BillingAddress, countryCode: Int){
             etFirstName.setText(billingAddress.firstName)
             etSurname.setText(billingAddress.lastName)
             etEmail.setText(billingAddress.emailAddress)
@@ -323,6 +323,8 @@ internal class PaymentAdapter(
             etAddress.setText(billingAddress.zipCode)
             etPostal.setText(billingAddress.postalCode)
             etCity.setText(billingAddress.city)
+
+            countryCodePicker.setCountryForPhoneCode(countryCode)
 
 //            etFirstName.setText("Sam")
 //            etSurname.setText("nyam")
